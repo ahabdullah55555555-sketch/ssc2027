@@ -1,6 +1,6 @@
 /* Offline cache for the app shell. Bump CACHE when any app file changes. */
-const CACHE = 'ssc2027-v2.0.0';
-const FILES = ['./', './index.html', './routine-default.js', './manifest.json', './icon.svg'];
+const CACHE = 'ssc2027-v2.2.0';
+const FILES = ['./', './index.html', './routine-default.js', './i18n.js', './manifest.json', './icon.svg'];
 self.addEventListener('install', e => {
   /* No skipWaiting here: a new version waits until the user taps "Update now". */
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)));
