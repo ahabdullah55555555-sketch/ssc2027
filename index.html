@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#120F1D">
+<title>SSC 2027 Study Tracker</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>
+:root{--bg:#120F1D;--panel:#181324;--panel2:#221A36;--line:#35294F;--neon:#C033FF;--neon2:#B341F9;--text:#F6F1FF;--lav:#CFC3F0;--warn:#FF8FB1;--ok:#8CF0B4}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;background:radial-gradient(900px 400px at 85% -5%,#2B1747 0%,transparent 70%),var(--bg);color:var(--text);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:max(14px,env(safe-area-inset-top)) 14px calc(92px + env(safe-area-inset-bottom));min-height:100vh}
+main{max-width:640px;margin:0 auto}
+h1{font-size:26px;margin:0;line-height:1.15}h2{font-size:21px;margin:0 0 10px}h3{font-size:18px;margin:14px 0 6px}
+.sub{color:var(--lav);font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin:0 0 14px}
+.glow{border-color:var(--neon2);box-shadow:0 0 22px rgba(192,51,255,.22)}
+.top{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.av{width:72px;height:72px;border-radius:50%;border:3px solid var(--neon);box-shadow:0 0 18px rgba(192,51,255,.5);flex:none;overflow:hidden;background:#221A36}
+.hero{display:flex;gap:16px;align-items:center}
+.ring{width:118px;height:118px;flex:none;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:27px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;flex:1;min-width:0}
+.stat{background:var(--panel2);border-radius:14px;padding:10px}
+.stat b{display:block;font-size:26px;color:var(--neon2)}.stat span{color:var(--lav);font-size:14.5px;line-height:1.25;display:block}
+.bar{height:14px;background:#2A2142;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--neon2),var(--neon));border-radius:9px;transition:width .3s}
+.bar.warn i{background:linear-gradient(90deg,#FF8FB1,#C033FF)}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.pill{background:var(--neon2);color:#fff;font-weight:700;border-radius:20px;padding:4px 12px;font-size:16px;white-space:nowrap}
+.pill.warn{background:var(--warn);color:#2a0b18}
+.task{display:flex;gap:14px;align-items:center;min-height:58px;padding:8px 4px;border-bottom:1px solid var(--line);font-size:19px;cursor:pointer}
+.task:last-of-type{border-bottom:0}
+.task input{position:absolute;opacity:0;width:0;height:0}
+.box{width:34px;height:34px;border-radius:10px;border:2.5px solid var(--neon2);flex:none;display:grid;place-items:center;background:var(--bg)}
+.task input:checked+.box{background:var(--neon);border-color:var(--neon);box-shadow:0 0 12px rgba(192,51,255,.7)}
+.task input:checked+.box:after{content:"";width:9px;height:17px;border:solid #fff;border-width:0 4px 4px 0;transform:rotate(45deg) translate(-1px,-2px)}
+.task input:checked~span{color:var(--lav);text-decoration:line-through;text-decoration-color:var(--neon2)}
+.task input:focus-visible+.box{outline:3px solid #fff}
+.flag{background:#3a1626;border:1px solid var(--warn);color:#FFD3E0;border-radius:12px;padding:10px 12px;margin:10px 0;font-size:16px}
+.note{background:var(--panel2);border-radius:12px;padding:10px 12px;color:var(--lav);font-size:16px;margin:10px 0}
+.chips{display:flex;gap:10px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.chip{flex-direction:column;flex:none;min-width:74px;min-height:62px;border:1.5px solid var(--line);background:var(--panel);color:var(--text);border-radius:16px;font:inherit;font-size:16px;padding:6px 10px;text-align:center;position:relative}
+.chip b{display:block;font-size:20px}
+.chip.sel{border-color:var(--neon);background:var(--panel2);box-shadow:0 0 14px rgba(192,51,255,.4)}
+.chip.today:after{content:"";position:absolute;top:6px;right:8px;width:9px;height:9px;border-radius:50%;background:var(--ok)}
+.chip.full{border-color:var(--ok)}
+button,.btn{font:inherit;font-weight:700;min-height:52px;padding:0 18px;border-radius:14px;border:0;background:var(--neon);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-align:center}
+button.ghost,.btn.ghost{background:transparent;border:1.5px solid var(--neon2);color:var(--text)}
+button.danger{background:#B3173F}
+button.sm{min-height:44px;padding:0 12px;font-size:15px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}.btns>*{flex:1 1 140px}
+input,select,textarea{width:100%;min-height:52px;background:var(--bg);color:var(--text);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;margin:4px 0 10px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--neon);border-color:var(--neon)}
+label.f{color:var(--lav);font-size:16px;display:block}
+.time{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.item{background:var(--panel2);border-radius:14px;padding:12px;margin:0 0 10px}
+.item small{color:var(--lav);font-size:15px;display:block}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(18,15,29,.96);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(8px);z-index:5}
+.tabs button{flex:1;background:none;color:var(--lav);min-height:58px;font-size:14.5px;flex-direction:column;gap:2px;padding:0 2px;border-radius:12px}
+.tabs button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabs button.on{color:#fff;background:var(--panel2);box-shadow:inset 0 -3px 0 var(--neon)}
+.toast{position:fixed;left:14px;right:14px;bottom:calc(88px + env(safe-area-inset-bottom));background:var(--panel2);border:1px solid var(--neon2);border-radius:14px;padding:14px;z-index:9;text-align:center;font-weight:600}
+.modal{position:fixed;inset:0;background:rgba(5,3,10,.8);display:grid;place-items:center;padding:20px;z-index:10}
+.modal .card{max-width:420px;width:100%;margin:0}
+ol,ul{padding-left:22px;margin:6px 0}li{margin:7px 0}
+.leg{display:grid;grid-template-columns:auto 1fr;gap:6px 12px}.leg b{color:var(--neon2)}
+.ok{color:var(--ok)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="avatar" viewBox="0 0 120 120"><rect width="120" height="120" fill="#2A1B4A"/>
+<path d="M8 124Q12 86 60 84Q108 86 112 124Z" fill="#6B2FB5"/><path d="M46 84L60 100L74 84Z" fill="#8E4FE0"/>
+<rect x="52" y="68" width="16" height="18" fill="#E3B08F"/><ellipse cx="38" cy="56" rx="4" ry="7" fill="#EBBB9A"/><ellipse cx="82" cy="56" rx="4" ry="7" fill="#EBBB9A"/>
+<ellipse cx="60" cy="54" rx="22" ry="25" fill="#F2C9A8"/>
+<path d="M36 52Q32 22 58 19Q64 12 70 20Q90 24 84 52Q80 40 72 37Q62 43 50 37Q40 41 36 52Z" fill="#14101F"/>
+<ellipse cx="51" cy="56" rx="3" ry="4.2" fill="#1B1230"/><ellipse cx="69" cy="56" rx="3" ry="4.2" fill="#1B1230"/>
+<circle cx="52" cy="54.5" r="1.1" fill="#fff"/><circle cx="70" cy="54.5" r="1.1" fill="#fff"/>
+<path d="M45 49L56 48M64 48L75 49" stroke="#14101F" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M54 67Q60 71 66 67" stroke="#9A5A45" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M34 54Q32 18 60 17Q88 18 86 54" stroke="#C033FF" stroke-width="4" fill="none"/>
+<rect x="28" y="50" width="9" height="18" rx="4" fill="#B341F9"/><rect x="83" y="50" width="9" height="18" rx="4" fill="#B341F9"/>
+<path d="M88 66Q88 78 72 76" stroke="#C033FF" stroke-width="2.5" fill="none"/><circle cx="71" cy="76" r="3" fill="#E9B8FF"/></symbol></defs></svg>
+<main id="view" aria-live="polite"></main>
+<nav class="tabs" id="tabs" aria-label="Sections"></nav>
+<script>
+"use strict";
+/* ---------- ROUTINE DATA (exactly as supplied) ---------- */
+var SUBJ=['ICT','Islam','Chemistry','BGS','Biology','HM','Physics','Eng 1st','Eng 2nd','Bangla 1st','Bangla 2nd'];
+var DAYS=[];
+function add(id,label,start,end,dur,mins,tasks,o){DAYS.push(Object.assign({id:id,label:label,start:start,end:end,dur:dur,mins:mins,tasks:tasks.map(function(t,i){return{id:id+'-'+i,text:t[0],subj:t[1]||[]}})},o||{}))}
+var I='ICT',IS='Islam',C='Chemistry',B='BGS',BIO='Biology',HM='HM',E1='Eng 1st',E2='Eng 2nd',B1='Bangla 1st',B2='Bangla 2nd',PH='Physics';
+add('d1016','Oct 16','2026-10-16','2026-10-16','5h',300,[['ICT 6',[I]],['Islam 4',[IS]],['C4',[C]],['BGS 7',[B]]]);
+add('d1017','Oct 17','2026-10-17','2026-10-17','6h 30m',390,[['C5',[C]],['Eng 2nd G+C6',[E2]],['Islam 5',[IS]],['Bio 12',[BIO]],['BGS 12',[B]]]);
+add('d1018','Oct 18','2026-10-18','2026-10-18','7h 30m',450,[['Bio 13',[BIO]],['BGS 13',[B]],['Bangla 2nd L34–36',[B2]],['Bangla 2nd L37–38',[B2]],['Bangla 1st B1–2',[B1]]]);
+add('d1019','Oct 19','2026-10-19','2026-10-19','7h 30m',450,[['Bio 14',[BIO]],['BGS 14',[B]],['Bangla 2nd L39–42',[B2]],['HM 12–14 rev',[HM]],['C7',[C]]]);
+add('d1020','Oct 20','2026-10-20','2026-10-20','7h 15m',435,[['BGS 15',[B]],['BGS 16',[B]],['Bio 8–10 rev',[BIO]],['Bangla 1st B3',[B1]],['Bangla 2nd L43',[B2]],['HM 13–14 practice',[HM]]]);
+add('d1021','Oct 21','2026-10-21','2026-10-21','7h',420,[['Bio 11–12 rev',[BIO]],['Bio 13–14 rev',[BIO]],['C8',[C]],['BGS 7,9–11 rev',[B]],['Bangla 1st all blocks',[B1]]]);
+add('d1022','Oct 22','2026-10-22','2026-10-22','7h 15m',435,[['HM timed',[HM]],['C9',[C]],['C10',[C]],['Bio 9–10 recall',[BIO]],['BGS 12–16 rev',[B]],['Bangla 2nd L29–38 rev',[B2]]]);
+add('d1023','Oct 23','2026-10-23','2026-10-23','7h 30m',450,[['ICT 5–6 + Islam 4–5 rev',[I,IS]],['Bio 11–14 mixed',[BIO]],['Bangla 2nd L39–43 rev',[B2]],['Bangla 1st weak parts',[B1]],['HM mixed',[HM]],['Eng 2nd G+C11',[E2]]]);
+add('d1024','Oct 24','2026-10-24','2026-10-24','7h 30m',450,[['Bio 8–14 full recall',[BIO]],['BGS key-point',[B]],['ICT + Islam quick',[I,IS]],['Bangla 2nd rev',[B2]],['C12',[C]],['Mistake Lists',[]]]);
+add('d1025','Oct 25','2026-10-25','2026-10-25','7h 45m',465,[['Pattern 6–7',[E1]],['Pattern 8–9',[E1]],['Practice',[E1]],['All-pattern revision',[E1]],['Practice',[E1]],['Final revision',[E1]]],{group:'English 1st only:',flag:'Exception: Oct 25 is listed as 7h 45m, which is 15 minutes above the normal 7h 30m daily maximum. Kept exactly as supplied.'});
+var X={prep:true};
+add('d1026','Oct 26','2026-10-26','2026-10-26','',0,[['Finish English 1st Paper preparation.',[E1]],['Then English 2nd Paper only.',[E2]]],X);
+add('d1027','Oct 27','2026-10-27','2026-10-27','',0,[['ICT only.',[I]]],X);
+add('d1028','Oct 28','2026-10-28','2026-10-28','',0,[['Islam only.',[IS]]],X);
+add('d1029','Oct 29','2026-10-29','2026-10-29','',0,[['Finish Islam preparation.',[IS]],['Then Bangla 1st Paper + C13 (1h).',[B1,C]]],X);
+add('d1030','Oct 30','2026-10-30','2026-10-30','',0,[['Weak Chapters Only (1h 30m) + Bangla 1st Paper.',[B1]]],X);
+add('d1031','Oct 31','2026-10-31','2026-10-31','',0,[['Bangla 1st Paper only.',[B1]]],X);
+add('d1101','Nov 1','2026-11-01','2026-11-01','',0,[['Finish Bangla 1st Paper preparation.',[B1]],['Then Bangla 2nd Paper only.',[B2]]],X);
+add('d1102','Nov 2','2026-11-02','2026-11-02','',0,[['BGS only.',[B]]],X);
+add('d1103','Nov 3','2026-11-03','2026-11-03','',0,[['Finish BGS preparation.',[B]],['Then Chemistry.',[C]]],X);
+add('d1104','Nov 4','2026-11-04','2026-11-04','',0,[['Chemistry only.',[C]]],X);
+add('d1105','Nov 5–8','2026-11-05','2026-11-08','',0,[['After Chemistry, focus on Physics.',[PH]],['Nov 8: Physics only.',[PH]]],X);
+add('d1109','Nov 9','2026-11-09','2026-11-09','',0,[['Finish Physics preparation.',[PH]],['Then Higher Mathematics (HM) only.',[HM]]],X);
+add('d1110','Nov 10','2026-11-10','2026-11-10','',0,[['Finish Higher Mathematics preparation.',[HM]],['Then Biology only.',[BIO]]],X);
+add('d1111','Nov 11','2026-11-11','2026-11-11','',0,[['Biology exam.',[BIO]]],X);
+var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon, following the sequence in the routine.','Daily study time must not exceed 7h 30m, except the listed Oct 25 duration of 7h 45m (a 15-minute exception).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are preserved exactly.'];
+var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
+var ALLTASKS=[];DAYS.forEach(function(d){d.tasks.forEach(function(t){ALLTASKS.push(t.id)})});
+var KEY='ssc2027.tracker.v1';
+/* ---------- STATE + STORAGE ---------- */
+var state=blank(),memOnly=false,tab='home',selId=null,deferred=null;
+function blank(){return{app:'ssc2027-tracker',v:1,done:{},time:{},weak:[],mistakes:[]}}
+function str(v,n){return String(v==null?'':v).slice(0,n||300)}
+function clean(o){
+  if(!o||typeof o!=='object'||o.app!=='ssc2027-tracker')throw new Error('This file is not an SSC 2027 Tracker backup.');
+  var s=blank();
+  if(o.done&&typeof o.done==='object')ALLTASKS.forEach(function(id){if(o.done[id]===true)s.done[id]=true});
+  if(o.time&&typeof o.time==='object')DAYS.forEach(function(d){var t=o.time[d.id];if(t){var h=Math.max(0,Math.min(24,parseInt(t.h,10)||0)),m=Math.max(0,Math.min(59,parseInt(t.m,10)||0));if(h||m)s.time[d.id]={h:h,m:m}}});
+  if(Array.isArray(o.weak))s.weak=o.weak.slice(0,500).map(function(w){return{id:str(w.id,40)||uid(),subject:str(w.subject,30),chapter:str(w.chapter,100),note:str(w.note,300),done:w.done===true}});
+  if(Array.isArray(o.mistakes))s.mistakes=o.mistakes.slice(0,1000).map(function(m){return{id:str(m.id,40)||uid(),date:str(m.date,20),subject:str(m.subject,30),chapter:str(m.chapter,100),what:str(m.what,400),fix:str(m.fix,400)}});
+  return s;
+}
+function load(){
+  try{var raw=localStorage.getItem(KEY);if(raw){try{state=clean(JSON.parse(raw))}catch(e){localStorage.setItem(KEY+'.corrupt',raw);toast('Saved data was unreadable. A copy was kept and the tracker restarted.')}}}
+  catch(e){memOnly=true;toast('Storage is blocked. Progress will not be saved after you close the app.')}
+}
+function save(){
+  try{if(!memOnly)localStorage.setItem(KEY,JSON.stringify(state))}
+  catch(e){memOnly=true;toast('Could not save. Export a backup from the More tab.')}
+}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+/* ---------- HELPERS ---------- */
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function pad(n){return(n<10?'0':'')+n}
+function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function fmtMin(m){var h=Math.floor(m/60),r=m%60;return(h?h+'h':'')+(h&&r?' ':'')+(r||!h?r+'m':'')}
+function dayFor(iso){for(var i=0;i<DAYS.length;i++)if(iso>=DAYS[i].start&&iso<=DAYS[i].end)return DAYS[i];return null}
+function todayDay(){var iso=isoOf(new Date());return dayFor(iso)||(iso<DAYS[0].start?DAYS[0]:DAYS[DAYS.length-1])}
+function dayStat(d){var n=d.tasks.filter(function(t){return state.done[t.id]}).length;return{done:n,total:d.tasks.length,pct:Math.round(n/d.tasks.length*100)}}
+function logged(d){var t=state.time[d.id];return t?t.h*60+t.m:0}
+var toastT;function toast(m){var e=document.getElementById('toast');if(!e){e=document.createElement('div');e.id='toast';e.className='toast';e.setAttribute('role','status');document.body.appendChild(e)}e.textContent=m;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true},3800)}
+function confirmBox(title,msg,ok,danger){return new Promise(function(res){var m=document.createElement('div');m.className='modal';m.innerHTML='<div class="card glow" role="dialog" aria-modal="true"><h2>'+esc(title)+'</h2><p>'+esc(msg)+'</p><div class="btns"><button class="ghost" data-r="0">Cancel</button><button class="'+(danger?'danger':'')+'" data-r="1">'+esc(ok)+'</button></div></div>';m.onclick=function(e){var r=e.target.getAttribute&&e.target.getAttribute('data-r');if(r!==null&&r!==undefined||e.target===m){document.body.removeChild(m);res(r==='1')}};document.body.appendChild(m);m.querySelector('button').focus()})}
+/* ---------- VIEWS ---------- */
+var ICONS={home:'<path d="M3 11l9-8 9 8v10H3z"/>',routine:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/>',subjects:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',logs:'<path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
+var TABS=[['home','Home'],['routine','Routine'],['subjects','Subjects'],['logs','Logs'],['more','More']];
+function renderTabs(){document.getElementById('tabs').innerHTML=TABS.map(function(t){return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'" aria-label="'+t[1]+'"'+(tab===t[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+t[1]+'</button>'}).join('')}
+function ring(p){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#2A2142" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#C033FF" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+p+'%</b></div>'}
+function bar(p,w){return'<div class="bar'+(w?' warn':'')+'" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div>'}
+function dayCard(d){
+  var s=dayStat(d),t=state.time[d.id]||{h:'',m:''};
+  var h='<section class="card'+(d.flag?' glow':'')+'"><div class="row"><h2 style="margin:0">'+esc(d.label)+(d.start!==d.end?'':'')+'</h2>'+(d.dur?'<span class="pill'+(d.flag?' warn':'')+'">'+esc(d.dur)+'</span>':'<span class="pill">Subject focus</span>')+'</div>';
+  if(d.flag)h+='<div class="flag">'+esc(d.flag)+'</div>';
+  if(d.prep)h+='<div class="note">Exam preparation. Follow the wording below exactly and do not add other subjects.</div>';
+  if(d.group)h+='<h3>'+esc(d.group)+'</h3>';
+  d.tasks.forEach(function(k){h+='<label class="task"><input type="checkbox" data-task="'+k.id+'"'+(state.done[k.id]?' checked':'')+'><span class="box"></span><span>'+esc(k.text)+'</span></label>'});
+  h+='<div class="row" style="margin-top:10px"><span class="sub">'+s.done+' of '+s.total+' done</span><b>'+s.pct+'%</b></div>'+bar(s.pct);
+  h+='<h3>Study time'+(d.dur?' (planned '+esc(d.dur)+')':'')+'</h3><div class="time"><div><label class="f" for="h'+d.id+'">Hours studied</label><input id="h'+d.id+'" type="number" inputmode="numeric" min="0" max="24" data-time="'+d.id+'" data-u="h" value="'+(t.h||'')+'" placeholder="0"></div><div><label class="f" for="m'+d.id+'">Minutes</label><input id="m'+d.id+'" type="number" inputmode="numeric" min="0" max="59" data-time="'+d.id+'" data-u="m" value="'+(t.m||'')+'" placeholder="0"></div></div>';
+  if(d.mins){var lg=logged(d);h+='<div class="sub">Logged '+fmtMin(lg)+' of '+esc(d.dur)+'</div>'+bar(Math.min(100,Math.round(lg/d.mins*100)),lg>d.mins)}
+  return h+'</section>'
+}
+function totals(){var done=0,total=ALLTASKS.length;ALLTASKS.forEach(function(id){if(state.done[id])done++});var lg=0,pl=0;DAYS.forEach(function(d){lg+=logged(d);pl+=d.mins});return{done:done,total:total,pct:Math.round(done/total*100),lg:lg,pl:pl}}
+function vHome(){
+  var d=todayDay(),s=dayStat(d),T=totals(),now=new Date(),iso=isoOf(now),n=DAYS.indexOf(d);
+  var st=iso<DAYS[0].start?'The plan starts on Oct 16. Showing the first day.':iso>DAYS[DAYS.length-1].end?'The plan ended on Nov 11. Showing the last day.':(iso===d.start||d.start!==d.end?'Today':'Today')+' is '+d.label+'.';
+  var dt=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  return'<div class="top"><svg class="av" viewBox="0 0 120 120" role="img" aria-label="Study avatar"><use href="#avatar"/></svg><div><h1>SSC 2027 Tracker</h1><div class="sub">'+esc(dt)+'</div></div></div>'+
+  '<section class="card glow"><div class="hero">'+ring(s.pct)+'<div class="stats"><div class="stat"><b>'+s.done+'</b><span>Completed today</span></div><div class="stat"><b>'+(s.total-s.done)+'</b><span>Remaining today</span></div></div></div><p class="sub" style="margin:12px 0 0">'+esc(st)+'</p></section>'+
+  '<section class="card"><div class="row"><h2 style="margin:0">Overall progress</h2><b>'+T.pct+'%</b></div><p class="sub" style="margin:4px 0 10px">'+T.done+' of '+T.total+' tasks done across 27 days.</p>'+bar(T.pct)+'<p class="sub" style="margin:12px 0 6px">Study time logged: '+fmtMin(T.lg)+' of '+fmtMin(T.pl)+' planned for Oct 16–25.</p>'+bar(Math.min(100,Math.round(T.lg/T.pl*100)))+'</section>'+dayCard(d)+
+  '<div class="btns"><button class="ghost" data-go="'+d.id+'">Open in Routine</button></div>'
+}
+function vRoutine(){
+  var d=DAYS.filter(function(x){return x.id===selId})[0]||todayDay(),iso=isoOf(new Date()),i=DAYS.indexOf(d);
+  var chips=DAYS.map(function(x){var p=dayStat(x).pct;return'<button class="chip'+(x===d?' sel':'')+(iso>=x.start&&iso<=x.end?' today':'')+(p===100?' full':'')+'" data-day="'+x.id+'" id="c'+x.id+'" aria-label="'+esc(x.label)+', '+p+' percent done"><b>'+esc(x.label.replace('Oct ','').replace('Nov ',''))+'</b>'+(x.label.indexOf('Oct')===0?'Oct':'Nov')+'</button>'}).join('');
+  return'<h1 style="margin-bottom:10px">Routine</h1><div class="chips" id="chips">'+chips+'</div>'+dayCard(d)+'<div class="btns"><button class="ghost" data-step="-1"'+(i===0?' disabled style="opacity:.4"':'')+'>Previous day</button><button class="ghost" data-step="1"'+(i===DAYS.length-1?' disabled style="opacity:.4"':'')+'>Next day</button></div>'
+}
+function vSubjects(){
+  var h='<h1 style="margin-bottom:10px">Subjects</h1><p class="sub">Progress comes from the tasks tagged to each subject in the routine. Tasks that name two subjects count for both. "Mistake Lists" is not tied to a subject.</p>';
+  SUBJ.forEach(function(s){var tot=0,dn=0;DAYS.forEach(function(d){d.tasks.forEach(function(t){if(t.subj.indexOf(s)>-1){tot++;if(state.done[t.id])dn++}})});var p=tot?Math.round(dn/tot*100):0;
+    h+='<section class="card"><div class="row"><h2 style="margin:0">'+esc(s)+'</h2><b>'+p+'%</b></div><p class="sub" style="margin:2px 0 8px">'+dn+' of '+tot+' tasks done</p>'+bar(p)+'</section>'});
+  return h
+}
+function opts(sel){return SUBJ.map(function(s){return'<option'+(s===sel?' selected':'')+'>'+esc(s)+'</option>'}).join('')}
+function vLogs(){
+  var h='<h1 style="margin-bottom:10px">Logs</h1><section class="card"><h2>Weak chapters</h2><p class="sub">Use these for the Oct 30 "Weak Chapters Only" day.</p><label class="f" for="ws">Subject</label><select id="ws">'+opts()+'</select><label class="f" for="wc">Chapter or lesson</label><input id="wc" maxlength="100" placeholder="Example: Bio 11"><label class="f" for="wn">Why it is weak (optional)</label><input id="wn" maxlength="300"><button data-act="addweak" style="width:100%">Add weak chapter</button><div style="margin-top:14px">';
+  if(!state.weak.length)h+='<p class="sub">No weak chapters yet. Add one above.</p>';
+  state.weak.forEach(function(w){h+='<div class="item"><label class="task" style="padding:0"><input type="checkbox" data-weak="'+esc(w.id)+'"'+(w.done?' checked':'')+'><span class="box"></span><span><b>'+esc(w.subject)+'</b>: '+esc(w.chapter)+(w.note?'<small>'+esc(w.note)+'</small>':'')+'<small>'+(w.done?'Revised':'Not revised yet')+'</small></span></label><button class="ghost sm" data-delweak="'+esc(w.id)+'" style="margin-top:8px">Delete</button></div>'});
+  h+='</div></section><section class="card"><h2>Mistake log</h2><label class="f" for="ms">Subject</label><select id="ms">'+opts()+'</select><label class="f" for="mc">Chapter or topic</label><input id="mc" maxlength="100"><label class="f" for="mw">What went wrong</label><textarea id="mw" rows="2" maxlength="400"></textarea><label class="f" for="mf">Correct fix</label><textarea id="mf" rows="2" maxlength="400"></textarea><button data-act="addmistake" style="width:100%">Add mistake</button><div style="margin-top:14px">';
+  if(!state.mistakes.length)h+='<p class="sub">No mistakes logged yet.</p>';
+  state.mistakes.slice().reverse().forEach(function(m){h+='<div class="item"><b>'+esc(m.subject)+'</b>'+(m.chapter?': '+esc(m.chapter):'')+'<small>'+esc(m.date)+'</small><div>'+esc(m.what)+'</div>'+(m.fix?'<small class="ok">Fix: '+esc(m.fix)+'</small>':'')+'<button class="ghost sm" data-delmis="'+esc(m.id)+'" style="margin-top:8px">Delete</button></div>'});
+  return h+'</div></section>'
+}
+function vMore(){
+  var h='<h1 style="margin-bottom:10px">More</h1>';
+  h+='<section class="card"><h2>Backup and restore</h2><p class="sub">Saves tasks, study time, weak chapters, and mistakes to a JSON file.</p><div class="btns"><button data-act="export">Export backup</button><button class="ghost" data-act="import">Import backup</button></div><input type="file" id="file" accept=".json,application/json" hidden>'+(memOnly?'<div class="flag">Storage is blocked in this browser. Export a backup before closing.</div>':'<p class="sub ok" style="margin-bottom:0">Progress saves automatically on this phone.</p>')+'</section>';
+  h+='<section class="card"><h2>Scheduling rules</h2><ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol></section>';
+  h+='<section class="card"><h2>Subject abbreviations</h2><div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div></section>';
+  h+='<section class="card"><h2>Install on Android</h2><ol><li>Open the app link in Chrome.</li><li>Wait until the page fully loads once while online.</li><li>Tap the three-dot menu, then <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap Install. Open it from your home screen.</li></ol><div id="inst">'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':'')+'</div><p class="sub" style="margin-bottom:0">Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>. After the first online load, the app works without internet.</p></section>';
+  h+='<section class="card"><h2>Reset progress</h2><p class="sub">Clears every checkbox, study time, weak chapter, and mistake. Export a backup first.</p><button class="danger" data-act="reset" style="width:100%">Reset all progress</button></section>';
+  return h
+}
+function render(keepScroll){
+  var y=window.scrollY;
+  var v={home:vHome,routine:vRoutine,subjects:vSubjects,logs:vLogs,more:vMore}[tab];
+  document.getElementById('view').innerHTML=v();renderTabs();
+  if(keepScroll)window.scrollTo(0,y);
+  var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2
+}
+function go(t){tab=t;render();window.scrollTo(0,0)}
+/* ---------- EVENTS ---------- */
+document.addEventListener('change',function(e){
+  var t=e.target;
+  if(t.dataset.task){if(t.checked)state.done[t.dataset.task]=true;else delete state.done[t.dataset.task];save();render(true)}
+  else if(t.dataset.weak){state.weak.forEach(function(w){if(w.id===t.dataset.weak)w.done=t.checked});save();render(true)}
+  else if(t.dataset.time){var id=t.dataset.time,o=state.time[id]||{h:0,m:0};o[t.dataset.u]=Math.max(0,Math.min(t.dataset.u==='h'?24:59,parseInt(t.value,10)||0));if(o.h||o.m)state.time[id]=o;else delete state.time[id];save();render(true)}
+  else if(t.id==='file'&&t.files[0])doImport(t.files[0]);
+});
+document.addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;var D=b.dataset;
+  if(D.tab)go(D.tab);
+  else if(D.day){selId=D.day;render(true)}
+  else if(D.go){selId=D.go;go('routine')}
+  else if(D.step){var d=DAYS.filter(function(x){return x.id===selId})[0]||todayDay();var n=DAYS.indexOf(d)+parseInt(D.step,10);if(DAYS[n]){selId=DAYS[n].id;render();window.scrollTo(0,0)}}
+  else if(D.delweak){state.weak=state.weak.filter(function(w){return w.id!==D.delweak});save();render(true)}
+  else if(D.delmis){confirmBox('Delete this mistake?','It will be removed from the log.','Delete',true).then(function(ok){if(ok){state.mistakes=state.mistakes.filter(function(m){return m.id!==D.delmis});save();render(true)}})}
+  else if(D.act==='addweak'){var c=document.getElementById('wc').value.trim();if(!c){toast('Enter a chapter or lesson first.');return}state.weak.push({id:uid(),subject:document.getElementById('ws').value,chapter:c,note:document.getElementById('wn').value.trim(),done:false});save();render(true);toast('Weak chapter added.')}
+  else if(D.act==='addmistake'){var w=document.getElementById('mw').value.trim();if(!w){toast('Describe what went wrong first.');return}state.mistakes.push({id:uid(),date:isoOf(new Date()),subject:document.getElementById('ms').value,chapter:document.getElementById('mc').value.trim(),what:w,fix:document.getElementById('mf').value.trim()});save();render(true);toast('Mistake added.')}
+  else if(D.act==='export')doExport();
+  else if(D.act==='import')document.getElementById('file').click();
+  else if(D.act==='install'&&deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;if(tab==='more')render(true)})}
+  else if(D.act==='reset'){confirmBox('Reset all progress?','This permanently clears all checkboxes, study time, weak chapters, and mistakes on this phone. This cannot be undone.','Reset everything',true).then(function(ok){if(ok){state=blank();save();render();toast('Progress reset.')}})}
+});
+function doExport(){
+  try{var blob=new Blob([JSON.stringify(Object.assign({exported:new Date().toISOString()},state),null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ssc2027-backup-'+isoOf(new Date())+'.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);toast('Backup exported. Check your Downloads folder.')}
+  catch(e){toast('Export failed: '+e.message)}
+}
+function doImport(f){
+  var r=new FileReader();
+  r.onerror=function(){toast('Could not read that file.')};
+  r.onload=function(){
+    var ns;try{ns=clean(JSON.parse(r.result))}catch(e){toast('Import failed: '+(e instanceof SyntaxError?'the file is not valid JSON.':e.message));document.getElementById('file').value='';return}
+    confirmBox('Replace current progress?','This backup has '+Object.keys(ns.done).length+' completed tasks, '+ns.weak.length+' weak chapters, and '+ns.mistakes.length+' mistakes. Your current progress will be replaced.','Import backup',true).then(function(ok){if(ok){state=ns;save();render();toast('Backup imported.')}else document.getElementById('file').value=''})
+  };
+  r.readAsText(f)
+}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;if(tab==='more')render(true)});
+window.addEventListener('appinstalled',function(){deferred=null;toast('Installed.')});
+function net(){var n=document.getElementById('net');if(n)n.textContent=navigator.onLine?'Online':'Offline'}
+window.addEventListener('online',net);window.addEventListener('offline',net);
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&tab==='home')render(true)});
+/* ---------- START ---------- */
+load();render();
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+</script>
+</body>
+</html>
