@@ -71,6 +71,33 @@ ol,ul{padding-left:22px;margin:6px 0}li{margin:7px 0}
 .leg{display:grid;grid-template-columns:auto 1fr;gap:6px 12px}.leg b{color:var(--neon2)}
 .ok{color:var(--ok)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.erow{border:1px solid var(--line);border-radius:14px;padding:6px 8px;margin:8px 0;background:var(--panel2)}
+.erow.on{border-color:var(--neon)}
+.erow .task{border:0;min-height:52px}
+.erow .task input:checked~.tx{text-decoration:none;color:var(--text)}
+.box.sq{border-radius:7px}
+.btns3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:4px}
+.btns3 button{padding:0 4px}
+button:disabled{opacity:.4}
+.tx{flex:1;min-width:0}.tt{display:block;word-break:break-word}
+.task small{display:block;color:var(--lav);font-size:14.5px;line-height:1.3}
+.note.big{font-size:19px;color:var(--text)}
+.nav{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;margin-bottom:12px}
+.nav input.jump{margin:0;padding:0 8px}.nav button{padding:0 6px;white-space:nowrap}
+.selbar{position:fixed;left:10px;right:10px;bottom:calc(76px + env(safe-area-inset-bottom));background:var(--panel2);border:1.5px solid var(--neon);border-radius:16px;padding:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;z-index:6;box-shadow:0 0 20px rgba(192,51,255,.35)}
+.selbar b{flex:1 0 100%;font-size:16px}.selbar button{flex:1}
+.modal{display:flex;justify-content:center;align-items:flex-start;overflow-y:auto;padding-top:8vh}
+.dlg{margin:0 0 40px}
+.err{color:var(--warn);min-height:0;margin:0 0 8px;font-weight:600}
+.scs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.sc{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:12px;min-height:46px;padding:0 12px;font-size:16px;cursor:pointer}
+.sc.wide{display:flex;margin:8px 0}
+.sc input{width:22px;height:22px;min-height:0;margin:0;accent-color:#C033FF}
+.upd{position:fixed;top:max(8px,env(safe-area-inset-top));left:10px;right:10px;z-index:11;background:var(--panel2);border:1.5px solid var(--neon);border-radius:14px;padding:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.upd span{flex:1 0 100%}.upd button{flex:1}
+.toast{display:flex;gap:10px;align-items:center;justify-content:space-between;text-align:left}
+.toast span{flex:1}
 </style>
 </head>
 <body>
@@ -89,185 +116,289 @@ ol,ul{padding-left:22px;margin:6px 0}li{margin:7px 0}
 <path d="M88 66Q88 78 72 76" stroke="#C033FF" stroke-width="2.5" fill="none"/><circle cx="71" cy="76" r="3" fill="#E9B8FF"/></symbol></defs></svg>
 <main id="view" aria-live="polite"></main>
 <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+<script src="routine-default.js"></script>
 <script>
 "use strict";
-/* ---------- ROUTINE DATA (exactly as supplied) ---------- */
+var APP_VERSION='2.0.0',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=['ICT','Islam','Chemistry','BGS','Biology','HM','Physics','Eng 1st','Eng 2nd','Bangla 1st','Bangla 2nd'];
-var DAYS=[];
-function add(id,label,start,end,dur,mins,tasks,o){DAYS.push(Object.assign({id:id,label:label,start:start,end:end,dur:dur,mins:mins,tasks:tasks.map(function(t,i){return{id:id+'-'+i,text:t[0],subj:t[1]||[]}})},o||{}))}
-var I='ICT',IS='Islam',C='Chemistry',B='BGS',BIO='Biology',HM='HM',E1='Eng 1st',E2='Eng 2nd',B1='Bangla 1st',B2='Bangla 2nd',PH='Physics';
-add('d1016','Oct 16','2026-10-16','2026-10-16','5h',300,[['ICT 6',[I]],['Islam 4',[IS]],['C4',[C]],['BGS 7',[B]]]);
-add('d1017','Oct 17','2026-10-17','2026-10-17','6h 30m',390,[['C5',[C]],['Eng 2nd G+C6',[E2]],['Islam 5',[IS]],['Bio 12',[BIO]],['BGS 12',[B]]]);
-add('d1018','Oct 18','2026-10-18','2026-10-18','7h 30m',450,[['Bio 13',[BIO]],['BGS 13',[B]],['Bangla 2nd L34–36',[B2]],['Bangla 2nd L37–38',[B2]],['Bangla 1st B1–2',[B1]]]);
-add('d1019','Oct 19','2026-10-19','2026-10-19','7h 30m',450,[['Bio 14',[BIO]],['BGS 14',[B]],['Bangla 2nd L39–42',[B2]],['HM 12–14 rev',[HM]],['C7',[C]]]);
-add('d1020','Oct 20','2026-10-20','2026-10-20','7h 15m',435,[['BGS 15',[B]],['BGS 16',[B]],['Bio 8–10 rev',[BIO]],['Bangla 1st B3',[B1]],['Bangla 2nd L43',[B2]],['HM 13–14 practice',[HM]]]);
-add('d1021','Oct 21','2026-10-21','2026-10-21','7h',420,[['Bio 11–12 rev',[BIO]],['Bio 13–14 rev',[BIO]],['C8',[C]],['BGS 7,9–11 rev',[B]],['Bangla 1st all blocks',[B1]]]);
-add('d1022','Oct 22','2026-10-22','2026-10-22','7h 15m',435,[['HM timed',[HM]],['C9',[C]],['C10',[C]],['Bio 9–10 recall',[BIO]],['BGS 12–16 rev',[B]],['Bangla 2nd L29–38 rev',[B2]]]);
-add('d1023','Oct 23','2026-10-23','2026-10-23','7h 30m',450,[['ICT 5–6 + Islam 4–5 rev',[I,IS]],['Bio 11–14 mixed',[BIO]],['Bangla 2nd L39–43 rev',[B2]],['Bangla 1st weak parts',[B1]],['HM mixed',[HM]],['Eng 2nd G+C11',[E2]]]);
-add('d1024','Oct 24','2026-10-24','2026-10-24','7h 30m',450,[['Bio 8–14 full recall',[BIO]],['BGS key-point',[B]],['ICT + Islam quick',[I,IS]],['Bangla 2nd rev',[B2]],['C12',[C]],['Mistake Lists',[]]]);
-add('d1025','Oct 25','2026-10-25','2026-10-25','7h 45m',465,[['Pattern 6–7',[E1]],['Pattern 8–9',[E1]],['Practice',[E1]],['All-pattern revision',[E1]],['Practice',[E1]],['Final revision',[E1]]],{group:'English 1st only:',flag:'Exception: Oct 25 is listed as 7h 45m, which is 15 minutes above the normal 7h 30m daily maximum. Kept exactly as supplied.'});
-var X={prep:true};
-add('d1026','Oct 26','2026-10-26','2026-10-26','',0,[['Finish English 1st Paper preparation.',[E1]],['Then English 2nd Paper only.',[E2]]],X);
-add('d1027','Oct 27','2026-10-27','2026-10-27','',0,[['ICT only.',[I]]],X);
-add('d1028','Oct 28','2026-10-28','2026-10-28','',0,[['Islam only.',[IS]]],X);
-add('d1029','Oct 29','2026-10-29','2026-10-29','',0,[['Finish Islam preparation.',[IS]],['Then Bangla 1st Paper + C13 (1h).',[B1,C]]],X);
-add('d1030','Oct 30','2026-10-30','2026-10-30','',0,[['Weak Chapters Only (1h 30m) + Bangla 1st Paper.',[B1]]],X);
-add('d1031','Oct 31','2026-10-31','2026-10-31','',0,[['Bangla 1st Paper only.',[B1]]],X);
-add('d1101','Nov 1','2026-11-01','2026-11-01','',0,[['Finish Bangla 1st Paper preparation.',[B1]],['Then Bangla 2nd Paper only.',[B2]]],X);
-add('d1102','Nov 2','2026-11-02','2026-11-02','',0,[['BGS only.',[B]]],X);
-add('d1103','Nov 3','2026-11-03','2026-11-03','',0,[['Finish BGS preparation.',[B]],['Then Chemistry.',[C]]],X);
-add('d1104','Nov 4','2026-11-04','2026-11-04','',0,[['Chemistry only.',[C]]],X);
-add('d1105','Nov 5–8','2026-11-05','2026-11-08','',0,[['After Chemistry, focus on Physics.',[PH]],['Nov 8: Physics only.',[PH]]],X);
-add('d1109','Nov 9','2026-11-09','2026-11-09','',0,[['Finish Physics preparation.',[PH]],['Then Higher Mathematics (HM) only.',[HM]]],X);
-add('d1110','Nov 10','2026-11-10','2026-11-10','',0,[['Finish Higher Mathematics preparation.',[HM]],['Then Biology only.',[BIO]]],X);
-add('d1111','Nov 11','2026-11-11','2026-11-11','',0,[['Biology exam.',[BIO]]],X);
-var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon, following the sequence in the routine.','Daily study time must not exceed 7h 30m, except the listed Oct 25 duration of 7h 45m (a 15-minute exception).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are preserved exactly.'];
+var DEF=window.DEFAULT_ROUTINE,EARLY=window.EARLIER_EXAM_PREP,DRE=/^\d{4}-\d{2}-\d{2}$/;
+var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in More).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
 var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
-var ALLTASKS=[];DAYS.forEach(function(d){d.tasks.forEach(function(t){ALLTASKS.push(t.id)})});
-var KEY='ssc2027.tracker.v1';
-/* ---------- STATE + STORAGE ---------- */
-var state=blank(),memOnly=false,tab='home',selId=null,deferred=null;
-function blank(){return{app:'ssc2027-tracker',v:1,done:{},time:{},weak:[],mistakes:[]}}
-function str(v,n){return String(v==null?'':v).slice(0,n||300)}
-function clean(o){
-  if(!o||typeof o!=='object'||o.app!=='ssc2027-tracker')throw new Error('This file is not an SSC 2027 Tracker backup.');
-  var s=blank();
-  if(o.done&&typeof o.done==='object')ALLTASKS.forEach(function(id){if(o.done[id]===true)s.done[id]=true});
-  if(o.time&&typeof o.time==='object')DAYS.forEach(function(d){var t=o.time[d.id];if(t){var h=Math.max(0,Math.min(24,parseInt(t.h,10)||0)),m=Math.max(0,Math.min(59,parseInt(t.m,10)||0));if(h||m)s.time[d.id]={h:h,m:m}}});
-  if(Array.isArray(o.weak))s.weak=o.weak.slice(0,500).map(function(w){return{id:str(w.id,40)||uid(),subject:str(w.subject,30),chapter:str(w.chapter,100),note:str(w.note,300),done:w.done===true}});
-  if(Array.isArray(o.mistakes))s.mistakes=o.mistakes.slice(0,1000).map(function(m){return{id:str(m.id,40)||uid(),date:str(m.date,20),subject:str(m.subject,30),chapter:str(m.chapter,100),what:str(m.what,400),fix:str(m.fix,400)}});
-  return s;
-}
-function load(){
-  try{var raw=localStorage.getItem(KEY);if(raw){try{state=clean(JSON.parse(raw))}catch(e){localStorage.setItem(KEY+'.corrupt',raw);toast('Saved data was unreadable. A copy was kept and the tracker restarted.')}}}
-  catch(e){memOnly=true;toast('Storage is blocked. Progress will not be saved after you close the app.')}
-}
-function save(){
-  try{if(!memOnly)localStorage.setItem(KEY,JSON.stringify(state))}
-  catch(e){memOnly=true;toast('Could not save. Export a backup from the More tab.')}
-}
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-/* ---------- HELPERS ---------- */
-function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='';
+/* ---------- helpers ---------- */
 function pad(n){return(n<10?'0':'')+n}
 function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function today(){return isoOf(new Date())}
+function pd(iso){var p=iso.split('-');return new Date(+p[0],p[1]-1,+p[2])}
+function fmtLong(iso){return pd(iso).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}
+function fmtShort(iso){return pd(iso).toLocaleDateString('en-US',{month:'short',day:'numeric'})}
+function addDays(iso,n){var d=pd(iso);d.setDate(d.getDate()+n);return isoOf(d)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function str(v,n){return String(v==null?'':v).slice(0,n||300)}
+function mn(v){var n=parseInt(v,10);return isFinite(n)&&n>0&&n<=1440?n:null}
 function fmtMin(m){var h=Math.floor(m/60),r=m%60;return(h?h+'h':'')+(h&&r?' ':'')+(r||!h?r+'m':'')}
-function dayFor(iso){for(var i=0;i<DAYS.length;i++)if(iso>=DAYS[i].start&&iso<=DAYS[i].end)return DAYS[i];return null}
-function todayDay(){var iso=isoOf(new Date());return dayFor(iso)||(iso<DAYS[0].start?DAYS[0]:DAYS[DAYS.length-1])}
-function dayStat(d){var n=d.tasks.filter(function(t){return state.done[t.id]}).length;return{done:n,total:d.tasks.length,pct:Math.round(n/d.tasks.length*100)}}
-function logged(d){var t=state.time[d.id];return t?t.h*60+t.m:0}
-var toastT;function toast(m){var e=document.getElementById('toast');if(!e){e=document.createElement('div');e.id='toast';e.className='toast';e.setAttribute('role','status');document.body.appendChild(e)}e.textContent=m;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true},3800)}
-function confirmBox(title,msg,ok,danger){return new Promise(function(res){var m=document.createElement('div');m.className='modal';m.innerHTML='<div class="card glow" role="dialog" aria-modal="true"><h2>'+esc(title)+'</h2><p>'+esc(msg)+'</p><div class="btns"><button class="ghost" data-r="0">Cancel</button><button class="'+(danger?'danger':'')+'" data-r="1">'+esc(ok)+'</button></div></div>';m.onclick=function(e){var r=e.target.getAttribute&&e.target.getAttribute('data-r');if(r!==null&&r!==undefined||e.target===m){document.body.removeChild(m);res(r==='1')}};document.body.appendChild(m);m.querySelector('button').focus()})}
-/* ---------- VIEWS ---------- */
+function uid(){return'u'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function byDate(a,b){return a.date<b.date?-1:a.date>b.date?1:0}
+var toastT;function toast(m,label,fn){var e=document.getElementById('toast');if(!e){e=document.createElement('div');e.id='toast';e.className='toast';e.setAttribute('role','status');document.body.appendChild(e)}e.innerHTML='<span></span>';e.firstChild.textContent=m;if(label){var b=document.createElement('button');b.className='sm';b.textContent=label;b.onclick=function(){e.hidden=true;fn()};e.appendChild(b)}e.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true},label?7000:4500)}
+function modal(title,body,btns,validate){return new Promise(function(res){
+  var m=document.createElement('div');m.className='modal';
+  m.innerHTML='<div class="card glow dlg" role="dialog" aria-modal="true"><h2>'+esc(title)+'</h2>'+body+'<div class="err" id="err" role="alert"></div><div class="btns">'+btns.map(function(b,i){return'<button class="'+(b.cls||'')+'" data-bi="'+i+'">'+esc(b.label)+'</button>'}).join('')+'</div></div>';
+  function q(s){return m.querySelector(s)}
+  m.addEventListener('click',function(e){var b=e.target.closest('button[data-bi]');if(!b&&e.target!==m)return;var bt=b?btns[+b.dataset.bi]:{val:null};
+    if(bt.v&&validate){var er=validate(q);if(er){q('#err').textContent=er;return}}
+    res({val:bt.val,q:q});setTimeout(function(){m.remove()},0)});
+  document.body.appendChild(m);var f=m.querySelector('input,select,textarea');if(f&&f.type!=='date')f.focus()})}
+function confirmBox(t,msg,ok,danger){return modal(t,'<p>'+esc(msg)+'</p>',[{label:'Cancel',cls:'ghost',val:false},{label:ok,cls:danger?'danger':'',val:true}]).then(function(r){return r.val===true})}
+/* ---------- data + storage ---------- */
+function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:DEF.version,routine:clone({days:DEF.days,tasks:DEF.tasks}),done:{},time:{},weak:[],mistakes:[],prefs:{limit:450}}}
+function cleanRoutine(r){
+  if(!r||!Array.isArray(r.days)||!Array.isArray(r.tasks))throw new Error('Routine data is missing.');
+  var seen={},days=[],tasks=[],ids={};
+  r.days.slice(0,800).forEach(function(d){if(d&&DRE.test(d.date)&&!seen[d.date]){seen[d.date]=1;days.push({date:d.date,planned:mn(d.planned),note:str(d.note,300)})}});
+  r.tasks.slice(0,5000).forEach(function(t){if(!t||!str(t.text,200).trim())return;var id=str(t.id,60).replace(/[^\w-]/g,'_');if(!id||ids[id])id=uid();ids[id]=1;var dt=DRE.test(t.date)?t.date:null;if(dt&&!seen[dt]){seen[dt]=1;days.push({date:dt,planned:null,note:''})}
+    tasks.push({id:id,date:dt,subj:(Array.isArray(t.subj)?t.subj:[]).filter(function(s){return SUBJ.indexOf(s)>-1}),chapter:str(t.chapter,100),text:str(t.text,200),mins:mn(t.mins)})});
+  days.sort(byDate);return{days:days,tasks:tasks}}
+function cleanTime(t){var o={};if(t&&typeof t==='object')Object.keys(t).forEach(function(k){if(DRE.test(k)&&t[k]){var h=Math.max(0,Math.min(24,parseInt(t[k].h,10)||0)),m=Math.max(0,Math.min(59,parseInt(t[k].m,10)||0));if(h||m)o[k]={h:h,m:m}}});return o}
+function cleanWeak(a){return Array.isArray(a)?a.slice(0,500).map(function(w){return{id:str(w.id,40).replace(/[^\w-]/g,'_')||uid(),subject:str(w.subject,30),chapter:str(w.chapter,100),note:str(w.note,300),done:w.done===true}}):[]}
+function cleanMis(a){return Array.isArray(a)?a.slice(0,1000).map(function(m){return{id:str(m.id,40).replace(/[^\w-]/g,'_')||uid(),date:str(m.date,20),subject:str(m.subject,30),chapter:str(m.chapter,100),what:str(m.what,400),fix:str(m.fix,400)}}):[]}
+/* Schema 1 (first app version) kept only time, weak chapters and mistakes that are still meaningful. */
+function migrateV1(o){var s=fresh();s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);var t={};
+  if(o.time&&typeof o.time==='object')Object.keys(o.time).forEach(function(k){var m=/^d(\d\d)(\d\d)$/.exec(k);if(m)t['2026-'+m[1]+'-'+m[2]]=o.time[k]});
+  s.time=cleanTime(t);s.migratedV1=true;return s}
+function clean(o){
+  if(!o||typeof o!=='object'||o.app!=='ssc2027-tracker')throw new Error('This file is not an SSC 2027 Tracker backup.');
+  if(o.schema>SCHEMA)throw new Error('This data is from a newer app version. Update the app first.');
+  if(!o.schema||o.schema<2)return migrateV1(o);
+  var s=fresh();s.routine=cleanRoutine(o.routine);s.routineVersion=str(o.routineVersion,40)||'custom';
+  if(o.done&&typeof o.done==='object')Object.keys(o.done).slice(0,6000).forEach(function(k){if(o.done[k]===true)s.done[k]=true});
+  s.time=cleanTime(o.time);s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);
+  var l=parseInt(o.prefs&&o.prefs.limit,10);s.prefs.limit=l>=60&&l<=1440?l:450;return s}
+function load(){
+  var raw=null;
+  try{raw=localStorage.getItem(KEY)}catch(e){memOnly=true;state=fresh();toast('Storage is blocked in this browser. Export a backup before closing.');return}
+  if(raw){try{state=clean(JSON.parse(raw));return}catch(e){try{localStorage.setItem(KEY+'.corrupt',raw)}catch(_){}state=fresh();toast('Saved data was unreadable. A copy was kept and the original routine was loaded. Import a backup to recover.');return}}
+  var old=null;try{old=localStorage.getItem(OLDKEY)}catch(e){}
+  if(old){try{state=migrateV1(JSON.parse(old));save();toast('Found data from the earlier app version. Study time, weak chapters and mistakes were kept. Old checkboxes belonged to the old routine and were not carried over. The old data is still stored.');return}catch(e){}}
+  state=fresh();save()}
+function save(){try{if(!memOnly)localStorage.setItem(KEY,JSON.stringify(state))}catch(e){memOnly=true;toast('Could not save. Export a backup from More.')}}
+function snap(){undoStack.push(JSON.stringify({routine:state.routine,done:state.done}));if(undoStack.length>25)undoStack.shift()}
+function undo(){var s=undoStack.pop();if(!s)return;var o=JSON.parse(s);state.routine=o.routine;state.done=o.done;sel={};save();render(true);toast('Undone.')}
+function mutate(fn,msg){snap();fn();save();render(true);if(msg)toast(msg,'Undo',undo)}
+/* ---------- routine queries ---------- */
+function R(){return state.routine}
+function tasksOn(d){return R().tasks.filter(function(t){return t.date===d})}
+function dayOf(d){return R().days.filter(function(x){return x.date===d})[0]}
+function ensureDay(d){if(!dayOf(d)){R().days.push({date:d,planned:null,note:''});R().days.sort(byDate)}}
+function isDone(t){return!!state.done[t.id]}
+function dayLoad(d){var dy=dayOf(d),s=dy&&dy.planned||0;tasksOn(d).forEach(function(t){s+=t.mins||0});return s}
+function viewTasks(k){var T=R().tasks;if(k==='backlog')return T.filter(function(t){return!t.date});if(k==='overdue'){var td=today();return T.filter(function(t){return t.date&&t.date<td&&!isDone(t)}).sort(byDate)}return T.filter(function(t){return t.date===k})}
+function logged(d){var t=state.time[d];return t?t.h*60+t.m:0}
+function selIds(){return Object.keys(sel).filter(function(k){return sel[k]})}
+/* ---------- views ---------- */
 var ICONS={home:'<path d="M3 11l9-8 9 8v10H3z"/>',routine:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/>',subjects:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',logs:'<path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
 var TABS=[['home','Home'],['routine','Routine'],['subjects','Subjects'],['logs','Logs'],['more','More']];
 function renderTabs(){document.getElementById('tabs').innerHTML=TABS.map(function(t){return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'" aria-label="'+t[1]+'"'+(tab===t[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+t[1]+'</button>'}).join('')}
-function ring(p){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#2A2142" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#C033FF" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+p+'%</b></div>'}
+function ring(p,lbl){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#2A2142" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#C033FF" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+(lbl||p+'%')+'</b></div>'}
 function bar(p,w){return'<div class="bar'+(w?' warn':'')+'" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div>'}
-function dayCard(d){
-  var s=dayStat(d),t=state.time[d.id]||{h:'',m:''};
-  var h='<section class="card'+(d.flag?' glow':'')+'"><div class="row"><h2 style="margin:0">'+esc(d.label)+(d.start!==d.end?'':'')+'</h2>'+(d.dur?'<span class="pill'+(d.flag?' warn':'')+'">'+esc(d.dur)+'</span>':'<span class="pill">Subject focus</span>')+'</div>';
-  if(d.flag)h+='<div class="flag">'+esc(d.flag)+'</div>';
-  if(d.prep)h+='<div class="note">Exam preparation. Follow the wording below exactly and do not add other subjects.</div>';
-  if(d.group)h+='<h3>'+esc(d.group)+'</h3>';
-  d.tasks.forEach(function(k){h+='<label class="task"><input type="checkbox" data-task="'+k.id+'"'+(state.done[k.id]?' checked':'')+'><span class="box"></span><span>'+esc(k.text)+'</span></label>'});
-  h+='<div class="row" style="margin-top:10px"><span class="sub">'+s.done+' of '+s.total+' done</span><b>'+s.pct+'%</b></div>'+bar(s.pct);
-  h+='<h3>Study time'+(d.dur?' (planned '+esc(d.dur)+')':'')+'</h3><div class="time"><div><label class="f" for="h'+d.id+'">Hours studied</label><input id="h'+d.id+'" type="number" inputmode="numeric" min="0" max="24" data-time="'+d.id+'" data-u="h" value="'+(t.h||'')+'" placeholder="0"></div><div><label class="f" for="m'+d.id+'">Minutes</label><input id="m'+d.id+'" type="number" inputmode="numeric" min="0" max="59" data-time="'+d.id+'" data-u="m" value="'+(t.m||'')+'" placeholder="0"></div></div>';
-  if(d.mins){var lg=logged(d);h+='<div class="sub">Logged '+fmtMin(lg)+' of '+esc(d.dur)+'</div>'+bar(Math.min(100,Math.round(lg/d.mins*100)),lg>d.mins)}
-  return h+'</section>'
-}
-function totals(){var done=0,total=ALLTASKS.length;ALLTASKS.forEach(function(id){if(state.done[id])done++});var lg=0,pl=0;DAYS.forEach(function(d){lg+=logged(d);pl+=d.mins});return{done:done,total:total,pct:Math.round(done/total*100),lg:lg,pl:pl}}
+function taskRow(t,k,i,n){
+  var meta=[];if(k==='backlog'||k==='overdue')meta.push(t.date?fmtShort(t.date):'Unscheduled');
+  if(t.subj.length)meta.push(t.subj.join(' + '));if(t.chapter)meta.push('Ch: '+t.chapter);if(t.mins)meta.push(fmtMin(t.mins));
+  var inner='<span class="tx"><span class="tt">'+esc(t.text)+'</span>'+(meta.length?'<small>'+esc(meta.join(' | '))+'</small>':'')+'</span>',id=esc(t.id);
+  if(!edit)return'<label class="task"><input type="checkbox" data-task="'+id+'"'+(isDone(t)?' checked':'')+'><span class="box"></span>'+inner+'</label>';
+  return'<div class="erow'+(sel[t.id]?' on':'')+'" draggable="true" data-drag="'+id+'"><label class="task"><input type="checkbox" data-sel="'+id+'"'+(sel[t.id]?' checked':'')+'><span class="box sq"></span>'+inner+'</label><div class="btns3"><button class="ghost sm" data-act="up" data-id="'+id+'"'+(i===0?' disabled':'')+'>Move up</button><button class="ghost sm" data-act="dn" data-id="'+id+'"'+(i===n-1?' disabled':'')+'>Move down</button><button class="ghost sm" data-act="edittask" data-id="'+id+'">Edit</button></div></div>'}
+function listCard(k){
+  var T=viewTasks(k),tot=0;T.forEach(function(t){tot+=t.mins||0});
+  var h='<section class="card"><div class="row"><h2 style="margin:0">'+(k==='backlog'?'Unscheduled backlog':'Overdue, not done')+'</h2>'+(tot?'<span class="pill">'+fmtMin(tot)+'</span>':'')+'</div><p class="sub" style="margin:6px 0">'+(k==='backlog'?'Tasks with no date yet. Select them and use Move to schedule them.':'Tasks dated before today that are not ticked. Select them and use Move to reschedule.')+'</p>';
+  if(!T.length)h+='<p class="sub">Nothing here.</p>';
+  T.forEach(function(t,i){h+=taskRow(t,k,i,T.length)});
+  if(edit)h+='<div class="btns" style="margin-top:12px"><button class="ghost sm" data-act="addtask">Add task</button><button class="ghost sm" data-act="selall">Select all</button></div>';
+  return h+'</section>'}
+function dayCard(k,home){
+  if(k==='backlog'||k==='overdue')return listCard(k);
+  var d=dayOf(k),T=tasksOn(k),n=T.filter(isDone).length,load=dayLoad(k),lim=state.prefs.limit,p=T.length?Math.round(n/T.length*100):0;
+  var h='<section class="card'+(d&&d.note&&!T.length?' glow':'')+'"><div class="row"><h2 style="margin:0">'+esc(fmtLong(k))+'</h2>'+(load?'<span class="pill'+(load>lim?' warn':'')+'">'+fmtMin(load)+'</span>':'')+'</div>';
+  if(d&&d.note)h+='<div class="note big">'+esc(d.note)+'</div>';
+  if(load>lim)h+='<div class="flag">Planned load '+fmtMin(load)+' is '+fmtMin(load-lim)+' above your daily limit of '+fmtMin(lim)+'.</div>';
+  if(!d&&!T.length)h+='<p class="sub">No routine for this date.'+(home?' Open Routine to add tasks.':'')+'</p>';
+  T.forEach(function(t,i){h+=taskRow(t,k,i,T.length)});
+  if(T.length)h+='<div class="row" style="margin-top:10px"><span class="sub">'+n+' of '+T.length+' done</span><b>'+p+'%</b></div>'+bar(p);
+  if(d||T.length){var t=state.time[k]||{h:'',m:''};
+    h+='<h3>Study time'+(load?' (planned '+fmtMin(load)+')':'')+'</h3><div class="time"><div><label class="f" for="h'+k+'">Hours studied</label><input id="h'+k+'" type="number" inputmode="numeric" min="0" max="24" data-time="'+k+'" data-u="h" value="'+(t.h||'')+'" placeholder="0"></div><div><label class="f" for="m'+k+'">Minutes</label><input id="m'+k+'" type="number" inputmode="numeric" min="0" max="59" data-time="'+k+'" data-u="m" value="'+(t.m||'')+'" placeholder="0"></div></div>';
+    if(load){var lg=logged(k);h+='<div class="sub">Logged '+fmtMin(lg)+' of '+fmtMin(load)+'</div>'+bar(Math.min(100,Math.round(lg/load*100)),lg>load)}}
+  if(edit&&!home)h+='<h3>Edit this date</h3><div class="btns"><button class="sm" data-act="addtask">Add task</button><button class="ghost sm" data-act="dayinfo">'+(d?'Day info':'Add date entry')+'</button><button class="ghost sm" data-act="selinc">Select incomplete</button><button class="ghost sm" data-act="selall">Select all</button><button class="ghost sm" data-act="copyday">Copy day to…</button>'+(d?'<button class="ghost sm" data-act="delday">Delete date</button>':'')+'</div>';
+  return h+'</section>'}
+function totals(){var T=R().tasks,done=T.filter(isDone).length,lg=0,pl=0;R().days.forEach(function(d){lg+=logged(d.date);pl+=dayLoad(d.date)});Object.keys(state.time).forEach(function(k){if(!dayOf(k))lg+=logged(k)});var bl=viewTasks('backlog'),bm=0;bl.forEach(function(t){bm+=t.mins||0});return{done:done,total:T.length,pct:T.length?Math.round(done/T.length*100):0,lg:lg,pl:pl,bl:bl.length,bm:bm}}
 function vHome(){
-  var d=todayDay(),s=dayStat(d),T=totals(),now=new Date(),iso=isoOf(now),n=DAYS.indexOf(d);
-  var st=iso<DAYS[0].start?'The plan starts on Oct 16. Showing the first day.':iso>DAYS[DAYS.length-1].end?'The plan ended on Nov 11. Showing the last day.':(iso===d.start||d.start!==d.end?'Today':'Today')+' is '+d.label+'.';
-  var dt=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-  return'<div class="top"><svg class="av" viewBox="0 0 120 120" role="img" aria-label="Study avatar"><use href="#avatar"/></svg><div><h1>SSC 2027 Tracker</h1><div class="sub">'+esc(dt)+'</div></div></div>'+
-  '<section class="card glow"><div class="hero">'+ring(s.pct)+'<div class="stats"><div class="stat"><b>'+s.done+'</b><span>Completed today</span></div><div class="stat"><b>'+(s.total-s.done)+'</b><span>Remaining today</span></div></div></div><p class="sub" style="margin:12px 0 0">'+esc(st)+'</p></section>'+
-  '<section class="card"><div class="row"><h2 style="margin:0">Overall progress</h2><b>'+T.pct+'%</b></div><p class="sub" style="margin:4px 0 10px">'+T.done+' of '+T.total+' tasks done across 27 days.</p>'+bar(T.pct)+'<p class="sub" style="margin:12px 0 6px">Study time logged: '+fmtMin(T.lg)+' of '+fmtMin(T.pl)+' planned for Oct 16–25.</p>'+bar(Math.min(100,Math.round(T.lg/T.pl*100)))+'</section>'+dayCard(d)+
-  '<div class="btns"><button class="ghost" data-go="'+d.id+'">Open in Routine</button></div>'
-}
+  if(followToday||!hd)hd=today();
+  var T=tasksOn(hd),n=T.filter(isDone).length,p=T.length?Math.round(n/T.length*100):0,A=totals(),od=viewTasks('overdue').length,isT=hd===today();
+  var h='<div class="top"><svg class="av" viewBox="0 0 120 120" role="img" aria-label="Study avatar"><use href="#avatar"/></svg><div><h1>SSC 2027 Tracker</h1><div class="sub">'+esc(fmtLong(today()))+'</div></div></div>';
+  h+='<div class="row nav"><button class="ghost" data-act="hshift" data-n="-1" aria-label="Previous day">&lt; Prev</button><button class="ghost" data-act="htoday"'+(isT?' disabled style="opacity:.45"':'')+'>Today</button><button class="ghost" data-act="hshift" data-n="1" aria-label="Next day">Next &gt;</button></div>';
+  h+='<section class="card glow"><div class="hero">'+ring(p,T.length?null:'–')+'<div class="stats"><div class="stat"><b>'+n+'</b><span>Completed'+(isT?' today':'')+'</span></div><div class="stat"><b>'+(T.length-n)+'</b><span>Remaining'+(isT?' today':'')+'</span></div></div></div><p class="sub" style="margin:12px 0 0">'+(isT?'Showing today.':'Showing '+esc(fmtShort(hd))+'.')+(T.length?'':' No tasks on this date.')+'</p></section>';
+  if(od)h+='<div class="flag">'+od+' overdue task'+(od>1?'s':'')+' not done. <button class="sm" style="margin-top:8px;width:100%" data-act="gooverdue">Review and reschedule</button></div>';
+  h+='<section class="card"><div class="row"><h2 style="margin:0">Overall progress</h2><b>'+A.pct+'%</b></div><p class="sub" style="margin:4px 0 10px">'+A.done+' of '+A.total+' tasks done.'+(A.bl?' '+A.bl+' undated ('+fmtMin(A.bm)+').':'')+'</p>'+bar(A.pct)+'<p class="sub" style="margin:12px 0 6px">Study time logged: '+fmtMin(A.lg)+' of '+fmtMin(A.pl)+' planned.</p>'+bar(A.pl?Math.min(100,Math.round(A.lg/A.pl*100)):0)+'</section>';
+  return h+dayCard(hd,true)}
+function chip(k,top,bot,cls){return'<button class="chip'+(selKey===k?' sel':'')+(cls||'')+'" data-act="pick" data-k="'+k+'"><b>'+esc(top)+'</b>'+esc(bot)+'</button>'}
 function vRoutine(){
-  var d=DAYS.filter(function(x){return x.id===selId})[0]||todayDay(),iso=isoOf(new Date()),i=DAYS.indexOf(d);
-  var chips=DAYS.map(function(x){var p=dayStat(x).pct;return'<button class="chip'+(x===d?' sel':'')+(iso>=x.start&&iso<=x.end?' today':'')+(p===100?' full':'')+'" data-day="'+x.id+'" id="c'+x.id+'" aria-label="'+esc(x.label)+', '+p+' percent done"><b>'+esc(x.label.replace('Oct ','').replace('Nov ',''))+'</b>'+(x.label.indexOf('Oct')===0?'Oct':'Nov')+'</button>'}).join('');
-  return'<h1 style="margin-bottom:10px">Routine</h1><div class="chips" id="chips">'+chips+'</div>'+dayCard(d)+'<div class="btns"><button class="ghost" data-step="-1"'+(i===0?' disabled style="opacity:.4"':'')+'>Previous day</button><button class="ghost" data-step="1"'+(i===DAYS.length-1?' disabled style="opacity:.4"':'')+'>Next day</button></div>'
-}
+  if(!selKey)selKey=today();
+  var td=today(),chips=R().days.map(function(d){var T=tasksOn(d.date),all=T.length&&T.every(isDone);return chip(d.date,String(+d.date.slice(8)),fmtShort(d.date).split(' ')[0],(d.date===td?' today':'')+(all?' full':''))}).join('');
+  chips+=chip('backlog',String(viewTasks('backlog').length),'Backlog','')+chip('overdue',String(viewTasks('overdue').length),'Overdue','')+'<button class="chip" data-act="adddate"><b>+</b>Date</button>';
+  var isDate=DRE.test(selKey),n=selIds().length;
+  var h='<div class="row" style="margin-bottom:10px"><h1>Routine</h1><div class="btns" style="flex:none;gap:8px">'+(undoStack.length?'<button class="ghost sm" data-act="undo">Undo</button>':'')+'<button class="sm'+(edit?'':' ghost')+'" data-act="toggleedit">'+(edit?'Done editing':'Edit routine')+'</button></div></div>';
+  h+='<div class="chips" id="chips">'+chips+'</div>';
+  if(isDate)h+='<div class="row nav"><button class="ghost" data-act="shift" data-n="-1">&lt; Prev</button><input type="date" class="jump" data-jump="1" value="'+selKey+'" aria-label="Jump to date"><button class="ghost" data-act="shift" data-n="1">Next &gt;</button></div>';
+  if(edit)h+='<div class="note">Edit mode: tick the square boxes to select tasks, then use the bar at the bottom. Tasks can also be dragged to reorder. Switch edit mode off to tick tasks as done.</div>';
+  h+=dayCard(selKey,false);
+  if(edit&&n)h+='<div class="selbar"><b>'+n+' selected</b><button class="sm" data-act="movesel">Move</button><button class="ghost sm" data-act="dupsel">Duplicate</button><button class="danger sm" data-act="delsel">Delete</button><button class="ghost sm" data-act="clrsel">Clear</button></div>';
+  return h}
 function vSubjects(){
-  var h='<h1 style="margin-bottom:10px">Subjects</h1><p class="sub">Progress comes from the tasks tagged to each subject in the routine. Tasks that name two subjects count for both. "Mistake Lists" is not tied to a subject.</p>';
-  SUBJ.forEach(function(s){var tot=0,dn=0;DAYS.forEach(function(d){d.tasks.forEach(function(t){if(t.subj.indexOf(s)>-1){tot++;if(state.done[t.id])dn++}})});var p=tot?Math.round(dn/tot*100):0;
-    h+='<section class="card"><div class="row"><h2 style="margin:0">'+esc(s)+'</h2><b>'+p+'%</b></div><p class="sub" style="margin:2px 0 8px">'+dn+' of '+tot+' tasks done</p>'+bar(p)+'</section>'});
-  return h
-}
-function opts(sel){return SUBJ.map(function(s){return'<option'+(s===sel?' selected':'')+'>'+esc(s)+'</option>'}).join('')}
+  var h='<h1 style="margin-bottom:10px">Subjects</h1><p class="sub">Progress counts every task tagged with a subject, including undated tasks. Tasks with two subjects count for both.</p>';
+  SUBJ.forEach(function(s){var tot=0,dn=0,mins=0;R().tasks.forEach(function(t){if(t.subj.indexOf(s)>-1){tot++;mins+=t.mins||0;if(isDone(t))dn++}});var p=tot?Math.round(dn/tot*100):0;
+    h+='<section class="card"><div class="row"><h2 style="margin:0">'+esc(s)+'</h2><b>'+p+'%</b></div><p class="sub" style="margin:2px 0 8px">'+dn+' of '+tot+' tasks done'+(tot?'':' (none scheduled)')+'</p>'+bar(p)+'</section>'});
+  return h}
+function opts(){return SUBJ.map(function(s){return'<option>'+esc(s)+'</option>'}).join('')}
 function vLogs(){
-  var h='<h1 style="margin-bottom:10px">Logs</h1><section class="card"><h2>Weak chapters</h2><p class="sub">Use these for the Oct 30 "Weak Chapters Only" day.</p><label class="f" for="ws">Subject</label><select id="ws">'+opts()+'</select><label class="f" for="wc">Chapter or lesson</label><input id="wc" maxlength="100" placeholder="Example: Bio 11"><label class="f" for="wn">Why it is weak (optional)</label><input id="wn" maxlength="300"><button data-act="addweak" style="width:100%">Add weak chapter</button><div style="margin-top:14px">';
-  if(!state.weak.length)h+='<p class="sub">No weak chapters yet. Add one above.</p>';
-  state.weak.forEach(function(w){h+='<div class="item"><label class="task" style="padding:0"><input type="checkbox" data-weak="'+esc(w.id)+'"'+(w.done?' checked':'')+'><span class="box"></span><span><b>'+esc(w.subject)+'</b>: '+esc(w.chapter)+(w.note?'<small>'+esc(w.note)+'</small>':'')+'<small>'+(w.done?'Revised':'Not revised yet')+'</small></span></label><button class="ghost sm" data-delweak="'+esc(w.id)+'" style="margin-top:8px">Delete</button></div>'});
+  var h='<h1 style="margin-bottom:10px">Logs</h1><section class="card"><h2>Weak chapters</h2><label class="f" for="ws">Subject</label><select id="ws">'+opts()+'</select><label class="f" for="wc">Chapter or lesson</label><input id="wc" maxlength="100" placeholder="Example: Bio 11"><label class="f" for="wn">Why it is weak (optional)</label><input id="wn" maxlength="300"><button data-act="addweak" style="width:100%">Add weak chapter</button><div style="margin-top:14px">';
+  if(!state.weak.length)h+='<p class="sub">No weak chapters yet.</p>';
+  state.weak.forEach(function(w){h+='<div class="item"><label class="task" style="padding:0"><input type="checkbox" data-weak="'+esc(w.id)+'"'+(w.done?' checked':'')+'><span class="box"></span><span class="tx"><span class="tt">'+esc(w.subject)+': '+esc(w.chapter)+'</span>'+(w.note?'<small>'+esc(w.note)+'</small>':'')+'<small>'+(w.done?'Revised':'Not revised yet')+'</small></span></label><button class="ghost sm" data-delweak="'+esc(w.id)+'" style="margin-top:8px">Delete</button></div>'});
   h+='</div></section><section class="card"><h2>Mistake log</h2><label class="f" for="ms">Subject</label><select id="ms">'+opts()+'</select><label class="f" for="mc">Chapter or topic</label><input id="mc" maxlength="100"><label class="f" for="mw">What went wrong</label><textarea id="mw" rows="2" maxlength="400"></textarea><label class="f" for="mf">Correct fix</label><textarea id="mf" rows="2" maxlength="400"></textarea><button data-act="addmistake" style="width:100%">Add mistake</button><div style="margin-top:14px">';
   if(!state.mistakes.length)h+='<p class="sub">No mistakes logged yet.</p>';
   state.mistakes.slice().reverse().forEach(function(m){h+='<div class="item"><b>'+esc(m.subject)+'</b>'+(m.chapter?': '+esc(m.chapter):'')+'<small>'+esc(m.date)+'</small><div>'+esc(m.what)+'</div>'+(m.fix?'<small class="ok">Fix: '+esc(m.fix)+'</small>':'')+'<button class="ghost sm" data-delmis="'+esc(m.id)+'" style="margin-top:8px">Delete</button></div>'});
-  return h+'</div></section>'
-}
+  return h+'</div></section>'}
 function vMore(){
-  var h='<h1 style="margin-bottom:10px">More</h1>';
-  h+='<section class="card"><h2>Backup and restore</h2><p class="sub">Saves tasks, study time, weak chapters, and mistakes to a JSON file.</p><div class="btns"><button data-act="export">Export backup</button><button class="ghost" data-act="import">Import backup</button></div><input type="file" id="file" accept=".json,application/json" hidden>'+(memOnly?'<div class="flag">Storage is blocked in this browser. Export a backup before closing.</div>':'<p class="sub ok" style="margin-bottom:0">Progress saves automatically on this phone.</p>')+'</section>';
+  var lim=state.prefs.limit,h='<h1 style="margin-bottom:10px">More</h1>';
+  h+='<div id="upd"></div>';
+  h+='<section class="card"><h2>How your data is kept</h2><ol><li><b>Saved on this phone.</b> Every change (routine edits, ticks, study time, logs) is saved automatically in this browser\'s storage. '+(memOnly?'<span style="color:var(--warn)">Storage is blocked right now.</span>':'<span class="ok">Working.</span>')+(persisted?' '+esc(persisted):'')+'</li><li><b>Offline copy of the app.</b> '+(navigator.serviceWorker&&navigator.serviceWorker.controller?'<span class="ok">Ready: the app opens without internet.</span>':'Not ready yet. Open the app once while online, then reopen it.')+' This only stores the app files, not your data.</li><li><b>No cloud sync.</b> GitHub Pages only hosts the files. Nothing you change is uploaded, and your phone and any other device do not sync. Use <b>Export backup</b> regularly and <b>Import backup</b> to move or recover data.</li></ol><p class="sub" style="margin-bottom:0">Going back online never resets or replaces your data. App version '+APP_VERSION+'. Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>.</p></section>';
+  h+='<section class="card"><h2>Backup and restore</h2><div class="btns"><button data-act="export">Export backup</button><button class="ghost" data-act="import">Import backup</button></div><input type="file" id="file" accept=".json,application/json" hidden></section>';
+  h+='<section class="card"><h2>Routine tools</h2><p class="sub">Edit tasks and dates from the Routine tab. These tools do not touch your study time, weak chapters, or mistakes.</p><div class="btns"><button class="ghost" data-act="restoreorig">Restore original routine</button><button class="ghost" data-act="addearly">Add earlier Oct 26–Nov 11 plan</button></div></section>';
+  h+='<section class="card"><h2>Preferences</h2><label class="f">Daily study limit</label><div class="time"><input id="lh" type="number" inputmode="numeric" min="0" max="24" value="'+Math.floor(lim/60)+'" aria-label="Hours"><input id="lm" type="number" inputmode="numeric" min="0" max="59" value="'+lim%60+'" aria-label="Minutes"></div><button class="ghost" data-act="savelimit" style="width:100%">Save limit ('+fmtMin(lim)+' now)</button></section>';
+  h+='<section class="card"><h2>Notes on your supplied routine</h2><p dir="auto" class="note">'+esc(DEF.suppliedNote)+'</p><ol>'+DEF.flags.map(function(f){return'<li>'+esc(f)+'</li>'}).join('')+'</ol></section>';
   h+='<section class="card"><h2>Scheduling rules</h2><ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol></section>';
   h+='<section class="card"><h2>Subject abbreviations</h2><div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div></section>';
-  h+='<section class="card"><h2>Install on Android</h2><ol><li>Open the app link in Chrome.</li><li>Wait until the page fully loads once while online.</li><li>Tap the three-dot menu, then <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap Install. Open it from your home screen.</li></ol><div id="inst">'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':'')+'</div><p class="sub" style="margin-bottom:0">Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>. After the first online load, the app works without internet.</p></section>';
-  h+='<section class="card"><h2>Reset progress</h2><p class="sub">Clears every checkbox, study time, weak chapter, and mistake. Export a backup first.</p><button class="danger" data-act="reset" style="width:100%">Reset all progress</button></section>';
-  return h
-}
-function render(keepScroll){
-  var y=window.scrollY;
-  var v={home:vHome,routine:vRoutine,subjects:vSubjects,logs:vLogs,more:vMore}[tab];
-  document.getElementById('view').innerHTML=v();renderTabs();
-  if(keepScroll)window.scrollTo(0,y);
-  var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2
-}
+  h+='<section class="card"><h2>Install on Android</h2><ol><li>Open the app link in Chrome and let it load once while online.</li><li>Tap the three-dot menu, then <b>Install app</b> (or <b>Add to Home screen</b>).</li></ol><div>'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':'')+'</div></section>';
+  h+='<section class="card"><h2>Reset study records</h2><p class="sub">Clears ticks, study time, weak chapters, and mistakes. Your routine stays as it is. Export a backup first.</p><button class="danger" data-act="resetprog" style="width:100%">Reset progress</button></section>';
+  return h}
+function render(keep){
+  var y=window.scrollY,v={home:vHome,routine:vRoutine,subjects:vSubjects,logs:vLogs,more:vMore}[tab];
+  document.getElementById('view').innerHTML=v();renderTabs();if(keep)window.scrollTo(0,y);
+  var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
+  if(tab==='more'&&updWorker)showUpdate(updWorker)}
 function go(t){tab=t;render();window.scrollTo(0,0)}
-/* ---------- EVENTS ---------- */
+/* ---------- routine editing ---------- */
+function curDate(){return DRE.test(selKey)?selKey:today()}
+function hm(id,mins,lbl){return'<div class="time"><div><label class="f" for="'+id+'h">'+lbl+' hours</label><input id="'+id+'h" type="number" inputmode="numeric" min="0" max="24" value="'+(mins?Math.floor(mins/60)||'':'')+'"></div><div><label class="f" for="'+id+'m">Minutes</label><input id="'+id+'m" type="number" inputmode="numeric" min="0" max="59" value="'+(mins?mins%60||'':'')+'"></div></div>'}
+function rd(q,id){return mn((parseInt(q('#'+id+'h').value,10)||0)*60+(parseInt(q('#'+id+'m').value,10)||0))}
+function taskForm(t,date){
+  var T=t||{text:'',chapter:'',subj:[],mins:null,date:date||null};
+  var chips=SUBJ.map(function(s){return'<label class="sc"><input type="checkbox" value="'+esc(s)+'"'+(T.subj.indexOf(s)>-1?' checked':'')+'><span>'+esc(s)+'</span></label>'}).join('');
+  modal(t?'Edit task':'Add task','<label class="f" for="fx">Description</label><input id="fx" maxlength="200" value="'+esc(T.text)+'"><label class="f">Subjects</label><div class="scs">'+chips+'</div><label class="f" for="fc">Chapter or lesson (optional)</label><input id="fc" maxlength="100" value="'+esc(T.chapter)+'">'+hm('fd0',T.mins,'Planned')+'<label class="f" for="fd">Date (empty = unscheduled backlog)</label><input id="fd" type="date" value="'+(T.date||'')+'">',[{label:'Cancel',cls:'ghost',val:0},{label:'Save task',val:1,v:true}],function(q){return q('#fx').value.trim()?'':'Enter a description.'}).then(function(r){
+    if(r.val!==1)return;var q=r.q,text=q('#fx').value.trim().slice(0,200),ch=q('#fc').value.trim().slice(0,100),mins=rd(q,'fd0'),dt=q('#fd').value||null,sj=[].slice.call(r.q('.scs').querySelectorAll('input:checked')).map(function(i){return i.value});
+    mutate(function(){if(dt)ensureDay(dt);if(t){var x=R().tasks.filter(function(a){return a.id===t.id})[0];if(!x)return;var mv=x.date!==dt;x.text=text;x.chapter=ch;x.mins=mins;x.subj=sj;x.date=dt;if(mv){R().tasks.splice(R().tasks.indexOf(x),1);R().tasks.push(x)}}else R().tasks.push({id:uid(),date:dt,subj:sj,chapter:ch,text:text,mins:mins})},t?'Task saved.':'Task added.')})}
+function moveDlg(ids){
+  if(!ids.length){toast('Select at least one task first.');return}
+  modal('Move '+ids.length+' task'+(ids.length>1?'s':''),'<label class="f" for="md">New date</label><input id="md" type="date" value="'+(DRE.test(selKey)?selKey:today())+'"><label class="sc wide"><input type="checkbox" id="mb"><span>Move to unscheduled backlog instead</span></label><label class="sc wide"><input type="checkbox" id="mr"><span>Also clear completion ticks on these tasks</span></label><p class="sub">Ticks and study time are kept by default.</p>',[{label:'Cancel',cls:'ghost',val:0},{label:'Move',val:1,v:true}],function(q){return q('#mb').checked||q('#md').value?'':'Pick a date or choose backlog.'}).then(function(r){
+    if(r.val!==1)return;var dt=r.q('#mb').checked?null:r.q('#md').value,rs=r.q('#mr').checked,set={};ids.forEach(function(i){set[i]=1});
+    mutate(function(){var mv=R().tasks.filter(function(t){return set[t.id]});R().tasks=R().tasks.filter(function(t){return!set[t.id]});if(dt)ensureDay(dt);mv.forEach(function(t){t.date=dt;if(rs)delete state.done[t.id];R().tasks.push(t)});sel={}},'Moved '+ids.length+' task'+(ids.length>1?'s':'')+(dt?' to '+fmtShort(dt):' to backlog')+'.')})}
+function dupTasks(ids){var set={};ids.forEach(function(i){set[i]=1});mutate(function(){var out=[];R().tasks.forEach(function(t){out.push(t);if(set[t.id]){var c=clone(t);c.id=uid();out.push(c)}});R().tasks=out;sel={}},'Duplicated '+ids.length+'.')}
+function delTasks(ids){if(!ids.length)return;confirmBox('Delete '+ids.length+' task'+(ids.length>1?'s':'')+'?','They will be removed from the routine along with their ticks. You can tap Undo right afterwards.','Delete',true).then(function(ok){if(!ok)return;var set={};ids.forEach(function(i){set[i]=1});mutate(function(){R().tasks=R().tasks.filter(function(t){return!set[t.id]});ids.forEach(function(i){delete state.done[i]});sel={}},'Deleted.')})}
+function nudge(id,dir){var list=viewTasks(selKey||today()),i=list.map(function(t){return t.id}).indexOf(id),o=list[i+dir];if(i<0||!o)return;mutate(function(){var T=R().tasks,a=T.indexOf(list[i]),b=T.indexOf(o),x=T[a];T[a]=T[b];T[b]=x})}
+function dropOn(src,dst){mutate(function(){var T=R().tasks,a=T.filter(function(t){return t.id===src})[0],b=T.filter(function(t){return t.id===dst})[0];if(!a||!b)return;T.splice(T.indexOf(a),1);T.splice(T.indexOf(b),0,a);a.date=b.date})}
+function dayDlg(date){
+  var d=date&&dayOf(date),isNew=!d;
+  modal(isNew?'Add date':'Day info',(isNew?'<label class="f" for="dd">Date</label><input id="dd" type="date" value="'+(date||today())+'">':'<label class="f" for="dd">Date (change it to move the whole day)</label><input id="dd" type="date" value="'+d.date+'">')+hm('dp',d&&d.planned,'Planned')+'<label class="f" for="dn">Note (for example Rest, or a subject focus)</label><input id="dn" maxlength="300" value="'+esc(d?d.note:'')+'">',[{label:'Cancel',cls:'ghost',val:0},{label:'Save',val:1,v:true}],function(q){var v=q('#dd').value;if(!v)return'Pick a date.';if((isNew||v!==date)&&dayOf(v))return'That date already exists. Use Copy day to combine days.';return''}).then(function(r){
+    if(r.val!==1)return;var v=r.q('#dd').value,pl=rd(r.q,'dp'),nt=r.q('#dn').value.trim().slice(0,300);
+    mutate(function(){if(isNew){R().days.push({date:v,planned:pl,note:nt});R().days.sort(byDate)}else{d.planned=pl;d.note=nt;if(v!==date){d.date=v;tasksOn(date).forEach(function(t){t.date=v});if(state.time[date]){state.time[v]=state.time[date];delete state.time[date]}R().days.sort(byDate)}}selKey=v},isNew?'Date added.':'Saved.')})}
+function copyDlg(src){
+  modal('Copy '+fmtShort(src)+' to another date','<label class="f" for="cd">Target date</label><input id="cd" type="date"><label class="sc wide"><input type="radio" name="cm" value="add" checked><span>Add to that day</span></label><label class="sc wide"><input type="radio" name="cm" value="rep"><span>Replace that day\'s routine</span></label><p class="sub">Copies start unticked.</p>',[{label:'Cancel',cls:'ghost',val:0},{label:'Copy',val:1,v:true}],function(q){var v=q('#cd').value;return!v?'Pick a target date.':v===src?'Pick a different date.':''}).then(function(r){
+    if(r.val!==1)return;var dst=r.q('#cd').value,rep=r.q('input[name=cm]:checked').value==='rep',ex=tasksOn(dst).length,n=tasksOn(src).length;
+    (rep&&ex?confirmBox('Replace '+fmtShort(dst)+'?',ex+' existing task'+(ex>1?'s':'')+' on that date will be deleted and replaced by '+n+' copied task'+(n===1?'':'s')+'. You can tap Undo afterwards.','Replace day',true):Promise.resolve(true)).then(function(ok){if(!ok)return;
+      mutate(function(){ensureDay(dst);var sd=dayOf(src),dd=dayOf(dst);if(rep){tasksOn(dst).forEach(function(t){delete state.done[t.id]});R().tasks=R().tasks.filter(function(t){return t.date!==dst});dd.planned=sd?sd.planned:null;dd.note=sd?sd.note:''}else if(sd){if(dd.planned==null)dd.planned=sd.planned;if(!dd.note)dd.note=sd.note}tasksOn(src).forEach(function(t){var c=clone(t);c.id=uid();c.date=dst;R().tasks.push(c)});selKey=dst},'Copied to '+fmtShort(dst)+'.')})})}
+function delDay(date){
+  var n=tasksOn(date).length;
+  modal('Delete '+fmtShort(date)+'?',n?'<p>This date has '+n+' task'+(n>1?'s':'')+'. Choose what happens to them.</p>':'<p>This date entry will be removed.</p>',n?[{label:'Cancel',cls:'ghost',val:0},{label:'Delete date, keep tasks in backlog',val:'keep'},{label:'Delete date and its tasks',cls:'danger',val:'del'}]:[{label:'Cancel',cls:'ghost',val:0},{label:'Delete date',cls:'danger',val:'del'}]).then(function(r){
+    if(!r.val)return;mutate(function(){R().days=R().days.filter(function(d){return d.date!==date});if(r.val==='keep')tasksOn(date).forEach(function(t){t.date=null});else{tasksOn(date).forEach(function(t){delete state.done[t.id]});R().tasks=R().tasks.filter(function(t){return t.date!==date})}selKey='backlog';sel={}},'Date deleted.')})}
+function restoreOrig(){confirmBox('Restore the original routine?','Your current routine, including all edits, is replaced by the originally supplied one. Study time, weak chapters, mistakes, and preferences are kept. Ticks stay on tasks that still exist in the original. You can tap Undo afterwards.','Restore routine',true).then(function(ok){if(ok){mutate(function(){state.routine=clone({days:DEF.days,tasks:DEF.tasks});state.routineVersion=DEF.version;sel={};selKey=''},'Original routine restored.')}})}
+function addEarly(){var have={};R().days.forEach(function(d){have[d.date]=1});var nd=EARLY.days.filter(function(d){return!have[d.date]});
+  if(!nd.length){toast('Those dates already exist in your routine.');return}
+  confirmBox('Add the earlier Oct 26–Nov 11 plan?',nd.length+' dates will be added. Dates you already have are left untouched.','Add dates',false).then(function(ok){if(ok)mutate(function(){var set={};nd.forEach(function(d){set[d.date]=1;R().days.push(clone(d))});EARLY.tasks.forEach(function(t){if(set[t.date])R().tasks.push(clone(t))});R().days.sort(byDate)},'Earlier plan added.')})}
+/* ---------- events ---------- */
 document.addEventListener('change',function(e){
-  var t=e.target;
-  if(t.dataset.task){if(t.checked)state.done[t.dataset.task]=true;else delete state.done[t.dataset.task];save();render(true)}
-  else if(t.dataset.weak){state.weak.forEach(function(w){if(w.id===t.dataset.weak)w.done=t.checked});save();render(true)}
-  else if(t.dataset.time){var id=t.dataset.time,o=state.time[id]||{h:0,m:0};o[t.dataset.u]=Math.max(0,Math.min(t.dataset.u==='h'?24:59,parseInt(t.value,10)||0));if(o.h||o.m)state.time[id]=o;else delete state.time[id];save();render(true)}
-  else if(t.id==='file'&&t.files[0])doImport(t.files[0]);
-});
+  var t=e.target,D=t.dataset||{};
+  if(D.task){if(t.checked)state.done[D.task]=true;else delete state.done[D.task];save();render(true)}
+  else if(D.sel){if(t.checked)sel[D.sel]=true;else delete sel[D.sel];render(true)}
+  else if(D.weak){state.weak.forEach(function(w){if(w.id===D.weak)w.done=t.checked});save();render(true)}
+  else if(D.time){var o=state.time[D.time]||{h:0,m:0};o[D.u]=Math.max(0,Math.min(D.u==='h'?24:59,parseInt(t.value,10)||0));if(o.h||o.m)state.time[D.time]=o;else delete state.time[D.time];save();render(true)}
+  else if(D.jump&&t.value){selKey=t.value;render()}
+  else if(t.id==='file'&&t.files[0])doImport(t.files[0])});
 document.addEventListener('click',function(e){
-  var b=e.target.closest('button');if(!b)return;var D=b.dataset;
-  if(D.tab)go(D.tab);
-  else if(D.day){selId=D.day;render(true)}
-  else if(D.go){selId=D.go;go('routine')}
-  else if(D.step){var d=DAYS.filter(function(x){return x.id===selId})[0]||todayDay();var n=DAYS.indexOf(d)+parseInt(D.step,10);if(DAYS[n]){selId=DAYS[n].id;render();window.scrollTo(0,0)}}
-  else if(D.delweak){state.weak=state.weak.filter(function(w){return w.id!==D.delweak});save();render(true)}
-  else if(D.delmis){confirmBox('Delete this mistake?','It will be removed from the log.','Delete',true).then(function(ok){if(ok){state.mistakes=state.mistakes.filter(function(m){return m.id!==D.delmis});save();render(true)}})}
-  else if(D.act==='addweak'){var c=document.getElementById('wc').value.trim();if(!c){toast('Enter a chapter or lesson first.');return}state.weak.push({id:uid(),subject:document.getElementById('ws').value,chapter:c,note:document.getElementById('wn').value.trim(),done:false});save();render(true);toast('Weak chapter added.')}
-  else if(D.act==='addmistake'){var w=document.getElementById('mw').value.trim();if(!w){toast('Describe what went wrong first.');return}state.mistakes.push({id:uid(),date:isoOf(new Date()),subject:document.getElementById('ms').value,chapter:document.getElementById('mc').value.trim(),what:w,fix:document.getElementById('mf').value.trim()});save();render(true);toast('Mistake added.')}
-  else if(D.act==='export')doExport();
-  else if(D.act==='import')document.getElementById('file').click();
-  else if(D.act==='install'&&deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;if(tab==='more')render(true)})}
-  else if(D.act==='reset'){confirmBox('Reset all progress?','This permanently clears all checkboxes, study time, weak chapters, and mistakes on this phone. This cannot be undone.','Reset everything',true).then(function(ok){if(ok){state=blank();save();render();toast('Progress reset.')}})}
-});
-function doExport(){
-  try{var blob=new Blob([JSON.stringify(Object.assign({exported:new Date().toISOString()},state),null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ssc2027-backup-'+isoOf(new Date())+'.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);toast('Backup exported. Check your Downloads folder.')}
-  catch(e){toast('Export failed: '+e.message)}
-}
+  var b=e.target.closest('button');if(!b||b.dataset.bi!==undefined)return;var D=b.dataset;
+  if(D.tab)return go(D.tab);
+  if(D.delweak){state.weak=state.weak.filter(function(w){return w.id!==D.delweak});save();return render(true)}
+  if(D.delmis)return confirmBox('Delete this mistake?','It will be removed from the log.','Delete',true).then(function(ok){if(ok){state.mistakes=state.mistakes.filter(function(m){return m.id!==D.delmis});save();render(true)}});
+  var id=D.id;
+  switch(D.act){
+    case'pick':selKey=D.k;render();break;
+    case'shift':selKey=addDays(curDate(),+D.n);render();break;
+    case'hshift':followToday=false;hd=addDays(hd||today(),+D.n);render();break;
+    case'htoday':followToday=true;render();break;
+    case'gooverdue':selKey='overdue';edit=true;go('routine');break;
+    case'toggleedit':edit=!edit;sel={};render(true);break;
+    case'undo':undo();break;
+    case'addtask':taskForm(null,DRE.test(selKey)?selKey:(selKey==='overdue'?today():null));break;
+    case'edittask':taskForm(R().tasks.filter(function(t){return t.id===id})[0]);break;
+    case'up':nudge(id,-1);break;case'dn':nudge(id,1);break;
+    case'dayinfo':dayDlg(curDate());break;
+    case'adddate':dayDlg(null);break;
+    case'copyday':copyDlg(curDate());break;
+    case'delday':delDay(curDate());break;
+    case'selall':viewTasks(selKey||today()).forEach(function(t){sel[t.id]=true});render(true);break;
+    case'selinc':viewTasks(selKey||today()).forEach(function(t){if(!isDone(t))sel[t.id]=true});render(true);break;
+    case'clrsel':sel={};render(true);break;
+    case'movesel':moveDlg(selIds());break;
+    case'dupsel':dupTasks(selIds());break;
+    case'delsel':delTasks(selIds());break;
+    case'addweak':var c=document.getElementById('wc').value.trim();if(!c){toast('Enter a chapter or lesson first.');break}state.weak.push({id:uid(),subject:document.getElementById('ws').value,chapter:c,note:document.getElementById('wn').value.trim(),done:false});save();render(true);toast('Weak chapter added.');break;
+    case'addmistake':var w=document.getElementById('mw').value.trim();if(!w){toast('Describe what went wrong first.');break}state.mistakes.push({id:uid(),date:today(),subject:document.getElementById('ms').value,chapter:document.getElementById('mc').value.trim(),what:w,fix:document.getElementById('mf').value.trim()});save();render(true);toast('Mistake added.');break;
+    case'export':doExport();break;
+    case'import':document.getElementById('file').click();break;
+    case'restoreorig':restoreOrig();break;
+    case'addearly':addEarly();break;
+    case'savelimit':var l=(parseInt(document.getElementById('lh').value,10)||0)*60+(parseInt(document.getElementById('lm').value,10)||0);if(l<60||l>1440){toast('Enter a limit between 1h and 24h.');break}state.prefs.limit=l;save();render(true);toast('Daily limit saved.');break;
+    case'install':if(deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;render(true)})}break;
+    case'resetprog':confirmBox('Reset study records?','This clears all ticks, study time, weak chapters, and mistakes on this phone. Your routine is kept. This cannot be undone.','Reset progress',true).then(function(ok){if(ok){state.done={};state.time={};state.weak=[];state.mistakes=[];undoStack=[];save();render();toast('Progress reset.')}});break;
+    case'doupdate':updating=true;if(updWorker)updWorker.postMessage({type:'SKIP_WAITING'});break;
+    case'later':var u=document.getElementById('upbar');if(u)u.remove();break}});
+document.addEventListener('dragstart',function(e){var r=e.target.closest&&e.target.closest('[data-drag]');if(r){dragId=r.dataset.drag;try{e.dataTransfer.setData('text/plain',dragId);e.dataTransfer.effectAllowed='move'}catch(_){}}});
+document.addEventListener('dragover',function(e){if(dragId&&e.target.closest&&e.target.closest('[data-drag]'))e.preventDefault()});
+document.addEventListener('drop',function(e){var r=e.target.closest&&e.target.closest('[data-drag]');if(dragId&&r&&r.dataset.drag!==dragId){e.preventDefault();dropOn(dragId,r.dataset.drag)}dragId=null});
+function doExport(){try{var blob=new Blob([JSON.stringify(Object.assign({exported:new Date().toISOString(),appVersion:APP_VERSION},state),null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ssc2027-backup-'+today()+'.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);toast('Backup exported. Check your Downloads folder.')}catch(e){toast('Export failed: '+e.message)}}
 function doImport(f){
-  var r=new FileReader();
-  r.onerror=function(){toast('Could not read that file.')};
-  r.onload=function(){
-    var ns;try{ns=clean(JSON.parse(r.result))}catch(e){toast('Import failed: '+(e instanceof SyntaxError?'the file is not valid JSON.':e.message));document.getElementById('file').value='';return}
-    confirmBox('Replace current progress?','This backup has '+Object.keys(ns.done).length+' completed tasks, '+ns.weak.length+' weak chapters, and '+ns.mistakes.length+' mistakes. Your current progress will be replaced.','Import backup',true).then(function(ok){if(ok){state=ns;save();render();toast('Backup imported.')}else document.getElementById('file').value=''})
-  };
-  r.readAsText(f)
-}
+  var r=new FileReader();r.onerror=function(){toast('Could not read that file.')};
+  r.onload=function(){var ns;try{ns=clean(JSON.parse(r.result))}catch(e){toast('Import failed: '+(e instanceof SyntaxError?'the file is not valid JSON.':e.message));document.getElementById('file').value='';return}
+    var old=!!ns.migratedV1;
+    confirmBox('Replace current data?',old?'This is a backup from the earlier app version. Only study time, weak chapters, and mistakes will be imported. Your current routine and ticks stay.':'This backup has '+ns.routine.tasks.length+' tasks, '+ns.routine.days.length+' dates, '+ns.weak.length+' weak chapters, and '+ns.mistakes.length+' mistakes. Everything on this phone, including your routine, will be replaced.','Import backup',true).then(function(ok){
+      if(ok){if(old){state.time=ns.time;state.weak=ns.weak;state.mistakes=ns.mistakes}else{state=ns}undoStack=[];sel={};save();render();toast('Backup imported.')}else document.getElementById('file').value=''})};
+  r.readAsText(f)}
+/* ---------- updates, offline, install ---------- */
+var updWorker=null;
+function showUpdate(w){updWorker=w;if(document.getElementById('upbar'))return;var d=document.createElement('div');d.id='upbar';d.className='upd';d.setAttribute('role','status');d.innerHTML='<span>A new version is ready. Your data stays on this phone.</span><button class="sm" data-act="doupdate">Update now</button><button class="ghost sm" data-act="later">Later</button>';document.body.appendChild(d)}
+function setupSW(){
+  if(!('serviceWorker' in navigator))return;
+  navigator.serviceWorker.register('sw.js').then(function(reg){
+    if(reg.waiting&&navigator.serviceWorker.controller)showUpdate(reg.waiting);
+    reg.addEventListener('updatefound',function(){var nw=reg.installing;if(nw)nw.addEventListener('statechange',function(){if(nw.state==='installed'&&navigator.serviceWorker.controller)showUpdate(nw)})});
+    var chk=function(){reg.update().catch(function(){})};window.addEventListener('online',chk);document.addEventListener('visibilitychange',function(){if(!document.hidden)chk()});chk();
+  }).catch(function(){});
+  navigator.serviceWorker.addEventListener('controllerchange',function(){if(updating){save();location.reload()}else if(tab==='more')render(true)})}
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;if(tab==='more')render(true)});
 window.addEventListener('appinstalled',function(){deferred=null;toast('Installed.')});
 function net(){var n=document.getElementById('net');if(n)n.textContent=navigator.onLine?'Online':'Offline'}
 window.addEventListener('online',net);window.addEventListener('offline',net);
-document.addEventListener('visibilitychange',function(){if(!document.hidden&&tab==='home')render(true)});
-/* ---------- START ---------- */
-load();render();
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&(tab==='home'||followToday))render(true)});
+/* ---------- start ---------- */
+if(!DEF||!EARLY){document.getElementById('view').innerHTML='<section class="card"><h2>App file missing</h2><p>routine-default.js did not load. Check that it is uploaded next to index.html, then reload.</p></section>'}
+else{load();render();setupSW();
+  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().then(function(ok){persisted=ok?'Storage is marked persistent.':'';})}catch(e){}}
 </script>
 </body>
 </html>
