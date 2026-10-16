@@ -96,3 +96,55 @@ window.I18N_PAT=[
 [/^(\d+) dates will be added\. Dates you already have are left untouched\.$/,function(m){return m[1]+'টি তারিখ যোগ হবে। আপনার আগের তারিখগুলো যেমন আছে তেমনই থাকবে।'}],
 [/^This backup has (\d+) tasks, (\d+) dates, (\d+) weak chapters, and (\d+) mistakes\. Everything on this phone, including your routine, will be replaced\.$/,function(m){return'এই ব্যাকআপে '+m[1]+'টি কাজ, '+m[2]+'টি তারিখ, '+m[3]+'টি দুর্বল অধ্যায় ও '+m[4]+'টি ভুল আছে। রুটিনসহ এই ফোনের সব ডেটা বদলে যাবে।'}]
 ];
+/* v2.3.0 additions: onboarding, routine upload and update. Keys already defined above are kept. */
+(function(){
+var N={
+'Let’s go! Upload your routine to continue':'চলুন শুরু করি! চালিয়ে যেতে আপনার রুটিন আপলোড করুন',
+'Your routine builds the whole app: every date, task and subject. You only do this once.':'আপনার রুটিন দিয়েই পুরো অ্যাপ তৈরি হয়: প্রতিটি তারিখ, কাজ ও বিষয়। এটা শুধু একবারই করতে হবে।',
+'Step 1: Get your routine in the right format':'ধাপ ১: রুটিনটি সঠিক ফরম্যাটে নিন',
+'Copy the prompt below and send it to any AI tool (Gemini, ChatGPT, Grok or others) together with your routine. The AI will reply with a ready text.':'নিচের প্রম্পটটি কপি করে আপনার রুটিনসহ যেকোনো এআই টুলে (জেমিনি, চ্যাটজিপিটি, গ্রক বা অন্য) পাঠান। এআই একটি তৈরি টেক্সট উত্তর দেবে।',
+'See more':'আরও দেখুন','See less':'কম দেখুন','Copy prompt':'প্রম্পট কপি করুন',
+'Step 2: Paste the AI’s reply here':'ধাপ ২: এআই-এর উত্তরটি এখানে পেস্ট করুন',
+'Paste the routine text here':'রুটিনের টেক্সট এখানে পেস্ট করুন',
+'Continue':'চালিয়ে যান','Choose a text file':'টেক্সট ফাইল বাছুন',
+'Already have a backup?':'আগের ব্যাকআপ আছে?','Restore your data from a backup file.':'ব্যাকআপ ফাইল থেকে আপনার ডেটা ফিরিয়ে আনুন।',
+'Ready to build':'তৈরির জন্য প্রস্তুত','Build my routine':'আমার রুটিন তৈরি করুন',
+'Some details were skipped:':'কিছু অংশ বাদ দেওয়া হয়েছে:',
+'Could not read the routine. Fix these and try again:':'রুটিনটি পড়া যায়নি। এগুলো ঠিক করে আবার চেষ্টা করুন:',
+'Tip: ask the AI to fix these lines, then paste the new answer.':'পরামর্শ: এআইকে এই লাইনগুলো ঠিক করতে বলুন, তারপর নতুন উত্তর পেস্ট করুন।',
+'Date is missing or not valid. Use YYYY-MM-DD.':'তারিখ নেই বা সঠিক নয়। YYYY-MM-DD ফরম্যাট ব্যবহার করুন।',
+'This task comes before any DATE or BACKLOG line.':'এই কাজটি কোনো DATE বা BACKLOG লাইনের আগে এসেছে।',
+'This task has no description.':'এই কাজের কোনো বিবরণ নেই।',
+'NOTE comes before any DATE line.':'NOTE কোনো DATE লাইনের আগে এসেছে।',
+'PLANNED comes before any DATE line.':'PLANNED কোনো DATE লাইনের আগে এসেছে।',
+'No dates or tasks were found. Paste the full answer from the AI.':'কোনো তারিখ বা কাজ পাওয়া যায়নি। এআই-এর পুরো উত্তরটি পেস্ট করুন।',
+'The routine is too large (max 800 dates or 5000 tasks).':'রুটিন অনেক বড় (সর্বোচ্চ ৮০০ তারিখ বা ৫০০০ কাজ)।',
+'Time could not be read, so it was ignored.':'সময় পড়া যায়নি, তাই বাদ দেওয়া হয়েছে।',
+'Daily limit must be between 1h and 24h, so it was ignored.':'দৈনিক সীমা ১ ঘণ্টা থেকে ২৪ ঘণ্টার মধ্যে হতে হবে, তাই বাদ দেওয়া হয়েছে।',
+'Line not recognized and skipped.':'লাইনটি বোঝা যায়নি, তাই বাদ দেওয়া হয়েছে।',
+'Your routine is ready.':'আপনার রুটিন তৈরি হয়ে গেছে।',
+'Update your routine':'রুটিন আপডেট করুন','Update routine':'রুটিন আপডেট করুন',
+'Copy the prompt, give it to any AI tool together with your new routine, then paste the reply below. You will choose how it joins your current routine.':'প্রম্পটটি কপি করে নতুন রুটিনসহ যেকোনো এআই টুলে দিন, তারপর উত্তরটি নিচে পেস্ট করুন। বর্তমান রুটিনের সাথে এটি কীভাবে যুক্ত হবে তা আপনি বাছবেন।',
+'Paste your new routine here':'নতুন রুটিন এখানে পেস্ট করুন',
+'How should this routine be used?':'এই রুটিন কীভাবে ব্যবহার হবে?',
+'Add to current routine':'বর্তমান রুটিনে যোগ করুন','Replace matching dates only':'শুধু মিলে যাওয়া তারিখ বদলান','Reset everything':'সব রিসেট করুন',
+'Add to current routine: keeps everything you have and adds the new dates and tasks. Tasks already on a date are not repeated.':'বর্তমান রুটিনে যোগ করুন: আপনার সবকিছু থাকবে, শুধু নতুন তারিখ ও কাজ যোগ হবে। কোনো তারিখে আগে থেকে থাকা কাজ আবার যোগ হবে না।',
+'Replace matching dates only: dates in the new routine are replaced by the new tasks. All other dates stay exactly as they are.':'শুধু মিলে যাওয়া তারিখ বদলান: নতুন রুটিনে যে তারিখগুলো আছে সেগুলোর কাজ নতুনটা দিয়ে বদলে যাবে। বাকি সব তারিখ হুবহু আগের মতোই থাকবে।',
+'Reset everything: your whole current routine is removed and only the new one is used. Study time, weak chapters and mistakes are kept.':'সব রিসেট করুন: আপনার বর্তমান পুরো রুটিন মুছে শুধু নতুনটা থাকবে। পড়ার সময়, দুর্বল অধ্যায় ও ভুলের তালিকা থাকবে।',
+'Reset everything?':'সব রিসেট করবেন?',
+'Your current routine and its ticks are replaced by the new routine. You can tap Undo afterwards.':'আপনার বর্তমান রুটিন ও তার টিকগুলো নতুন রুটিন দিয়ে বদলে যাবে। পরে "আগের অবস্থায়" চাপলে ফিরে পাবেন।',
+'Reset':'রিসেট',
+'Routine added.':'রুটিন যোগ হয়েছে।','Matching dates replaced.':'মিলে যাওয়া তারিখ বদলানো হয়েছে।','Routine reset and replaced.':'রুটিন রিসেট হয়ে নতুনটা বসেছে।',
+'File loaded. Check it, then continue.':'ফাইল লোড হয়েছে। দেখে নিয়ে এগিয়ে যান।','That file is too large.':'ফাইলটি অনেক বড়।',
+'Prompt copied. Paste it into your AI tool.':'প্রম্পট কপি হয়েছে। এটি আপনার এআই টুলে পেস্ট করুন।',
+'Could not copy automatically. Tap See more and copy the text by hand.':'নিজে নিজে কপি হয়নি। "আরও দেখুন" চেপে টেক্সটটি হাত দিয়ে কপি করুন।',
+'No subjects yet. They appear automatically when your routine has subjects.':'এখনো কোনো বিষয় নেই। রুটিনে বিষয় থাকলে এখানে নিজে নিজেই আসবে।',
+'General':'সাধারণ',
+'Saved data was unreadable. A copy was kept. Import a backup to recover.':'সেভ করা ডেটা পড়া যায়নি। একটি কপি রাখা হয়েছে। ফিরিয়ে আনতে ব্যাকআপ ইমপোর্ট করুন।'
+};
+Object.keys(N).forEach(function(k){if(!(k in window.I18N_BN))window.I18N_BN[k]=N[k]});
+window.I18N_PAT.push(
+[/^Found (\d+) dates?, (\d+) tasks? and (\d+) subjects?\.$/,function(m){return'পাওয়া গেছে '+m[1]+'টি তারিখ, '+m[2]+'টি কাজ ও '+m[3]+'টি বিষয়।'}],
+[/^Line (\d+): (.+)$/,function(m){return'লাইন '+m[1]+': '+(window.I18N_BN[m[2]]||m[2])}]
+);
+})();
