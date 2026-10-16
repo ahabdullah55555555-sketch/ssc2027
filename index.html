@@ -9,17 +9,17 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
 <style>
-:root{--bg:#120F1D;--panel:#181324;--panel2:#221A36;--line:#35294F;--neon:#C033FF;--neon2:#B341F9;--text:#F6F1FF;--lav:#CFC3F0;--warn:#FF8FB1;--ok:#8CF0B4}
+:root{--bg:#120F1D;--panel:#181324;--panel2:#221A36;--line:#35294F;--neon:#C033FF;--neon2:#B341F9;--text:#F6F1FF;--lav:#CFC3F0;--warn:#FF8FB1;--ok:#8CF0B4;--glow:#2B1747;--rgb:192,51,255}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
-body{margin:0;background:radial-gradient(900px 400px at 85% -5%,#2B1747 0%,transparent 70%),var(--bg);color:var(--text);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:max(14px,env(safe-area-inset-top)) 14px calc(92px + env(safe-area-inset-bottom));min-height:100vh}
+body{margin:0;background:radial-gradient(900px 400px at 85% -5%,var(--glow) 0%,transparent 70%),var(--bg);color:var(--text);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Bengali","Hind Siliguri","Kohinoor Bangla",sans-serif;padding:max(14px,env(safe-area-inset-top)) 14px calc(92px + env(safe-area-inset-bottom));min-height:100vh}
 main{max-width:640px;margin:0 auto}
 h1{font-size:26px;margin:0;line-height:1.15}h2{font-size:21px;margin:0 0 10px}h3{font-size:18px;margin:14px 0 6px}
 .sub{color:var(--lav);font-size:16px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin:0 0 14px}
-.glow{border-color:var(--neon2);box-shadow:0 0 22px rgba(192,51,255,.22)}
+.glow{border-color:var(--neon2);box-shadow:0 0 22px rgba(var(--rgb),.22)}
 .top{display:flex;gap:14px;align-items:center;margin-bottom:14px}
-.av{width:72px;height:72px;border-radius:50%;border:3px solid var(--neon);box-shadow:0 0 18px rgba(192,51,255,.5);flex:none;overflow:hidden;background:#221A36}
+.av{width:72px;height:72px;border-radius:50%;border:3px solid var(--neon);box-shadow:0 0 18px rgba(var(--rgb),.5);flex:none;overflow:hidden;background:#221A36}
 .hero{display:flex;gap:16px;align-items:center}
 .ring{width:118px;height:118px;flex:none;position:relative}
 .ring svg{transform:rotate(-90deg)}
@@ -37,7 +37,7 @@ h1{font-size:26px;margin:0;line-height:1.15}h2{font-size:21px;margin:0 0 10px}h3
 .task:last-of-type{border-bottom:0}
 .task input{position:absolute;opacity:0;width:0;height:0}
 .box{width:34px;height:34px;border-radius:10px;border:2.5px solid var(--neon2);flex:none;display:grid;place-items:center;background:var(--bg)}
-.task input:checked+.box{background:var(--neon);border-color:var(--neon);box-shadow:0 0 12px rgba(192,51,255,.7)}
+.task input:checked+.box{background:var(--neon);border-color:var(--neon);box-shadow:0 0 12px rgba(var(--rgb),.7)}
 .task input:checked+.box:after{content:"";width:9px;height:17px;border:solid #fff;border-width:0 4px 4px 0;transform:rotate(45deg) translate(-1px,-2px)}
 .task input:checked~span{color:var(--lav);text-decoration:line-through;text-decoration-color:var(--neon2)}
 .task input:focus-visible+.box{outline:3px solid #fff}
@@ -46,7 +46,7 @@ h1{font-size:26px;margin:0;line-height:1.15}h2{font-size:21px;margin:0 0 10px}h3
 .chips{display:flex;gap:10px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
 .chip{flex-direction:column;flex:none;min-width:74px;min-height:62px;border:1.5px solid var(--line);background:var(--panel);color:var(--text);border-radius:16px;font:inherit;font-size:16px;padding:6px 10px;text-align:center;position:relative}
 .chip b{display:block;font-size:20px}
-.chip.sel{border-color:var(--neon);background:var(--panel2);box-shadow:0 0 14px rgba(192,51,255,.4)}
+.chip.sel{border-color:var(--neon);background:var(--panel2);box-shadow:0 0 14px rgba(var(--rgb),.4)}
 .chip.today:after{content:"";position:absolute;top:6px;right:8px;width:9px;height:9px;border-radius:50%;background:var(--ok)}
 .chip.full{border-color:var(--ok)}
 button,.btn{font:inherit;font-weight:700;min-height:52px;padding:0 18px;border-radius:14px;border:0;background:var(--neon);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-align:center}
@@ -85,7 +85,7 @@ button:disabled{opacity:.4}
 .note.big{font-size:19px;color:var(--text)}
 .nav{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;margin-bottom:12px}
 .nav input.jump{margin:0;padding:0 8px}.nav button{padding:0 6px;white-space:nowrap}
-.selbar{position:fixed;left:10px;right:10px;bottom:calc(76px + env(safe-area-inset-bottom));background:var(--panel2);border:1.5px solid var(--neon);border-radius:16px;padding:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;z-index:6;box-shadow:0 0 20px rgba(192,51,255,.35)}
+.selbar{position:fixed;left:10px;right:10px;bottom:calc(76px + env(safe-area-inset-bottom));background:var(--panel2);border:1.5px solid var(--neon);border-radius:16px;padding:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;z-index:6;box-shadow:0 0 20px rgba(var(--rgb),.35)}
 .selbar b{flex:1 0 100%;font-size:16px}.selbar button{flex:1}
 .modal{display:flex;justify-content:center;align-items:flex-start;overflow-y:auto;padding-top:8vh}
 .dlg{margin:0 0 40px}
@@ -98,6 +98,13 @@ button:disabled{opacity:.4}
 .upd span{flex:1 0 100%}.upd button{flex:1}
 .toast{display:flex;gap:10px;align-items:center;justify-content:space-between;text-align:left}
 .toast span{flex:1}
+.acc{padding:0}.acc>summary{list-style:none;cursor:pointer;min-height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:19px;font-weight:700}
+.acc>summary::-webkit-details-marker{display:none}.acc>summary:after{content:"";width:11px;height:11px;border:solid var(--neon);border-width:0 3px 3px 0;transform:rotate(45deg);transition:transform .2s;margin-top:-4px}
+.acc[open]>summary:after{transform:rotate(225deg);margin-top:4px}.acc>div{padding:0 16px 16px}
+.sw{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+.sw button{min-height:56px;font-size:15px;border:2px solid var(--line);background:var(--bg);color:var(--text);flex-direction:column;gap:4px;padding:6px}
+.sw button i{width:30px;height:12px;border-radius:6px;display:block}.sw button.on{border-color:#fff}
+input[type=color]{padding:3px;min-height:52px}
 </style>
 </head>
 <body>
@@ -117,12 +124,14 @@ button:disabled{opacity:.4}
 <main id="view" aria-live="polite"></main>
 <nav class="tabs" id="tabs" aria-label="Sections"></nav>
 <script src="routine-default.js"></script>
+<script src="i18n.js"></script>
 <script>
 "use strict";
-var APP_VERSION='2.0.0',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='2.2.0',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=['ICT','Islam','Chemistry','BGS','Biology','HM','Physics','Eng 1st','Eng 2nd','Bangla 1st','Bangla 2nd'];
+var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DEF=window.DEFAULT_ROUTINE,EARLY=window.EARLIER_EXAM_PREP,DRE=/^\d{4}-\d{2}-\d{2}$/;
-var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in More).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
+var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in Settings).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
 var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
 var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='';
 /* ---------- helpers ---------- */
@@ -130,8 +139,9 @@ function pad(n){return(n<10?'0':'')+n}
 function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 function today(){return isoOf(new Date())}
 function pd(iso){var p=iso.split('-');return new Date(+p[0],p[1]-1,+p[2])}
-function fmtLong(iso){return pd(iso).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}
-function fmtShort(iso){return pd(iso).toLocaleDateString('en-US',{month:'short',day:'numeric'})}
+function LOC(){return state&&state.prefs&&state.prefs.lang==='bn'?'bn-BD-u-nu-latn':'en-US'}
+function fmtLong(iso){return pd(iso).toLocaleDateString(LOC(),{weekday:'long',month:'long',day:'numeric',year:'numeric'})}
+function fmtShort(iso){return pd(iso).toLocaleDateString(LOC(),{month:'short',day:'numeric'})}
 function addDays(iso,n){var d=pd(iso);d.setDate(d.getDate()+n);return isoOf(d)}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function str(v,n){return String(v==null?'':v).slice(0,n||300)}
@@ -151,7 +161,7 @@ function modal(title,body,btns,validate){return new Promise(function(res){
   document.body.appendChild(m);var f=m.querySelector('input,select,textarea');if(f&&f.type!=='date')f.focus()})}
 function confirmBox(t,msg,ok,danger){return modal(t,'<p>'+esc(msg)+'</p>',[{label:'Cancel',cls:'ghost',val:false},{label:ok,cls:danger?'danger':'',val:true}]).then(function(r){return r.val===true})}
 /* ---------- data + storage ---------- */
-function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:DEF.version,routine:clone({days:DEF.days,tasks:DEF.tasks}),done:{},time:{},weak:[],mistakes:[],prefs:{limit:450}}}
+function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:DEF.version,routine:clone({days:DEF.days,tasks:DEF.tasks}),done:{},time:{},weak:[],mistakes:[],prefs:{limit:450,lang:'en',fs:'m',theme:{name:'purple',accent:'#C033FF',bg:'#120F1D'}}}}
 function cleanRoutine(r){
   if(!r||!Array.isArray(r.days)||!Array.isArray(r.tasks))throw new Error('Routine data is missing.');
   var seen={},days=[],tasks=[],ids={};
@@ -173,7 +183,7 @@ function clean(o){
   var s=fresh();s.routine=cleanRoutine(o.routine);s.routineVersion=str(o.routineVersion,40)||'custom';
   if(o.done&&typeof o.done==='object')Object.keys(o.done).slice(0,6000).forEach(function(k){if(o.done[k]===true)s.done[k]=true});
   s.time=cleanTime(o.time);s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);
-  var l=parseInt(o.prefs&&o.prefs.limit,10);s.prefs.limit=l>=60&&l<=1440?l:450;return s}
+  var l=parseInt(o.prefs&&o.prefs.limit,10);s.prefs.limit=l>=60&&l<=1440?l:450;var th=o.prefs&&o.prefs.theme,HX=/^#[0-9a-fA-F]{6}$/;var lg=o.prefs&&o.prefs.lang;s.prefs.lang=lg==='bn'?'bn':'en';var fz=o.prefs&&o.prefs.fs;s.prefs.fs=FS[fz]?fz:'m';if(th&&HX.test(th.accent)&&HX.test(th.bg))s.prefs.theme={name:str(th.name,12),accent:th.accent,bg:th.bg};return s}
 function load(){
   var raw=null;
   try{raw=localStorage.getItem(KEY)}catch(e){memOnly=true;state=fresh();toast('Storage is blocked in this browser. Export a backup before closing.');return}
@@ -181,7 +191,7 @@ function load(){
   var old=null;try{old=localStorage.getItem(OLDKEY)}catch(e){}
   if(old){try{state=migrateV1(JSON.parse(old));save();toast('Found data from the earlier app version. Study time, weak chapters and mistakes were kept. Old checkboxes belonged to the old routine and were not carried over. The old data is still stored.');return}catch(e){}}
   state=fresh();save()}
-function save(){try{if(!memOnly)localStorage.setItem(KEY,JSON.stringify(state))}catch(e){memOnly=true;toast('Could not save. Export a backup from More.')}}
+function save(){try{if(!memOnly)localStorage.setItem(KEY,JSON.stringify(state))}catch(e){memOnly=true;toast('Could not save. Export a backup from Settings.')}}
 function snap(){undoStack.push(JSON.stringify({routine:state.routine,done:state.done}));if(undoStack.length>25)undoStack.shift()}
 function undo(){var s=undoStack.pop();if(!s)return;var o=JSON.parse(s);state.routine=o.routine;state.done=o.done;sel={};save();render(true);toast('Undone.')}
 function mutate(fn,msg){snap();fn();save();render(true);if(msg)toast(msg,'Undo',undo)}
@@ -197,9 +207,9 @@ function logged(d){var t=state.time[d];return t?t.h*60+t.m:0}
 function selIds(){return Object.keys(sel).filter(function(k){return sel[k]})}
 /* ---------- views ---------- */
 var ICONS={home:'<path d="M3 11l9-8 9 8v10H3z"/>',routine:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/>',subjects:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',logs:'<path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
-var TABS=[['home','Home'],['routine','Routine'],['subjects','Subjects'],['logs','Logs'],['more','More']];
+var TABS=[['home','Home'],['routine','Routine'],['subjects','Subjects'],['logs','Logs'],['more','Settings']];
 function renderTabs(){document.getElementById('tabs').innerHTML=TABS.map(function(t){return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'" aria-label="'+t[1]+'"'+(tab===t[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+t[1]+'</button>'}).join('')}
-function ring(p,lbl){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#2A2142" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#C033FF" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+(lbl||p+'%')+'</b></div>'}
+function ring(p,lbl){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#2A2142" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--neon)" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+(lbl||p+'%')+'</b></div>'}
 function bar(p,w){return'<div class="bar'+(w?' warn':'')+'" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div>'}
 function taskRow(t,k,i,n){
   var meta=[];if(k==='backlog'||k==='overdue')meta.push(t.date?fmtShort(t.date):'Unscheduled');
@@ -241,7 +251,7 @@ function vHome(){
 function chip(k,top,bot,cls){return'<button class="chip'+(selKey===k?' sel':'')+(cls||'')+'" data-act="pick" data-k="'+k+'"><b>'+esc(top)+'</b>'+esc(bot)+'</button>'}
 function vRoutine(){
   if(!selKey)selKey=today();
-  var td=today(),chips=R().days.map(function(d){var T=tasksOn(d.date),all=T.length&&T.every(isDone);return chip(d.date,String(+d.date.slice(8)),fmtShort(d.date).split(' ')[0],(d.date===td?' today':'')+(all?' full':''))}).join('');
+  var td=today(),chips=R().days.map(function(d){var T=tasksOn(d.date),all=T.length&&T.every(isDone);return chip(d.date,String(+d.date.slice(8)),pd(d.date).toLocaleDateString(LOC(),{month:'short'}),(d.date===td?' today':'')+(all?' full':''))}).join('');
   chips+=chip('backlog',String(viewTasks('backlog').length),'Backlog','')+chip('overdue',String(viewTasks('overdue').length),'Overdue','')+'<button class="chip" data-act="adddate"><b>+</b>Date</button>';
   var isDate=DRE.test(selKey),n=selIds().length;
   var h='<div class="row" style="margin-bottom:10px"><h1>Routine</h1><div class="btns" style="flex:none;gap:8px">'+(undoStack.length?'<button class="ghost sm" data-act="undo">Undo</button>':'')+'<button class="sm'+(edit?'':' ghost')+'" data-act="toggleedit">'+(edit?'Done editing':'Edit routine')+'</button></div></div>';
@@ -256,33 +266,53 @@ function vSubjects(){
   SUBJ.forEach(function(s){var tot=0,dn=0,mins=0;R().tasks.forEach(function(t){if(t.subj.indexOf(s)>-1){tot++;mins+=t.mins||0;if(isDone(t))dn++}});var p=tot?Math.round(dn/tot*100):0;
     h+='<section class="card"><div class="row"><h2 style="margin:0">'+esc(s)+'</h2><b>'+p+'%</b></div><p class="sub" style="margin:2px 0 8px">'+dn+' of '+tot+' tasks done'+(tot?'':' (none scheduled)')+'</p>'+bar(p)+'</section>'});
   return h}
-function opts(){return SUBJ.map(function(s){return'<option>'+esc(s)+'</option>'}).join('')}
+function opts(){return SUBJ.map(function(s){return'<option value="'+esc(s)+'">'+esc(s)+'</option>'}).join('')}
 function vLogs(){
   var h='<h1 style="margin-bottom:10px">Logs</h1><section class="card"><h2>Weak chapters</h2><label class="f" for="ws">Subject</label><select id="ws">'+opts()+'</select><label class="f" for="wc">Chapter or lesson</label><input id="wc" maxlength="100" placeholder="Example: Bio 11"><label class="f" for="wn">Why it is weak (optional)</label><input id="wn" maxlength="300"><button data-act="addweak" style="width:100%">Add weak chapter</button><div style="margin-top:14px">';
   if(!state.weak.length)h+='<p class="sub">No weak chapters yet.</p>';
   state.weak.forEach(function(w){h+='<div class="item"><label class="task" style="padding:0"><input type="checkbox" data-weak="'+esc(w.id)+'"'+(w.done?' checked':'')+'><span class="box"></span><span class="tx"><span class="tt">'+esc(w.subject)+': '+esc(w.chapter)+'</span>'+(w.note?'<small>'+esc(w.note)+'</small>':'')+'<small>'+(w.done?'Revised':'Not revised yet')+'</small></span></label><button class="ghost sm" data-delweak="'+esc(w.id)+'" style="margin-top:8px">Delete</button></div>'});
   h+='</div></section><section class="card"><h2>Mistake log</h2><label class="f" for="ms">Subject</label><select id="ms">'+opts()+'</select><label class="f" for="mc">Chapter or topic</label><input id="mc" maxlength="100"><label class="f" for="mw">What went wrong</label><textarea id="mw" rows="2" maxlength="400"></textarea><label class="f" for="mf">Correct fix</label><textarea id="mf" rows="2" maxlength="400"></textarea><button data-act="addmistake" style="width:100%">Add mistake</button><div style="margin-top:14px">';
   if(!state.mistakes.length)h+='<p class="sub">No mistakes logged yet.</p>';
-  state.mistakes.slice().reverse().forEach(function(m){h+='<div class="item"><b>'+esc(m.subject)+'</b>'+(m.chapter?': '+esc(m.chapter):'')+'<small>'+esc(m.date)+'</small><div>'+esc(m.what)+'</div>'+(m.fix?'<small class="ok">Fix: '+esc(m.fix)+'</small>':'')+'<button class="ghost sm" data-delmis="'+esc(m.id)+'" style="margin-top:8px">Delete</button></div>'});
+  state.mistakes.slice().reverse().forEach(function(m){h+='<div class="item"><b>'+esc(m.subject)+'</b>'+(m.chapter?': '+esc(m.chapter):'')+'<small>'+esc(m.date)+'</small><div class="tt">'+esc(m.what)+'</div>'+(m.fix?'<small class="ok">Fix: '+esc(m.fix)+'</small>':'')+'<button class="ghost sm" data-delmis="'+esc(m.id)+'" style="margin-top:8px">Delete</button></div>'});
   return h+'</div></section>'}
 function vMore(){
-  var lim=state.prefs.limit,h='<h1 style="margin-bottom:10px">More</h1>';
-  h+='<div id="upd"></div>';
-  h+='<section class="card"><h2>How your data is kept</h2><ol><li><b>Saved on this phone.</b> Every change (routine edits, ticks, study time, logs) is saved automatically in this browser\'s storage. '+(memOnly?'<span style="color:var(--warn)">Storage is blocked right now.</span>':'<span class="ok">Working.</span>')+(persisted?' '+esc(persisted):'')+'</li><li><b>Offline copy of the app.</b> '+(navigator.serviceWorker&&navigator.serviceWorker.controller?'<span class="ok">Ready: the app opens without internet.</span>':'Not ready yet. Open the app once while online, then reopen it.')+' This only stores the app files, not your data.</li><li><b>No cloud sync.</b> GitHub Pages only hosts the files. Nothing you change is uploaded, and your phone and any other device do not sync. Use <b>Export backup</b> regularly and <b>Import backup</b> to move or recover data.</li></ol><p class="sub" style="margin-bottom:0">Going back online never resets or replaces your data. App version '+APP_VERSION+'. Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>.</p></section>';
-  h+='<section class="card"><h2>Backup and restore</h2><div class="btns"><button data-act="export">Export backup</button><button class="ghost" data-act="import">Import backup</button></div><input type="file" id="file" accept=".json,application/json" hidden></section>';
-  h+='<section class="card"><h2>Routine tools</h2><p class="sub">Edit tasks and dates from the Routine tab. These tools do not touch your study time, weak chapters, or mistakes.</p><div class="btns"><button class="ghost" data-act="restoreorig">Restore original routine</button><button class="ghost" data-act="addearly">Add earlier Oct 26–Nov 11 plan</button></div></section>';
-  h+='<section class="card"><h2>Preferences</h2><label class="f">Daily study limit</label><div class="time"><input id="lh" type="number" inputmode="numeric" min="0" max="24" value="'+Math.floor(lim/60)+'" aria-label="Hours"><input id="lm" type="number" inputmode="numeric" min="0" max="59" value="'+lim%60+'" aria-label="Minutes"></div><button class="ghost" data-act="savelimit" style="width:100%">Save limit ('+fmtMin(lim)+' now)</button></section>';
-  h+='<section class="card"><h2>Notes on your supplied routine</h2><p dir="auto" class="note">'+esc(DEF.suppliedNote)+'</p><ol>'+DEF.flags.map(function(f){return'<li>'+esc(f)+'</li>'}).join('')+'</ol></section>';
-  h+='<section class="card"><h2>Scheduling rules</h2><ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol></section>';
-  h+='<section class="card"><h2>Subject abbreviations</h2><div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div></section>';
-  h+='<section class="card"><h2>Install on Android</h2><ol><li>Open the app link in Chrome and let it load once while online.</li><li>Tap the three-dot menu, then <b>Install app</b> (or <b>Add to Home screen</b>).</li></ol><div>'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':'')+'</div></section>';
-  h+='<section class="card"><h2>Reset study records</h2><p class="sub">Clears ticks, study time, weak chapters, and mistakes. Your routine stays as it is. Export a backup first.</p><button class="danger" data-act="resetprog" style="width:100%">Reset progress</button></section>';
+  var lim=state.prefs.limit,t=state.prefs.theme,h='<h1 style="margin-bottom:6px">Settings</h1><p class="sub">Tap a title to open that setting. Only the one you change is affected.</p><div id="upd"></div>';
+  h+=acc('lang','Language / ভাষা','<p class="sub">Choose the app language. Your own task names stay as you wrote them.</p><div class="btns"><button data-act="lang" data-v="bn" class="'+(state.prefs.lang==='bn'?'':'ghost')+'">বাংলা</button><button data-act="lang" data-v="en" class="'+(state.prefs.lang==='en'?'':'ghost')+'">English</button></div>');
+  h+=acc('size','Text size / লেখার আকার','<p class="sub">Choose how big the text is. It applies to the whole app.</p><select id="fsSel" data-pref="fs" aria-label="Text size">'+Object.keys(FS).map(function(k){return'<option value="'+k+'"'+(state.prefs.fs===k?' selected':'')+'>'+FS[k][1]+'</option>'}).join('')+'</select><p class="sub" style="margin-bottom:0">Aa — '+FS[state.prefs.fs][1]+'</p>');
+  h+=acc('theme','Colors and theme','<p class="sub">Pick a ready theme, or choose your own colors.</p><div class="sw">'+Object.keys(THEMES).map(function(k){return'<button data-act="theme" data-p="'+k+'" class="'+(t.name===k?'on':'')+'"><i style="background:'+THEMES[k][1]+'"></i>'+THEMES[k][0]+'</button>'}).join('')+'</div><div class="time"><div><label class="f" for="cAcc">Accent color</label><input id="cAcc" type="color" data-th="accent" value="'+t.accent+'"></div><div><label class="f" for="cBg">Background color</label><input id="cBg" type="color" data-th="bg" value="'+t.bg+'"></div></div><p class="sub" style="margin-bottom:0">Text colors stay light so they remain readable. Choose a dark background.</p>');
+  h+=acc('limit','Daily study limit','<div class="time"><input id="lh" type="number" inputmode="numeric" min="0" max="24" value="'+Math.floor(lim/60)+'" aria-label="Hours"><input id="lm" type="number" inputmode="numeric" min="0" max="59" value="'+lim%60+'" aria-label="Minutes"></div><button class="ghost" data-act="savelimit" style="width:100%">Save limit ('+fmtMin(lim)+' now)</button>');
+  h+=acc('backup','Backup and restore','<div class="btns"><button data-act="export">Export backup</button><button class="ghost" data-act="import">Import backup</button></div><input type="file" id="file" accept=".json,application/json" hidden>');
+  h+=acc('routine','Routine tools','<p class="sub">Edit tasks and dates from the Routine tab. These tools do not touch study time, weak chapters, or mistakes.</p><div class="btns"><button class="ghost" data-act="restoreorig">Restore original routine</button><button class="ghost" data-act="addearly">Add earlier Oct 26–Nov 11 plan</button></div>');
+  h+=acc('data','How your data is kept','<ol><li><b>Saved on this phone.</b> Every change is saved automatically. '+(memOnly?'<span style="color:var(--warn)">Storage is blocked right now.</span>':'<span class="ok">Working.</span>')+(persisted?' '+esc(persisted):'')+'</li><li><b>Offline copy of the app.</b> '+(navigator.serviceWorker&&navigator.serviceWorker.controller?'<span class="ok">Ready: the app opens without internet.</span>':'Not ready yet. Open the app once while online, then reopen it.')+' This stores app files only, not your data.</li><li><b>No cloud sync.</b> GitHub Pages only hosts the files. Nothing is uploaded and devices do not sync. Use Export backup and Import backup.</li></ol><p class="sub" style="margin-bottom:0">Going back online never resets your data. App version '+APP_VERSION+'. Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>.</p>');
+  h+=acc('notes','Notes on your supplied routine','<p dir="auto" class="note">'+esc(DEF.suppliedNote)+'</p><ol>'+DEF.flags.map(function(f){return'<li>'+esc(f)+'</li>'}).join('')+'</ol>');
+  h+=acc('rules','Scheduling rules','<ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol>');
+  h+=acc('legend','Subject abbreviations','<div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div>');
+  h+=acc('install','Install on Android','<ol><li>Open the app link in Chrome and let it load once while online.</li><li>Tap the three-dot menu, then Install app (or Add to Home screen).</li></ol>'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':''));
+  h+=acc('reset','Reset study records','<p class="sub">Clears ticks, study time, weak chapters, and mistakes. Your routine stays. Export a backup first.</p><button class="danger" data-act="resetprog" style="width:100%">Reset progress</button>');
   return h}
+
+var THEMES={purple:['Purple','#C033FF','#120F1D'],blue:['Blue','#4D7CFF','#0F1220'],pink:['Pink','#FF3DA5','#1D0F18'],green:['Green','#2FD27A','#0E1A14'],teal:['Teal','#19C6D8','#0D1A1D'],orange:['Orange','#FF8A2B','#1D130D']};
+function h2r(h){return[1,3,5].map(function(i){return parseInt(h.substr(i,2),16)})}
+function mix(a,b,t){var A=h2r(a),B=h2r(b);return'#'+[0,1,2].map(function(i){return('0'+Math.round(A[i]+(B[i]-A[i])*t).toString(16)).slice(-2)}).join('')}
+function applyTheme(){var t=state.prefs.theme,st=document.documentElement.style;st.zoom=FS[state.prefs.fs][0]===1?'':FS[state.prefs.fs][0];document.documentElement.lang=state.prefs.lang==='bn'?'bn':'en';var V=['--bg','--panel','--panel2','--line','--neon','--neon2','--glow','--rgb'];
+  if(t.name==='purple'){V.forEach(function(v){st.removeProperty(v)})}
+  else{st.setProperty('--bg',t.bg);st.setProperty('--panel',mix(t.bg,t.accent,.05));st.setProperty('--panel2',mix(t.bg,t.accent,.14));st.setProperty('--line',mix(t.bg,t.accent,.26));st.setProperty('--neon',t.accent);st.setProperty('--neon2',mix(t.accent,t.bg,.12));st.setProperty('--glow',mix(t.bg,t.accent,.3));st.setProperty('--rgb',h2r(t.accent).join(','))}
+  var m=document.querySelector('meta[name=theme-color]');if(m)m.content=t.name==='purple'?'#120F1D':t.bg}
+var openAcc={};
+function acc(id,title,body){return'<details class="card acc" data-acc="'+id+'"'+(openAcc[id]?' open':'')+'><summary>'+esc(title)+'</summary><div>'+body+'</div></details>'}
+var BN=window.I18N_BN||{},PAT=window.I18N_PAT||[];
+function trStr(s){if(!state||state.prefs.lang!=='bn')return s;var c=s.trim();if(!c)return s;var o=BN[c];if(o===undefined){for(var i=0;i<PAT.length;i++){var m=PAT[i][0].exec(c);if(m){o=PAT[i][1](m);break}}}return o===undefined?s:s.replace(c,function(){return o})}
+function trAttrs(e){['placeholder','aria-label','title'].forEach(function(a){var v=e.getAttribute&&e.getAttribute(a);if(v){var t=trStr(v);if(t!==v)e.setAttribute(a,t)}})}
+function trText(n){var p=n.parentElement;if(!p||/^(SCRIPT|STYLE|TEXTAREA)$/.test(p.tagName)||(p.closest&&p.closest('.tt,.big')))return;var v=trStr(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v}
+function trTree(n){if(!n||!state||state.prefs.lang!=='bn')return;if(n.nodeType===3)return trText(n);if(n.nodeType!==1)return;trAttrs(n);var w=document.createTreeWalker(n,5,null),x;while((x=w.nextNode())){if(x.nodeType===3)trText(x);else trAttrs(x)}}
+new MutationObserver(function(ms){if(!state||state.prefs.lang!=='bn')return;ms.forEach(function(m){if(m.type==='characterData')trTree(m.target);else m.addedNodes.forEach(trTree)})}).observe(document.body,{childList:true,subtree:true,characterData:true});
 function render(keep){
+  applyTheme();
   var y=window.scrollY,v={home:vHome,routine:vRoutine,subjects:vSubjects,logs:vLogs,more:vMore}[tab];
   document.getElementById('view').innerHTML=v();renderTabs();if(keep)window.scrollTo(0,y);
   var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
-  if(tab==='more'&&updWorker)showUpdate(updWorker)}
+  if(tab==='more'&&updWorker)showUpdate(updWorker);
+  trTree(document.getElementById('view'));trTree(document.getElementById('tabs'))}
 function go(t){tab=t;render();window.scrollTo(0,0)}
 /* ---------- routine editing ---------- */
 function curDate(){return DRE.test(selKey)?selKey:today()}
@@ -328,6 +358,8 @@ document.addEventListener('change',function(e){
   else if(D.sel){if(t.checked)sel[D.sel]=true;else delete sel[D.sel];render(true)}
   else if(D.weak){state.weak.forEach(function(w){if(w.id===D.weak)w.done=t.checked});save();render(true)}
   else if(D.time){var o=state.time[D.time]||{h:0,m:0};o[D.u]=Math.max(0,Math.min(D.u==='h'?24:59,parseInt(t.value,10)||0));if(o.h||o.m)state.time[D.time]=o;else delete state.time[D.time];save();render(true)}
+  else if(D.pref==='fs'){if(FS[t.value]){state.prefs.fs=t.value;save();render(true)}}
+  else if(D.th){var th=state.prefs.theme;var nt={name:'custom',accent:th.accent,bg:th.bg};nt[D.th]=t.value;state.prefs.theme=nt;save();render(true)}
   else if(D.jump&&t.value){selKey=t.value;render()}
   else if(t.id==='file'&&t.files[0])doImport(t.files[0])});
 document.addEventListener('click',function(e){
@@ -363,11 +395,14 @@ document.addEventListener('click',function(e){
     case'import':document.getElementById('file').click();break;
     case'restoreorig':restoreOrig();break;
     case'addearly':addEarly();break;
+    case'lang':if(D.v==='bn'||D.v==='en'){state.prefs.lang=D.v;save();render(true)}break;
+    case'theme':var P=THEMES[D.p];state.prefs.theme={name:D.p,accent:P[1],bg:P[2]};save();render(true);break;
     case'savelimit':var l=(parseInt(document.getElementById('lh').value,10)||0)*60+(parseInt(document.getElementById('lm').value,10)||0);if(l<60||l>1440){toast('Enter a limit between 1h and 24h.');break}state.prefs.limit=l;save();render(true);toast('Daily limit saved.');break;
     case'install':if(deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;render(true)})}break;
     case'resetprog':confirmBox('Reset study records?','This clears all ticks, study time, weak chapters, and mistakes on this phone. Your routine is kept. This cannot be undone.','Reset progress',true).then(function(ok){if(ok){state.done={};state.time={};state.weak=[];state.mistakes=[];undoStack=[];save();render();toast('Progress reset.')}});break;
     case'doupdate':updating=true;if(updWorker)updWorker.postMessage({type:'SKIP_WAITING'});break;
     case'later':var u=document.getElementById('upbar');if(u)u.remove();break}});
+document.addEventListener('toggle',function(e){var a=e.target.dataset&&e.target.dataset.acc;if(a)openAcc[a]=e.target.open},true);
 document.addEventListener('dragstart',function(e){var r=e.target.closest&&e.target.closest('[data-drag]');if(r){dragId=r.dataset.drag;try{e.dataTransfer.setData('text/plain',dragId);e.dataTransfer.effectAllowed='move'}catch(_){}}});
 document.addEventListener('dragover',function(e){if(dragId&&e.target.closest&&e.target.closest('[data-drag]'))e.preventDefault()});
 document.addEventListener('drop',function(e){var r=e.target.closest&&e.target.closest('[data-drag]');if(dragId&&r&&r.dataset.drag!==dragId){e.preventDefault();dropOn(dragId,r.dataset.drag)}dragId=null});
