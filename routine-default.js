@@ -38,7 +38,7 @@ window.DEFAULT_ROUTINE={
     '"C4, C5, C7, C8, C9, C12 (6h 30m)" has one total for six chapters, so it is one undated task. Split it with Duplicate and Edit if you want separate tasks.',
     '"G+C6" and "G+C11" are kept exactly and tagged Eng 2nd only. Their exact meaning was not given.',
     'Your note says about 59h of room and about 73h of tasks. The supplied numbers add up to 58h 15m of room (Oct 17–25) and 14h 30m of undated tasks. The routine uses the supplied numbers, not the rounded ones.',
-    'Nothing was supplied for Oct 26 to Nov 11. The earlier exam-preparation plan was not loaded. You can add it from More, Routine tools.',
+    'Nothing was supplied for Oct 26 to Nov 11. The earlier exam-preparation plan was not loaded. You can add it from Settings, Routine tools.',
     'The earlier Oct 25 exception of 7h 45m no longer applies. Oct 25 is now 6h 45m, and no day exceeds 7h 30m.',
     'The year is assumed to be 2026.'
   ]
