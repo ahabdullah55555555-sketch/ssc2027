@@ -1,0 +1,15 @@
+{
+  "name": "SSC 2027 Study Tracker",
+  "short_name": "SSC Tracker",
+  "description": "Offline study tracker for the SSC 2027 routine, Oct 16 to Nov 11, 2026.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#120F1D",
+  "theme_color": "#120F1D",
+  "icons": [
+    {"src": "icon.svg", "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "any"},
+    {"src": "icon.svg", "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "maskable"}
+  ]
+}
