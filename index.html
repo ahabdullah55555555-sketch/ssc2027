@@ -111,6 +111,42 @@ input[type=color]{padding:3px;min-height:52px}
 .pbox:not(.open):after{content:"";position:absolute;left:0;right:0;bottom:0;height:64px;background:linear-gradient(to bottom,transparent,var(--panel2));pointer-events:none;border-radius:0 0 14px 14px}
 .ptxt{white-space:pre-wrap;font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--text)}
 textarea#rt,textarea#ru{min-height:150px}
+.toast{touch-action:none;cursor:pointer}.toast[hidden]{display:none}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.hdrb{display:flex;gap:8px;align-items:center}
+.dotb{min-height:44px;width:44px;padding:0;border-radius:12px;background:none;color:var(--text)}
+.dotb svg{width:22px;height:22px;fill:currentColor}
+.avb{background:none;padding:0;min-height:0;border-radius:50%;flex:none}
+img.av{object-fit:cover;display:block}
+.top .hdrb{margin-left:auto}
+.menuwrap{position:fixed;inset:0;z-index:12}
+.menu{position:absolute;top:calc(max(8px,env(safe-area-inset-top)) + 54px);right:14px;min-width:220px;background:var(--panel2);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.55);padding:6px;animation:pgin .15s ease}
+.menu button{width:100%;justify-content:flex-start;background:none;color:var(--text);min-height:50px;font-weight:600;padding:0 14px}
+.menu button.on{color:var(--accl)}.menu button.on:after{content:"✓";margin-left:auto}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal b{text-align:center;color:var(--lav);font-size:13px;padding-bottom:2px}
+.cd{min-height:46px;border-radius:10px;border:1.5px solid transparent;background:var(--panel);color:var(--text);padding:0;position:relative;font-weight:600;font-size:16px}
+.cd.has{background:var(--panel2)}.cd.full{border-color:var(--ok)}.cd.today{color:var(--ok)}
+.cd.sel{border-color:var(--neon);box-shadow:0 0 10px rgba(var(--rgb),.4)}
+.cd.has:before{content:"";position:absolute;bottom:5px;left:50%;margin-left:-2.5px;width:5px;height:5px;border-radius:50%;background:var(--neon2)}
+.seg{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.seg button{flex:none;min-height:44px;background:var(--panel2);color:var(--text);font-size:15px;padding:0 16px}
+.seg button.on{background:var(--neon);color:#fff}
+.rg{display:block;margin:6px 0}.rg text{fill:var(--lav);font-size:10px}.rg line{stroke:var(--line);stroke-width:1}
+.leg2{display:flex;flex-wrap:wrap;gap:6px 14px;margin:6px 0;font-size:14.5px;color:var(--lav)}
+.hb{margin:0 0 14px}.hb .bar i{background:var(--neon)}
+.cpick{width:44px;min-height:36px;height:36px;padding:2px;margin:0;flex:none}
+.tbig{font-size:44px;font-weight:700;text-align:center;margin:8px 0;font-variant-numeric:tabular-nums;color:var(--accl)}
+.crop{width:100%;max-width:300px;aspect-ratio:1;margin:0 auto 10px;overflow:hidden;position:relative;border-radius:12px;background:#000;touch-action:none}
+.crop:after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 999px rgba(0,0,0,.5);pointer-events:none}
+.avs{min-height:38px;width:38px;padding:0;border-radius:50%;border:3px solid transparent}
+.avs.on{border-color:#fff}
+#view.pg{animation:pgin .25s ease}
+@keyframes pgin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes tabpop{0%{transform:scale(.7)}55%{transform:scale(1.3)}100%{transform:scale(1)}}
+.tabs button.pop svg{animation:tabpop .4s ease}
+.tabs button{transition:transform .12s,background .2s}.tabs button:active{transform:scale(.92)}
+@media (prefers-reduced-motion:reduce){.tabs button.pop svg,#view.pg,.menu{animation:none!important}}
 </style>
 </head>
 <body>
@@ -129,17 +165,192 @@ textarea#rt,textarea#ru{min-height:150px}
 <path d="M88 66Q88 78 72 76" stroke="#C033FF" stroke-width="2.5" fill="none"/><circle cx="71" cy="76" r="3" fill="#E9B8FF"/></symbol></defs></svg>
 <main id="view" aria-live="polite"></main>
 <nav class="tabs" id="tabs" aria-label="Sections"></nav>
-<script src="routine-default.js"></script>
-<script src="i18n.js"></script>
+<script>
+/* Bangla translations. English text is the source; this file only maps it to Bangla for display.
+   Your own task names, notes and logs are never translated. */
+window.I18N_BN={
+'Home':'হোম','Routine':'রুটিন','Subjects':'বিষয়','Logs':'লগ','Settings':'সেটিংস',
+'SSC 2027 Tracker':'SSC 2027 ট্র্যাকার','< Prev':'< আগের','Next >':'পরের >','Today':'আজ','Previous day':'আগের দিন','Next day':'পরের দিন',
+'Completed today':'আজ সম্পন্ন','Remaining today':'আজ বাকি','Completed':'সম্পন্ন','Remaining':'বাকি',
+'Review and reschedule':'দেখুন ও নতুন তারিখ দিন','Overall progress':'মোট অগ্রগতি',
+'No routine for this date.':'এই তারিখে কোনো রুটিন নেই।','No routine for this date. Open Routine to add tasks.':'এই তারিখে কোনো রুটিন নেই। কাজ যোগ করতে রুটিন ট্যাব খুলুন।',
+'Study time':'পড়ার সময়','Hours studied':'কত ঘণ্টা পড়েছেন','Minutes':'মিনিট',
+'Edit this date':'এই তারিখ সম্পাদনা','Add task':'কাজ যোগ করুন','Day info':'দিনের তথ্য','Add date entry':'তারিখ যোগ করুন','Select incomplete':'অসম্পূর্ণগুলো বাছুন','Select all':'সব বাছুন','Copy day to…':'দিনটি কপি করুন…','Delete date':'তারিখ মুছুন',
+'Unscheduled backlog':'তারিখহীন বাকি কাজ','Overdue, not done':'সময় পেরিয়েছে, করা হয়নি',
+'Tasks with no date yet. Select them and use Move to schedule them.':'এখনো তারিখ নেই এমন কাজ। বেছে নিয়ে "সরান" চাপুন।',
+'Tasks dated before today that are not ticked. Select them and use Move to reschedule.':'আজকের আগের তারিখের টিক-না-দেওয়া কাজ। বেছে নিয়ে "সরান" দিয়ে নতুন তারিখ দিন।',
+'Nothing here.':'এখানে কিছু নেই।','Undo':'আগের অবস্থায়','Edit routine':'রুটিন সম্পাদনা','Done editing':'সম্পাদনা শেষ',
+'Edit mode: tick the square boxes to select tasks, then use the bar at the bottom. Tasks can also be dragged to reorder. Switch edit mode off to tick tasks as done.':'সম্পাদনা মোড: চৌকো বক্সে টিক দিয়ে কাজ বাছুন, তারপর নিচের বারের বোতাম ব্যবহার করুন। কাজ টেনে এনে ক্রমও বদলানো যায়। কাজ সম্পন্ন টিক দিতে সম্পাদনা মোড বন্ধ করুন।',
+'Jump to date':'তারিখে যান','Date':'তারিখ','Backlog':'বাকি','Overdue':'দেরি',
+'Move':'সরান','Duplicate':'কপি','Delete':'মুছুন','Clear':'নির্বাচন বাদ','Move up':'উপরে','Move down':'নিচে','Edit':'সম্পাদনা',
+'Progress counts every task tagged with a subject, including undated tasks. Tasks with two subjects count for both.':'বিষয় ট্যাগ করা সব কাজ (তারিখহীনসহ) গণনা হয়। দুই বিষয়ের কাজ দুটোতেই গোনা হয়।',
+'Weak chapters':'দুর্বল অধ্যায়','Subject':'বিষয়','Chapter or lesson':'অধ্যায় বা পাঠ','Why it is weak (optional)':'কেন দুর্বল (ঐচ্ছিক)','Add weak chapter':'দুর্বল অধ্যায় যোগ করুন','No weak chapters yet.':'এখনো কোনো দুর্বল অধ্যায় নেই।','Revised':'রিভিশন হয়েছে','Not revised yet':'এখনো রিভিশন হয়নি',
+'Mistake log':'ভুলের তালিকা','Chapter or topic':'অধ্যায় বা টপিক','What went wrong':'কী ভুল হয়েছে','Correct fix':'সঠিক সমাধান','Add mistake':'ভুল যোগ করুন','No mistakes logged yet.':'এখনো কোনো ভুল লেখা হয়নি।','Example: Bio 11':'যেমন: Bio 11',
+'Tap a title to open that setting. Only the one you change is affected.':'যে সেটিং বদলাতে চান তার নামে ট্যাপ করুন। শুধু সেটাই বদলাবে।',
+'Language / ভাষা':'ভাষা / Language','Text size / লেখার আকার':'লেখার আকার / Text size',
+'Choose the app language. Your own task names stay as you wrote them.':'অ্যাপের ভাষা বাছুন। আপনার লেখা কাজের নাম যেমন আছে তেমনই থাকবে।',
+'Choose how big the text is. It applies to the whole app.':'লেখা কত বড় হবে বাছুন। পুরো অ্যাপে এটা কাজ করবে।',
+'Very small':'খুব ছোট','Small':'ছোট','Lower medium':'মাঝারির চেয়ে একটু ছোট','Medium':'মাঝারি','Upper medium':'মাঝারির চেয়ে একটু বড়','Large':'বড়','Very large':'খুব বড়',
+'Colors and theme':'রং ও থিম','Pick a ready theme, or choose your own colors.':'তৈরি থিম বেছে নিন, অথবা নিজের রং বাছুন।',
+'Purple':'বেগুনি','Blue':'নীল','Pink':'গোলাপি','Green':'সবুজ','Teal':'টিল','Orange':'কমলা',
+'Accent color':'মূল রং','Background color':'ব্যাকগ্রাউন্ডের রং','Text colors stay light so they remain readable. Choose a dark background.':'লেখার রং হালকাই থাকে যাতে পড়া যায়। গাঢ় ব্যাকগ্রাউন্ড বেছে নিন।',
+'Daily study limit':'দৈনিক পড়ার সীমা','Hours':'ঘণ্টা','Backup and restore':'ব্যাকআপ ও রিস্টোর','Export backup':'ব্যাকআপ এক্সপোর্ট','Import backup':'ব্যাকআপ ইমপোর্ট',
+'Routine tools':'রুটিন টুলস','Edit tasks and dates from the Routine tab. These tools do not touch study time, weak chapters, or mistakes.':'কাজ ও তারিখ রুটিন ট্যাব থেকে বদলান। এই টুলগুলো পড়ার সময়, দুর্বল অধ্যায় বা ভুলের তালিকায় হাত দেয় না।',
+'Restore original routine':'আসল রুটিন ফিরিয়ে আনুন','Add earlier Oct 26–Nov 11 plan':'আগের Oct 26–Nov 11 পরিকল্পনা যোগ করুন',
+'How your data is kept':'আপনার ডেটা কীভাবে থাকে','Saved on this phone.':'এই ফোনে সেভ হয়।','Every change is saved automatically.':'প্রতিটি পরিবর্তন নিজে থেকেই সেভ হয়।','Working.':'ঠিকভাবে চলছে।','Storage is blocked right now.':'এখন স্টোরেজ বন্ধ আছে।','Storage is marked persistent.':'স্টোরেজ স্থায়ী হিসেবে চিহ্নিত।',
+'Offline copy of the app.':'অ্যাপের অফলাইন কপি।','Ready: the app opens without internet.':'প্রস্তুত: ইন্টারনেট ছাড়াই অ্যাপ খুলবে।','Not ready yet. Open the app once while online, then reopen it.':'এখনো প্রস্তুত নয়। একবার অনলাইনে অ্যাপ খুলুন, তারপর আবার খুলুন।','This stores app files only, not your data.':'এটা শুধু অ্যাপের ফাইল রাখে, আপনার ডেটা নয়।',
+'No cloud sync.':'ক্লাউড সিঙ্ক নেই।','GitHub Pages only hosts the files. Nothing is uploaded and devices do not sync. Use Export backup and Import backup.':'GitHub Pages শুধু ফাইল রাখে। কিছু আপলোড হয় না, ডিভাইসগুলোর মধ্যে সিঙ্কও হয় না। ব্যাকআপ এক্সপোর্ট ও ইমপোর্ট ব্যবহার করুন।','Online':'অনলাইন','Offline':'অফলাইন',
+'Notes on your supplied routine':'আপনার দেওয়া রুটিন সম্পর্কে নোট',
+'Oct 16 is a rest day (Rest 😴). It has no tasks and no duration.':'Oct 16 বিশ্রামের দিন (Rest 😴)। এতে কোনো কাজ বা সময় নেই।',
+'Only day totals were supplied. Individual tasks on dated days have no duration, so none was invented. Each day\'s total is stored as that day\'s planned time.':'শুধু দিনের মোট সময় দেওয়া ছিল। তারিখওয়ালা দিনের আলাদা কাজের সময় দেওয়া নেই, তাই বানানো হয়নি। প্রতিদিনের মোট সময় সেই দিনের পরিকল্পিত সময় হিসেবে রাখা হয়েছে।',
+'Oct 22 "L37–38", "L43" and Oct 24 "L39–43 rev" follow a "Bangla 2nd" entry in a comma list. They are stored word for word and tagged Bangla 2nd. Please confirm.':'Oct 22 এর "L37–38", "L43" এবং Oct 24 এর "L39–43 rev" কমা-তালিকায় "Bangla 2nd" এর পরে এসেছে। যেমন লেখা তেমনই রাখা হয়েছে এবং Bangla 2nd ট্যাগ দেওয়া হয়েছে। দয়া করে নিশ্চিত করুন।',
+'Oct 25 "8–9" is stored as written and tagged Eng 1st. The undated "Eng 1st Pattern Practice (1h)" may or may not be the same as the Oct 25 "practice". Both are kept.':'Oct 25 এর "8–9" যেমন লেখা তেমন রাখা হয়েছে, Eng 1st ট্যাগসহ। তারিখহীন "Eng 1st Pattern Practice (1h)" আর Oct 25 এর "practice" একই কি না জানা নেই। দুটোই রাখা হয়েছে।',
+'"C4, C5, C7, C8, C9, C12 (6h 30m)" has one total for six chapters, so it is one undated task. Split it with Duplicate and Edit if you want separate tasks.':'"C4, C5, C7, C8, C9, C12 (6h 30m)" ছয় অধ্যায়ের জন্য একটাই মোট সময়, তাই এটা একটা তারিখহীন কাজ। আলাদা কাজ চাইলে কপি ও সম্পাদনা দিয়ে ভাগ করুন।',
+'"G+C6" and "G+C11" are kept exactly and tagged Eng 2nd only. Their exact meaning was not given.':'"G+C6" ও "G+C11" যেমন আছে তেমনই রাখা হয়েছে, শুধু Eng 2nd ট্যাগসহ। এদের সঠিক অর্থ বলা হয়নি।',
+'Your note says about 59h of room and about 73h of tasks. The supplied numbers add up to 58h 15m of room (Oct 17–25) and 14h 30m of undated tasks. The routine uses the supplied numbers, not the rounded ones.':'আপনার নোটে প্রায় 59h জায়গা আর প্রায় 73h কাজ বলা আছে। দেওয়া সংখ্যা যোগ করলে জায়গা 58h 15m (Oct 17–25) এবং তারিখহীন কাজ 14h 30m। রুটিনে গোলাকার সংখ্যা নয়, দেওয়া সংখ্যাই ব্যবহার হয়েছে।',
+'Nothing was supplied for Oct 26 to Nov 11. The earlier exam-preparation plan was not loaded. You can add it from Settings, Routine tools.':'Oct 26 থেকে Nov 11 এর জন্য কিছু দেওয়া হয়নি। আগের পরীক্ষা-প্রস্তুতির পরিকল্পনা লোড করা হয়নি। সেটিংসের "রুটিন টুলস" থেকে যোগ করতে পারেন।',
+'The earlier Oct 25 exception of 7h 45m no longer applies. Oct 25 is now 6h 45m, and no day exceeds 7h 30m.':'আগের Oct 25 এর 7h 45m ব্যতিক্রম আর প্রযোজ্য নয়। Oct 25 এখন 6h 45m, আর কোনো দিনই 7h 30m ছাড়ায় না।',
+'The year is assumed to be 2026.':'সাল ধরা হয়েছে 2026।',
+'Scheduling rules':'সময়সূচির নিয়ম',
+'On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.':'পরীক্ষার আগের দিন থেকে পরীক্ষার সকাল পর্যন্ত শুধু সেই পরীক্ষার বিষয় রিভিশন দিন এবং পুরো বই শেষ করুন।',
+'Prioritize upcoming exams. On gap days, focus on the subject of the next exam.':'সামনের পরীক্ষাকে অগ্রাধিকার দিন। মাঝের ফাঁকা দিনে পরের পরীক্ষার বিষয়ে মন দিন।',
+'After an exam, begin preparing for the next subject that afternoon.':'পরীক্ষা শেষে সেদিন বিকেল থেকেই পরের বিষয়ের প্রস্তুতি শুরু করুন।',
+'Daily study time must not exceed your daily limit (7h 30m by default; you can change it in Settings).':'দৈনিক পড়ার সময় আপনার দৈনিক সীমা ছাড়ানো যাবে না (ডিফল্ট 7h 30m; সেটিংসে বদলানো যায়)।',
+'The exact exam timetable has not been supplied. No exam dates are shown as verified facts.':'পরীক্ষার সঠিক রুটিন দেওয়া হয়নি। কোনো পরীক্ষার তারিখ নিশ্চিত তথ্য হিসেবে দেখানো হয়নি।',
+'Subject-only instructions are kept exactly as written.':'"শুধু এই বিষয়" নির্দেশনাগুলো যেমন লেখা তেমনই রাখা হয়েছে।',
+'Subject abbreviations':'বিষয়ের সংক্ষেপ','Install on Android':'অ্যান্ড্রয়েডে ইনস্টল',
+'Open the app link in Chrome and let it load once while online.':'Chrome-এ অ্যাপের লিংক খুলুন এবং একবার অনলাইনে পুরোপুরি লোড হতে দিন।',
+'Tap the three-dot menu, then Install app (or Add to Home screen).':'তিন-ডট মেনুতে ট্যাপ করুন, তারপর "Install app" (বা "Add to Home screen") চাপুন।','Install now':'এখনই ইনস্টল করুন',
+'Reset study records':'পড়ার রেকর্ড রিসেট','Clears ticks, study time, weak chapters, and mistakes. Your routine stays. Export a backup first.':'টিক, পড়ার সময়, দুর্বল অধ্যায় ও ভুলের তালিকা মুছে যাবে। রুটিন থাকবে। আগে ব্যাকআপ নিন।','Reset progress':'অগ্রগতি রিসেট',
+'A new version is ready. Your data stays on this phone.':'নতুন ভার্সন প্রস্তুত। আপনার ডেটা এই ফোনেই থাকবে।','Update now':'এখনই আপডেট','Later':'পরে',
+'Cancel':'বাতিল','Edit task':'কাজ সম্পাদনা','Description':'বিবরণ','Chapter or lesson (optional)':'অধ্যায় বা পাঠ (ঐচ্ছিক)','Planned hours':'পরিকল্পিত ঘণ্টা','Date (empty = unscheduled backlog)':'তারিখ (ফাঁকা = তারিখহীন)','Save task':'কাজ সেভ করুন','Enter a description.':'বিবরণ লিখুন।',
+'New date':'নতুন তারিখ','Move to unscheduled backlog instead':'এর বদলে তারিখহীন তালিকায় রাখুন','Also clear completion ticks on these tasks':'এই কাজগুলোর সম্পন্ন-টিকও মুছুন','Ticks and study time are kept by default.':'সাধারণভাবে টিক ও পড়ার সময় থেকে যায়।','Pick a date or choose backlog.':'তারিখ বাছুন অথবা তারিখহীন তালিকা বেছে নিন।',
+'Add date':'তারিখ যোগ করুন','Date (change it to move the whole day)':'তারিখ (বদলালে পুরো দিনটি সরে যাবে)','Note (for example Rest, or a subject focus)':'নোট (যেমন বিশ্রাম, বা কোনো বিষয়ে ফোকাস)','Save':'সেভ',
+'That date already exists. Use Copy day to combine days.':'এই তারিখ আগে থেকেই আছে। দিন মেলাতে "দিনটি কপি করুন" ব্যবহার করুন।','Pick a date.':'তারিখ বাছুন।','Target date':'লক্ষ্য তারিখ','Add to that day':'ওই দিনে যোগ করুন','Replace that day\'s routine':'ওই দিনের রুটিন বদলে দিন','Copies start unticked.':'কপিগুলো টিকবিহীন থাকবে।','Copy':'কপি','Pick a target date.':'লক্ষ্য তারিখ বাছুন।','Pick a different date.':'অন্য তারিখ বাছুন।','Replace day':'দিন বদলান',
+'This date entry will be removed.':'এই তারিখের এন্ট্রি মুছে যাবে।','Delete date, keep tasks in backlog':'তারিখ মুছুন, কাজ রাখুন তারিখহীন তালিকায়','Delete date and its tasks':'তারিখ ও কাজ দুটোই মুছুন',
+'They will be removed from the routine along with their ticks. You can tap Undo right afterwards.':'রুটিন থেকে সেগুলো টিকসহ মুছে যাবে। সাথে সাথে "আগের অবস্থায়" চাপলে ফিরে পাবেন।',
+'Restore the original routine?':'আসল রুটিন ফিরিয়ে আনবেন?','Your current routine, including all edits, is replaced by the originally supplied one. Study time, weak chapters, mistakes, and preferences are kept. Ticks stay on tasks that still exist in the original. You can tap Undo afterwards.':'আপনার বর্তমান রুটিন (সব পরিবর্তনসহ) আসল দেওয়া রুটিন দিয়ে বদলে যাবে। পড়ার সময়, দুর্বল অধ্যায়, ভুলের তালিকা ও সেটিংস থাকবে। আসল রুটিনে যে কাজগুলো আছে সেগুলোর টিক থাকবে। পরে "আগের অবস্থায়" চাপলে ফিরে পাবেন।','Restore routine':'রুটিন ফিরিয়ে আনুন',
+'Add the earlier Oct 26–Nov 11 plan?':'আগের Oct 26–Nov 11 পরিকল্পনা যোগ করবেন?','Add dates':'তারিখ যোগ করুন',
+'Reset study records?':'পড়ার রেকর্ড রিসেট করবেন?','This clears all ticks, study time, weak chapters, and mistakes on this phone. Your routine is kept. This cannot be undone.':'এই ফোনের সব টিক, পড়ার সময়, দুর্বল অধ্যায় ও ভুলের তালিকা মুছে যাবে। রুটিন থাকবে। এটা আর ফেরানো যাবে না।',
+'Delete this mistake?':'এই ভুলটি মুছবেন?','It will be removed from the log.':'এটা তালিকা থেকে মুছে যাবে।','Replace current data?':'বর্তমান ডেটা বদলাবেন?','Import backup':'ব্যাকআপ ইমপোর্ট',
+'This is a backup from the earlier app version. Only study time, weak chapters, and mistakes will be imported. Your current routine and ticks stay.':'এটা আগের অ্যাপ ভার্সনের ব্যাকআপ। শুধু পড়ার সময়, দুর্বল অধ্যায় ও ভুলের তালিকা ইমপোর্ট হবে। আপনার বর্তমান রুটিন ও টিক থাকবে।',
+'Task saved.':'কাজ সেভ হয়েছে।','Task added.':'কাজ যোগ হয়েছে।','Undone.':'আগের অবস্থায় ফেরানো হয়েছে।','Deleted.':'মুছে ফেলা হয়েছে।','Date deleted.':'তারিখ মুছে গেছে।','Date added.':'তারিখ যোগ হয়েছে।','Saved.':'সেভ হয়েছে।','Weak chapter added.':'দুর্বল অধ্যায় যোগ হয়েছে।','Mistake added.':'ভুল যোগ হয়েছে।','Daily limit saved.':'দৈনিক সীমা সেভ হয়েছে।',
+'Select at least one task first.':'আগে অন্তত একটা কাজ বাছুন।','Enter a chapter or lesson first.':'আগে অধ্যায় বা পাঠ লিখুন।','Describe what went wrong first.':'আগে কী ভুল হয়েছে লিখুন।','Enter a limit between 1h and 24h.':'1h থেকে 24h এর মধ্যে সীমা দিন।',
+'Original routine restored.':'আসল রুটিন ফিরে এসেছে।','Earlier plan added.':'আগের পরিকল্পনা যোগ হয়েছে।','Those dates already exist in your routine.':'ওই তারিখগুলো আপনার রুটিনে আগে থেকেই আছে।','Backup imported.':'ব্যাকআপ ইমপোর্ট হয়েছে।','Progress reset.':'অগ্রগতি রিসেট হয়েছে।','Installed.':'ইনস্টল হয়েছে।','Backup exported. Check your Downloads folder.':'ব্যাকআপ এক্সপোর্ট হয়েছে। Downloads ফোল্ডার দেখুন।','Could not save. Export a backup from Settings.':'সেভ করা গেল না। সেটিংস থেকে ব্যাকআপ এক্সপোর্ট করুন।'
+};
+window.I18N_PAT=[
+[/^(\d+) of (\d+) done$/,function(m){return m[2]+'টির মধ্যে '+m[1]+'টি সম্পন্ন'}],
+[/^(\d+) of (\d+) tasks done\.(?: (\d+) undated \((.+)\)\.)?$/,function(m){return m[2]+'টির মধ্যে '+m[1]+'টি কাজ সম্পন্ন।'+(m[3]?' '+m[3]+'টি তারিখহীন ('+m[4]+')।':'')}],
+[/^(\d+) of (\d+) tasks done( \(none scheduled\))?$/,function(m){return m[2]+'টির মধ্যে '+m[1]+'টি কাজ সম্পন্ন'+(m[3]?' (কোনো কাজ নেই)':'')}],
+[/^Showing (.+?)\.( No tasks on this date\.)?$/,function(m){return(m[1]==='today'?'আজকের দিন দেখাচ্ছে।':m[1]+' দেখাচ্ছে।')+(m[2]?' এই তারিখে কোনো কাজ নেই।':'')}],
+[/^(\d+) overdue tasks? not done\.$/,function(m){return m[1]+'টি কাজের সময় পেরিয়েছে, করা হয়নি।'}],
+[/^Study time logged: (.+) of (.+) planned\.$/,function(m){return'পড়ার সময় লেখা হয়েছে: '+m[2]+' এর মধ্যে '+m[1]+'।'}],
+[/^Logged (.+) of (.+)$/,function(m){return m[2]+' এর মধ্যে '+m[1]+' লেখা হয়েছে'}],
+[/^Study time \(planned (.+)\)$/,function(m){return'পড়ার সময় (পরিকল্পিত '+m[1]+')'}],
+[/^Planned load (.+) is (.+) above your daily limit of (.+)\.$/,function(m){return'পরিকল্পিত সময় '+m[1]+', যা দৈনিক সীমা '+m[3]+' এর চেয়ে '+m[2]+' বেশি।'}],
+[/^(\d+) selected$/,function(m){return m[1]+'টি বাছাই করা'}],
+[/^Move (\d+) tasks?$/,function(m){return m[1]+'টি কাজ সরান'}],
+[/^Delete (\d+) tasks?\?$/,function(m){return m[1]+'টি কাজ মুছবেন?'}],
+[/^Copy (.+) to another date$/,function(m){return m[1]+' অন্য তারিখে কপি করুন'}],
+[/^Delete (.+)\?$/,function(m){return m[1]+' মুছবেন?'}],
+[/^Replace (.+)\?$/,function(m){return m[1]+' বদলাবেন?'}],
+[/^Save limit \((.+) now\)$/,function(m){return'সীমা সেভ করুন (এখন '+m[1]+')'}],
+[/^Moved (\d+) tasks?( to .+)?\.$/,function(m){return m[1]+'টি কাজ সরানো হয়েছে'+(m[2]?' ('+m[2].slice(4)+')':'')+'।'}],
+[/^Duplicated (\d+)\.$/,function(m){return m[1]+'টি কপি হয়েছে।'}],
+[/^Copied to (.+)\.$/,function(m){return m[1]+' তারিখে কপি হয়েছে।'}],
+[/^Going back online never resets your data\. App version (.+)\. Status: $/,function(m){return'আবার অনলাইনে এলে আপনার ডেটা রিসেট হয় না। অ্যাপ ভার্সন '+m[1]+'। অবস্থা: '}],
+[/^This date has (\d+) tasks?\. Choose what happens to them\.$/,function(m){return'এই তারিখে '+m[1]+'টি কাজ আছে। সেগুলোর কী হবে বাছুন।'}],
+[/^(\d+) existing tasks? on that date will be deleted and replaced by (\d+) copied tasks?\. You can tap Undo afterwards\.$/,function(m){return'ওই তারিখের '+m[1]+'টি কাজ মুছে '+m[2]+'টি কপি করা কাজ বসবে। পরে "আগের অবস্থায়" চাপলে ফিরে পাবেন।'}],
+[/^(\d+) dates will be added\. Dates you already have are left untouched\.$/,function(m){return m[1]+'টি তারিখ যোগ হবে। আপনার আগের তারিখগুলো যেমন আছে তেমনই থাকবে।'}],
+[/^This backup has (\d+) tasks, (\d+) dates, (\d+) weak chapters, and (\d+) mistakes\. Everything on this phone, including your routine, will be replaced\.$/,function(m){return'এই ব্যাকআপে '+m[1]+'টি কাজ, '+m[2]+'টি তারিখ, '+m[3]+'টি দুর্বল অধ্যায় ও '+m[4]+'টি ভুল আছে। রুটিনসহ এই ফোনের সব ডেটা বদলে যাবে।'}]
+];
+/* v2.3.0 additions: onboarding, routine upload and update. Keys already defined above are kept. */
+(function(){
+var N={
+'Let’s go! Upload your routine to continue':'চলুন শুরু করি! চালিয়ে যেতে আপনার রুটিন আপলোড করুন',
+'Your routine builds the whole app: every date, task and subject. You only do this once.':'আপনার রুটিন দিয়েই পুরো অ্যাপ তৈরি হয়: প্রতিটি তারিখ, কাজ ও বিষয়। এটা শুধু একবারই করতে হবে।',
+'Step 1: Get your routine in the right format':'ধাপ ১: রুটিনটি সঠিক ফরম্যাটে নিন',
+'Copy the prompt below and send it to any AI tool (Gemini, ChatGPT, Grok or others) together with your routine. The AI will reply with a ready text.':'নিচের প্রম্পটটি কপি করে আপনার রুটিনসহ যেকোনো এআই টুলে (জেমিনি, চ্যাটজিপিটি, গ্রক বা অন্য) পাঠান। এআই একটি তৈরি টেক্সট উত্তর দেবে।',
+'See more':'আরও দেখুন','See less':'কম দেখুন','Copy prompt':'প্রম্পট কপি করুন',
+'Step 2: Paste the AI’s reply here':'ধাপ ২: এআই-এর উত্তরটি এখানে পেস্ট করুন',
+'Paste the routine text here':'রুটিনের টেক্সট এখানে পেস্ট করুন',
+'Continue':'চালিয়ে যান','Choose a text file':'টেক্সট ফাইল বাছুন',
+'Already have a backup?':'আগের ব্যাকআপ আছে?','Restore your data from a backup file.':'ব্যাকআপ ফাইল থেকে আপনার ডেটা ফিরিয়ে আনুন।',
+'Ready to build':'তৈরির জন্য প্রস্তুত','Build my routine':'আমার রুটিন তৈরি করুন',
+'Some details were skipped:':'কিছু অংশ বাদ দেওয়া হয়েছে:',
+'Could not read the routine. Fix these and try again:':'রুটিনটি পড়া যায়নি। এগুলো ঠিক করে আবার চেষ্টা করুন:',
+'Tip: ask the AI to fix these lines, then paste the new answer.':'পরামর্শ: এআইকে এই লাইনগুলো ঠিক করতে বলুন, তারপর নতুন উত্তর পেস্ট করুন।',
+'Date is missing or not valid. Use YYYY-MM-DD.':'তারিখ নেই বা সঠিক নয়। YYYY-MM-DD ফরম্যাট ব্যবহার করুন।',
+'This task comes before any DATE or BACKLOG line.':'এই কাজটি কোনো DATE বা BACKLOG লাইনের আগে এসেছে।',
+'This task has no description.':'এই কাজের কোনো বিবরণ নেই।',
+'NOTE comes before any DATE line.':'NOTE কোনো DATE লাইনের আগে এসেছে।',
+'PLANNED comes before any DATE line.':'PLANNED কোনো DATE লাইনের আগে এসেছে।',
+'No dates or tasks were found. Paste the full answer from the AI.':'কোনো তারিখ বা কাজ পাওয়া যায়নি। এআই-এর পুরো উত্তরটি পেস্ট করুন।',
+'The routine is too large (max 800 dates or 5000 tasks).':'রুটিন অনেক বড় (সর্বোচ্চ ৮০০ তারিখ বা ৫০০০ কাজ)।',
+'Time could not be read, so it was ignored.':'সময় পড়া যায়নি, তাই বাদ দেওয়া হয়েছে।',
+'Daily limit must be between 1h and 24h, so it was ignored.':'দৈনিক সীমা ১ ঘণ্টা থেকে ২৪ ঘণ্টার মধ্যে হতে হবে, তাই বাদ দেওয়া হয়েছে।',
+'Line not recognized and skipped.':'লাইনটি বোঝা যায়নি, তাই বাদ দেওয়া হয়েছে।',
+'Your routine is ready.':'আপনার রুটিন তৈরি হয়ে গেছে।',
+'Update your routine':'রুটিন আপডেট করুন','Update routine':'রুটিন আপডেট করুন',
+'Copy the prompt, give it to any AI tool together with your new routine, then paste the reply below. You will choose how it joins your current routine.':'প্রম্পটটি কপি করে নতুন রুটিনসহ যেকোনো এআই টুলে দিন, তারপর উত্তরটি নিচে পেস্ট করুন। বর্তমান রুটিনের সাথে এটি কীভাবে যুক্ত হবে তা আপনি বাছবেন।',
+'Paste your new routine here':'নতুন রুটিন এখানে পেস্ট করুন',
+'How should this routine be used?':'এই রুটিন কীভাবে ব্যবহার হবে?',
+'Add to current routine':'বর্তমান রুটিনে যোগ করুন','Replace matching dates only':'শুধু মিলে যাওয়া তারিখ বদলান','Reset everything':'সব রিসেট করুন',
+'Add to current routine: keeps everything you have and adds the new dates and tasks. Tasks already on a date are not repeated.':'বর্তমান রুটিনে যোগ করুন: আপনার সবকিছু থাকবে, শুধু নতুন তারিখ ও কাজ যোগ হবে। কোনো তারিখে আগে থেকে থাকা কাজ আবার যোগ হবে না।',
+'Replace matching dates only: dates in the new routine are replaced by the new tasks. All other dates stay exactly as they are.':'শুধু মিলে যাওয়া তারিখ বদলান: নতুন রুটিনে যে তারিখগুলো আছে সেগুলোর কাজ নতুনটা দিয়ে বদলে যাবে। বাকি সব তারিখ হুবহু আগের মতোই থাকবে।',
+'Reset everything: your whole current routine is removed and only the new one is used. Study time, weak chapters and mistakes are kept.':'সব রিসেট করুন: আপনার বর্তমান পুরো রুটিন মুছে শুধু নতুনটা থাকবে। পড়ার সময়, দুর্বল অধ্যায় ও ভুলের তালিকা থাকবে।',
+'Reset everything?':'সব রিসেট করবেন?',
+'Your current routine and its ticks are replaced by the new routine. You can tap Undo afterwards.':'আপনার বর্তমান রুটিন ও তার টিকগুলো নতুন রুটিন দিয়ে বদলে যাবে। পরে "আগের অবস্থায়" চাপলে ফিরে পাবেন।',
+'Reset':'রিসেট',
+'Routine added.':'রুটিন যোগ হয়েছে।','Matching dates replaced.':'মিলে যাওয়া তারিখ বদলানো হয়েছে।','Routine reset and replaced.':'রুটিন রিসেট হয়ে নতুনটা বসেছে।',
+'File loaded. Check it, then continue.':'ফাইল লোড হয়েছে। দেখে নিয়ে এগিয়ে যান।','That file is too large.':'ফাইলটি অনেক বড়।',
+'Prompt copied. Paste it into your AI tool.':'প্রম্পট কপি হয়েছে। এটি আপনার এআই টুলে পেস্ট করুন।',
+'Could not copy automatically. Tap See more and copy the text by hand.':'নিজে নিজে কপি হয়নি। "আরও দেখুন" চেপে টেক্সটটি হাত দিয়ে কপি করুন।',
+'No subjects yet. They appear automatically when your routine has subjects.':'এখনো কোনো বিষয় নেই। রুটিনে বিষয় থাকলে এখানে নিজে নিজেই আসবে।',
+'General':'সাধারণ',
+'Saved data was unreadable. A copy was kept. Import a backup to recover.':'সেভ করা ডেটা পড়া যায়নি। একটি কপি রাখা হয়েছে। ফিরিয়ে আনতে ব্যাকআপ ইমপোর্ট করুন।'
+};
+Object.keys(N).forEach(function(k){if(!(k in window.I18N_BN))window.I18N_BN[k]=N[k]});
+window.I18N_PAT.push(
+[/^Found (\d+) dates?, (\d+) tasks? and (\d+) subjects?\.$/,function(m){return'পাওয়া গেছে '+m[1]+'টি তারিখ, '+m[2]+'টি কাজ ও '+m[3]+'টি বিষয়।'}],
+[/^Line (\d+): (.+)$/,function(m){return'লাইন '+m[1]+': '+(window.I18N_BN[m[2]]||m[2])}]
+);
+})();
+/* v2.4.0 additions */
+(function(){
+var N={
+'Study timer':'পড়ার টাইমার','Run it while you study. When you stop, the time is saved as a record.':'পড়ার সময় এটি চালু রাখুন। থামালে সময়টা একটি রেকর্ড হিসেবে সেভ হবে।','Subject':'বিষয়','Start timer':'টাইমার শুরু করুন','Running':'চলছে','Paused':'থেমে আছে','Pause':'থামান','Resume':'আবার চালু করুন','Stop and save':'থামান ও সেভ করুন','Discard':'বাতিল করুন','Other':'অন্যান্য',
+'Too short to save. Timer stopped.':'সময় খুব কম, তাই সেভ হয়নি। টাইমার থেমেছে।','Timer saved as a record.':'টাইমারের সময় রেকর্ড হিসেবে সেভ হয়েছে।','Discard timer?':'টাইমার বাতিল করবেন?','The time on the timer will not be saved.':'টাইমারের সময় সেভ হবে না।','Timer discarded.':'টাইমার বাতিল হয়েছে।',
+'Records':'রেকর্ড','Add record':'রেকর্ড যোগ করুন','No subject records for this day.':'এই দিনে বিষয় অনুযায়ী কোনো রেকর্ড নেই।','Studied hours':'পড়েছেন (ঘণ্টা)','Enter the time you studied.':'কতক্ষণ পড়েছেন তা লিখুন।','Save':'সেভ করুন','Record added.':'রেকর্ড যোগ হয়েছে।','Record deleted.':'রেকর্ড মোছা হয়েছে।',
+'Daily':'দৈনিক','Weekly':'সাপ্তাহিক','Monthly':'মাসিক','Yearly':'বাৎসরিক','Subjects':'বিষয়',
+'Solid bars show the time you studied. Light bars behind them show your target.':'গাঢ় রঙের বার আপনার পড়ার সময় দেখায়। পেছনের হালকা বার আপনার লক্ষ্য দেখায়।','Not assigned':'বিষয় দেওয়া নেই','Studied':'পড়েছেন','Target':'লক্ষ্য','Average per study day':'পড়ার দিনে গড়','Best day':'সেরা দিন','Details':'বিস্তারিত','No study records in this period yet.':'এই সময়ে এখনো কোনো পড়ার রেকর্ড নেই।','Study time by subject':'বিষয় অনুযায়ী পড়ার সময়','Add records with the timer or the Add record button to see study time here.':'টাইমার বা "রেকর্ড যোগ করুন" বাটন দিয়ে রেকর্ড যোগ করলে এখানে পড়ার সময় দেখা যাবে।','Subject color':'বিষয়ের রং','Custom color':'নিজের পছন্দের রং','Study time chart':'পড়ার সময়ের গ্রাফ',
+'Menu':'মেনু','Edit routine':'রুটিন এডিট করুন','View':'দেখার ধরন','Settings':'সেটিংস','List view':'তালিকা ভিউ','Calendar view':'ক্যালেন্ডার ভিউ','‹ Back':'‹ পিছনে','Previous month':'আগের মাস','Next month':'পরের মাস',
+'Weak chapters and mistake log.':'দুর্বল অধ্যায় ও ভুলের খাতা।','Avatar':'অ্যাভাটার','Customize your avatar or use your own photo.':'অ্যাভাটার নিজের মতো সাজান অথবা নিজের ছবি ব্যবহার করুন।','Customize avatar':'অ্যাভাটার সাজান','Upload a photo':'ছবি আপলোড করুন','Use default avatar':'ডিফল্ট অ্যাভাটার ব্যবহার করুন',
+'Language':'ভাষা','Text size':'লেখার আকার','Message duration':'বার্তা কতক্ষণ থাকবে','How long small messages stay on screen. Tap or swipe a message to close it at once.':'ছোট বার্তা স্ক্রিনে কতক্ষণ থাকবে। বার্তায় চাপ দিলে বা সরালে সঙ্গে সঙ্গে চলে যাবে।',
+'My themes':'আমার থিম','No saved themes yet.':'এখনো কোনো থিম সেভ করা নেই।','Create your own theme':'নিজের থিম বানান','Theme name':'থিমের নাম','Card color':'কার্ডের রং','Text color':'লেখার রং','Save theme':'থিম সেভ করুন','In use':'ব্যবহার হচ্ছে','Apply':'ব্যবহার করুন','Enter a theme name first.':'আগে থিমের একটি নাম লিখুন।','You can save up to 12 themes. Delete one first.':'সর্বোচ্চ ১২টি থিম সেভ করা যায়। আগে একটি মুছুন।','Theme saved.':'থিম সেভ হয়েছে।','Delete this theme?':'এই থিম মুছবেন?','It will be removed from your saved themes.':'এটি আপনার সেভ করা থিম থেকে মুছে যাবে।','Theme deleted.':'থিম মোছা হয়েছে।',
+'Routine tools':'রুটিন টুলস','Remove your current routine and upload a new one from the start. Study time, weak chapters and mistakes are kept. Export a backup first.':'বর্তমান রুটিন সরিয়ে শুরু থেকে নতুন রুটিন আপলোড করুন। পড়ার সময়, দুর্বল অধ্যায় ও ভুল থেকে যাবে। আগে একটি ব্যাকআপ এক্সপোর্ট করে নিন।','Remove routine and start fresh':'রুটিন সরিয়ে নতুন করে শুরু করুন','Remove your routine?':'রুটিন সরাবেন?','Your whole routine and its ticks will be removed and the upload screen will open. Study time, weak chapters and mistakes are kept. This cannot be undone.':'আপনার পুরো রুটিন ও টিকগুলো মুছে যাবে এবং আপলোড স্ক্রিন খুলবে। পড়ার সময়, দুর্বল অধ্যায় ও ভুল থেকে যাবে। এটা আর ফেরানো যাবে না।','Remove':'সরান',
+'Download your information':'আপনার তথ্য ডাউনলোড করুন','Get your routine and progress as simple readable text. You can give it to any AI tool to get advice.':'আপনার রুটিন ও অগ্রগতি সহজ পাঠযোগ্য লেখায় নিন। পরামর্শের জন্য এটি যেকোনো এআই টুলকে দিতে পারেন।','Copy my routine':'আমার রুটিন কপি করুন','Download as text':'টেক্সট হিসেবে ডাউনলোড করুন','Routine copied.':'রুটিন কপি হয়েছে।','Could not copy. Use Download instead.':'কপি হয়নি। এর বদলে ডাউনলোড করুন।','Downloaded. Check your Downloads folder.':'ডাউনলোড হয়েছে। ডাউনলোড ফোল্ডার দেখুন।',
+'Hair':'চুল','Hair color':'চুলের রং','Face shape':'মুখের আকার','Skin color':'ত্বকের রং','Eyes':'চোখ','Mouth':'মুখ','Glasses':'চশমা','Outfit':'পোশাক','Outfit color':'পোশাকের রং','Accessory':'অ্যাক্সেসরিজ','Accessory color':'অ্যাক্সেসরিজের রং','Background':'ব্যাকগ্রাউন্ড','None':'নেই','Round':'গোল','Square':'চৌকো','Headphones':'হেডফোন','Cap':'ক্যাপ','Hairband':'হেয়ারব্যান্ড','Earrings':'কানের দুল','Bow':'ফিতা',
+'Save avatar':'অ্যাভাটার সেভ করুন','Avatar saved.':'অ্যাভাটার সেভ হয়েছে।','Default avatar restored.':'ডিফল্ট অ্যাভাটার ফিরেছে।','Crop your photo':'ছবি ক্রপ করুন','Drag the photo to move it. Use the slider to zoom.':'ছবি টেনে সরান। জুম করতে স্লাইডার ব্যবহার করুন।','Zoom':'জুম','Use photo':'ছবিটি ব্যবহার করুন','Avatar updated.':'অ্যাভাটার বদলেছে।','Please choose an image file.':'দয়া করে একটি ছবির ফাইল বাছুন।','Could not open that image.':'ছবিটি খোলা যায়নি।','Change avatar':'অ্যাভাটার বদলান','Study avatar':'পড়ার অ্যাভাটার'
+};
+Object.keys(N).forEach(function(k){if(!(k in window.I18N_BN))window.I18N_BN[k]=N[k]});
+window.I18N_PAT.push(
+[/^Style (\d+)$/,function(m){return'স্টাইল '+m[1]}],
+[/^(\d+) seconds$/,function(m){return m[1]+' সেকেন্ড'}]
+);
+})();
+
+
+</script>
 <script>
 "use strict";
-var APP_VERSION='2.3.0',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
-var DEFSUBJ=['ICT','Islam','Chemistry','BGS','Biology','HM','Physics','Eng 1st','Eng 2nd','Bangla 1st','Bangla 2nd'],SUBJ=DEFSUBJ.slice();
+var APP_VERSION='2.4.0',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
-var DEF=window.DEFAULT_ROUTINE,EARLY=window.EARLIER_EXAM_PREP,DRE=/^\d{4}-\d{2}-\d{2}$/;
+var DRE=/^\d{4}-\d{2}-\d{2}$/;
 var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in Settings).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
 var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
-var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false;
+var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',avDraft=null,navAnim=false;
 /* ---------- helpers ---------- */
 function pad(n){return(n<10?'0':'')+n}
 function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
@@ -156,7 +367,15 @@ function fmtMin(m){var h=Math.floor(m/60),r=m%60;return(h?h+'h':'')+(h&&r?' ':''
 function uid(){return'u'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function clone(o){return JSON.parse(JSON.stringify(o))}
 function byDate(a,b){return a.date<b.date?-1:a.date>b.date?1:0}
-var toastT;function toast(m,label,fn){var e=document.getElementById('toast');if(!e){e=document.createElement('div');e.id='toast';e.className='toast';e.setAttribute('role','status');document.body.appendChild(e)}e.innerHTML='<span></span>';e.firstChild.textContent=m;if(label){var b=document.createElement('button');b.className='sm';b.textContent=label;b.onclick=function(){e.hidden=true;fn()};e.appendChild(b)}e.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true},label?7000:4500)}
+var toastT,tdown=false,tsx=0,tsy=0;
+function hideToast(){var e=document.getElementById('toast');if(e)e.hidden=true}
+function toast(m,label,fn){var e=document.getElementById('toast');if(!e){e=document.createElement('div');e.id='toast';e.className='toast';e.setAttribute('role','status');
+  e.addEventListener('pointerdown',function(ev){tdown=true;tsx=ev.clientX;tsy=ev.clientY});
+  e.addEventListener('pointermove',function(ev){if(tdown&&(Math.abs(ev.clientX-tsx)>10||Math.abs(ev.clientY-tsy)>10)){tdown=false;hideToast()}});
+  e.addEventListener('pointerup',function(){tdown=false});e.addEventListener('pointercancel',function(){tdown=false});
+  e.addEventListener('click',function(ev){if(!ev.target.closest('button'))hideToast()});
+  document.body.appendChild(e)}
+  e.innerHTML='<span></span>';e.firstChild.textContent=m;if(label){var b=document.createElement('button');b.className='sm';b.textContent=label;b.onclick=function(){e.hidden=true;fn()};e.appendChild(b)}e.hidden=false;clearTimeout(toastT);toastT=setTimeout(hideToast,((state&&state.prefs&&state.prefs.toastSec)||4)*1000)}
 function modal(title,body,btns,validate){return new Promise(function(res){
   var m=document.createElement('div');m.className='modal';
   m.innerHTML='<div class="card glow dlg" role="dialog" aria-modal="true"><h2>'+esc(title)+'</h2>'+body+'<div class="err" id="err" role="alert"></div><div class="btns">'+btns.map(function(b,i){return'<button class="'+(b.cls||'')+'" data-bi="'+i+'">'+esc(b.label)+'</button>'}).join('')+'</div></div>';
@@ -167,7 +386,7 @@ function modal(title,body,btns,validate){return new Promise(function(res){
   document.body.appendChild(m);var f=m.querySelector('input,select,textarea');if(f&&f.type!=='date')f.focus()})}
 function confirmBox(t,msg,ok,danger){return modal(t,'<p>'+esc(msg)+'</p>',[{label:'Cancel',cls:'ghost',val:false},{label:ok,cls:danger?'danger':'',val:true}]).then(function(r){return r.val===true})}
 /* ---------- data + storage ---------- */
-function fresh(lg){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:lg?DEF.version:'custom',routine:lg?clone({days:DEF.days,tasks:DEF.tasks}):{days:[],tasks:[]},done:{},time:{},weak:[],mistakes:[],subjects:lg?DEFSUBJ.slice():[],setup:!!lg,legacy:!!lg,prefs:{limit:450,lang:'en',fs:'m',theme:{name:'purple',accent:'#C033FF',bg:'#120F1D'}}}}
+function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:'custom',routine:{days:[],tasks:[]},done:{},time:{},sessions:[],timer:null,weak:[],mistakes:[],subjects:[],setup:false,legacy:false,prefs:{limit:450,lang:'en',fs:'m',toastSec:4,routineView:'list',avatar:null,customThemes:[],subjColors:{},theme:{name:'purple',accent:'#C033FF',bg:'#120F1D'}}}}
 function cleanRoutine(r,subs){subs=subs||SUBJ;
   if(!r||!Array.isArray(r.days)||!Array.isArray(r.tasks))throw new Error('Routine data is missing.');
   var seen={},days=[],tasks=[],ids={};
@@ -179,20 +398,27 @@ function cleanTime(t){var o={};if(t&&typeof t==='object')Object.keys(t).forEach(
 function cleanWeak(a){return Array.isArray(a)?a.slice(0,500).map(function(w){return{id:str(w.id,40).replace(/[^\w-]/g,'_')||uid(),subject:str(w.subject,30),chapter:str(w.chapter,100),note:str(w.note,300),done:w.done===true}}):[]}
 function cleanMis(a){return Array.isArray(a)?a.slice(0,1000).map(function(m){return{id:str(m.id,40).replace(/[^\w-]/g,'_')||uid(),date:str(m.date,20),subject:str(m.subject,30),chapter:str(m.chapter,100),what:str(m.what,400),fix:str(m.fix,400)}}):[]}
 /* Schema 1 (first app version) kept only time, weak chapters and mistakes that are still meaningful. */
-function migrateV1(o){var s=fresh(true);s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);var t={};
+function migrateV1(o){var s=fresh();s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);var t={};
   if(o.time&&typeof o.time==='object')Object.keys(o.time).forEach(function(k){var m=/^d(\d\d)(\d\d)$/.exec(k);if(m)t['2026-'+m[1]+'-'+m[2]]=o.time[k]});
   s.time=cleanTime(t);s.migratedV1=true;return s}
 function clean(o){
   if(!o||typeof o!=='object'||o.app!=='ssc2027-tracker')throw new Error('This file is not an SSC 2027 Tracker backup.');
   if(o.schema>SCHEMA)throw new Error('This data is from a newer app version. Update the app first.');
   if(!o.schema||o.schema<2)return migrateV1(o);
-  var s=fresh(false),sl=Array.isArray(o.subjects)?cleanSubj(o.subjects):DEFSUBJ.slice();
+  var s=fresh(),sl=Array.isArray(o.subjects)?cleanSubj(o.subjects):[];
   if(o.routine&&Array.isArray(o.routine.tasks))o.routine.tasks.slice(0,5000).forEach(function(t){if(t&&Array.isArray(t.subj))t.subj.forEach(function(x){x=str(x,30).trim();if(x&&sl.indexOf(x)<0&&sl.length<60)sl.push(x)})});
   s.subjects=sl;s.routine=cleanRoutine(o.routine,sl);s.routineVersion=str(o.routineVersion,40)||'custom';
   s.setup=o.setup===undefined?true:o.setup===true;s.legacy=o.legacy===undefined?o.setup===undefined:o.legacy===true;
   if(o.done&&typeof o.done==='object')Object.keys(o.done).slice(0,6000).forEach(function(k){if(o.done[k]===true)s.done[k]=true});
   s.time=cleanTime(o.time);s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);
-  var l=parseInt(o.prefs&&o.prefs.limit,10);s.prefs.limit=l>=60&&l<=1440?l:450;var th=o.prefs&&o.prefs.theme,HX=/^#[0-9a-fA-F]{6}$/;var lg=o.prefs&&o.prefs.lang;s.prefs.lang=lg==='bn'?'bn':'en';var fz=o.prefs&&o.prefs.fs;s.prefs.fs=FS[fz]?fz:'m';if(th&&HX.test(th.accent)&&HX.test(th.bg))s.prefs.theme={name:str(th.name,12),accent:th.accent,bg:th.bg};return s}
+  var l=parseInt(o.prefs&&o.prefs.limit,10);s.prefs.limit=l>=60&&l<=1440?l:450;var th=o.prefs&&o.prefs.theme,HX=/^#[0-9a-fA-F]{6}$/;var lg=o.prefs&&o.prefs.lang;s.prefs.lang=lg==='bn'?'bn':'en';var fz=o.prefs&&o.prefs.fs;s.prefs.fs=FS[fz]?fz:'m';if(th&&HX.test(th.accent)&&HX.test(th.bg)){var nt={name:str(th.name,12),accent:th.accent,bg:th.bg};if(HX.test(th.text))nt.text=th.text;if(HX.test(th.card))nt.card=th.card;s.prefs.theme=nt}
+  var P0=o.prefs||{},ts=parseInt(P0.toastSec,10);s.prefs.toastSec=[2,3,4,5,8].indexOf(ts)>-1?ts:4;s.prefs.routineView=P0.routineView==='cal'?'cal':'list';
+  var av=P0.avatar;if(av&&av.type==='svg'&&av.cfg&&typeof av.cfg==='object')s.prefs.avatar={type:'svg',cfg:cleanCfg(av.cfg)};else if(av&&av.type==='img'&&typeof av.data==='string'&&av.data.length<400000&&/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(av.data))s.prefs.avatar={type:'img',data:av.data};
+  if(Array.isArray(P0.customThemes))s.prefs.customThemes=P0.customThemes.slice(0,12).filter(function(c){return c&&str(c.id,12).replace(/[^\w]/g,'')&&HX.test(c.accent)&&HX.test(c.bg)&&HX.test(c.card)&&HX.test(c.text)}).map(function(c){return{id:str(c.id,12).replace(/[^\w]/g,''),name:str(c.name,16),accent:c.accent,bg:c.bg,card:c.card,text:c.text}});
+  if(P0.subjColors&&typeof P0.subjColors==='object')Object.keys(P0.subjColors).slice(0,80).forEach(function(k){if(HX.test(P0.subjColors[k]))s.prefs.subjColors[str(k,30)]=P0.subjColors[k]});
+  s.sessions=cleanSess(o.sessions);s.timer=cleanTimer(o.timer);return s}
+function cleanSess(a){return Array.isArray(a)?a.slice(0,5000).filter(function(s){return s&&DRE.test(s.date)&&mn(s.mins)}).map(function(s){return{id:str(s.id,40).replace(/[^\w-]/g,'_')||uid(),date:s.date,subj:str(s.subj,30),mins:mn(s.mins)}}):[]}
+function cleanTimer(t){if(!t||typeof t!=='object')return null;var st=Number(t.start),ac=Number(t.acc);if(!isFinite(ac)||ac<0||ac>864e5||!DRE.test(t.date))return null;return{run:t.run===true,start:isFinite(st)?st:0,acc:ac,subj:str(t.subj,30),date:t.date}}
 function load(){
   var raw=null;
   try{raw=localStorage.getItem(KEY)}catch(e){memOnly=true;state=fresh();toast('Storage is blocked in this browser. Export a backup before closing.');return}
@@ -215,9 +441,9 @@ function viewTasks(k){var T=R().tasks;if(k==='backlog')return T.filter(function(
 function logged(d){var t=state.time[d];return t?t.h*60+t.m:0}
 function selIds(){return Object.keys(sel).filter(function(k){return sel[k]})}
 /* ---------- views ---------- */
-var ICONS={home:'<path d="M3 11l9-8 9 8v10H3z"/>',routine:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/>',subjects:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',logs:'<path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
-var TABS=[['home','Home'],['routine','Routine'],['subjects','Subjects'],['logs','Logs'],['more','Settings']];
-function renderTabs(){document.getElementById('tabs').innerHTML=TABS.map(function(t){return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'" aria-label="'+t[1]+'"'+(tab===t[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+t[1]+'</button>'}).join('')}
+var ICONS={home:'<path d="M3 11l9-8 9 8v10H3z"/>',routine:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/>',subjects:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',logs:'<path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',records:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>'};
+var TABS=[['home','Home'],['routine','Routine'],['records','Records']];
+function renderTabs(){document.getElementById('tabs').innerHTML=TABS.map(function(t){return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on'+(navAnim?' pop':''):'')+'" aria-label="'+t[1]+'"'+(tab===t[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+t[1]+'</button>'}).join('')}
 function ring(p,lbl){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--track)" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--neon)" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+(lbl||p+'%')+'</b></div>'}
 function bar(p,w){return'<div class="bar'+(w?' warn':'')+'" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div>'}
 function taskRow(t,k,i,n){
@@ -244,41 +470,42 @@ function dayCard(k,home){
   if(T.length)h+='<div class="row" style="margin-top:10px"><span class="sub">'+n+' of '+T.length+' done</span><b>'+p+'%</b></div>'+bar(p);
   if(d||T.length){var t=state.time[k]||{h:'',m:''};
     h+='<h3>Study time'+(load?' (planned '+fmtMin(load)+')':'')+'</h3><div class="time"><div><label class="f" for="h'+k+'">Hours studied</label><input id="h'+k+'" type="number" inputmode="numeric" min="0" max="24" data-time="'+k+'" data-u="h" value="'+(t.h||'')+'" placeholder="0"></div><div><label class="f" for="m'+k+'">Minutes</label><input id="m'+k+'" type="number" inputmode="numeric" min="0" max="59" data-time="'+k+'" data-u="m" value="'+(t.m||'')+'" placeholder="0"></div></div>';
-    if(load){var lg=logged(k);h+='<div class="sub">Logged '+fmtMin(lg)+' of '+fmtMin(load)+'</div>'+bar(Math.min(100,Math.round(lg/load*100)),lg>load)}}
+    if(load){var lg=logged(k);h+='<div class="sub">Logged '+fmtMin(lg)+' of '+fmtMin(load)+'</div>'+bar(Math.min(100,Math.round(lg/load*100)),lg>load)}h+=sessHtml(k)}
   if(edit&&!home)h+='<h3>Edit this date</h3><div class="btns"><button class="sm" data-act="addtask">Add task</button><button class="ghost sm" data-act="dayinfo">'+(d?'Day info':'Add date entry')+'</button><button class="ghost sm" data-act="selinc">Select incomplete</button><button class="ghost sm" data-act="selall">Select all</button><button class="ghost sm" data-act="copyday">Copy day to…</button>'+(d?'<button class="ghost sm" data-act="delday">Delete date</button>':'')+'</div>';
   return h+'</section>'}
 function totals(){var T=R().tasks,done=T.filter(isDone).length,lg=0,pl=0;R().days.forEach(function(d){lg+=logged(d.date);pl+=dayLoad(d.date)});Object.keys(state.time).forEach(function(k){if(!dayOf(k))lg+=logged(k)});var bl=viewTasks('backlog'),bm=0;bl.forEach(function(t){bm+=t.mins||0});return{done:done,total:T.length,pct:T.length?Math.round(done/T.length*100):0,lg:lg,pl:pl,bl:bl.length,bm:bm}}
 function vHome(){
   if(followToday||!hd)hd=today();
   var T=tasksOn(hd),n=T.filter(isDone).length,p=T.length?Math.round(n/T.length*100):0,A=totals(),od=viewTasks('overdue').length,isT=hd===today();
-  var h='<div class="top"><svg class="av" viewBox="0 0 120 120" role="img" aria-label="Study avatar"><use href="#avatar"/></svg><div><h1>SSC 2027 Tracker</h1><div class="sub">'+esc(fmtLong(today()))+'</div></div></div>';
+  var h='<div class="top"><button class="avb" data-act="avatar" aria-label="Change avatar">'+avatarEl()+'</button><div><h1>SSC 2027 Tracker</h1><div class="sub">'+esc(fmtLong(today()))+'</div></div><div class="hdrb">'+dots()+'</div></div>';
   h+='<div class="row nav"><button class="ghost" data-act="hshift" data-n="-1" aria-label="Previous day">&lt; Prev</button><button class="ghost" data-act="htoday"'+(isT?' disabled style="opacity:.45"':'')+'>Today</button><button class="ghost" data-act="hshift" data-n="1" aria-label="Next day">Next &gt;</button></div>';
   h+='<section class="card glow"><div class="hero">'+ring(p,T.length?null:'–')+'<div class="stats"><div class="stat"><b>'+n+'</b><span>Completed'+(isT?' today':'')+'</span></div><div class="stat"><b>'+(T.length-n)+'</b><span>Remaining'+(isT?' today':'')+'</span></div></div></div><p class="sub" style="margin:12px 0 0">'+(isT?'Showing today.':'Showing '+esc(fmtShort(hd))+'.')+(T.length?'':' No tasks on this date.')+'</p></section>';
   if(od)h+='<div class="flag">'+od+' overdue task'+(od>1?'s':'')+' not done. <button class="sm" style="margin-top:8px;width:100%" data-act="gooverdue">Review and reschedule</button></div>';
   h+='<section class="card"><div class="row"><h2 style="margin:0">Overall progress</h2><b>'+A.pct+'%</b></div><p class="sub" style="margin:4px 0 10px">'+A.done+' of '+A.total+' tasks done.'+(A.bl?' '+A.bl+' undated ('+fmtMin(A.bm)+').':'')+'</p>'+bar(A.pct)+'<p class="sub" style="margin:12px 0 6px">Study time logged: '+fmtMin(A.lg)+' of '+fmtMin(A.pl)+' planned.</p>'+bar(A.pl?Math.min(100,Math.round(A.lg/A.pl*100)):0)+'</section>';
-  return h+dayCard(hd,true)}
+  return h+timerCard()+dayCard(hd,true)}
 function chip(k,top,bot,cls){return'<button class="chip'+(selKey===k?' sel':'')+(cls||'')+'" data-act="pick" data-k="'+k+'"><b>'+esc(top)+'</b>'+esc(bot)+'</button>'}
 function vRoutine(){
   if(!selKey)selKey=today();
-  var td=today(),chips=R().days.map(function(d){var T=tasksOn(d.date),all=T.length&&T.every(isDone);return chip(d.date,String(+d.date.slice(8)),pd(d.date).toLocaleDateString(LOC(),{month:'short'}),(d.date===td?' today':'')+(all?' full':''))}).join('');
-  chips+=chip('backlog',String(viewTasks('backlog').length),'Backlog','')+chip('overdue',String(viewTasks('overdue').length),'Overdue','')+'<button class="chip" data-act="adddate"><b>+</b>Date</button>';
-  var isDate=DRE.test(selKey),n=selIds().length;
-  var h='<div class="row" style="margin-bottom:10px"><h1>Routine</h1><div class="btns" style="flex:none;gap:8px">'+(undoStack.length?'<button class="ghost sm" data-act="undo">Undo</button>':'')+'<button class="sm'+(edit?'':' ghost')+'" data-act="toggleedit">'+(edit?'Done editing':'Edit routine')+'</button></div></div>';
-  h+='<div class="chips" id="chips">'+chips+'</div>';
+  var td=today(),cal=state.prefs.routineView==='cal',isDate=DRE.test(selKey),n=selIds().length;
+  var extra=chip('backlog',String(viewTasks('backlog').length),'Backlog','')+chip('overdue',String(viewTasks('overdue').length),'Overdue','')+'<button class="chip" data-act="adddate"><b>+</b>Date</button>';
+  var h='<div class="row" style="margin-bottom:10px"><h1>Routine</h1><div class="hdrb">'+(undoStack.length?'<button class="ghost sm" data-act="undo">Undo</button>':'')+(edit?'<button class="sm" data-act="toggleedit">Done editing</button>':'')+dots()+'</div></div>';
+  if(cal)h+=calHtml()+'<div class="chips">'+extra+'</div>';
+  else{var chips=R().days.map(function(d){var T=tasksOn(d.date),all=T.length&&T.every(isDone);return chip(d.date,String(+d.date.slice(8)),pd(d.date).toLocaleDateString(LOC(),{month:'short'}),(d.date===td?' today':'')+(all?' full':''))}).join('');
+    h+='<div class="chips" id="chips">'+chips+extra+'</div>'}
   if(isDate)h+='<div class="row nav"><button class="ghost" data-act="shift" data-n="-1">&lt; Prev</button><input type="date" class="jump" data-jump="1" value="'+selKey+'" aria-label="Jump to date"><button class="ghost" data-act="shift" data-n="1">Next &gt;</button></div>';
   if(edit)h+='<div class="note">Edit mode: tick the square boxes to select tasks, then use the bar at the bottom. Tasks can also be dragged to reorder. Switch edit mode off to tick tasks as done.</div>';
   h+=dayCard(selKey,false);
   if(edit&&n)h+='<div class="selbar"><b>'+n+' selected</b><button class="sm" data-act="movesel">Move</button><button class="ghost sm" data-act="dupsel">Duplicate</button><button class="danger sm" data-act="delsel">Delete</button><button class="ghost sm" data-act="clrsel">Clear</button></div>';
-  return h}
-function vSubjects(){
-  var h='<h1 style="margin-bottom:10px">Subjects</h1><p class="sub">Progress counts every task tagged with a subject, including undated tasks. Tasks with two subjects count for both.</p>';
+  return h+updateAcc()}
+function subjCards(){
+  var h='<p class="sub">Progress counts every task tagged with a subject, including undated tasks. Tasks with two subjects count for both.</p>';
   if(!SUBJ.length)h+='<div class="note">No subjects yet. They appear automatically when your routine has subjects.</div>';
   SUBJ.forEach(function(s){var tot=0,dn=0,mins=0;R().tasks.forEach(function(t){if(t.subj.indexOf(s)>-1){tot++;mins+=t.mins||0;if(isDone(t))dn++}});var p=tot?Math.round(dn/tot*100):0;
-    h+='<section class="card"><div class="row"><h2 style="margin:0">'+esc(s)+'</h2><b>'+p+'%</b></div><p class="sub" style="margin:2px 0 8px">'+dn+' of '+tot+' tasks done'+(tot?'':' (none scheduled)')+'</p>'+bar(p)+'</section>'});
+    h+='<section class="card"><div class="row"><h2 style="margin:0"><i class="dot" style="background:'+subjColor(s)+'"></i>'+esc(s)+'</h2><b>'+p+'%</b></div><p class="sub" style="margin:2px 0 8px">'+dn+' of '+tot+' tasks done'+(tot?'':' (none scheduled)')+'</p>'+bar(p)+'</section>'});
   return h}
 function opts(){if(!SUBJ.length)return'<option value="General">General</option>';return SUBJ.map(function(s){return'<option value="'+esc(s)+'">'+esc(s)+'</option>'}).join('')}
 function vLogs(){
-  var h='<h1 style="margin-bottom:10px">Logs</h1><section class="card"><h2>Weak chapters</h2><label class="f" for="ws">Subject</label><select id="ws">'+opts()+'</select><label class="f" for="wc">Chapter or lesson</label><input id="wc" maxlength="100" placeholder="Example: Bio 11"><label class="f" for="wn">Why it is weak (optional)</label><input id="wn" maxlength="300"><button data-act="addweak" style="width:100%">Add weak chapter</button><div style="margin-top:14px">';
+  var h='<div class="row" style="margin-bottom:10px"><button class="ghost sm" data-act="back">‹ Back</button><h1>Logs</h1><span style="width:70px"></span></div><section class="card"><h2>Weak chapters</h2><label class="f" for="ws">Subject</label><select id="ws">'+opts()+'</select><label class="f" for="wc">Chapter or lesson</label><input id="wc" maxlength="100" placeholder="Example: Bio 11"><label class="f" for="wn">Why it is weak (optional)</label><input id="wn" maxlength="300"><button data-act="addweak" style="width:100%">Add weak chapter</button><div style="margin-top:14px">';
   if(!state.weak.length)h+='<p class="sub">No weak chapters yet.</p>';
   state.weak.forEach(function(w){h+='<div class="item"><label class="task" style="padding:0"><input type="checkbox" data-weak="'+esc(w.id)+'"'+(w.done?' checked':'')+'><span class="box"></span><span class="tx"><span class="tt">'+esc(w.subject)+': '+esc(w.chapter)+'</span>'+(w.note?'<small>'+esc(w.note)+'</small>':'')+'<small>'+(w.done?'Revised':'Not revised yet')+'</small></span></label><button class="ghost sm" data-delweak="'+esc(w.id)+'" style="margin-top:8px">Delete</button></div>'});
   h+='</div></section><section class="card"><h2>Mistake log</h2><label class="f" for="ms">Subject</label><select id="ms">'+opts()+'</select><label class="f" for="mc">Chapter or topic</label><input id="mc" maxlength="100"><label class="f" for="mw">What went wrong</label><textarea id="mw" rows="2" maxlength="400"></textarea><label class="f" for="mf">Correct fix</label><textarea id="mf" rows="2" maxlength="400"></textarea><button data-act="addmistake" style="width:100%">Add mistake</button><div style="margin-top:14px">';
@@ -286,28 +513,31 @@ function vLogs(){
   state.mistakes.slice().reverse().forEach(function(m){h+='<div class="item"><b>'+esc(m.subject)+'</b>'+(m.chapter?': '+esc(m.chapter):'')+'<small>'+esc(m.date)+'</small><div class="tt">'+esc(m.what)+'</div>'+(m.fix?'<small class="ok">Fix: '+esc(m.fix)+'</small>':'')+'<button class="ghost sm" data-delmis="'+esc(m.id)+'" style="margin-top:8px">Delete</button></div>'});
   return h+'</div></section>'}
 function vMore(){
-  var lim=state.prefs.limit,t=state.prefs.theme,h='<h1 style="margin-bottom:6px">Settings</h1><p class="sub">Tap a title to open that setting. Only the one you change is affected.</p><div id="upd"></div>';
-  h+=acc('lang','Language / ভাষা','<p class="sub">Choose the app language. Your own task names stay as you wrote them.</p><div class="btns"><button data-act="lang" data-v="bn" class="'+(state.prefs.lang==='bn'?'':'ghost')+'">বাংলা</button><button data-act="lang" data-v="en" class="'+(state.prefs.lang==='en'?'':'ghost')+'">English</button></div>');
-  h+=acc('size','Text size / লেখার আকার','<p class="sub">Choose how big the text is. It applies to the whole app.</p><select id="fsSel" data-pref="fs" aria-label="Text size">'+Object.keys(FS).map(function(k){return'<option value="'+k+'"'+(state.prefs.fs===k?' selected':'')+'>'+FS[k][1]+'</option>'}).join('')+'</select><p class="sub" style="margin-bottom:0">Aa — '+FS[state.prefs.fs][1]+'</p>');
-  h+=acc('theme','Colors and theme','<p class="sub">Pick a ready theme, or choose your own colors.</p><div class="sw">'+Object.keys(THEMES).map(function(k){return'<button data-act="theme" data-p="'+k+'" class="'+(t.name===k?'on':'')+'"><i style="background:'+THEMES[k][1]+'"></i>'+THEMES[k][0]+'</button>'}).join('')+'</div><div class="time"><div><label class="f" for="cAcc">Accent color</label><input id="cAcc" type="color" data-th="accent" value="'+t.accent+'"></div><div><label class="f" for="cBg">Background color</label><input id="cBg" type="color" data-th="bg" value="'+t.bg+'"></div></div><p class="sub" style="margin-bottom:0">Text colors stay light so they remain readable. Choose a dark background.</p>');
+  var lim=state.prefs.limit,t=state.prefs.theme,h='<div class="row" style="margin-bottom:6px"><button class="ghost sm" data-act="back">‹ Back</button><h1>Settings</h1><span style="width:70px"></span></div><p class="sub">Tap a title to open that setting. Only the one you change is affected.</p><div id="upd"></div>';
+  h+='<section class="card"><button class="ghost" data-act="gologs" style="width:100%">Logs</button><p class="sub" style="margin:8px 0 0">Weak chapters and mistake log.</p></section>';
+  h+=acc('avatar','Avatar','<div style="display:flex;gap:14px;align-items:center;margin-bottom:12px"><span style="width:72px;height:72px;flex:none">'+avatarEl()+'</span><p class="sub" style="margin:0">Customize your avatar or use your own photo.</p></div><div class="btns"><button data-act="avatar">Customize avatar</button><button class="ghost" data-act="avphoto">Upload a photo</button></div><button class="ghost" data-act="avdef" style="width:100%;margin-top:10px">Use default avatar</button><input type="file" id="avfile" accept="image/*" hidden>');
+  h+=acc('lang','Language','<p class="sub">Choose the app language. Your own task names stay as you wrote them.</p><div class="btns"><button data-act="lang" data-v="bn" class="'+(state.prefs.lang==='bn'?'':'ghost')+'">বাংলা</button><button data-act="lang" data-v="en" class="'+(state.prefs.lang==='en'?'':'ghost')+'">English</button></div>');
+  h+=acc('size','Text size','<p class="sub">Choose how big the text is. It applies to the whole app.</p><select id="fsSel" data-pref="fs" aria-label="Text size">'+Object.keys(FS).map(function(k){return'<option value="'+k+'"'+(state.prefs.fs===k?' selected':'')+'>'+FS[k][1]+'</option>'}).join('')+'</select><p class="sub" style="margin-bottom:0">Aa — '+FS[state.prefs.fs][1]+'</p>');
+  h+=acc('theme','Colors and theme','<p class="sub">Pick a ready theme, or choose your own colors.</p><div class="sw">'+Object.keys(THEMES).map(function(k){return'<button data-act="theme" data-p="'+k+'" class="'+(t.name===k?'on':'')+'"><i style="background:'+THEMES[k][1]+'"></i>'+THEMES[k][0]+'</button>'}).join('')+'</div><div class="time"><div><label class="f" for="cAcc">Accent color</label><input id="cAcc" type="color" data-th="accent" value="'+t.accent+'"></div><div><label class="f" for="cBg">Background color</label><input id="cBg" type="color" data-th="bg" value="'+t.bg+'"></div></div><p class="sub" style="margin-bottom:0">Text colors stay light so they remain readable. Choose a dark background.</p>'+themeExtra());
+  h+=acc('toast','Message duration','<p class="sub">How long small messages stay on screen. Tap or swipe a message to close it at once.</p><select data-pref="toastSec" aria-label="Message duration">'+[2,3,4,5,8].map(function(n){return'<option value="'+n+'"'+(state.prefs.toastSec===n?' selected':'')+'>'+n+' seconds</option>'}).join('')+'</select>');
   h+=acc('limit','Daily study limit','<div class="time"><input id="lh" type="number" inputmode="numeric" min="0" max="24" value="'+Math.floor(lim/60)+'" aria-label="Hours"><input id="lm" type="number" inputmode="numeric" min="0" max="59" value="'+lim%60+'" aria-label="Minutes"></div><button class="ghost" data-act="savelimit" style="width:100%">Save limit ('+fmtMin(lim)+' now)</button>');
   h+=acc('backup','Backup and restore','<div class="btns"><button data-act="export">Export backup</button><button class="ghost" data-act="import">Import backup</button></div><input type="file" id="file" accept=".json,application/json" hidden>');
-  h+=acc('update','Update your routine','<p class="sub">Copy the prompt, give it to any AI tool together with your new routine, then paste the reply below. You will choose how it joins your current routine.</p>'+promptBlock()+'<textarea id="ru" rows="7" placeholder="Paste your new routine here">'+esc(rtDraft)+'</textarea><div class="err" id="rerr" role="alert"></div><div class="btns"><button data-act="upd">Update routine</button><button class="ghost" data-act="pickfile">Choose a text file</button></div><input type="file" id="rfile" accept=".txt,text/plain" hidden>');
-  if(state.legacy)h+=acc('routine','Routine tools','<p class="sub">Edit tasks and dates from the Routine tab. These tools do not touch study time, weak chapters, or mistakes.</p><div class="btns"><button class="ghost" data-act="restoreorig">Restore original routine</button><button class="ghost" data-act="addearly">Add earlier Oct 26–Nov 11 plan</button></div>');
+  h+=updateAcc();
+  h+=acc('routine','Routine tools','<p class="sub">Remove your current routine and upload a new one from the start. Study time, weak chapters and mistakes are kept. Export a backup first.</p><button class="danger" data-act="rmroutine" style="width:100%">Remove routine and start fresh</button>');
   h+=acc('data','How your data is kept','<ol><li><b>Saved on this phone.</b> Every change is saved automatically. '+(memOnly?'<span style="color:var(--warn)">Storage is blocked right now.</span>':'<span class="ok">Working.</span>')+(persisted?' '+esc(persisted):'')+'</li><li><b>Offline copy of the app.</b> '+(navigator.serviceWorker&&navigator.serviceWorker.controller?'<span class="ok">Ready: the app opens without internet.</span>':'Not ready yet. Open the app once while online, then reopen it.')+' This stores app files only, not your data.</li><li><b>No cloud sync.</b> GitHub Pages only hosts the files. Nothing is uploaded and devices do not sync. Use Export backup and Import backup.</li></ol><p class="sub" style="margin-bottom:0">Going back online never resets your data. App version '+APP_VERSION+'. Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>.</p>');
-  if(state.legacy)h+=acc('notes','Notes on your supplied routine','<p dir="auto" class="note">'+esc(DEF.suppliedNote)+'</p><ol>'+DEF.flags.map(function(f){return'<li>'+esc(f)+'</li>'}).join('')+'</ol>');
   if(state.legacy)h+=acc('rules','Scheduling rules','<ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol>');
   if(state.legacy)h+=acc('legend','Subject abbreviations','<div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div>');
   h+=acc('install','Install on Android','<ol><li>Open the app link in Chrome and let it load once while online.</li><li>Tap the three-dot menu, then Install app (or Add to Home screen).</li></ol>'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':''));
   h+=acc('reset','Reset study records','<p class="sub">Clears ticks, study time, weak chapters, and mistakes. Your routine stays. Export a backup first.</p><button class="danger" data-act="resetprog" style="width:100%">Reset progress</button>');
+  h+='<section class="card"><h2>Download your information</h2><p class="sub">Get your routine and progress as simple readable text. You can give it to any AI tool to get advice.</p><div class="btns"><button data-act="copyinfo">Copy my routine</button><button class="ghost" data-act="dlinfo">Download as text</button></div></section>';
   return h}
 
 var THEMES={purple:['Purple','#C033FF','#120F1D'],blue:['Blue','#4D7CFF','#0F1220'],pink:['Pink','#FF3DA5','#1D0F18'],green:['Green','#2FD27A','#0E1A14'],teal:['Teal','#19C6D8','#0D1A1D'],orange:['Orange','#FF8A2B','#1D130D']};
 function h2r(h){return[1,3,5].map(function(i){return parseInt(h.substr(i,2),16)})}
 function mix(a,b,t){var A=h2r(a),B=h2r(b);return'#'+[0,1,2].map(function(i){return('0'+Math.round(A[i]+(B[i]-A[i])*t).toString(16)).slice(-2)}).join('')}
-function applyTheme(){var t=state.prefs.theme,st=document.documentElement.style;st.zoom=FS[state.prefs.fs][0]===1?'':FS[state.prefs.fs][0];document.documentElement.lang=state.prefs.lang==='bn'?'bn':'en';var V=['--bg','--panel','--panel2','--line','--neon','--neon2','--glow','--rgb','--track','--lav','--accl','--bgrgb'];
+function applyTheme(){var t=state.prefs.theme,st=document.documentElement.style;st.zoom=FS[state.prefs.fs][0]===1?'':FS[state.prefs.fs][0];document.documentElement.lang=state.prefs.lang==='bn'?'bn':'en';var V=['--bg','--panel','--panel2','--line','--neon','--neon2','--glow','--rgb','--track','--lav','--accl','--bgrgb','--text'];
   if(t.name==='purple'){V.forEach(function(v){st.removeProperty(v)})}
-  else{st.setProperty('--bg',t.bg);st.setProperty('--panel',mix(t.bg,t.accent,.05));st.setProperty('--panel2',mix(t.bg,t.accent,.14));st.setProperty('--line',mix(t.bg,t.accent,.26));st.setProperty('--neon',t.accent);st.setProperty('--neon2',mix(t.accent,t.bg,.12));st.setProperty('--glow',mix(t.bg,t.accent,.3));st.setProperty('--rgb',h2r(t.accent).join(','));st.setProperty('--track',mix(t.bg,t.accent,.22));st.setProperty('--lav',mix(t.accent,'#ffffff',.72));st.setProperty('--accl',mix(t.accent,'#ffffff',.38));st.setProperty('--bgrgb',h2r(t.bg).join(','))}
+  else{st.setProperty('--bg',t.bg);st.setProperty('--panel',t.card||mix(t.bg,t.accent,.05));st.setProperty('--panel2',mix(t.card||t.bg,t.accent,.14));st.setProperty('--line',mix(t.bg,t.accent,.26));st.setProperty('--neon',t.accent);st.setProperty('--neon2',mix(t.accent,t.bg,.12));st.setProperty('--glow',mix(t.bg,t.accent,.3));st.setProperty('--rgb',h2r(t.accent).join(','));st.setProperty('--track',mix(t.bg,t.accent,.22));st.setProperty('--lav',mix(t.accent,'#ffffff',.72));st.setProperty('--accl',mix(t.accent,'#ffffff',.38));st.setProperty('--bgrgb',h2r(t.bg).join(','));if(t.text){st.setProperty('--text',t.text);st.setProperty('--lav',mix(t.text,t.bg,.3))}}
   var m=document.querySelector('meta[name=theme-color]');if(m)m.content=t.name==='purple'?'#120F1D':t.bg}
 var openAcc={};
 function acc(id,title,body){return'<details class="card acc" data-acc="'+id+'"'+(openAcc[id]?' open':'')+'><summary>'+esc(title)+'</summary><div>'+body+'</div></details>'}
@@ -323,12 +553,12 @@ function render(keep){
   if(state.subjects)SUBJ=state.subjects;
   document.getElementById('tabs').hidden=!state.setup;
   if(!state.setup){var y0=window.scrollY;document.getElementById('view').innerHTML=vOnboard();document.getElementById('tabs').innerHTML='';if(keep)window.scrollTo(0,y0);trTree(document.getElementById('view'));return}
-  var y=window.scrollY,v={home:vHome,routine:vRoutine,subjects:vSubjects,logs:vLogs,more:vMore}[tab];
+  var y=window.scrollY,v={home:vHome,routine:vRoutine,records:vRecords,logs:vLogs,settings:vMore,avatar:vAvatar}[tab]||vHome;
   document.getElementById('view').innerHTML=v();renderTabs();if(keep)window.scrollTo(0,y);
   var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
-  if(tab==='more'&&updWorker)showUpdate(updWorker);
+  if(tab==='settings'&&updWorker)showUpdate(updWorker);
   trTree(document.getElementById('view'));trTree(document.getElementById('tabs'))}
-function go(t){tab=t;render();window.scrollTo(0,0)}
+function go(t){closeMenu();tab=t;navAnim=true;render();navAnim=false;window.scrollTo(0,0);var v=document.getElementById('view');v.classList.remove('pg');void v.offsetWidth;v.classList.add('pg')}
 /* ---------- routine editing ---------- */
 function curDate(){return DRE.test(selKey)?selKey:today()}
 function hm(id,mins,lbl){return'<div class="time"><div><label class="f" for="'+id+'h">'+lbl+' hours</label><input id="'+id+'h" type="number" inputmode="numeric" min="0" max="24" value="'+(mins?Math.floor(mins/60)||'':'')+'"></div><div><label class="f" for="'+id+'m">Minutes</label><input id="'+id+'m" type="number" inputmode="numeric" min="0" max="59" value="'+(mins?mins%60||'':'')+'"></div></div>'}
@@ -362,10 +592,6 @@ function delDay(date){
   var n=tasksOn(date).length;
   modal('Delete '+fmtShort(date)+'?',n?'<p>This date has '+n+' task'+(n>1?'s':'')+'. Choose what happens to them.</p>':'<p>This date entry will be removed.</p>',n?[{label:'Cancel',cls:'ghost',val:0},{label:'Delete date, keep tasks in backlog',val:'keep'},{label:'Delete date and its tasks',cls:'danger',val:'del'}]:[{label:'Cancel',cls:'ghost',val:0},{label:'Delete date',cls:'danger',val:'del'}]).then(function(r){
     if(!r.val)return;mutate(function(){R().days=R().days.filter(function(d){return d.date!==date});if(r.val==='keep')tasksOn(date).forEach(function(t){t.date=null});else{tasksOn(date).forEach(function(t){delete state.done[t.id]});R().tasks=R().tasks.filter(function(t){return t.date!==date})}selKey='backlog';sel={}},'Date deleted.')})}
-function restoreOrig(){confirmBox('Restore the original routine?','Your current routine, including all edits, is replaced by the originally supplied one. Study time, weak chapters, mistakes, and preferences are kept. Ticks stay on tasks that still exist in the original. You can tap Undo afterwards.','Restore routine',true).then(function(ok){if(ok){mutate(function(){state.routine=clone({days:DEF.days,tasks:DEF.tasks});state.routineVersion=DEF.version;sel={};selKey=''},'Original routine restored.')}})}
-function addEarly(){var have={};R().days.forEach(function(d){have[d.date]=1});var nd=EARLY.days.filter(function(d){return!have[d.date]});
-  if(!nd.length){toast('Those dates already exist in your routine.');return}
-  confirmBox('Add the earlier Oct 26–Nov 11 plan?',nd.length+' dates will be added. Dates you already have are left untouched.','Add dates',false).then(function(ok){if(ok)mutate(function(){var set={};nd.forEach(function(d){set[d.date]=1;R().days.push(clone(d))});EARLY.tasks.forEach(function(t){if(set[t.date])R().tasks.push(clone(t))});R().days.sort(byDate)},'Earlier plan added.')})}
 /* ---------- routine text format (first upload and updates) ---------- */
 var BNDIG={'০':0,'১':1,'২':2,'৩':3,'৪':4,'৫':5,'৬':6,'৭':7,'৮':8,'৯':9};
 function asc(s){return String(s).replace(/[০-৯]/g,function(c){return BNDIG[c]})}
@@ -525,6 +751,209 @@ function loadRoutineFile(f,inp){
   var r=new FileReader();r.onerror=function(){toast('Could not read that file.')};
   r.onload=function(){var ta=document.getElementById('rt')||document.getElementById('ru');if(ta){ta.value=String(r.result);rtDraft=ta.value}inp.value='';toast('File loaded. Check it, then continue.')};
   r.readAsText(f)}
+/* ---------- avatar ---------- */
+var AVN={hair:7,face:3,eyes:4,mouth:3,glasses:3,outfit:4,acc:6};
+var AV_SKIN=['#FFDFC4','#F2C9A8','#E3B08F','#C68E6A','#8D5A3C','#5B3A29'],AV_HAIR=['#14101F','#4A2C1A','#8A5A2B','#D9B04A','#B33A3A','#7B4DFF','#2F6FED','#EDEDED'],AV_OUT=['#6B2FB5','#2F6FED','#E04A7B','#2FA36B','#F28C28','#3A3A4A','#D8D8E8','#C0392B'],AV_ACC=['#B341F9','#FFD54A','#FF6B8B','#4FD1C5','#FFFFFF','#222222'],AV_BG=['#2A1B4A','#12304A','#4A1B33','#1B4A33','#4A3A1B','#222222','#E8E0FF'];
+function defCfg(){return{skin:'#F2C9A8',hair:1,hairC:'#14101F',face:0,eyes:0,mouth:0,glasses:0,outfit:0,outC:'#6B2FB5',acc:1,accC:'#B341F9',bg:'#2A1B4A'}}
+function cleanCfg(c){var HX=/^#[0-9a-fA-F]{6}$/,o=defCfg();Object.keys(AVN).forEach(function(k){var v=parseInt(c[k],10);if(v>=0&&v<AVN[k])o[k]=v});['skin','hairC','outC','accC','bg'].forEach(function(k){if(HX.test(c[k]))o[k]=c[k]});return o}
+function avatarInner(c){
+  var sk=c.skin,sh=mix(sk,'#000000',.12),hc=c.hairC,oc=c.outC,ac=c.accC,o=[];
+  o.push('<rect width="120" height="120" fill="'+c.bg+'"/>');
+  if(c.hair===3)o.push('<path d="M32 56Q26 16 60 15Q94 16 88 56L92 100L28 100Z" fill="'+hc+'"/>');
+  o.push('<path d="M8 124Q12 86 60 84Q108 86 112 124Z" fill="'+oc+'"/>');
+  if(c.outfit===0)o.push('<path d="M46 84L60 100L74 84Z" fill="'+mix(oc,'#ffffff',.25)+'"/>');
+  if(c.outfit===1)o.push('<path d="M34 90Q60 108 86 90L84 84Q60 96 36 84Z" fill="'+mix(oc,'#000000',.22)+'"/><path d="M54 98L53 112M66 98L67 112" stroke="#fff" stroke-width="2" stroke-linecap="round"/>');
+  if(c.outfit===2)o.push('<path d="M46 84L60 102L52 86Z" fill="#fff"/><path d="M74 84L60 102L68 86Z" fill="#fff"/><circle cx="60" cy="109" r="1.7" fill="#fff"/><circle cx="60" cy="117" r="1.7" fill="#fff"/>');
+  if(c.outfit===3)o.push('<path d="M46 84L60 102L52 86Z" fill="#fff"/><path d="M74 84L60 102L68 86Z" fill="#fff"/><path d="M57 92L63 92L65 112L60 118L55 112Z" fill="#C0392B"/>');
+  o.push('<rect x="52" y="68" width="16" height="18" fill="'+sh+'"/>');
+  o.push('<ellipse cx="38" cy="56" rx="4" ry="7" fill="'+sh+'"/><ellipse cx="82" cy="56" rx="4" ry="7" fill="'+sh+'"/>');
+  if(c.face===0)o.push('<ellipse cx="60" cy="54" rx="22" ry="25" fill="'+sk+'"/>');
+  else if(c.face===1)o.push('<ellipse cx="60" cy="54" rx="20" ry="27" fill="'+sk+'"/>');
+  else o.push('<rect x="38" y="30" width="44" height="50" rx="15" fill="'+sk+'"/>');
+  var H1='M36 52Q32 22 58 19Q64 12 70 20Q90 24 84 52Q80 40 72 37Q62 43 50 37Q40 41 36 52Z';
+  if(c.hair===1||c.hair===3||c.hair===4)o.push('<path d="'+H1+'" fill="'+hc+'"/>');
+  if(c.hair===4)o.push('<circle cx="60" cy="13" r="10" fill="'+hc+'"/>');
+  if(c.hair===2)o.push('<path d="M36 50L33 26L45 33L50 15L58 30L64 12L70 30L78 15L80 33L90 26L84 50Q76 38 60 38Q44 38 36 50Z" fill="'+hc+'"/>');
+  if(c.hair===5)o.push('<g fill="'+hc+'"><circle cx="40" cy="40" r="10"/><circle cx="50" cy="29" r="11"/><circle cx="62" cy="25" r="11"/><circle cx="74" cy="29" r="11"/><circle cx="82" cy="40" r="10"/></g>');
+  if(c.hair===6)o.push('<path d="M35 54Q28 22 60 18Q92 18 85 52Q82 38 66 33Q46 32 35 54Z" fill="'+hc+'"/>');
+  var E='#1B1230';
+  if(c.eyes===0)o.push('<ellipse cx="51" cy="56" rx="3" ry="4.2" fill="'+E+'"/><ellipse cx="69" cy="56" rx="3" ry="4.2" fill="'+E+'"/><circle cx="52" cy="54.5" r="1.1" fill="#fff"/><circle cx="70" cy="54.5" r="1.1" fill="#fff"/>');
+  if(c.eyes===1)o.push('<path d="M47 58Q51 52 55 58M65 58Q69 52 73 58" stroke="'+E+'" stroke-width="2.4" fill="none" stroke-linecap="round"/>');
+  if(c.eyes===2)o.push('<path d="M47 56Q51 60 55 56M65 56Q69 60 73 56" stroke="'+E+'" stroke-width="2.4" fill="none" stroke-linecap="round"/>');
+  if(c.eyes===3)o.push('<circle cx="51" cy="56" r="4.8" fill="#fff" stroke="'+E+'" stroke-width="1"/><circle cx="69" cy="56" r="4.8" fill="#fff" stroke="'+E+'" stroke-width="1"/><circle cx="51" cy="56" r="2.4" fill="'+E+'"/><circle cx="69" cy="56" r="2.4" fill="'+E+'"/>');
+  o.push('<path d="M45 49L56 48M64 48L75 49" stroke="'+mix(hc,'#000000',.3)+'" stroke-width="2.2" stroke-linecap="round"/>');
+  if(c.mouth===0)o.push('<path d="M54 67Q60 71 66 67" stroke="#9A5A45" stroke-width="2" fill="none" stroke-linecap="round"/>');
+  if(c.mouth===1)o.push('<path d="M55 68L65 68" stroke="#9A5A45" stroke-width="2" stroke-linecap="round"/>');
+  if(c.mouth===2)o.push('<ellipse cx="60" cy="68" rx="4" ry="3" fill="#7a2f3a"/>');
+  if(c.glasses===1)o.push('<g fill="none" stroke="#222" stroke-width="2"><circle cx="51" cy="56" r="8"/><circle cx="69" cy="56" r="8"/><path d="M59 56L61 56"/></g>');
+  if(c.glasses===2)o.push('<g fill="none" stroke="#222" stroke-width="2"><rect x="42.5" y="49.5" width="16" height="13" rx="3"/><rect x="61.5" y="49.5" width="16" height="13" rx="3"/><path d="M58.5 55L61.5 55"/></g>');
+  if(c.acc===1)o.push('<path d="M34 54Q32 18 60 17Q88 18 86 54" stroke="'+ac+'" stroke-width="4" fill="none"/><rect x="28" y="50" width="9" height="18" rx="4" fill="'+ac+'"/><rect x="83" y="50" width="9" height="18" rx="4" fill="'+ac+'"/>');
+  if(c.acc===2)o.push('<path d="M35 38Q35 13 60 13Q85 13 85 38Z" fill="'+ac+'"/><ellipse cx="60" cy="38" rx="30" ry="5" fill="'+mix(ac,'#000000',.22)+'"/>');
+  if(c.acc===3)o.push('<path d="M35 42Q60 24 85 42" stroke="'+ac+'" stroke-width="5" fill="none" stroke-linecap="round"/>');
+  if(c.acc===4)o.push('<circle cx="38" cy="65" r="3.2" fill="'+ac+'"/><circle cx="82" cy="65" r="3.2" fill="'+ac+'"/>');
+  if(c.acc===5)o.push('<path d="M74 22L90 15L90 30Z M74 22L58 15L58 30Z" fill="'+ac+'"/><circle cx="74" cy="22" r="3.6" fill="'+mix(ac,'#000000',.25)+'"/>');
+  return o.join('')}
+function avatarEl(){var a=state.prefs.avatar;
+  if(a&&a.type==='img')return'<img class="av" src="'+a.data+'" alt="">';
+  if(a&&a.type==='svg')return'<svg class="av" viewBox="0 0 120 120" role="img" aria-label="Study avatar">'+avatarInner(a.cfg)+'</svg>';
+  return'<svg class="av" viewBox="0 0 120 120" role="img" aria-label="Study avatar"><use href="#avatar"/></svg>'}
+function avRow(label,key,type){
+  var c=avDraft,h='<label class="f">'+label+'</label><div class="scs">';
+  if(type==='c'){var P={skin:AV_SKIN,hairC:AV_HAIR,outC:AV_OUT,accC:AV_ACC,bg:AV_BG}[key];
+    P.forEach(function(x){h+='<button class="avs'+(c[key].toLowerCase()===x.toLowerCase()?' on':'')+'" style="background:'+x+'" data-act="av" data-k="'+key+'" data-v="'+x+'" aria-label="'+x+'"></button>'});
+    h+='<input type="color" class="cpick" data-avc="'+key+'" value="'+c[key]+'" aria-label="Custom color"></div>';return h}
+  var names=key==='glasses'?['None','Round','Square']:key==='acc'?['None','Headphones','Cap','Hairband','Earrings','Bow']:null;
+  for(var i=0;i<AVN[key];i++){var lb=names?names[i]:(key==='hair'&&i===0?'None':'Style '+(key==='hair'?i:i+1));
+    h+='<button class="sm'+(c[key]===i?'':' ghost')+'" data-act="av" data-k="'+key+'" data-v="'+i+'">'+lb+'</button>'}
+  return h+'</div>'}
+function vAvatar(){
+  if(!avDraft)avDraft=defCfg();
+  var h='<div class="row" style="margin-bottom:10px"><button class="ghost sm" data-act="back">‹ Back</button><h1>Avatar</h1><span style="width:70px"></span></div>';
+  h+='<section class="card"><div style="display:grid;place-items:center"><svg class="av" style="width:150px;height:150px" viewBox="0 0 120 120" role="img" aria-label="Study avatar">'+avatarInner(avDraft)+'</svg></div></section>';
+  h+='<section class="card">'+avRow('Hair','hair','n')+avRow('Hair color','hairC','c')+avRow('Face shape','face','n')+avRow('Skin color','skin','c')+avRow('Eyes','eyes','n')+avRow('Mouth','mouth','n')+avRow('Glasses','glasses','n')+avRow('Outfit','outfit','n')+avRow('Outfit color','outC','c')+avRow('Accessory','acc','n')+avRow('Accessory color','accC','c')+avRow('Background','bg','c')+'</section>';
+  h+='<section class="card"><button data-act="avsave" style="width:100%">Save avatar</button><div class="btns" style="margin-top:10px"><button class="ghost" data-act="avphoto">Upload a photo</button><button class="ghost" data-act="avdef">Use default avatar</button></div><input type="file" id="avfile" accept="image/*" hidden></section>';
+  return h}
+function cropDlg(file){
+  if(!file||!/^image\//.test(file.type)){toast('Please choose an image file.');return}
+  var url=URL.createObjectURL(file),im=new Image();
+  im.onerror=function(){URL.revokeObjectURL(url);toast('Could not open that image.')};
+  im.onload=function(){
+    var m=document.createElement('div');m.className='modal';
+    m.innerHTML='<div class="card glow dlg" role="dialog" aria-modal="true"><h2>Crop your photo</h2><p class="sub" style="margin:0 0 10px">Drag the photo to move it. Use the slider to zoom.</p><div class="crop" id="cbox"></div><label class="f" for="cz">Zoom</label><input id="cz" type="range" min="100" max="400" value="100"><div class="btns"><button class="ghost" data-c="0">Cancel</button><button data-c="1">Use photo</button></div></div>';
+    document.body.appendChild(m);
+    var box=m.querySelector('#cbox'),S=box.clientWidth||280,nw=im.naturalWidth,nh=im.naturalHeight,base=S/Math.min(nw,nh),zoom=1,ox=0,oy=0,dx=0,dy=0,drag=false;
+    var img=document.createElement('img');img.src=url;img.draggable=false;img.style.cssText='position:absolute;max-width:none';box.appendChild(img);
+    function lay(){var sc=base*zoom,w=nw*sc,h=nh*sc,mx=Math.max(0,(w-S)/2),my=Math.max(0,(h-S)/2);ox=Math.max(-mx,Math.min(mx,ox));oy=Math.max(-my,Math.min(my,oy));img.style.width=w+'px';img.style.height=h+'px';img.style.left=((S-w)/2+ox)+'px';img.style.top=((S-h)/2+oy)+'px'}
+    lay();
+    box.addEventListener('pointerdown',function(e){drag=true;dx=e.clientX;dy=e.clientY;try{box.setPointerCapture(e.pointerId)}catch(_){}});
+    box.addEventListener('pointermove',function(e){if(!drag)return;ox+=e.clientX-dx;oy+=e.clientY-dy;dx=e.clientX;dy=e.clientY;lay()});
+    box.addEventListener('pointerup',function(){drag=false});box.addEventListener('pointercancel',function(){drag=false});
+    m.querySelector('#cz').addEventListener('input',function(e){zoom=e.target.value/100;lay()});
+    function close(){m.remove();URL.revokeObjectURL(url)}
+    m.addEventListener('click',function(e){var b=e.target.closest('button[data-c]');if(!b)return;
+      if(b.dataset.c==='1'){var sc=base*zoom,w=nw*sc,h=nh*sc,left=(S-w)/2+ox,top=(S-h)/2+oy,cv=document.createElement('canvas');cv.width=cv.height=256;var cx=cv.getContext('2d');cx.fillStyle='#000';cx.fillRect(0,0,256,256);cx.drawImage(im,-left/sc,-top/sc,S/sc,S/sc,0,0,256,256);
+        state.prefs.avatar={type:'img',data:cv.toDataURL('image/jpeg',.85)};save();close();render(true);toast('Avatar updated.')}
+      else close()})};
+  im.src=url}
+/* ---------- three-dot menu ---------- */
+function dots(){return'<button class="dotb" data-act="menu" aria-label="Menu"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg></button>'}
+function closeMenu(){var m=document.getElementById('menu');if(m)m.remove()}
+function menuHtml(sub){var h='',v=state.prefs.routineView;
+  if(sub==='view')h='<button data-act="mi" data-v="back">‹ Back</button><button data-act="mi" data-v="vlist" class="'+(v==='list'?'on':'')+'">List view</button><button data-act="mi" data-v="vcal" class="'+(v==='cal'?'on':'')+'">Calendar view</button>';
+  else{if(tab==='routine')h+='<button data-act="mi" data-v="edit">'+(edit?'Done editing':'Edit routine')+'</button><button data-act="mi" data-v="view">View</button>';h+='<button data-act="mi" data-v="settings">Settings</button>'}
+  return'<div class="menu" role="menu">'+h+'</div>'}
+function openMenu(sub){var m=document.getElementById('menu');if(!m){m=document.createElement('div');m.id='menu';m.className='menuwrap';m.addEventListener('click',function(e){if(e.target===m)closeMenu()});document.body.appendChild(m)}m.innerHTML=menuHtml(sub)}
+/* ---------- study records, timer ---------- */
+var PAL=['#C033FF','#4D7CFF','#FF3DA5','#2FD27A','#19C6D8','#FF8A2B','#F5C542','#8E6BFF','#FF6B6B','#7BD389'];
+function subjColor(s){var c=state.prefs.subjColors[s];if(c)return c;var i=SUBJ.indexOf(s);if(i<0){i=0;for(var j=0;j<s.length;j++)i+=s.charCodeAt(j)}return PAL[i%PAL.length]}
+function subjOpts(other,selv){return SUBJ.map(function(s){return'<option value="'+esc(s)+'"'+(selv===s?' selected':'')+'>'+esc(s)+'</option>'}).join('')+(other||!SUBJ.length?'<option value="">Other</option>':'')}
+function addSession(date,subj,mins){state.sessions.push({id:uid(),date:date,subj:str(subj,30),mins:mins});var t=Math.min(1440,logged(date)+mins);state.time[date]={h:Math.floor(t/60),m:t%60};save();render(true)}
+function delSession(id){var s=state.sessions.filter(function(x){return x.id===id})[0];if(!s)return;state.sessions=state.sessions.filter(function(x){return x.id!==id});var t=Math.max(0,logged(s.date)-s.mins);if(t)state.time[s.date]={h:Math.floor(t/60),m:t%60};else delete state.time[s.date];save();render(true);toast('Record deleted.')}
+function sessHtml(k){var S=state.sessions.filter(function(s){return s.date===k}),h='<h3>Records</h3>';
+  if(!S.length)h+='<p class="sub" style="margin:0 0 8px">No subject records for this day.</p>';
+  S.forEach(function(s){h+='<div class="item row"><span><b>'+esc(s.subj||'Other')+'</b> <span class="sub">'+fmtMin(s.mins)+'</span></span><button class="ghost sm" data-delsess="'+esc(s.id)+'" style="flex:none">Delete</button></div>'});
+  return h+'<button class="ghost" data-act="addrec" data-k="'+k+'" style="width:100%">Add record</button>'}
+function recDlg(date){modal('Add record','<label class="f" for="rsub">Subject</label><select id="rsub">'+subjOpts(true)+'</select>'+hm('rc',null,'Studied'),[{label:'Cancel',cls:'ghost',val:0},{label:'Save',val:1,v:true}],function(q){return rd(q,'rc')?'':'Enter the time you studied.'}).then(function(r){if(r.val!==1)return;addSession(date,r.q('#rsub').value,rd(r.q,'rc'));toast('Record added.')})}
+function elapsed(){var T=state.timer;if(!T)return 0;return T.acc+(T.run?Math.max(0,Date.now()-T.start):0)}
+function fmtClock(ms){var s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return pad(h)+':'+pad(m)+':'+pad(s%60)}
+function timerCard(){var T=state.timer;
+  if(!T)return'<section class="card"><h2>Study timer</h2><p class="sub" style="margin:0 0 8px">Run it while you study. When you stop, the time is saved as a record.</p><label class="f" for="tsub">Subject</label><select id="tsub">'+subjOpts(true)+'</select><button data-act="tstart" style="width:100%">Start timer</button></section>';
+  return'<section class="card glow"><div class="row"><h2 style="margin:0">Study timer</h2><span class="pill">'+(T.run?'Running':'Paused')+'</span></div><div class="tbig" id="tmr">'+fmtClock(elapsed())+'</div><p class="sub" style="margin:0 0 10px;text-align:center">'+esc(T.subj||'Other')+'</p><div class="btns"><button data-act="tpause">'+(T.run?'Pause':'Resume')+'</button><button data-act="tstop">Stop and save</button><button class="ghost" data-act="tdisc">Discard</button></div></section>'}
+/* ---------- calendar view ---------- */
+function calHtml(){
+  if(DRE.test(selKey)&&calSync!==selKey){calM=selKey.slice(0,7);calSync=selKey}
+  if(!calM)calM=today().slice(0,7);
+  var y=+calM.slice(0,4),m=+calM.slice(5,7)-1,first=new Date(y,m,1),dow=first.getDay(),dim=new Date(y,m+1,0).getDate(),td=today(),i;
+  var h='<section class="card"><div class="row" style="margin-bottom:10px"><button class="ghost sm" data-act="calnav" data-n="-1" aria-label="Previous month">‹</button><b>'+esc(first.toLocaleDateString(LOC(),{month:'long',year:'numeric'}))+'</b><button class="ghost sm" data-act="calnav" data-n="1" aria-label="Next month">›</button></div><div class="cal">';
+  for(i=0;i<7;i++)h+='<b>'+esc(new Date(2023,0,1+i).toLocaleDateString(LOC(),{weekday:'short'}))+'</b>';
+  for(i=0;i<dow;i++)h+='<span></span>';
+  for(i=1;i<=dim;i++){var iso=y+'-'+pad(m+1)+'-'+pad(i),T=tasksOn(iso),all=T.length&&T.every(isDone);
+    h+='<button class="cd'+(T.length||dayOf(iso)?' has':'')+(all?' full':'')+(iso===td?' today':'')+(iso===selKey?' sel':'')+'" data-act="pick" data-k="'+iso+'">'+i+'</button>'}
+  return h+'</div></section>'}
+/* ---------- records page ---------- */
+function dayMapAll(){var M={};Object.keys(state.time).forEach(function(k){var l=logged(k);if(l)(M[k]=M[k]||{s:0,t:0}).s=l});R().days.forEach(function(d){var t=dayLoad(d.date);if(t)(M[d.date]=M[d.date]||{s:0,t:0}).t=t});return M}
+function recBuckets(){var a=recAnchor||today(),B=[],i,d;
+  if(recP==='daily'){for(i=13;i>=0;i--){d=addDays(a,-i);B.push({from:d,to:d,lab:String(+d.slice(8)),full:fmtShort(d)})}}
+  else if(recP==='weekly'){var ws=addDays(a,-pd(a).getDay());for(i=7;i>=0;i--){var f=addDays(ws,-7*i),t=addDays(f,6);B.push({from:f,to:t,lab:fmtShort(f),full:fmtShort(f)+' – '+fmtShort(t)})}}
+  else if(recP==='monthly'){var y=+a.slice(0,4),m=+a.slice(5,7)-1;for(i=11;i>=0;i--){var dt=new Date(y,m-i,1);B.push({from:isoOf(dt),to:isoOf(new Date(dt.getFullYear(),dt.getMonth()+1,0)),lab:dt.toLocaleDateString(LOC(),{month:'short'}),full:dt.toLocaleDateString(LOC(),{month:'long',year:'numeric'})})}}
+  else{var yy=+a.slice(0,4);for(i=4;i>=0;i--){B.push({from:(yy-i)+'-01-01',to:(yy-i)+'-12-31',lab:String(yy-i),full:String(yy-i)})}}
+  return B}
+function recFill(B){var M=dayMapAll();B.forEach(function(b){b.s=0;b.t=0;b.subj={}});
+  Object.keys(M).forEach(function(k){B.forEach(function(b){if(k>=b.from&&k<=b.to){b.s+=M[k].s;b.t+=M[k].t}})});
+  state.sessions.forEach(function(x){B.forEach(function(b){if(x.date>=b.from&&x.date<=b.to)b.subj[x.subj]=(b.subj[x.subj]||0)+x.mins})});return B}
+function recChart(B){
+  var W=340,H=190,L=34,Tp=10,Bt=26,pw=W-L-6,ph=H-Tp-Bt,mx=60,N=B.length;
+  B.forEach(function(b){mx=Math.max(mx,b.s,b.t)});
+  var step=mx<=180?60:mx<=480?120:mx<=1200?300:mx<=3000?600:1800,top=Math.ceil(mx/step)*step;
+  function Y(v){return Tp+ph-v/top*ph}
+  var g='',v,slot=pw/N,bw=slot*.64;
+  for(v=0;v<=top;v+=step)g+='<line x1="'+L+'" x2="'+(W-6)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'"/><text x="'+(L-5)+'" y="'+(Y(v)+3).toFixed(1)+'" text-anchor="end">'+(v/60)+'h</text>';
+  B.forEach(function(b,i){var x=L+slot*i+(slot-bw)/2;
+    if(b.t>0)g+='<rect x="'+x.toFixed(1)+'" y="'+Y(b.t).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(Y(0)-Y(b.t)).toFixed(1)+'" rx="3" style="fill:var(--neon);opacity:.22"/>';
+    var names=Object.keys(b.subj).sort(),sum=0;names.forEach(function(n){sum+=b.subj[n]});var tot=Math.max(b.s,sum),base=0;
+    function seg(len,col){if(len<=0)return;var y1=Y(base+len),h1=Y(base)-y1;g+='<rect x="'+x.toFixed(1)+'" y="'+y1.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h1.toFixed(1)+'" rx="2" style="fill:'+col+'"/>';base+=len}
+    if(tot>0){seg(tot-sum,'var(--neon)');names.forEach(function(n){seg(b.subj[n],subjColor(n))})}
+    g+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-9)+'" text-anchor="middle">'+esc(b.lab)+'</text>'});
+  return'<svg class="rg" viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Study time chart">'+g+'</svg>'}
+function recRange(B){var a=B[0],z=B[B.length-1];
+  if(recP==='daily'||recP==='weekly')return fmtShort(a.from)+' – '+fmtShort(z.to);
+  if(recP==='monthly')return pd(a.from).toLocaleDateString(LOC(),{month:'short',year:'numeric'})+' – '+pd(z.from).toLocaleDateString(LOC(),{month:'short',year:'numeric'});
+  return a.lab+' – '+z.lab}
+function recSubjects(){
+  var tot={},all=0,tm=0,h='';state.sessions.forEach(function(x){tot[x.subj]=(tot[x.subj]||0)+x.mins;all+=x.mins});Object.keys(state.time).forEach(function(k){tm+=logged(k)});
+  var names=SUBJ.slice();Object.keys(tot).forEach(function(n){if(n&&names.indexOf(n)<0)names.push(n)});
+  var rows=names.map(function(n){return{n:n,v:tot[n]||0,c:subjColor(n),pick:true}});
+  if(tot['']>0)rows.push({n:'Other',v:tot[''],c:subjColor('Other'),pick:false});
+  var un=Math.max(0,tm-all);if(un>0)rows.push({n:'Not assigned',v:un,c:'var(--neon)',pick:false});
+  var mx=1;rows.forEach(function(r){mx=Math.max(mx,r.v)});
+  h+='<section class="card"><h2>Study time by subject</h2>';
+  if(!tm&&!all)h+='<p class="sub">Add records with the timer or the Add record button to see study time here.</p>';
+  rows.forEach(function(r){h+='<div class="hb"><div class="row" style="margin-bottom:6px"><span><i class="dot" style="background:'+r.c+'"></i>'+esc(r.n)+'</span><span class="hdrb"><b>'+fmtMin(r.v)+'</b>'+(r.pick?'<input type="color" class="cpick" data-sc="'+esc(r.n)+'" value="'+r.c+'" aria-label="Subject color">':'')+'</span></div><div class="bar"><i style="width:'+Math.round(r.v/mx*100)+'%;background:'+r.c+'"></i></div></div>'});
+  return h+'</section>'+subjCards()}
+function vRecords(){
+  var h='<div class="row" style="margin-bottom:10px"><h1>Records</h1>'+dots()+'</div>';
+  h+='<div class="seg">'+[['daily','Daily'],['weekly','Weekly'],['monthly','Monthly'],['yearly','Yearly'],['subjects','Subjects']].map(function(p){return'<button data-act="recp" data-v="'+p[0]+'" class="'+(recP===p[0]?'on':'')+'">'+p[1]+'</button>'}).join('')+'</div>';
+  if(recP==='subjects')return h+recSubjects();
+  var B=recFill(recBuckets()),ts=0,tt=0,act=0,best=0,M=dayMapAll(),lo=B[0].from,hi=B[B.length-1].to;
+  B.forEach(function(b){ts+=b.s;tt+=b.t});Object.keys(M).forEach(function(k){if(k>=lo&&k<=hi&&M[k].s>0){act++;best=Math.max(best,M[k].s)}});
+  h+='<div class="nav"><button class="ghost" data-act="recnav" data-n="-1">&lt; Prev</button><b style="text-align:center;align-self:center;font-size:15px">'+esc(recRange(B))+'</b><button class="ghost" data-act="recnav" data-n="1">Next &gt;</button></div>';
+  h+='<section class="card">'+recChart(B)+'<p class="sub" style="margin:6px 0 0;font-size:14.5px">Solid bars show the time you studied. Light bars behind them show your target.</p>';
+  var legend='',seen={},un=false;B.forEach(function(b){var sum=0;Object.keys(b.subj).forEach(function(n){sum+=b.subj[n];if(!seen[n]){seen[n]=1;legend+='<span><i class="dot" style="background:'+subjColor(n)+'"></i>'+esc(n||'Other')+'</span>'}});if(b.s>sum)un=true});
+  if(legend)h+='<div class="leg2">'+legend+(un?'<span><i class="dot" style="background:var(--neon)"></i>Not assigned</span>':'')+'</div>';
+  h+='</section><section class="card"><div class="stats"><div class="stat"><b>'+fmtMin(ts)+'</b><span>Studied</span></div><div class="stat"><b>'+fmtMin(tt)+'</b><span>Target</span></div><div class="stat"><b>'+(act?fmtMin(Math.round(ts/act)):'0m')+'</b><span>Average per study day</span></div><div class="stat"><b>'+fmtMin(best)+'</b><span>Best day</span></div></div></section>';
+  var rows=B.filter(function(b){return b.s||b.t}).reverse();
+  h+='<section class="card"><h2>Details</h2>';
+  if(!rows.length)h+='<p class="sub">No study records in this period yet.</p>';
+  rows.forEach(function(b){h+='<div class="item"><div class="row"><b>'+esc(b.full)+'</b><span class="sub">'+fmtMin(b.s)+(b.t?' / '+fmtMin(b.t):'')+'</span></div>'+bar(b.t?Math.min(100,Math.round(b.s/b.t*100)):(b.s?100:0),b.t&&b.s>b.t)+'</div>'});
+  return h+'</section>'}
+/* ---------- readable copy of routine and progress ---------- */
+function humanReport(){
+  var bn=state.prefs.lang==='bn';function L(e,b){return bn?b:e}
+  var A=totals(),o=[];
+  function meta(t){var p=[];if(t.subj.length)p.push(t.subj.join(' + '));if(t.chapter)p.push(L('Ch: ','অধ্যায়: ')+t.chapter);if(t.mins)p.push(fmtMin(t.mins));return p.length?' ('+p.join(', ')+')':''}
+  o.push(L('This is my study routine and progress from my study tracker app. Please read it and help me plan, review and improve.','এটি আমার স্টাডি ট্র্যাকার অ্যাপ থেকে নেওয়া আমার রুটিন ও অগ্রগতি। দয়া করে পড়ে আমাকে পরিকল্পনা, রিভিশন ও উন্নতিতে সাহায্য করুন।'));
+  o.push('');o.push(L('Date: ','তারিখ: ')+fmtLong(today()));
+  o.push(L('Daily study limit: ','দৈনিক পড়ার সীমা: ')+fmtMin(state.prefs.limit));
+  o.push(L('Tasks done: ','সম্পন্ন কাজ: ')+A.done+'/'+A.total+' ('+A.pct+'%)');
+  o.push(L('Study time logged: ','লগ করা পড়ার সময়: ')+fmtMin(A.lg)+L(' of planned ',' পরিকল্পিত ')+fmtMin(A.pl));
+  o.push('');o.push(L('ROUTINE BY DATE','তারিখ অনুযায়ী রুটিন'));
+  R().days.forEach(function(d){var T=tasksOn(d.date),ld=dayLoad(d.date),lg=logged(d.date),S=state.sessions.filter(function(s){return s.date===d.date});
+    o.push('');o.push(fmtLong(d.date)+(ld?' | '+L('planned ','পরিকল্পিত ')+fmtMin(ld):'')+(lg?' | '+L('studied ','পড়েছি ')+fmtMin(lg):'')+(d.note?' | '+d.note:''));
+    T.forEach(function(t){o.push('  ['+(isDone(t)?'x':' ')+'] '+t.text+meta(t))});
+    if(S.length)o.push('  '+L('Records: ','রেকর্ড: ')+S.map(function(s){return(s.subj||L('Other','অন্যান্য'))+' '+fmtMin(s.mins)}).join(', '))});
+  var B=viewTasks('backlog');if(B.length){o.push('');o.push(L('TASKS WITHOUT A DATE','তারিখহীন কাজ'));B.forEach(function(t){o.push('  ['+(isDone(t)?'x':' ')+'] '+t.text+meta(t))})}
+  o.push('');o.push(L('SUBJECTS','বিষয়'));
+  SUBJ.forEach(function(s){var tot=0,dn=0,mins=0;R().tasks.forEach(function(t){if(t.subj.indexOf(s)>-1){tot++;if(isDone(t))dn++}});state.sessions.forEach(function(x){if(x.subj===s)mins+=x.mins});o.push('  '+s+': '+dn+'/'+tot+L(' tasks done',' কাজ সম্পন্ন')+(mins?', '+L('studied ','পড়েছি ')+fmtMin(mins):''))});
+  if(state.weak.length){o.push('');o.push(L('WEAK CHAPTERS','দুর্বল অধ্যায়'));state.weak.forEach(function(w){o.push('  - '+w.subject+': '+w.chapter+(w.note?' ('+w.note+')':'')+' ['+(w.done?L('revised','রিভাইজ হয়েছে'):L('not revised','রিভাইজ হয়নি'))+']')})}
+  if(state.mistakes.length){o.push('');o.push(L('MISTAKE LOG','ভুলের খাতা'));state.mistakes.forEach(function(m){o.push('  - '+m.date+' | '+m.subject+(m.chapter?': '+m.chapter:'')+' — '+m.what+(m.fix?' -> '+L('Fix: ','সমাধান: ')+m.fix:''))})}
+  return o.join('\n')}
+function themeExtra(){var t=state.prefs.theme,C=state.prefs.customThemes||[];
+  var h='<h3>My themes</h3>';
+  if(!C.length)h+='<p class="sub">No saved themes yet.</p>';
+  C.forEach(function(c){h+='<div class="item row"><span class="tt"><i class="dot" style="background:'+c.accent+'"></i>'+esc(c.name)+'</span><div class="hdrb"><button class="sm'+(t.name===c.id?'':' ghost')+'" data-act="usetheme" data-id="'+esc(c.id)+'">'+(t.name===c.id?'In use':'Apply')+'</button><button class="danger sm" data-act="deltheme" data-id="'+esc(c.id)+'">Delete</button></div></div>'});
+  return h+'<h3>Create your own theme</h3><label class="f" for="ctn">Theme name</label><input id="ctn" maxlength="16"><div class="time"><div><label class="f" for="cta">Accent color</label><input id="cta" type="color" value="'+t.accent+'"></div><div><label class="f" for="ctb">Background color</label><input id="ctb" type="color" value="'+t.bg+'"></div></div><div class="time"><div><label class="f" for="ctc">Card color</label><input id="ctc" type="color" value="'+(t.card||mix(t.bg,t.accent,.05))+'"></div><div><label class="f" for="ctt">Text color</label><input id="ctt" type="color" value="'+(t.text||'#F6F1FF')+'"></div></div><button data-act="savetheme" style="width:100%">Save theme</button>'}
+function updateAcc(){return acc('update','Update your routine','<p class="sub">Copy the prompt, give it to any AI tool together with your new routine, then paste the reply below. You will choose how it joins your current routine.</p>'+promptBlock()+'<textarea id="ru" rows="7" placeholder="Paste your new routine here">'+esc(rtDraft)+'</textarea><div class="err" id="rerr" role="alert"></div><div class="btns"><button data-act="upd">Update routine</button><button class="ghost" data-act="pickfile">Choose a text file</button></div><input type="file" id="rfile" accept=".txt,text/plain" hidden>')}
+function backTo(){if(tab==='logs')go('settings');else go(prevTab&&prevTab!==tab?prevTab:'home')}
 /* ---------- events ---------- */
 document.addEventListener('change',function(e){
   var t=e.target,D=t.dataset||{};
@@ -532,6 +961,10 @@ document.addEventListener('change',function(e){
   else if(D.sel){if(t.checked)sel[D.sel]=true;else delete sel[D.sel];render(true)}
   else if(D.weak){state.weak.forEach(function(w){if(w.id===D.weak)w.done=t.checked});save();render(true)}
   else if(D.time){var o=state.time[D.time]||{h:0,m:0};o[D.u]=Math.max(0,Math.min(D.u==='h'?24:59,parseInt(t.value,10)||0));if(o.h||o.m)state.time[D.time]=o;else delete state.time[D.time];save();render(true)}
+  else if(D.pref==='toastSec'){var v2=parseInt(t.value,10);if([2,3,4,5,8].indexOf(v2)>-1){state.prefs.toastSec=v2;save();render(true)}}
+  else if(D.avc){avDraft[D.avc]=t.value;render(true)}
+  else if(D.sc){state.prefs.subjColors[D.sc]=t.value;save();render(true)}
+  else if(t.id==='avfile'&&t.files[0]){var af=t.files[0];t.value='';cropDlg(af)}
   else if(D.pref==='fs'){if(FS[t.value]){state.prefs.fs=t.value;save();render(true)}}
   else if(D.th){var th=state.prefs.theme;var nt={name:'custom',accent:th.accent,bg:th.bg};nt[D.th]=t.value;state.prefs.theme=nt;save();render(true)}
   else if(D.jump&&t.value){selKey=t.value;render()}
@@ -542,9 +975,10 @@ document.addEventListener('click',function(e){
   if(D.tab)return go(D.tab);
   if(D.delweak){state.weak=state.weak.filter(function(w){return w.id!==D.delweak});save();return render(true)}
   if(D.delmis)return confirmBox('Delete this mistake?','It will be removed from the log.','Delete',true).then(function(ok){if(ok){state.mistakes=state.mistakes.filter(function(m){return m.id!==D.delmis});save();render(true)}});
+  if(D.delsess)return delSession(D.delsess);
   var id=D.id;
   switch(D.act){
-    case'pick':selKey=D.k;render();break;
+    case'pick':selKey=D.k;render(state.prefs.routineView==='cal');break;
     case'shift':selKey=addDays(curDate(),+D.n);render();break;
     case'hshift':followToday=false;hd=addDays(hd||today(),+D.n);render();break;
     case'htoday':followToday=true;render();break;
@@ -571,15 +1005,45 @@ document.addEventListener('click',function(e){
     case'pickfile':var pf=document.getElementById('rfile');if(pf)pf.click();break;
     case'pmore':promptOpen=!promptOpen;var pb=document.getElementById('pbox');if(pb)pb.classList.toggle('open',promptOpen);b.textContent=promptOpen?'See less':'See more';break;
     case'pcopy':copyText(buildPrompt()).then(function(ok){if(ok)toast('Prompt copied. Paste it into your AI tool.');else{promptOpen=true;render(true);toast('Could not copy automatically. Tap See more and copy the text by hand.')}});break;
+    case'menu':openMenu();break;
+    case'mi':var mv2=D.v;if(mv2==='view'){openMenu('view');break}if(mv2==='back'){openMenu();break}closeMenu();
+      if(mv2==='edit'){edit=!edit;sel={};render(true)}
+      else if(mv2==='settings'){prevTab=tab;go('settings')}
+      else if(mv2==='vlist'||mv2==='vcal'){state.prefs.routineView=mv2==='vcal'?'cal':'list';save();render(true)}
+      break;
+    case'back':backTo();break;
+    case'gologs':go('logs');break;
+    case'avatar':var ca=state.prefs.avatar;avDraft=ca&&ca.type==='svg'?clone(ca.cfg):defCfg();if(tab!=='avatar')prevTab=tab;go('avatar');break;
+    case'av':avDraft[D.k]=/^#/.test(D.v)?D.v:parseInt(D.v,10);render(true);break;
+    case'avsave':state.prefs.avatar={type:'svg',cfg:clone(avDraft)};save();backTo();toast('Avatar saved.');break;
+    case'avdef':state.prefs.avatar=null;save();if(tab==='avatar')backTo();else render(true);toast('Default avatar restored.');break;
+    case'avphoto':var af2=document.getElementById('avfile');if(af2)af2.click();break;
+    case'recp':recP=D.v;recAnchor='';render(true);break;
+    case'recnav':var rn=+D.n,ra=recAnchor||today(),rp=pd(ra);
+      if(recP==='daily')recAnchor=addDays(ra,14*rn);else if(recP==='weekly')recAnchor=addDays(ra,56*rn);else if(recP==='monthly')recAnchor=isoOf(new Date(rp.getFullYear(),rp.getMonth()+12*rn,1));else recAnchor=isoOf(new Date(rp.getFullYear()+5*rn,0,1));
+      render(true);break;
+    case'calnav':var cy=+calM.slice(0,4),cmn=+calM.slice(5,7)-1+(+D.n),cd2=new Date(cy,cmn,1);calM=isoOf(cd2).slice(0,7);render(true);break;
+    case'tstart':var tse=document.getElementById('tsub');state.timer={run:true,start:Date.now(),acc:0,subj:tse?tse.value:'',date:today()};save();render(true);break;
+    case'tpause':var T0=state.timer;if(T0){if(T0.run){T0.acc+=Math.max(0,Date.now()-T0.start);T0.run=false}else{T0.run=true;T0.start=Date.now()}save();render(true)}break;
+    case'tstop':var T1=state.timer;if(T1){var mm=Math.round(elapsed()/60000);state.timer=null;save();if(mm<1){render(true);toast('Too short to save. Timer stopped.')}else{addSession(T1.date,T1.subj,Math.min(mm,1440));toast('Timer saved as a record.')}}break;
+    case'tdisc':if(state.timer)confirmBox('Discard timer?','The time on the timer will not be saved.','Discard',true).then(function(ok){if(ok){state.timer=null;save();render(true);toast('Timer discarded.')}});break;
+    case'addrec':recDlg(D.k);break;
+    case'savetheme':var tn=document.getElementById('ctn').value.trim();if(!tn){toast('Enter a theme name first.');break}
+      if(state.prefs.customThemes.length>=12){toast('You can save up to 12 themes. Delete one first.');break}
+      var nth={id:'c'+Math.random().toString(36).slice(2,7),name:tn.slice(0,16),accent:document.getElementById('cta').value,bg:document.getElementById('ctb').value,card:document.getElementById('ctc').value,text:document.getElementById('ctt').value};
+      state.prefs.customThemes.push(nth);state.prefs.theme={name:nth.id,accent:nth.accent,bg:nth.bg,card:nth.card,text:nth.text};save();render(true);toast('Theme saved.');break;
+    case'usetheme':var uc=state.prefs.customThemes.filter(function(c){return c.id===id})[0];if(uc){state.prefs.theme={name:uc.id,accent:uc.accent,bg:uc.bg,card:uc.card,text:uc.text};save();render(true)}break;
+    case'deltheme':confirmBox('Delete this theme?','It will be removed from your saved themes.','Delete',true).then(function(ok){if(!ok)return;state.prefs.customThemes=state.prefs.customThemes.filter(function(c){return c.id!==id});if(state.prefs.theme.name===id)state.prefs.theme={name:'purple',accent:'#C033FF',bg:'#120F1D'};save();render(true);toast('Theme deleted.')});break;
+    case'rmroutine':confirmBox('Remove your routine?','Your whole routine and its ticks will be removed and the upload screen will open. Study time, weak chapters and mistakes are kept. This cannot be undone.','Remove',true).then(function(ok){if(!ok)return;state.routine={days:[],tasks:[]};state.done={};state.subjects=[];state.setup=false;state.legacy=false;undoStack=[];sel={};selKey='';save();render()});break;
+    case'copyinfo':copyText(humanReport()).then(function(ok){toast(ok?'Routine copied.':'Could not copy. Use Download instead.')});break;
+    case'dlinfo':try{var tb=new Blob(['﻿'+humanReport()],{type:'text/plain'});var ta2=document.createElement('a');ta2.href=URL.createObjectURL(tb);ta2.download='my-study-routine-'+today()+'.txt';document.body.appendChild(ta2);ta2.click();setTimeout(function(){URL.revokeObjectURL(ta2.href);ta2.remove()},1500);toast('Downloaded. Check your Downloads folder.')}catch(e){toast('Download failed: '+e.message)}break;
     case'export':doExport();break;
     case'import':document.getElementById('file').click();break;
-    case'restoreorig':restoreOrig();break;
-    case'addearly':addEarly();break;
     case'lang':if(D.v==='bn'||D.v==='en'){state.prefs.lang=D.v;save();render(true)}break;
     case'theme':var P=THEMES[D.p];state.prefs.theme={name:D.p,accent:P[1],bg:P[2]};save();render(true);break;
     case'savelimit':var l=(parseInt(document.getElementById('lh').value,10)||0)*60+(parseInt(document.getElementById('lm').value,10)||0);if(l<60||l>1440){toast('Enter a limit between 1h and 24h.');break}state.prefs.limit=l;save();render(true);toast('Daily limit saved.');break;
     case'install':if(deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;render(true)})}break;
-    case'resetprog':confirmBox('Reset study records?','This clears all ticks, study time, weak chapters, and mistakes on this phone. Your routine is kept. This cannot be undone.','Reset progress',true).then(function(ok){if(ok){state.done={};state.time={};state.weak=[];state.mistakes=[];undoStack=[];save();render();toast('Progress reset.')}});break;
+    case'resetprog':confirmBox('Reset study records?','This clears all ticks, study time, weak chapters, and mistakes on this phone. Your routine is kept. This cannot be undone.','Reset progress',true).then(function(ok){if(ok){state.done={};state.time={};state.sessions=[];state.timer=null;state.weak=[];state.mistakes=[];undoStack=[];save();render();toast('Progress reset.')}});break;
     case'doupdate':updating=true;if(updWorker)updWorker.postMessage({type:'SKIP_WAITING'});break;
     case'later':var u=document.getElementById('upbar');if(u)u.remove();break}});
 document.addEventListener('toggle',function(e){var a=e.target.dataset&&e.target.dataset.acc;if(a)openAcc[a]=e.target.open},true);
@@ -604,16 +1068,16 @@ function setupSW(){
     reg.addEventListener('updatefound',function(){var nw=reg.installing;if(nw)nw.addEventListener('statechange',function(){if(nw.state==='installed'&&navigator.serviceWorker.controller)showUpdate(nw)})});
     var chk=function(){reg.update().catch(function(){})};window.addEventListener('online',chk);document.addEventListener('visibilitychange',function(){if(!document.hidden)chk()});chk();
   }).catch(function(){});
-  navigator.serviceWorker.addEventListener('controllerchange',function(){if(updating){save();location.reload()}else if(tab==='more')render(true)})}
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;if(tab==='more')render(true)});
+  navigator.serviceWorker.addEventListener('controllerchange',function(){if(updating){save();location.reload()}else if(tab==='settings')render(true)})}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;if(tab==='settings')render(true)});
 window.addEventListener('appinstalled',function(){deferred=null;toast('Installed.')});
 function net(){var n=document.getElementById('net');if(n)n.textContent=navigator.onLine?'Online':'Offline'}
 window.addEventListener('online',net);window.addEventListener('offline',net);
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&(tab==='home'||followToday))render(true)});
 /* ---------- start ---------- */
-if(!DEF||!EARLY){document.getElementById('view').innerHTML='<section class="card"><h2>App file missing</h2><p>routine-default.js did not load. Check that it is uploaded next to index.html, then reload.</p></section>'}
-else{load();render();setupSW();
-  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().then(function(ok){persisted=ok?'Storage is marked persistent.':'';})}catch(e){}}
+load();render();setupSW();
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().then(function(ok){persisted=ok?'Storage is marked persistent.':'';})}catch(e){}
+setInterval(function(){var e=document.getElementById('tmr');if(e&&state&&state.timer)e.textContent=fmtClock(elapsed())},1000);
 </script>
 </body>
 </html>
