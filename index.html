@@ -9,7 +9,7 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
 <style>
-:root{--bg:#120F1D;--panel:#181324;--panel2:#221A36;--line:#35294F;--neon:#C033FF;--neon2:#B341F9;--text:#F6F1FF;--lav:#CFC3F0;--warn:#FF8FB1;--ok:#8CF0B4;--glow:#2B1747;--rgb:192,51,255}
+:root{--bg:#120F1D;--panel:#181324;--panel2:#221A36;--line:#35294F;--neon:#C033FF;--neon2:#B341F9;--text:#F6F1FF;--lav:#CFC3F0;--warn:#FF8FB1;--ok:#8CF0B4;--glow:#2B1747;--rgb:192,51,255;--track:#2A2142;--accl:#D77AFF;--bgrgb:18,15,29}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
 body{margin:0;background:radial-gradient(900px 400px at 85% -5%,var(--glow) 0%,transparent 70%),var(--bg);color:var(--text);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Bengali","Hind Siliguri","Kohinoor Bangla",sans-serif;padding:max(14px,env(safe-area-inset-top)) 14px calc(92px + env(safe-area-inset-bottom));min-height:100vh}
@@ -27,9 +27,9 @@ h1{font-size:26px;margin:0;line-height:1.15}h2{font-size:21px;margin:0 0 10px}h3
 .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;flex:1;min-width:0}
 .stat{background:var(--panel2);border-radius:14px;padding:10px}
 .stat b{display:block;font-size:26px;color:var(--neon2)}.stat span{color:var(--lav);font-size:14.5px;line-height:1.25;display:block}
-.bar{height:14px;background:#2A2142;border-radius:9px;overflow:hidden}
+.bar{height:14px;background:var(--track);border-radius:9px;overflow:hidden}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--neon2),var(--neon));border-radius:9px;transition:width .3s}
-.bar.warn i{background:linear-gradient(90deg,#FF8FB1,#C033FF)}
+.bar.warn i{background:linear-gradient(90deg,#FF8FB1,var(--neon))}
 .row{display:flex;justify-content:space-between;gap:10px;align-items:center}
 .pill{background:var(--neon2);color:#fff;font-weight:700;border-radius:20px;padding:4px 12px;font-size:16px;white-space:nowrap}
 .pill.warn{background:var(--warn);color:#2a0b18}
@@ -60,10 +60,11 @@ label.f{color:var(--lav);font-size:16px;display:block}
 .time{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
 .item{background:var(--panel2);border-radius:14px;padding:12px;margin:0 0 10px}
 .item small{color:var(--lav);font-size:15px;display:block}
-.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(18,15,29,.96);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(8px);z-index:5}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(var(--bgrgb),.96);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(8px);z-index:5}
 .tabs button{flex:1;background:none;color:var(--lav);min-height:58px;font-size:14.5px;flex-direction:column;gap:2px;padding:0 2px;border-radius:12px}
 .tabs button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tabs button.on{color:#fff;background:var(--panel2);box-shadow:inset 0 -3px 0 var(--neon)}
+.tabs button.on svg{stroke:var(--accl)}.tabs[hidden]{display:none}
 .toast{position:fixed;left:14px;right:14px;bottom:calc(88px + env(safe-area-inset-bottom));background:var(--panel2);border:1px solid var(--neon2);border-radius:14px;padding:14px;z-index:9;text-align:center;font-weight:600}
 .modal{position:fixed;inset:0;background:rgba(5,3,10,.8);display:grid;place-items:center;padding:20px;z-index:10}
 .modal .card{max-width:420px;width:100%;margin:0}
@@ -93,7 +94,7 @@ button:disabled{opacity:.4}
 .scs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
 .sc{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:12px;min-height:46px;padding:0 12px;font-size:16px;cursor:pointer}
 .sc.wide{display:flex;margin:8px 0}
-.sc input{width:22px;height:22px;min-height:0;margin:0;accent-color:#C033FF}
+.sc input{width:22px;height:22px;min-height:0;margin:0;accent-color:var(--neon)}
 .upd{position:fixed;top:max(8px,env(safe-area-inset-top));left:10px;right:10px;z-index:11;background:var(--panel2);border:1.5px solid var(--neon);border-radius:14px;padding:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .upd span{flex:1 0 100%}.upd button{flex:1}
 .toast{display:flex;gap:10px;align-items:center;justify-content:space-between;text-align:left}
@@ -105,6 +106,11 @@ button:disabled{opacity:.4}
 .sw button{min-height:56px;font-size:15px;border:2px solid var(--line);background:var(--bg);color:var(--text);flex-direction:column;gap:4px;padding:6px}
 .sw button i{width:30px;height:12px;border-radius:6px;display:block}.sw button.on{border-color:#fff}
 input[type=color]{padding:3px;min-height:52px}
+.pbox{background:var(--panel2);border:0;border-radius:14px;padding:14px;position:relative;max-height:132px;overflow:hidden}
+.pbox.open{max-height:none;overflow:visible}
+.pbox:not(.open):after{content:"";position:absolute;left:0;right:0;bottom:0;height:64px;background:linear-gradient(to bottom,transparent,var(--panel2));pointer-events:none;border-radius:0 0 14px 14px}
+.ptxt{white-space:pre-wrap;font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--text)}
+textarea#rt,textarea#ru{min-height:150px}
 </style>
 </head>
 <body>
@@ -127,13 +133,13 @@ input[type=color]{padding:3px;min-height:52px}
 <script src="i18n.js"></script>
 <script>
 "use strict";
-var APP_VERSION='2.2.0',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
-var SUBJ=['ICT','Islam','Chemistry','BGS','Biology','HM','Physics','Eng 1st','Eng 2nd','Bangla 1st','Bangla 2nd'];
+var APP_VERSION='2.3.0',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var DEFSUBJ=['ICT','Islam','Chemistry','BGS','Biology','HM','Physics','Eng 1st','Eng 2nd','Bangla 1st','Bangla 2nd'],SUBJ=DEFSUBJ.slice();
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DEF=window.DEFAULT_ROUTINE,EARLY=window.EARLIER_EXAM_PREP,DRE=/^\d{4}-\d{2}-\d{2}$/;
 var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in Settings).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
 var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
-var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='';
+var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false;
 /* ---------- helpers ---------- */
 function pad(n){return(n<10?'0':'')+n}
 function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
@@ -161,39 +167,42 @@ function modal(title,body,btns,validate){return new Promise(function(res){
   document.body.appendChild(m);var f=m.querySelector('input,select,textarea');if(f&&f.type!=='date')f.focus()})}
 function confirmBox(t,msg,ok,danger){return modal(t,'<p>'+esc(msg)+'</p>',[{label:'Cancel',cls:'ghost',val:false},{label:ok,cls:danger?'danger':'',val:true}]).then(function(r){return r.val===true})}
 /* ---------- data + storage ---------- */
-function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:DEF.version,routine:clone({days:DEF.days,tasks:DEF.tasks}),done:{},time:{},weak:[],mistakes:[],prefs:{limit:450,lang:'en',fs:'m',theme:{name:'purple',accent:'#C033FF',bg:'#120F1D'}}}}
-function cleanRoutine(r){
+function fresh(lg){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:lg?DEF.version:'custom',routine:lg?clone({days:DEF.days,tasks:DEF.tasks}):{days:[],tasks:[]},done:{},time:{},weak:[],mistakes:[],subjects:lg?DEFSUBJ.slice():[],setup:!!lg,legacy:!!lg,prefs:{limit:450,lang:'en',fs:'m',theme:{name:'purple',accent:'#C033FF',bg:'#120F1D'}}}}
+function cleanRoutine(r,subs){subs=subs||SUBJ;
   if(!r||!Array.isArray(r.days)||!Array.isArray(r.tasks))throw new Error('Routine data is missing.');
   var seen={},days=[],tasks=[],ids={};
   r.days.slice(0,800).forEach(function(d){if(d&&DRE.test(d.date)&&!seen[d.date]){seen[d.date]=1;days.push({date:d.date,planned:mn(d.planned),note:str(d.note,300)})}});
   r.tasks.slice(0,5000).forEach(function(t){if(!t||!str(t.text,200).trim())return;var id=str(t.id,60).replace(/[^\w-]/g,'_');if(!id||ids[id])id=uid();ids[id]=1;var dt=DRE.test(t.date)?t.date:null;if(dt&&!seen[dt]){seen[dt]=1;days.push({date:dt,planned:null,note:''})}
-    tasks.push({id:id,date:dt,subj:(Array.isArray(t.subj)?t.subj:[]).filter(function(s){return SUBJ.indexOf(s)>-1}),chapter:str(t.chapter,100),text:str(t.text,200),mins:mn(t.mins)})});
+    tasks.push({id:id,date:dt,subj:(Array.isArray(t.subj)?t.subj:[]).filter(function(s){return subs.indexOf(s)>-1}),chapter:str(t.chapter,100),text:str(t.text,200),mins:mn(t.mins)})});
   days.sort(byDate);return{days:days,tasks:tasks}}
 function cleanTime(t){var o={};if(t&&typeof t==='object')Object.keys(t).forEach(function(k){if(DRE.test(k)&&t[k]){var h=Math.max(0,Math.min(24,parseInt(t[k].h,10)||0)),m=Math.max(0,Math.min(59,parseInt(t[k].m,10)||0));if(h||m)o[k]={h:h,m:m}}});return o}
 function cleanWeak(a){return Array.isArray(a)?a.slice(0,500).map(function(w){return{id:str(w.id,40).replace(/[^\w-]/g,'_')||uid(),subject:str(w.subject,30),chapter:str(w.chapter,100),note:str(w.note,300),done:w.done===true}}):[]}
 function cleanMis(a){return Array.isArray(a)?a.slice(0,1000).map(function(m){return{id:str(m.id,40).replace(/[^\w-]/g,'_')||uid(),date:str(m.date,20),subject:str(m.subject,30),chapter:str(m.chapter,100),what:str(m.what,400),fix:str(m.fix,400)}}):[]}
 /* Schema 1 (first app version) kept only time, weak chapters and mistakes that are still meaningful. */
-function migrateV1(o){var s=fresh();s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);var t={};
+function migrateV1(o){var s=fresh(true);s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);var t={};
   if(o.time&&typeof o.time==='object')Object.keys(o.time).forEach(function(k){var m=/^d(\d\d)(\d\d)$/.exec(k);if(m)t['2026-'+m[1]+'-'+m[2]]=o.time[k]});
   s.time=cleanTime(t);s.migratedV1=true;return s}
 function clean(o){
   if(!o||typeof o!=='object'||o.app!=='ssc2027-tracker')throw new Error('This file is not an SSC 2027 Tracker backup.');
   if(o.schema>SCHEMA)throw new Error('This data is from a newer app version. Update the app first.');
   if(!o.schema||o.schema<2)return migrateV1(o);
-  var s=fresh();s.routine=cleanRoutine(o.routine);s.routineVersion=str(o.routineVersion,40)||'custom';
+  var s=fresh(false),sl=Array.isArray(o.subjects)?cleanSubj(o.subjects):DEFSUBJ.slice();
+  if(o.routine&&Array.isArray(o.routine.tasks))o.routine.tasks.slice(0,5000).forEach(function(t){if(t&&Array.isArray(t.subj))t.subj.forEach(function(x){x=str(x,30).trim();if(x&&sl.indexOf(x)<0&&sl.length<60)sl.push(x)})});
+  s.subjects=sl;s.routine=cleanRoutine(o.routine,sl);s.routineVersion=str(o.routineVersion,40)||'custom';
+  s.setup=o.setup===undefined?true:o.setup===true;s.legacy=o.legacy===undefined?o.setup===undefined:o.legacy===true;
   if(o.done&&typeof o.done==='object')Object.keys(o.done).slice(0,6000).forEach(function(k){if(o.done[k]===true)s.done[k]=true});
   s.time=cleanTime(o.time);s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);
   var l=parseInt(o.prefs&&o.prefs.limit,10);s.prefs.limit=l>=60&&l<=1440?l:450;var th=o.prefs&&o.prefs.theme,HX=/^#[0-9a-fA-F]{6}$/;var lg=o.prefs&&o.prefs.lang;s.prefs.lang=lg==='bn'?'bn':'en';var fz=o.prefs&&o.prefs.fs;s.prefs.fs=FS[fz]?fz:'m';if(th&&HX.test(th.accent)&&HX.test(th.bg))s.prefs.theme={name:str(th.name,12),accent:th.accent,bg:th.bg};return s}
 function load(){
   var raw=null;
   try{raw=localStorage.getItem(KEY)}catch(e){memOnly=true;state=fresh();toast('Storage is blocked in this browser. Export a backup before closing.');return}
-  if(raw){try{state=clean(JSON.parse(raw));return}catch(e){try{localStorage.setItem(KEY+'.corrupt',raw)}catch(_){}state=fresh();toast('Saved data was unreadable. A copy was kept and the original routine was loaded. Import a backup to recover.');return}}
+  if(raw){try{state=clean(JSON.parse(raw));return}catch(e){try{localStorage.setItem(KEY+'.corrupt',raw)}catch(_){}state=fresh();toast('Saved data was unreadable. A copy was kept. Import a backup to recover.');return}}
   var old=null;try{old=localStorage.getItem(OLDKEY)}catch(e){}
   if(old){try{state=migrateV1(JSON.parse(old));save();toast('Found data from the earlier app version. Study time, weak chapters and mistakes were kept. Old checkboxes belonged to the old routine and were not carried over. The old data is still stored.');return}catch(e){}}
   state=fresh();save()}
 function save(){try{if(!memOnly)localStorage.setItem(KEY,JSON.stringify(state))}catch(e){memOnly=true;toast('Could not save. Export a backup from Settings.')}}
-function snap(){undoStack.push(JSON.stringify({routine:state.routine,done:state.done}));if(undoStack.length>25)undoStack.shift()}
-function undo(){var s=undoStack.pop();if(!s)return;var o=JSON.parse(s);state.routine=o.routine;state.done=o.done;sel={};save();render(true);toast('Undone.')}
+function snap(){undoStack.push(JSON.stringify({routine:state.routine,done:state.done,subjects:state.subjects,limit:state.prefs.limit,rv:state.routineVersion}));if(undoStack.length>25)undoStack.shift()}
+function undo(){var s=undoStack.pop();if(!s)return;var o=JSON.parse(s);state.routine=o.routine;state.done=o.done;if(o.subjects)state.subjects=o.subjects;if(o.limit)state.prefs.limit=o.limit;if(o.rv)state.routineVersion=o.rv;sel={};save();render(true);toast('Undone.')}
 function mutate(fn,msg){snap();fn();save();render(true);if(msg)toast(msg,'Undo',undo)}
 /* ---------- routine queries ---------- */
 function R(){return state.routine}
@@ -209,7 +218,7 @@ function selIds(){return Object.keys(sel).filter(function(k){return sel[k]})}
 var ICONS={home:'<path d="M3 11l9-8 9 8v10H3z"/>',routine:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/>',subjects:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',logs:'<path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
 var TABS=[['home','Home'],['routine','Routine'],['subjects','Subjects'],['logs','Logs'],['more','Settings']];
 function renderTabs(){document.getElementById('tabs').innerHTML=TABS.map(function(t){return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'" aria-label="'+t[1]+'"'+(tab===t[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+t[1]+'</button>'}).join('')}
-function ring(p,lbl){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" stroke="#2A2142" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--neon)" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+(lbl||p+'%')+'</b></div>'}
+function ring(p,lbl){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--track)" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--neon)" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+(lbl||p+'%')+'</b></div>'}
 function bar(p,w){return'<div class="bar'+(w?' warn':'')+'" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div>'}
 function taskRow(t,k,i,n){
   var meta=[];if(k==='backlog'||k==='overdue')meta.push(t.date?fmtShort(t.date):'Unscheduled');
@@ -263,10 +272,11 @@ function vRoutine(){
   return h}
 function vSubjects(){
   var h='<h1 style="margin-bottom:10px">Subjects</h1><p class="sub">Progress counts every task tagged with a subject, including undated tasks. Tasks with two subjects count for both.</p>';
+  if(!SUBJ.length)h+='<div class="note">No subjects yet. They appear automatically when your routine has subjects.</div>';
   SUBJ.forEach(function(s){var tot=0,dn=0,mins=0;R().tasks.forEach(function(t){if(t.subj.indexOf(s)>-1){tot++;mins+=t.mins||0;if(isDone(t))dn++}});var p=tot?Math.round(dn/tot*100):0;
     h+='<section class="card"><div class="row"><h2 style="margin:0">'+esc(s)+'</h2><b>'+p+'%</b></div><p class="sub" style="margin:2px 0 8px">'+dn+' of '+tot+' tasks done'+(tot?'':' (none scheduled)')+'</p>'+bar(p)+'</section>'});
   return h}
-function opts(){return SUBJ.map(function(s){return'<option value="'+esc(s)+'">'+esc(s)+'</option>'}).join('')}
+function opts(){if(!SUBJ.length)return'<option value="General">General</option>';return SUBJ.map(function(s){return'<option value="'+esc(s)+'">'+esc(s)+'</option>'}).join('')}
 function vLogs(){
   var h='<h1 style="margin-bottom:10px">Logs</h1><section class="card"><h2>Weak chapters</h2><label class="f" for="ws">Subject</label><select id="ws">'+opts()+'</select><label class="f" for="wc">Chapter or lesson</label><input id="wc" maxlength="100" placeholder="Example: Bio 11"><label class="f" for="wn">Why it is weak (optional)</label><input id="wn" maxlength="300"><button data-act="addweak" style="width:100%">Add weak chapter</button><div style="margin-top:14px">';
   if(!state.weak.length)h+='<p class="sub">No weak chapters yet.</p>';
@@ -282,11 +292,12 @@ function vMore(){
   h+=acc('theme','Colors and theme','<p class="sub">Pick a ready theme, or choose your own colors.</p><div class="sw">'+Object.keys(THEMES).map(function(k){return'<button data-act="theme" data-p="'+k+'" class="'+(t.name===k?'on':'')+'"><i style="background:'+THEMES[k][1]+'"></i>'+THEMES[k][0]+'</button>'}).join('')+'</div><div class="time"><div><label class="f" for="cAcc">Accent color</label><input id="cAcc" type="color" data-th="accent" value="'+t.accent+'"></div><div><label class="f" for="cBg">Background color</label><input id="cBg" type="color" data-th="bg" value="'+t.bg+'"></div></div><p class="sub" style="margin-bottom:0">Text colors stay light so they remain readable. Choose a dark background.</p>');
   h+=acc('limit','Daily study limit','<div class="time"><input id="lh" type="number" inputmode="numeric" min="0" max="24" value="'+Math.floor(lim/60)+'" aria-label="Hours"><input id="lm" type="number" inputmode="numeric" min="0" max="59" value="'+lim%60+'" aria-label="Minutes"></div><button class="ghost" data-act="savelimit" style="width:100%">Save limit ('+fmtMin(lim)+' now)</button>');
   h+=acc('backup','Backup and restore','<div class="btns"><button data-act="export">Export backup</button><button class="ghost" data-act="import">Import backup</button></div><input type="file" id="file" accept=".json,application/json" hidden>');
-  h+=acc('routine','Routine tools','<p class="sub">Edit tasks and dates from the Routine tab. These tools do not touch study time, weak chapters, or mistakes.</p><div class="btns"><button class="ghost" data-act="restoreorig">Restore original routine</button><button class="ghost" data-act="addearly">Add earlier Oct 26–Nov 11 plan</button></div>');
+  h+=acc('update','Update your routine','<p class="sub">Copy the prompt, give it to any AI tool together with your new routine, then paste the reply below. You will choose how it joins your current routine.</p>'+promptBlock()+'<textarea id="ru" rows="7" placeholder="Paste your new routine here">'+esc(rtDraft)+'</textarea><div class="err" id="rerr" role="alert"></div><div class="btns"><button data-act="upd">Update routine</button><button class="ghost" data-act="pickfile">Choose a text file</button></div><input type="file" id="rfile" accept=".txt,text/plain" hidden>');
+  if(state.legacy)h+=acc('routine','Routine tools','<p class="sub">Edit tasks and dates from the Routine tab. These tools do not touch study time, weak chapters, or mistakes.</p><div class="btns"><button class="ghost" data-act="restoreorig">Restore original routine</button><button class="ghost" data-act="addearly">Add earlier Oct 26–Nov 11 plan</button></div>');
   h+=acc('data','How your data is kept','<ol><li><b>Saved on this phone.</b> Every change is saved automatically. '+(memOnly?'<span style="color:var(--warn)">Storage is blocked right now.</span>':'<span class="ok">Working.</span>')+(persisted?' '+esc(persisted):'')+'</li><li><b>Offline copy of the app.</b> '+(navigator.serviceWorker&&navigator.serviceWorker.controller?'<span class="ok">Ready: the app opens without internet.</span>':'Not ready yet. Open the app once while online, then reopen it.')+' This stores app files only, not your data.</li><li><b>No cloud sync.</b> GitHub Pages only hosts the files. Nothing is uploaded and devices do not sync. Use Export backup and Import backup.</li></ol><p class="sub" style="margin-bottom:0">Going back online never resets your data. App version '+APP_VERSION+'. Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>.</p>');
-  h+=acc('notes','Notes on your supplied routine','<p dir="auto" class="note">'+esc(DEF.suppliedNote)+'</p><ol>'+DEF.flags.map(function(f){return'<li>'+esc(f)+'</li>'}).join('')+'</ol>');
-  h+=acc('rules','Scheduling rules','<ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol>');
-  h+=acc('legend','Subject abbreviations','<div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div>');
+  if(state.legacy)h+=acc('notes','Notes on your supplied routine','<p dir="auto" class="note">'+esc(DEF.suppliedNote)+'</p><ol>'+DEF.flags.map(function(f){return'<li>'+esc(f)+'</li>'}).join('')+'</ol>');
+  if(state.legacy)h+=acc('rules','Scheduling rules','<ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol>');
+  if(state.legacy)h+=acc('legend','Subject abbreviations','<div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div>');
   h+=acc('install','Install on Android','<ol><li>Open the app link in Chrome and let it load once while online.</li><li>Tap the three-dot menu, then Install app (or Add to Home screen).</li></ol>'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':''));
   h+=acc('reset','Reset study records','<p class="sub">Clears ticks, study time, weak chapters, and mistakes. Your routine stays. Export a backup first.</p><button class="danger" data-act="resetprog" style="width:100%">Reset progress</button>');
   return h}
@@ -294,9 +305,9 @@ function vMore(){
 var THEMES={purple:['Purple','#C033FF','#120F1D'],blue:['Blue','#4D7CFF','#0F1220'],pink:['Pink','#FF3DA5','#1D0F18'],green:['Green','#2FD27A','#0E1A14'],teal:['Teal','#19C6D8','#0D1A1D'],orange:['Orange','#FF8A2B','#1D130D']};
 function h2r(h){return[1,3,5].map(function(i){return parseInt(h.substr(i,2),16)})}
 function mix(a,b,t){var A=h2r(a),B=h2r(b);return'#'+[0,1,2].map(function(i){return('0'+Math.round(A[i]+(B[i]-A[i])*t).toString(16)).slice(-2)}).join('')}
-function applyTheme(){var t=state.prefs.theme,st=document.documentElement.style;st.zoom=FS[state.prefs.fs][0]===1?'':FS[state.prefs.fs][0];document.documentElement.lang=state.prefs.lang==='bn'?'bn':'en';var V=['--bg','--panel','--panel2','--line','--neon','--neon2','--glow','--rgb'];
+function applyTheme(){var t=state.prefs.theme,st=document.documentElement.style;st.zoom=FS[state.prefs.fs][0]===1?'':FS[state.prefs.fs][0];document.documentElement.lang=state.prefs.lang==='bn'?'bn':'en';var V=['--bg','--panel','--panel2','--line','--neon','--neon2','--glow','--rgb','--track','--lav','--accl','--bgrgb'];
   if(t.name==='purple'){V.forEach(function(v){st.removeProperty(v)})}
-  else{st.setProperty('--bg',t.bg);st.setProperty('--panel',mix(t.bg,t.accent,.05));st.setProperty('--panel2',mix(t.bg,t.accent,.14));st.setProperty('--line',mix(t.bg,t.accent,.26));st.setProperty('--neon',t.accent);st.setProperty('--neon2',mix(t.accent,t.bg,.12));st.setProperty('--glow',mix(t.bg,t.accent,.3));st.setProperty('--rgb',h2r(t.accent).join(','))}
+  else{st.setProperty('--bg',t.bg);st.setProperty('--panel',mix(t.bg,t.accent,.05));st.setProperty('--panel2',mix(t.bg,t.accent,.14));st.setProperty('--line',mix(t.bg,t.accent,.26));st.setProperty('--neon',t.accent);st.setProperty('--neon2',mix(t.accent,t.bg,.12));st.setProperty('--glow',mix(t.bg,t.accent,.3));st.setProperty('--rgb',h2r(t.accent).join(','));st.setProperty('--track',mix(t.bg,t.accent,.22));st.setProperty('--lav',mix(t.accent,'#ffffff',.72));st.setProperty('--accl',mix(t.accent,'#ffffff',.38));st.setProperty('--bgrgb',h2r(t.bg).join(','))}
   var m=document.querySelector('meta[name=theme-color]');if(m)m.content=t.name==='purple'?'#120F1D':t.bg}
 var openAcc={};
 function acc(id,title,body){return'<details class="card acc" data-acc="'+id+'"'+(openAcc[id]?' open':'')+'><summary>'+esc(title)+'</summary><div>'+body+'</div></details>'}
@@ -308,6 +319,10 @@ function trTree(n){if(!n||!state||state.prefs.lang!=='bn')return;if(n.nodeType==
 new MutationObserver(function(ms){if(!state||state.prefs.lang!=='bn')return;ms.forEach(function(m){if(m.type==='characterData')trTree(m.target);else m.addedNodes.forEach(trTree)})}).observe(document.body,{childList:true,subtree:true,characterData:true});
 function render(keep){
   applyTheme();
+  var dr=document.getElementById('rt')||document.getElementById('ru');if(dr)rtDraft=dr.value;
+  if(state.subjects)SUBJ=state.subjects;
+  document.getElementById('tabs').hidden=!state.setup;
+  if(!state.setup){var y0=window.scrollY;document.getElementById('view').innerHTML=vOnboard();document.getElementById('tabs').innerHTML='';if(keep)window.scrollTo(0,y0);trTree(document.getElementById('view'));return}
   var y=window.scrollY,v={home:vHome,routine:vRoutine,subjects:vSubjects,logs:vLogs,more:vMore}[tab];
   document.getElementById('view').innerHTML=v();renderTabs();if(keep)window.scrollTo(0,y);
   var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
@@ -351,6 +366,165 @@ function restoreOrig(){confirmBox('Restore the original routine?','Your current 
 function addEarly(){var have={};R().days.forEach(function(d){have[d.date]=1});var nd=EARLY.days.filter(function(d){return!have[d.date]});
   if(!nd.length){toast('Those dates already exist in your routine.');return}
   confirmBox('Add the earlier Oct 26–Nov 11 plan?',nd.length+' dates will be added. Dates you already have are left untouched.','Add dates',false).then(function(ok){if(ok)mutate(function(){var set={};nd.forEach(function(d){set[d.date]=1;R().days.push(clone(d))});EARLY.tasks.forEach(function(t){if(set[t.date])R().tasks.push(clone(t))});R().days.sort(byDate)},'Earlier plan added.')})}
+/* ---------- routine text format (first upload and updates) ---------- */
+var BNDIG={'০':0,'১':1,'২':2,'৩':3,'৪':4,'৫':5,'৬':6,'৭':7,'৮':8,'৯':9};
+function asc(s){return String(s).replace(/[০-৯]/g,function(c){return BNDIG[c]})}
+function cleanSubj(a){var o=[];(Array.isArray(a)?a:[]).forEach(function(x){x=str(x,30).trim();if(x&&o.indexOf(x)<0&&o.length<60)o.push(x)});return o}
+function unionSubj(a,b){var o=a.slice();b.forEach(function(x){if(o.indexOf(x)<0)o.push(x)});return o}
+function norm(s){return String(s).toLowerCase().replace(/\s+/g,' ').trim()}
+function parseDur(s){
+  s=asc(s).toLowerCase().trim();if(!s)return null;
+  var m=/^(\d+(?:\.\d+)?)\s*(?:h|hr|hrs|hour|hours)\s*(?:(\d+)\s*(?:m|min|mins|minute|minutes)?)?$/.exec(s);
+  if(m)return Math.round(parseFloat(m[1])*60+(m[2]?parseInt(m[2],10):0));
+  m=/^(\d+)\s*(?:m|min|mins|minute|minutes)?$/.exec(s);if(m)return parseInt(m[1],10);
+  m=/^(\d+):(\d{1,2})$/.exec(s);if(m)return parseInt(m[1],10)*60+parseInt(m[2],10);
+  return NaN}
+function parseDate(s){
+  var m=/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})$/.exec(asc(s).trim());if(!m)return null;
+  var y=+m[1],mo=+m[2],d=+m[3],t=new Date(y,mo-1,d);
+  if(y<2000||y>2100||t.getFullYear()!==y||t.getMonth()!==mo-1||t.getDate()!==d)return null;
+  return y+'-'+pad(mo)+'-'+pad(d)}
+function kvOf(seg){var m=/^\s*([A-Za-z_]+)\s*[:=]\s*([\s\S]*)$/.exec(seg);return m?[m[1].toUpperCase(),m[2].trim()]:null}
+function parseRoutineText(raw,existing){
+  var P={days:[],tasks:[],subjects:[],limit:null,hasBacklog:false,errors:[],warns:[]};
+  var lines=String(raw||'').replace(/^\uFEFF/,'').split(/\r?\n/),cur,dm={},sumT={},known=(existing||[]).slice();
+  function err(i,m){if(P.errors.length<12)P.errors.push('Line '+(i+1)+': '+m)}
+  function warn(i,m){if(P.warns.length<30)P.warns.push('Line '+(i+1)+': '+m)}
+  function canon(n){n=str(n,30).trim();if(!n)return null;var l=n.toLowerCase(),k=null;for(var j=0;j<known.length;j++)if(known[j].toLowerCase()===l){k=known[j];break}if(!k){k=n;known.push(k)}if(P.subjects.indexOf(k)<0&&P.subjects.length<60)P.subjects.push(k);return k}
+  function mins(v,i){var x=parseDur(v);if(x===null)return null;if(!(x>=1&&x<=1440)){warn(i,'Time could not be read, so it was ignored.');return null}return x}
+  function setNote(i,v){if(cur===undefined){err(i,'NOTE comes before any DATE line.');return}if(cur)dm[cur].note=str(v,300).trim()}
+  function setPlan(i,v){if(cur===undefined){err(i,'PLANNED comes before any DATE line.');return}if(cur)dm[cur].planned=mins(v,i)}
+  for(var i=0;i<lines.length;i++){
+    var L=lines[i].replace(/\*\*/g,'').replace(/`/g,'').trim();
+    if(!L||/^(-{3,}|={3,})$/.test(L))continue;
+    L=L.replace(/^(?:#+\s*|[-*•>]\s+|\d+[.)]\s+)+/,'');
+    var m=/^(STUDY_ROUTINE_V1|DATE|DAY|NOTE|PLANNED|LIMIT|SUBJECTS?|TASK|BACKLOG)\b\s*[:=]?\s*([\s\S]*)$/i.exec(L);
+    if(!m){warn(i,'Line not recognized and skipped.');continue}
+    var k=m[1].toUpperCase(),rest=m[2].trim();
+    if(k==='STUDY_ROUTINE_V1')continue;
+    if(k==='BACKLOG'){cur=null;P.hasBacklog=true;continue}
+    if(k==='LIMIT'){var lv=parseDur(rest);if(lv>=60&&lv<=1440)P.limit=lv;else warn(i,'Daily limit must be between 1h and 24h, so it was ignored.');continue}
+    if(k==='SUBJECTS'||k==='SUBJECT'){rest.split(/[,;|]/).forEach(function(n){canon(n)});continue}
+    if(k==='DATE'||k==='DAY'){
+      var ps=rest.split('|'),d=parseDate(ps[0]);
+      if(!d){err(i,'Date is missing or not valid. Use YYYY-MM-DD.');cur=undefined;continue}
+      cur=d;if(!dm[d]){dm[d]={date:d,planned:null,note:''};P.days.push(dm[d])}
+      ps.slice(1).forEach(function(sg){var kv=kvOf(sg);if(!kv)return;if(kv[0]==='NOTE')setNote(i,kv[1]);else if(kv[0]==='PLANNED')setPlan(i,kv[1])});
+      continue}
+    if(k==='NOTE'){setNote(i,rest);continue}
+    if(k==='PLANNED'){setPlan(i,rest);continue}
+    if(cur===undefined){err(i,'This task comes before any DATE or BACKLOG line.');continue}
+    var tp=rest.split('|'),tx=tp[0].trim(),tsub=[],tch='',tm=null;
+    tp.slice(1).forEach(function(sg){var kv=kvOf(sg);
+      if(kv&&/^(SUBJECTS?|SUBJ)$/.test(kv[0]))kv[1].split(/[,;+&\/]/).forEach(function(n){var c=canon(n);if(c&&tsub.indexOf(c)<0&&tsub.length<3)tsub.push(c)});
+      else if(kv&&/^(CHAPTER|CH|LESSON)$/.test(kv[0]))tch=kv[1];
+      else if(kv&&/^(TIME|MINS|MINUTES|DURATION)$/.test(kv[0]))tm=mins(kv[1],i);
+      else tx+=' | '+sg.trim()});
+    if(!tx){err(i,'This task has no description.');continue}
+    if(P.tasks.length>=5000){err(i,'The routine is too large (max 800 dates or 5000 tasks).');break}
+    P.tasks.push({id:uid(),date:cur,subj:tsub,chapter:str(tch,100),text:str(tx,200),mins:tm});
+    if(cur&&tm)sumT[cur]=(sumT[cur]||0)+tm}
+  if(!P.days.length&&!P.tasks.length&&!P.errors.length)P.errors.push('No dates or tasks were found. Paste the full answer from the AI.');
+  if(P.days.length>800)P.errors.push('The routine is too large (max 800 dates or 5000 tasks).');
+  P.days.forEach(function(d){var s=sumT[d.date]||0;if(d.planned!=null&&s)d.planned=d.planned>s?d.planned-s:null});
+  P.days.sort(byDate);return P}
+function buildPrompt(){return[
+'You are a converter for a study-planner app. Below I will give you my study routine (any language, any layout: text, list, table). Convert it into the EXACT plain-text format described here, so the app can read it automatically.',
+'',
+'OUTPUT RULES',
+'1. Reply with ONE code block that contains only the converted routine. Write nothing before or after the code block. Do not ask me questions; make sensible assumptions instead.',
+'2. Use the keywords exactly as shown (capital letters, then a colon). One DATE per day, then that day\'s tasks under it.',
+'3. Dates must be YYYY-MM-DD. Today\'s date is '+today()+'. If my routine has no calendar dates (for example "Day 1, Day 2" or weekday names), start from today\'s date and count forward in order. If it gives dates without a year, use the nearest upcoming date.',
+'4. Keep my task names in my own words and my own language. Never invent, merge or drop tasks and keep my order. Do not use the | character inside a task name.',
+'5. TIME on every TASK is required. If I gave a time, use it. If I did not, estimate a realistic study time yourself from the kind of task (a new chapter 60-120m, revision 30-60m, practice or a timed test 45-90m, a short item 15-30m). If I only gave a total for a day, split it between that day\'s tasks so they add up to exactly that total. Write times like 45m, 1h or 1h 30m.',
+'6. If I gave a daily study limit, write it as LIMIT. Otherwise leave LIMIT out.',
+'7. SUBJECT is optional. Use short, consistent subject names (same spelling every time), up to 2 per task, separated by a comma. List every subject once in SUBJECTS.',
+'8. A rest day or a day with only a remark has a DATE and a NOTE and no TASK lines.',
+'9. Tasks that have no day (leftover, remaining, someday) go under BACKLOG at the end.',
+'10. Do not add dates, notes or tasks that are not in my routine.',
+'',
+'FORMAT',
+'STUDY_ROUTINE_V1',
+'LIMIT: 7h 30m',
+'SUBJECTS: Physics, Math, English',
+'',
+'DATE: 2026-10-17',
+'NOTE: Light day',
+'TASK: Chapter 3 first read | SUBJECT: Physics | CHAPTER: Ch 3 | TIME: 1h 30m',
+'TASK: Practice set | SUBJECT: Math | TIME: 45m',
+'',
+'DATE: 2026-10-18',
+'NOTE: Rest day',
+'',
+'BACKLOG',
+'TASK: Mock test review | SUBJECT: Physics, Math | TIME: 2h',
+'',
+'Required: STUDY_ROUTINE_V1 (first line), DATE, TASK, TIME. Optional: LIMIT, SUBJECTS, NOTE, SUBJECT, CHAPTER, BACKLOG.',
+'',
+'MY ROUTINE:',
+''].join('\n')}
+function promptBlock(){return'<div class="pbox'+(promptOpen?' open':'')+'" id="pbox"><div class="tt ptxt">'+esc(buildPrompt())+'</div></div><div class="btns" style="margin:10px 0 14px"><button class="ghost sm" data-act="pmore">'+(promptOpen?'See less':'See more')+'</button><button class="sm" data-act="pcopy">Copy prompt</button></div>'}
+function copyText(t){return new Promise(function(res){
+  function fb(){try{var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(a);a.select();a.setSelectionRange(0,t.length);var ok=document.execCommand('copy');a.remove();res(!!ok)}catch(e){res(false)}}
+  if(navigator.clipboard&&navigator.clipboard.writeText&&window.isSecureContext)navigator.clipboard.writeText(t).then(function(){res(true)},fb);else fb()})}
+function vOnboard(){
+  var L=state.prefs.lang;
+  return'<div class="top"><svg class="av" viewBox="0 0 120 120" role="img" aria-label="Study avatar"><use href="#avatar"/></svg><div><h1>SSC 2027 Tracker</h1></div></div>'
+  +'<div class="btns" style="margin-bottom:14px"><button data-act="lang" data-v="bn" class="'+(L==='bn'?'':'ghost')+'">বাংলা</button><button data-act="lang" data-v="en" class="'+(L==='en'?'':'ghost')+'">English</button></div>'
+  +'<section class="card glow"><h2>Let’s go! Upload your routine to continue</h2><p class="sub">Your routine builds the whole app: every date, task and subject. You only do this once.</p>'
+  +'<h3>Step 1: Get your routine in the right format</h3><p class="sub">Copy the prompt below and send it to any AI tool (Gemini, ChatGPT, Grok or others) together with your routine. The AI will reply with a ready text.</p>'+promptBlock()
+  +'<h3>Step 2: Paste the AI’s reply here</h3><textarea id="rt" rows="8" placeholder="Paste the routine text here">'+esc(rtDraft)+'</textarea><div class="err" id="rerr" role="alert"></div>'
+  +'<div class="btns"><button data-act="build">Continue</button><button class="ghost" data-act="pickfile">Choose a text file</button></div><input type="file" id="rfile" accept=".txt,text/plain" hidden></section>'
+  +'<section class="card"><h3 style="margin-top:0">Already have a backup?</h3><p class="sub">Restore your data from a backup file.</p><button class="ghost" data-act="import" style="width:100%">Import backup</button><input type="file" id="file" accept=".json,application/json" hidden></section>'}
+function sumHtml(P){
+  var h='<p>Found '+P.days.length+' date'+(P.days.length===1?'':'s')+', '+P.tasks.length+' task'+(P.tasks.length===1?'':'s')+' and '+P.subjects.length+' subject'+(P.subjects.length===1?'':'s')+'.</p>';
+  if(P.warns.length)h+='<p class="sub">Some details were skipped:</p><ul>'+P.warns.slice(0,6).map(function(w){return'<li>'+esc(w)+'</li>'}).join('')+'</ul>';
+  return h}
+function showParseErrs(P){
+  var e=document.getElementById('rerr');if(!e)return P.errors.length>0;
+  if(!P.errors.length){e.innerHTML='';return false}
+  e.innerHTML='<div>Could not read the routine. Fix these and try again:</div>'+P.errors.map(function(x){return'<div>'+esc(x)+'</div>'}).join('')+'<div class="sub" style="margin-top:6px">Tip: ask the AI to fix these lines, then paste the new answer.</div>';
+  try{e.scrollIntoView({block:'center'})}catch(_){}return true}
+function applyParsed(P,mode){
+  var T=clone(P.tasks),D=clone(P.days);
+  if(mode==='first'||mode==='all'){
+    state.routine={days:D,tasks:T};state.done={};state.subjects=P.subjects.slice();
+    if(P.limit)state.prefs.limit=P.limit;
+    state.routineVersion='custom';selKey='';sel={};return}
+  if(mode==='merge'){
+    var have={};R().tasks.forEach(function(t){have[(t.date||'')+'|'+norm(t.text)]=1});
+    D.forEach(function(d){var e=dayOf(d.date);if(!e)R().days.push(d);else{if(e.planned==null&&d.planned!=null)e.planned=d.planned;if(!e.note&&d.note)e.note=d.note}});
+    T.forEach(function(t){var k=(t.date||'')+'|'+norm(t.text);if(have[k])return;have[k]=1;R().tasks.push(t)});
+    R().days.sort(byDate);state.subjects=unionSubj(state.subjects||[],P.subjects);return}
+  var ds={};D.forEach(function(d){ds[d.date]=1});
+  var old={},keep=[];
+  R().tasks.forEach(function(t){if((t.date&&ds[t.date])||(!t.date&&P.hasBacklog)){var k=(t.date||'')+'|'+norm(t.text);(old[k]=old[k]||[]).push(t.id)}else keep.push(t)});
+  T.forEach(function(t){var k=(t.date||'')+'|'+norm(t.text);if(old[k]&&old[k].length)t.id=old[k].shift()});
+  Object.keys(old).forEach(function(k){old[k].forEach(function(id){delete state.done[id]})});
+  R().tasks=keep.concat(T);
+  D.forEach(function(d){var e=dayOf(d.date);if(e){e.planned=d.planned;e.note=d.note}else R().days.push(d)});
+  R().days.sort(byDate);state.subjects=unionSubj(state.subjects||[],P.subjects)}
+function firstDlg(P){
+  modal('Ready to build',sumHtml(P),[{label:'Cancel',cls:'ghost',val:0},{label:'Build my routine',val:1}]).then(function(r){
+    if(r.val!==1)return;applyParsed(P,'first');
+    var ta=document.getElementById('rt');if(ta)ta.value='';rtDraft='';
+    state.setup=true;tab='home';hd='';followToday=true;undoStack=[];save();render();window.scrollTo(0,0);toast('Your routine is ready.')})}
+function updateDlg(P){
+  modal('How should this routine be used?',sumHtml(P)
+    +'<p class="sub">Add to current routine: keeps everything you have and adds the new dates and tasks. Tasks already on a date are not repeated.</p>'
+    +'<p class="sub">Replace matching dates only: dates in the new routine are replaced by the new tasks. All other dates stay exactly as they are.</p>'
+    +'<p class="sub">Reset everything: your whole current routine is removed and only the new one is used. Study time, weak chapters and mistakes are kept.</p>',
+    [{label:'Add to current routine',val:'merge'},{label:'Replace matching dates only',cls:'ghost',val:'dates'},{label:'Reset everything',cls:'danger',val:'all'},{label:'Cancel',cls:'ghost',val:0}]).then(function(r){
+    if(!r.val)return;
+    function go2(){var ua=document.getElementById('ru');if(ua)ua.value='';rtDraft='';
+      mutate(function(){applyParsed(P,r.val)},r.val==='merge'?'Routine added.':r.val==='dates'?'Matching dates replaced.':'Routine reset and replaced.')}
+    if(r.val==='all')confirmBox('Reset everything?','Your current routine and its ticks are replaced by the new routine. You can tap Undo afterwards.','Reset',true).then(function(ok){if(ok)go2()});
+    else go2()})}
+function loadRoutineFile(f,inp){
+  if(f.size>1500000){toast('That file is too large.');inp.value='';return}
+  var r=new FileReader();r.onerror=function(){toast('Could not read that file.')};
+  r.onload=function(){var ta=document.getElementById('rt')||document.getElementById('ru');if(ta){ta.value=String(r.result);rtDraft=ta.value}inp.value='';toast('File loaded. Check it, then continue.')};
+  r.readAsText(f)}
 /* ---------- events ---------- */
 document.addEventListener('change',function(e){
   var t=e.target,D=t.dataset||{};
@@ -361,7 +535,8 @@ document.addEventListener('change',function(e){
   else if(D.pref==='fs'){if(FS[t.value]){state.prefs.fs=t.value;save();render(true)}}
   else if(D.th){var th=state.prefs.theme;var nt={name:'custom',accent:th.accent,bg:th.bg};nt[D.th]=t.value;state.prefs.theme=nt;save();render(true)}
   else if(D.jump&&t.value){selKey=t.value;render()}
-  else if(t.id==='file'&&t.files[0])doImport(t.files[0])});
+  else if(t.id==='file'&&t.files[0])doImport(t.files[0]);
+  else if(t.id==='rfile'&&t.files[0])loadRoutineFile(t.files[0],t)});
 document.addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b||b.dataset.bi!==undefined)return;var D=b.dataset;
   if(D.tab)return go(D.tab);
@@ -391,6 +566,11 @@ document.addEventListener('click',function(e){
     case'delsel':delTasks(selIds());break;
     case'addweak':var c=document.getElementById('wc').value.trim();if(!c){toast('Enter a chapter or lesson first.');break}state.weak.push({id:uid(),subject:document.getElementById('ws').value,chapter:c,note:document.getElementById('wn').value.trim(),done:false});save();render(true);toast('Weak chapter added.');break;
     case'addmistake':var w=document.getElementById('mw').value.trim();if(!w){toast('Describe what went wrong first.');break}state.mistakes.push({id:uid(),date:today(),subject:document.getElementById('ms').value,chapter:document.getElementById('mc').value.trim(),what:w,fix:document.getElementById('mf').value.trim()});save();render(true);toast('Mistake added.');break;
+    case'build':var bta=document.getElementById('rt'),bP=parseRoutineText(bta?bta.value:'',state.subjects);if(!showParseErrs(bP))firstDlg(bP);break;
+    case'upd':var uta=document.getElementById('ru'),uP=parseRoutineText(uta?uta.value:'',state.subjects);if(!showParseErrs(uP))updateDlg(uP);break;
+    case'pickfile':var pf=document.getElementById('rfile');if(pf)pf.click();break;
+    case'pmore':promptOpen=!promptOpen;var pb=document.getElementById('pbox');if(pb)pb.classList.toggle('open',promptOpen);b.textContent=promptOpen?'See less':'See more';break;
+    case'pcopy':copyText(buildPrompt()).then(function(ok){if(ok)toast('Prompt copied. Paste it into your AI tool.');else{promptOpen=true;render(true);toast('Could not copy automatically. Tap See more and copy the text by hand.')}});break;
     case'export':doExport();break;
     case'import':document.getElementById('file').click();break;
     case'restoreorig':restoreOrig();break;
