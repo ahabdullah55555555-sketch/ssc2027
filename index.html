@@ -320,7 +320,10 @@ window.I18N_BN={
 'Sunday':'রবিবার','Monday':'সোমবার','Tuesday':'মঙ্গলবার','Wednesday':'বুধবার','Thursday':'বৃহস্পতিবার','Friday':'শুক্রবার','Saturday':'শনিবার',
 'Press Back again to exit Agradia.':'বের হতে আবার Back চাপুন।',
 'Classic':'ক্লাসিক','Spiky':'স্পাইকি','Long':'লম্বা','Bun':'খোঁপা','Curly':'কোঁকড়া','Swept':'সাইড-সুইপ্ট','Ponytail':'পনিটেইল','Wavy bob':'ওয়েভি বব','Buzz':'বাজ কাট',
-'Tee':'টি-শার্ট','Stripes':'ডোরাকাটা','Shirt':'শার্ট','Shirt + tie':'শার্ট + টাই','Hoodie':'হুডি'
+'Tee':'টি-শার্ট','Stripes':'ডোরাকাটা','Shirt':'শার্ট','Shirt + tie':'শার্ট + টাই','Hoodie':'হুডি',
+'Tomorrow':'আগামীকাল','Yesterday':'গতকাল',"Today's tasks":'আজকের কাজগুলো',"Tomorrow's tasks":'আগামীকালের কাজগুলো',"Yesterday's tasks":'গতকালের কাজগুলো',
+'No tasks scheduled.':'কোনো কাজ নির্ধারিত নেই।',
+'Search tasks, subjects, settings and dates — try "today".':'কাজ, বিষয়, সেটিংস ও তারিখ খুঁজুন — "today" লিখে দেখুন।'
 };
 window.I18N_PAT=[
 [/^(\d+) of (\d+) done$/,function(m){return m[2]+'টির মধ্যে '+m[1]+'টি সম্পন্ন'}],
@@ -1090,9 +1093,24 @@ function applyTheme(){var t=state.prefs.theme,st=document.documentElement.style,
   var m=document.querySelector('meta[name=theme-color]');if(m)m.content=c.bg}
 /* ---------- search ---------- */
 var searchQ='',setY=0;
+var SSETTINGS=[
+ {k:'appearance theme dark light monochrome colour color accent',t:'Appearance',d:'Light, dark, monochrome and accent colors',v:'s_appearance'},
+ {k:'language bangla english bhasha',t:'Language',d:'বাংলা or English',v:'s_language'},
+ {k:'profile name avatar photo',t:'Profile & Avatar',d:'Display name and avatar',v:'s_profile'},
+ {k:'routine data backup export import restore reset limit week start',t:'Routine & Data',d:'Backup, daily limit, week start',v:'s_data'},
+ {k:'about version info',t:'About',d:'About Agradia',v:'s_about'}];
 function searchRes(q){q=q.trim().toLowerCase();
-  if(!q)return'<div class="empty">'+illBooks()+'<p class="sub">Search tasks, subjects, chapters, weak chapters and mistakes.</p></div>';
+  if(!q)return'<div class="empty">'+illBooks()+'<p class="sub">Search tasks, subjects, settings and dates — try "today".</p></div>';
   var h='',n=0;function has(s){return String(s||'').toLowerCase().indexOf(q)>-1}
+  var dk=null,dl='';
+  if(/^(today|aj|aaj|ajke)$/.test(q)){dk=today();dl="Today's tasks"}
+  else if(/^(tomorrow|kalke?|agami|agamikal)$/.test(q)){dk=addDays(today(),1);dl="Tomorrow's tasks"}
+  else if(/^(yesterday|goto|gotokal)$/.test(q)){dk=addDays(today(),-1);dl="Yesterday's tasks"}
+  if(dk){var DT=tasksOn(dk);h+='<span class="hl">'+dl+'</span>';n++;
+    if(DT.length){n+=DT.length;h+=DT.map(function(t){return'<button class="srow" data-act="srt" data-k="'+(t.date||'backlog')+'"><span class="st"><b class="tt">'+esc(t.text)+'</b><small class="tt">'+esc((t.date?fmtShort(t.date):'')+(t.subj.length?' · '+t.subj.join(', '):'')+(t.chapter?' · '+t.chapter:''))+'</small></span><i class="ch"></i></button>'}).join('')}
+    else h+='<p class="sub">No tasks scheduled.</p>'}
+  var SS=SSETTINGS.filter(function(s){return has(s.k+' '+s.t)});
+  if(SS.length){n+=SS.length;h+='<span class="hl">Settings</span>'+SS.map(function(s){return'<button class="srow" data-act="sp" data-v="'+s.v+'"><span class="st"><b class="tt">'+esc(s.t)+'</b><small class="tt">'+esc(s.d)+'</small></span><i class="ch"></i></button>'}).join('')}
   var T=R().tasks.filter(function(t){return has(t.text+' '+t.chapter+' '+t.subj.join(' '))}).slice(0,25);
   if(T.length){n+=T.length;h+='<span class="hl">Tasks</span>'+T.map(function(t){return'<button class="srow" data-act="srt" data-k="'+(t.date||'backlog')+'"><span class="st"><b class="tt">'+esc(t.text)+'</b><small class="tt">'+esc((t.date?fmtShort(t.date):'')+(t.subj.length?' · '+t.subj.join(', '):'')+(t.chapter?' · '+t.chapter:''))+'</small></span><i class="ch"></i></button>'}).join('')}
   var S=SUBJ.filter(has);
