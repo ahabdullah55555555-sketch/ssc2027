@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" role="img" aria-label="Calm forest hills">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1F4D3A"/>
+      <stop offset="1" stop-color="#16382A"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="220" fill="url(#sky)"/>
+  <circle cx="316" cy="52" r="26" fill="#F6F3EA" opacity="0.85"/>
+  <circle cx="316" cy="52" r="38" fill="#F6F3EA" opacity="0.12"/>
+  <path d="M0 150 Q 90 96 190 128 T 400 108 V220 H0 Z" fill="#2E6B4F" opacity="0.85"/>
+  <path d="M0 176 Q 110 130 230 160 T 400 148 V220 H0 Z" fill="#3E7B5A" opacity="0.9"/>
+  <g fill="#1F4D3A" opacity="0.9">
+    <path d="M52 158 l14 -30 l14 30 z"/>
+    <path d="M78 164 l11 -24 l11 24 z"/>
+    <path d="M300 150 l14 -30 l14 30 z"/>
+    <path d="M326 156 l11 -24 l11 24 z"/>
+    <path d="M180 172 l12 -26 l12 26 z"/>
+  </g>
+  <g fill="#16382A">
+    <rect x="57" y="158" width="4" height="12"/>
+    <rect x="305" y="150" width="4" height="12"/>
+  </g>
+  <path d="M0 200 Q 130 172 260 192 T 400 186 V220 H0 Z" fill="#8FCBA4" opacity="0.28"/>
+  <g fill="#F6F3EA" opacity="0.5">
+    <circle cx="80" cy="40" r="2.2"/>
+    <circle cx="140" cy="66" r="1.6"/>
+    <circle cx="220" cy="36" r="2"/>
+    <circle cx="260" cy="80" r="1.5"/>
+    <circle cx="40" cy="90" r="1.6"/>
+  </g>
+</svg>
