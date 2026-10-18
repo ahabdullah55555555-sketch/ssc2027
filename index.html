@@ -1094,11 +1094,13 @@ function applyTheme(){var t=state.prefs.theme,st=document.documentElement.style,
 /* ---------- search ---------- */
 var searchQ='',setY=0;
 var SSETTINGS=[
- {k:'appearance theme dark light monochrome colour color accent',t:'Appearance',d:'Light, dark, monochrome and accent colors',v:'s_appearance'},
- {k:'language bangla english bhasha',t:'Language',d:'বাংলা or English',v:'s_language'},
- {k:'profile name avatar photo',t:'Profile & Avatar',d:'Display name and avatar',v:'s_profile'},
- {k:'routine data backup export import restore reset limit week start',t:'Routine & Data',d:'Backup, daily limit, week start',v:'s_data'},
- {k:'about version info',t:'About',d:'About Agradia',v:'s_about'}];
+ {k:'settings appearance theme dark light monochrome colour color accent থিম রং সেটিং',t:'Appearance',d:'Light, dark, monochrome and accent colors',v:'s_appearance'},
+ {k:'settings language bangla english bhasha ভাষা সেটিং',t:'Language',d:'বাংলা or English',v:'s_language'},
+ {k:'settings profile name avatar photo প্রোফাইল নাম ছবি সেটিং',t:'Profile & Avatar',d:'Display name and avatar',v:'s_profile'},
+ {k:'settings routine data backup export import restore reset limit week start ডেটা ব্যাকআপ সেটিং',t:'Routine & Data',d:'Backup, daily limit, week start',v:'s_data'},
+ {k:'settings about version info সম্পর্কে সেটিং',t:'About',d:'About Agradia',v:'s_about'}];
+function editDist(a,b){var m=a.length,n=b.length,dp=[],i,j;if(!m)return n;if(!n)return m;for(i=0;i<=m;i++)dp[i]=[i];for(j=1;j<=n;j++)dp[0][j]=j;for(i=1;i<=m;i++)for(j=1;j<=n;j++)dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+(a.charCodeAt(i-1)===b.charCodeAt(j-1)?0:1));return dp[m][n]}
+function fuzzy(q,t){q=String(q||'').toLowerCase();t=String(t||'').toLowerCase();if(!q)return false;if(t.indexOf(q)>-1)return true;var ws=t.split(' ');for(var i=0;i<ws.length;i++){var w=ws[i];if(!w)continue;if(w.indexOf(q)===0)return true;if(q.length>=3&&w.length>=4){var dd=editDist(q,w);if(dd<=1||(q.length>=4&&dd<=2))return true}}return false}
 function searchRes(q){q=q.trim().toLowerCase();
   if(!q)return'<div class="empty">'+illBooks()+'<p class="sub">Search tasks, subjects, settings and dates — try "today".</p></div>';
   var h='',n=0;function has(s){return String(s||'').toLowerCase().indexOf(q)>-1}
@@ -1109,7 +1111,7 @@ function searchRes(q){q=q.trim().toLowerCase();
   if(dk){var DT=tasksOn(dk);h+='<span class="hl">'+dl+'</span>';n++;
     if(DT.length){n+=DT.length;h+=DT.map(function(t){return'<button class="srow" data-act="srt" data-k="'+(t.date||'backlog')+'"><span class="st"><b class="tt">'+esc(t.text)+'</b><small class="tt">'+esc((t.date?fmtShort(t.date):'')+(t.subj.length?' · '+t.subj.join(', '):'')+(t.chapter?' · '+t.chapter:''))+'</small></span><i class="ch"></i></button>'}).join('')}
     else h+='<p class="sub">No tasks scheduled.</p>'}
-  var SS=SSETTINGS.filter(function(s){return has(s.k+' '+s.t)});
+  var SS=SSETTINGS.filter(function(s){return fuzzy(q,s.k+' '+s.t+' '+s.d)});
   if(SS.length){n+=SS.length;h+='<span class="hl">Settings</span>'+SS.map(function(s){return'<button class="srow" data-act="sp" data-v="'+s.v+'"><span class="st"><b class="tt">'+esc(s.t)+'</b><small class="tt">'+esc(s.d)+'</small></span><i class="ch"></i></button>'}).join('')}
   var T=R().tasks.filter(function(t){return has(t.text+' '+t.chapter+' '+t.subj.join(' '))}).slice(0,25);
   if(T.length){n+=T.length;h+='<span class="hl">Tasks</span>'+T.map(function(t){return'<button class="srow" data-act="srt" data-k="'+(t.date||'backlog')+'"><span class="st"><b class="tt">'+esc(t.text)+'</b><small class="tt">'+esc((t.date?fmtShort(t.date):'')+(t.subj.length?' · '+t.subj.join(', '):'')+(t.chapter?' · '+t.chapter:''))+'</small></span><i class="ch"></i></button>'}).join('')}
