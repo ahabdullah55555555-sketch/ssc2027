@@ -585,9 +585,7 @@ function vHome(){
   h+='<section class="pbanner"><img src="hills.svg" alt="" aria-hidden="true"><svg class="leafdeco" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 36 Q8 28 10 12 Q26 14 20 36 Z" fill="#fff" opacity=".22"/><path d="M20 34 Q20 22 14 14" stroke="#fff" stroke-width="1.4" fill="none" opacity=".28"/></svg><div class="pin"><h2>Today\'s Progress</h2><div class="pnum">'+n+' / '+tt+' <span style="font-size:15px;font-weight:400">Tasks</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div><p class="pmot">'+motivate(p,n)+'</p></div></section>';
   h+='<h2 class="qah">Quick actions</h2><div class="qa">'
     +qac('gotimer',QA_ICONS.timer,'Timer',Tm?fmtClock(trem())+' left':'Countdown focus',!!Tm)
-    +qac('gosw',QA_ICONS.stopwatch,'Stopwatch',Sw?fmtClock(sela())+' elapsed':'Count up',!!Sw)
-    +qac('goroutine',ICONS.routine,'Routine',(tt-n)>0?(tt-n)+' to do today':'Plan & calendar',false)
-    +qac('gorecords',ICONS.records,'Records','Charts & totals',false)+'</div>';
+    +qac('gosw',QA_ICONS.stopwatch,'Stopwatch',Sw?fmtClock(sela())+' elapsed':'Count up',!!Sw)+'</div>';
   if(od)h+='<div class="flag">'+od+' overdue task'+(od>1?'s':'')+' not done. <button class="sm" style="margin-top:8px;width:100%" data-act="gooverdue">Review and reschedule</button></div>';
   h+='<div class="tprevh"><h2>Today\'s Tasks</h2>'+(tt>5?'<button class="ghost sm" data-act="goroutine">See all</button>':'')+'</div>';
   if(!tt)h+='<div class="empty">'+illBooks()+'<p class="sub">No tasks today. Open Routine to add or import your plan.</p><button class="ghost sm" data-act="goroutine">Open Routine</button></div>';
