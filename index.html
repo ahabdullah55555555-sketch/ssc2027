@@ -210,14 +210,23 @@ img.av{object-fit:cover;display:block}
 .dsep{font-size:28px;color:var(--muted);padding-top:48px;font-weight:600}
 .dlab{font-size:13px;color:var(--muted);text-align:center;margin:0 0 4px}
 /* ---- floating quick-launch ---- */
-.fab{position:fixed;right:20px;bottom:calc(14px + env(safe-area-inset-bottom));width:60px;height:60px;min-height:0;padding:0;border-radius:50%;background:var(--accent);color:var(--onacc);font-size:32px;font-weight:400;line-height:1;z-index:6;box-shadow:0 10px 26px rgba(0,0,0,.24);display:grid;place-items:center}
+.fab{position:fixed;right:20px;bottom:calc(19px + env(safe-area-inset-bottom));width:60px;height:60px;min-height:0;padding:0;border-radius:50%;background:var(--accent);color:var(--onacc);font-size:32px;font-weight:400;line-height:1;z-index:6;box-shadow:0 10px 26px rgba(0,0,0,.24);display:grid;place-items:center;transition:transform .22s ease}
+.fab.open{transform:rotate(45deg)}
 .fab[hidden]{display:none}
+/* ---- FAB speed-dial menu (opens from the + button) ---- */
+.fabmenu{position:fixed;right:20px;bottom:calc(91px + env(safe-area-inset-bottom));z-index:7;display:flex;flex-direction:column;align-items:flex-end;gap:10px;transform-origin:bottom right;animation:fabmenuin .22s cubic-bezier(.2,.9,.25,1.15)}
+.fabmenu button{display:flex;align-items:center;gap:10px;background:var(--soft);color:var(--text);border:0;border-radius:999px;padding:10px 16px 10px 12px;min-height:48px;font:inherit;font-size:14.5px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.22);cursor:pointer;animation:fabitem .2s ease backwards}
+.fabmenu button svg{width:22px;height:22px;fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.fabmenu button:active{transform:scale(.94)}
+@keyframes fabmenuin{from{opacity:0;transform:scale(.55) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes fabitem{from{opacity:0;transform:translateY(10px) scale(.88)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fab,.fabmenu,.fabmenu button{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <main id="view" aria-live="polite"></main>
 <nav class="tabs" id="tabs" aria-label="Sections"></nav>
-<button id="fab" class="fab" data-act="fab" aria-label="Quick start timer or stopwatch" hidden>+</button>
+<button id="fab" class="fab" data-act="fab" aria-label="Quick actions" hidden>+</button>
 <script>
 /* Bangla translations. English text is the source; this file only maps it to Bangla for display.
    Your own task names, notes and logs are never translated. */
@@ -487,6 +496,38 @@ function modal(title,body,btns,validate){return new Promise(function(res){
     if(bt.v&&validate){var er=validate(q);if(er){q('#err').textContent=er;return}}
     res({val:bt.val,q:q});setTimeout(function(){m.remove()},0)});
   document.body.appendChild(m);var f=m.querySelector('input,select,textarea');if(f&&f.type!=='date')f.focus()})}
+/* ---------- FAB speed-dial menu (anchored at the + button) ---------- */
+var fabMenuItems=[];
+function fabMenuList(){
+  var it=[];
+  if(!state.sw)it.push({icon:QA_ICONS.stopwatch,label:'Start stopwatch',run:function(){if(tab!=='stopwatch')prevTab=tab;go('stopwatch')}});
+  if(!state.timer)it.push({icon:QA_ICONS.timer,label:'Start timer',run:function(){if(tab!=='timer')prevTab=tab;go('timer')}});
+  if(state.sw)it.push({icon:QA_ICONS.stopwatch,label:'Continue stopwatch',run:function(){if(tab!=='stopwatch')prevTab=tab;go('stopwatch')}});
+  if(state.timer)it.push({icon:QA_ICONS.timer,label:'Continue timer',run:function(){if(tab!=='timer')prevTab=tab;go('timer')}});
+  it.push({icon:ICONS.records,label:'Add record',run:function(){recDlg(today())}});
+  return it}
+function openFabMenu(){
+  closeFabMenu();
+  fabMenuItems=fabMenuList();
+  var m=document.createElement('div');m.className='fabmenu';m.id='fabmenu';m.setAttribute('role','menu');
+  m.innerHTML=fabMenuItems.map(function(it,i){return'<button role="menuitem" data-fi="'+i+'" style="animation-delay:'+(i*45)+'ms"><svg viewBox="0 0 24 24">'+it.icon+'</svg><span>'+esc(it.label)+'</span></button>'}).join('');
+  m.addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('button[data-fi]'):null;if(!b)return;
+    var it=fabMenuItems[+b.getAttribute('data-fi')];closeFabMenu();if(it)it.run()});
+  document.body.appendChild(m);
+  var f=document.getElementById('fab');if(f)f.classList.add('open')}
+function closeFabMenu(){
+  var m=document.getElementById('fabmenu');if(m)m.remove();
+  var f=document.getElementById('fab');if(f)f.classList.remove('open');
+  fabMenuItems=[]}
+function toggleFabMenu(){if(document.getElementById('fabmenu'))closeFabMenu();else openFabMenu()}
+document.addEventListener('click',function(e){
+  var m=document.getElementById('fabmenu');if(!m)return;
+  var t=e.target;
+  if(m.contains(t))return;
+  if(t.closest&&t.closest('#fab'))return;
+  closeFabMenu()},true);
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeFabMenu()});
 function confirmBox(t,msg,ok,danger){return modal(t,'<p>'+esc(msg)+'</p>',[{label:'Cancel',cls:'ghost',val:false},{label:ok,cls:danger?'danger':'',val:true}]).then(function(r){return r.val===true})}
 /* ---------- data + storage ---------- */
 function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:'custom',routine:{days:[],tasks:[]},done:{},time:{},sessions:[],timer:null,sw:null,weak:[],mistakes:[],subjects:[],setup:false,legacy:false,prefs:{limit:450,lang:'en',fs:'m',toastSec:4,routineView:'list',weekStart:6,avatar:null,name:'',subjColors:{},theme:{mode:'light',accent:null}}}}
@@ -932,12 +973,12 @@ function cropDlg(file){
   im.src=url}
 /* ---------- three-dot menu ---------- */
 function dots(){return'<button class="dotb" data-act="menu" aria-label="Menu"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg></button>'}
-function closeMenu(){var m=document.getElementById('menu');if(m)m.remove()}
+function closeMenu(){var m=document.getElementById('menu');if(m)m.remove();closeFabMenu()}
 function menuHtml(sub){var h='',v=state.prefs.routineView;
   if(sub==='view')h='<button data-act="mi" data-v="back">‹ Back</button><button data-act="mi" data-v="vlist" class="'+(v==='list'?'on':'')+'">List view</button><button data-act="mi" data-v="vcal" class="'+(v==='cal'?'on':'')+'">Calendar view</button>';
   else{if(tab==='routine')h+='<button data-act="mi" data-v="edit">'+(edit?'Done editing':'Edit routine')+'</button><button data-act="mi" data-v="view">View</button>';h+='<button data-act="mi" data-v="settings">Settings</button>'}
   return'<div class="menu" role="menu">'+h+'</div>'}
-function openMenu(sub){var m=document.getElementById('menu');if(!m){m=document.createElement('div');m.id='menu';m.className='menuwrap';m.addEventListener('click',function(e){if(e.target===m)closeMenu()});document.body.appendChild(m)}m.innerHTML=menuHtml(sub)}
+function openMenu(sub){closeFabMenu();var m=document.getElementById('menu');if(!m){m=document.createElement('div');m.id='menu';m.className='menuwrap';m.addEventListener('click',function(e){if(e.target===m)closeMenu()});document.body.appendChild(m)}m.innerHTML=menuHtml(sub)}
 /* ---------- study records, timer ---------- */
 var PAL=['#3E7B5A','#5FA37E','#8FCBA4','#7A9A4B','#B8A66B','#4C8C8A','#9C7B5C','#6C8F7B','#C2A878','#7FB0AA'];
 function subjColor(s){var c=state.prefs.subjColors[s];if(c)return c;var i=SUBJ.indexOf(s);if(i<0){i=0;for(var j=0;j<s.length;j++)i+=s.charCodeAt(j)}return PAL[i%PAL.length]}
@@ -1266,7 +1307,7 @@ document.addEventListener('click',function(e){
     case'gosw':if(tab!=='stopwatch')prevTab=tab;go('stopwatch');break;
     case'goroutine':go('routine');break;
     case'gorecords':go('records');break;
-    case'fab':var fb=[{label:'Cancel',cls:'ghost',val:0}];if(state.timer)fb.unshift({label:'Continue timer',val:'timer',v:true});if(state.sw)fb.unshift({label:'Continue stopwatch',val:'sw',v:!state.timer});if(!state.timer)fb.unshift({label:'Start timer',val:'timer',v:!state.sw});if(!state.sw)fb.unshift({label:'Start stopwatch',val:'sw'});modal('Quick start','<p class="sub">Jump back into timing.</p>',fb).then(function(r){if(r.val==='timer'){if(tab!=='timer')prevTab=tab;go('timer')}else if(r.val==='sw'){if(tab!=='stopwatch')prevTab=tab;go('stopwatch')}});break;
+    case'fab':toggleFabMenu();break;
     case'addrec':recDlg(D.k);break;
     case'rmroutine':confirmBox('Remove your routine?','Your whole routine and its ticks will be removed and the upload screen will open. Study time, weak chapters and mistakes are kept. This cannot be undone.','Remove',true).then(function(ok){if(!ok)return;state.routine={days:[],tasks:[]};state.done={};state.subjects=[];state.setup=false;state.legacy=false;undoStack=[];sel={};selKey='';save();render()});break;
     case'copyinfo':copyText(humanReport()).then(function(ok){toast(ok?'Routine copied.':'Could not copy. Use Download instead.')});break;
