@@ -8,7 +8,8 @@
 .wk-top h1{flex:1;font-size:26px;margin:0}
 .wk-back{width:44px;min-height:44px;padding:0;border-radius:50%;background:var(--soft);color:var(--text);flex:none}
 .wk-back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.wkmenu{position:fixed;top:calc(max(8px,env(safe-area-inset-top)) + 58px);right:18px;min-width:230px;background:var(--bg);border-radius:20px;box-shadow:0 10px 36px rgba(0,0,0,.18);padding:8px;z-index:12;animation:wkIn .2s ease}
+.wkmenu{position:fixed;top:calc(max(8px,env(safe-area-inset-top)) + 58px);right:18px;min-width:220px;background:var(--bg);border-radius:20px;box-shadow:0 10px 36px rgba(0,0,0,.18);padding:8px;z-index:12;animation:pgin .15s ease}
+.wkoverlay{position:fixed;inset:0;background:transparent;border:0;padding:0;z-index:11}
 .wkmenu button{width:100%;justify-content:flex-start;background:none;color:var(--text);min-height:50px;font-weight:500;padding:0 14px;border-radius:14px}
 .wknav{display:flex;gap:8px;overflow-x:auto;padding:2px 0 20px;scrollbar-width:none}
 .wknav button{flex:1 0 auto;min-height:48px;background:var(--soft);color:var(--text);font-size:16px;padding:0 16px;border-radius:22px;font-weight:500;display:flex;align-items:center;gap:8px;justify-content:center}
@@ -20,7 +21,7 @@
 .wkhero h2{color:#fff;font-size:26px}
 .wkhero p{margin:4px 0 0;opacity:.92;font-size:16px}
 .wkfig{width:84px;height:84px;flex:none}
-.wkcard{background:#fff;border:1px solid #E4E0D1;border-radius:20px;padding:18px;margin-bottom:16px}
+.wkcard{background:none;border:0;border-radius:0;padding:0;margin:0 0 36px}
 .wkcard h3{font-size:18px;margin:0 0 8px}
 .wkcard .sub{font-size:16px}
 .wktask{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #EDE9DC}

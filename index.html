@@ -451,6 +451,65 @@ window.I18N_PAT.push(
 [/^Version (.+)$/,function(m){return'ভার্সন '+m[1]}]
 );
 })();
+/* Workout redesign additions: Routine-model + Bangla for workout */
+(function(){
+var N={
+'Workout':'ওয়ার্কআউট','Today\'s workout':'আজকের ব্যায়াম','Routines':'রুটিনগুলো','Progress':'অগ্রগতি','Equipment':'সরঞ্জাম',
+'Workout Settings':'ওয়ার্কআউট সেটিংস','Import Routine':'রুটিন ইমপোর্ট','Export Active Routine':'চালু রুটিন এক্সপোর্ট','Back to main app':'মেইন অ্যাপে ফিরুন',
+'How to do it':'কীভাবে করবেন','Finish workout':'ব্যায়াম শেষ করুন','This week':'এই সপ্তাহ','No routine added yet':'এখনো কোনো রুটিন যোগ করা হয়নি',
+'Add a routine first, or import one. Nothing is preloaded.':'আগে একটি রুটিন যোগ করুন বা ইমপোর্ট করুন। কিছু আগে থেকে দেওয়া নেই।',
+'Add routine':'রুটিন যোগ করুন','Import routine':'রুটিন ইমপোর্ট করুন','Workout time':'ব্যায়ামের সময়','Profile name':'প্রোফাইলের নাম',
+'Active routine':'চালু রুটিন','Days per week':'সপ্তাহে কত দিন','Show hero photos on the workout home':'ওয়ার্কআউট হোমে হিরো ছবি দেখান',
+'Save settings':'সেটিংস সেভ করুন','Reset workout data':'ওয়ার্কআউট ডেটা রিসেট করুন','Add weight':'ওজন যোগ করুন','Add measurement':'মাপ যোগ করুন','Add test':'টেস্ট যোগ করুন',
+'No routines yet':'এখনো কোনো রুটিন নেই','Set active':'চালু করুন','Add day':'দিন যোগ করুন','Delete routine':'রুটিন মুছুন','Add exercise':'ব্যায়াম যোগ করুন',
+'Edit day':'দিন সম্পাদনা','Delete day':'দিন মুছুন','New equipment':'নতুন সরঞ্জাম','Add equipment':'সরঞ্জাম যোগ করুন','Bodyweight':'বডিওয়েট',
+'Workout settings saved.':'ওয়ার্কআউট সেটিংস সেভ হয়েছে।','Routine imported.':'রুটিন ইমপোর্ট হয়েছে।','Workout finished.':'ব্যায়াম শেষ।',
+'Push-up':'পুশ-আপ','Push-ups':'পুশ-আপ','Squat':'স্কোয়াট','Plank':'প্ল্যাঙ্ক','Lunge':'লাঞ্জ','Leg raise':'লেগ রেইজ','Dip':'ডিপ','Row':'রো','Curl':'কার্ল','Pike':'পাইক','Superman':'সুপারম্যান','Dead bug':'ডেড বাগ','Glute bridge':'গ্লুট ব্রিজ','Calf':'কাফ',
+'Elbows under shoulders, body in one straight line from head to heels.':'কনুই কাঁধের নিচে রাখুন, মাথা থেকে গোড়ালি পর্যন্ত শরীর এক সরলরেখায় রাখুন।',
+'Do not let the hips drop or rise.':'কোমর নিচে নামতে বা উপরে উঠতে দেবেন না।','Breathe normally.':'স্বাভাবিকভাবে শ্বাস নিন।',
+'Feet shoulder-width apart, toes slightly out.':'পা কাঁধের সমান ফাঁকে রাখুন, আঙুল সামান্য বাইরের দিকে।',
+'Push the hips back and bend the knees, chest up.':'কোমর পেছনে ঠেলে হাঁটু ভাঁজ করুন, বুক উপরে রাখুন।',
+'Go as low as you can with good form, then stand up.':'সঠিক ফর্মে যতটা নিচে যেতে পারেন যান, তারপর উঠে দাঁড়ান।',
+'Step forward, keep the chest up.':'সামনে পা বাড়ান, বুক উপরে রাখুন।',
+'Bend both knees until the back knee nearly touches the floor.':'দুই হাঁটু ভাঁজ করুন, পেছনের হাঁটু প্রায় মেঝে ছোঁয়া পর্যন্ত।',
+'Push back to standing and switch legs.':'ঠেলে উঠে দাঁড়ান, পা বদলান।',
+'Lie on your back, hands beside you.':'পিঠের ওপর শুয়ে পড়ুন, হাত দুপাশে রাখুন।',
+'Lift straight legs slowly, lower them slowly without touching the floor.':'সোজা পা ধীরে উপরে তুলুন, মেঝে না ছুঁয়ে ধীরে নামান।',
+'Keep the lower back pressed to the floor.':'কোমরের নিচের অংশ মেঝেতে চেপে রাখুন।',
+'Hands on the edge behind you, feet on the floor.':'হাত পেছনে কিনারায় রাখুন, পা মেঝেতে।',
+'Lower slowly by bending the elbows, then press back up.':'কনুই ভাঁজ করে ধীরে নামুন, তারপর ঠেলে উপরে উঠুন।',
+'Bend forward with a straight back.':'সোজা পিঠ রেখে সামনে ঝুঁকুন।',
+'Pull the bag toward your hip, squeeze the shoulder blade.':'ব্যাগটি কোমরের দিকে টানুন, কাঁধের হাড় চেপে ধরুন।',
+'Lower slowly and repeat.':'ধীরে নামিয়ে আবার করুন।',
+'Elbows close to the body, palms up.':'কনুই শরীরের কাছে রাখুন, তালু উপরের দিকে।',
+'Curl the weight up without swinging.':'না দুলিয়ে ওজন উপরে তুলুন।',
+'Lower slowly.':'ধীরে নামান।',
+'Hands and feet on the floor, hips high.':'হাত-পা মেঝেতে রাখুন, কোমর উপরে তুলুন।',
+'Bend the elbows and lower the head toward the floor.':'কনুই ভাঁজ করে মাথা মেঝের দিকে নামান।',
+'Press back up.':'ঠেলে উপরে উঠুন।',
+'Lie face down, arms stretched forward.':'উপুড় হয়ে শুয়ে হাত সামনে বাড়িয়ে দিন।',
+'Lift arms and legs together, hold briefly, lower slowly.':'হাত-পা একসাথে তুলুন, একটু ধরে রেখে ধীরে নামান।',
+'Lie on your back, arms up, knees bent at 90 degrees.':'পিঠের ওপর শুয়ে হাত উপরে তুলুন, হাঁটু ৯০ ডিগ্রিতে ভাঁজ করুন।',
+'Extend one arm and the opposite leg, return slowly, switch sides.':'এক হাত ও বিপরীত পা বাড়ান, ধীরে ফিরুন, পাশ বদলান।',
+'Lie on your back, knees bent, feet flat.':'পিঠের ওপর শুয়ে হাঁটু ভাঁজ করুন, পা মেঝেতে সমান রাখুন।',
+'Push through the heels and lift the hips.':'গোড়ালি দিয়ে ঠেলে কোমর উপরে তুলুন।',
+'Squeeze at the top, lower slowly.':'উপরে চেপে ধরে ধীরে নামান।',
+'Stand on a step edge if you have one.':'থাকলে সিঁড়ির কিনারায় দাঁড়ান।',
+'Rise onto the toes, hold briefly, lower slowly below the step.':'আঙুলের ওপর উঠুন, একটু ধরে ধীরে সিঁড়ির নিচে নামান।',
+'Hands under the shoulders, body in one straight line.':'হাত কাঁধের নিচে রাখুন, শরীর এক সরলরেখায় রাখুন।',
+'Lower the chest slowly toward the floor.':'বুক ধীরে মেঝের দিকে নামান।',
+'Press back up without letting the hips sag.':'কোমর ঝুলতে না দিয়ে ঠেলে উপরে উঠুন।',
+'Move slowly and stay in control.':'ধীরে করুন, নিয়ন্ত্রণে থাকুন।',
+'Keep the body steady and breathe normally.':'শরীর স্থির রাখুন, স্বাভাবিকভাবে শ্বাস নিন।',
+'Stop if a joint hurts sharply.':'কোনো জয়েন্টে তীব্র ব্যথা হলে থামুন।',
+'Common mistake: hips sagging or rising — keep the body in one line.':'সাধারণ ভুল: কোমর ঝুলে যাওয়া বা উঠে যাওয়া — শরীর এক লাইনে রাখুন।',
+'Common mistake: knees collapsing inward — push the knees out in line with the toes.':'সাধারণ ভুল: হাঁটু ভেতরে ঢুকে যাওয়া — হাঁটু আঙুলের লাইনে বাইরে ঠেলুন।',
+'Common mistake: holding the breath — breathe normally throughout.':'সাধারণ ভুল: শ্বাস আটকে রাখা — পুরো সময় স্বাভাবিকভাবে শ্বাস নিন।',
+'Common mistake: rushing the reps — slow down and keep good form.':'সাধারণ ভুল: তাড়াহুড়ো করা — ধীরে করুন, সঠিক ফর্ম রাখুন।'
+};
+Object.keys(N).forEach(function(k){if(!(k in window.I18N_BN))window.I18N_BN[k]=N[k]});
+})();
+
 
 
 
