@@ -1,8 +1,8 @@
 /* Workout section (Agradia, local build) — main-app look only:
    white cards, forest-green accents, Archivo Black headlines,
    the main app's body font unchanged, big phone-readable type. */
-.wk{font-size:19px;line-height:1.6}
-.wk h1,.wk h2{font-family:'Archivo Black','Poppins',sans-serif;font-weight:400}
+.wk{font-family:'Poppins','Hind Siliguri','Noto Sans Bengali',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:19px;line-height:1.6}
+.wk h1,.wk h2{font-family:'Archivo Black','Hind Siliguri','Noto Sans Bengali',sans-serif;font-weight:400}
 .wk h2{font-size:24px;margin:0 0 10px}
 .wk-top{display:flex;align-items:center;gap:10px;margin-bottom:20px}
 .wk-top h1{flex:1;font-size:26px;margin:0}
@@ -32,7 +32,7 @@
 .wktask input:checked+.wkbox:after{content:"";width:7px;height:13px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
 .wktask b{display:block;font-size:18px}
 .wktask small{display:block;color:var(--muted);font-size:15px;line-height:1.4}
-.wkprompt{white-space:pre-wrap;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;background:var(--soft);border-radius:16px;padding:16px;overflow-x:auto}
+.wkprompt{white-space:pre-wrap;font:14px/1.6 ui-monospace,Menlo,Consolas,'Hind Siliguri','Noto Sans Bengali',monospace;background:var(--soft);border-radius:16px;padding:16px;overflow-x:auto}
 .wkstrip{display:flex;gap:8px;margin:10px 0}
 .wkstrip span{flex:1;text-align:center;background:var(--soft);border-radius:14px;padding:8px 2px;font-size:14px}
 .wkstrip span.done{background:var(--accsoft);color:var(--accent);font-weight:600}
