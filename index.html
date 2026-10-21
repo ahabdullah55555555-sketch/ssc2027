@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Hind+Siliguri:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="workout.css">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
@@ -530,7 +531,7 @@ document.addEventListener('click',function(e){
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeFabMenu()});
 function confirmBox(t,msg,ok,danger){return modal(t,'<p>'+esc(msg)+'</p>',[{label:'Cancel',cls:'ghost',val:false},{label:ok,cls:danger?'danger':'',val:true}]).then(function(r){return r.val===true})}
 /* ---------- data + storage ---------- */
-function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:'custom',routine:{days:[],tasks:[]},done:{},time:{},sessions:[],timer:null,sw:null,weak:[],mistakes:[],subjects:[],setup:false,legacy:false,prefs:{limit:450,lang:'en',fs:'m',toastSec:4,routineView:'list',weekStart:6,avatar:null,name:'',subjColors:{},theme:{mode:'light',accent:null}}}}
+function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:'custom',routine:{days:[],tasks:[]},done:{},time:{},sessions:[],timer:null,sw:null,weak:[],mistakes:[],subjects:[],setup:false,legacy:false,prefs:{limit:450,lang:'en',fs:'m',toastSec:4,routineView:'list',weekStart:6,avatar:null,name:'',subjColors:{},theme:{mode:'light',accent:null},animations:true}}}
 function cleanRoutine(r,subs){subs=subs||SUBJ;
   if(!r||!Array.isArray(r.days)||!Array.isArray(r.tasks))throw new Error('Routine data is missing.');
   var seen={},days=[],tasks=[],ids={};
@@ -557,7 +558,7 @@ function clean(o){
   s.time=cleanTime(o.time);s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);
   var l=parseInt(o.prefs&&o.prefs.limit,10);s.prefs.limit=l>=60&&l<=1440?l:450;var th=o.prefs&&o.prefs.theme,HX=/^#[0-9a-fA-F]{6}$/;var lg=o.prefs&&o.prefs.lang;s.prefs.lang=lg==='bn'?'bn':'en';var fz=o.prefs&&o.prefs.fs;s.prefs.fs=FS[fz]?fz:'m';var wsn=parseInt(o.prefs&&o.prefs.weekStart,10);s.prefs.weekStart=wsn>=0&&wsn<=6?wsn:6;if(th&&(th.mode==='light'||th.mode==='dark'||th.mode==='mono'||th.mode==='custom')){if(th.mode==='custom'){var cb=th.custom&&th.custom.bg;s.prefs.theme.mode=(cb&&HX.test(cb)&&lum(cb)<.3)?'dark':'light';if(th.custom&&HX.test(th.custom.accent)&&th.custom.accent.toUpperCase()!=='#1F4D3A')s.prefs.theme.accent=th.custom.accent}else{s.prefs.theme.mode=th.mode;if(HX.test(th.accent))s.prefs.theme.accent=th.accent}}
   else if(th)s.prefs.theme.mode='dark';
-  var P0=o.prefs||{},ts=parseInt(P0.toastSec,10);s.prefs.toastSec=[2,3,4,5,8].indexOf(ts)>-1?ts:4;s.prefs.routineView=P0.routineView==='cal'?'cal':'list';
+  var P0=o.prefs||{},ts=parseInt(P0.toastSec,10);s.prefs.animations=P0.animations===false?false:true;s.prefs.toastSec=[2,3,4,5,8].indexOf(ts)>-1?ts:4;s.prefs.routineView=P0.routineView==='cal'?'cal':'list';
   var av=P0.avatar;if(av&&av.type==='svg'&&av.cfg&&typeof av.cfg==='object')s.prefs.avatar={type:'svg',cfg:cleanCfg(av.cfg)};else if(av&&av.type==='img'&&typeof av.data==='string'&&av.data.length<400000&&/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(av.data))s.prefs.avatar={type:'img',data:av.data};
   if(P0.subjColors&&typeof P0.subjColors==='object')Object.keys(P0.subjColors).slice(0,80).forEach(function(k){if(HX.test(P0.subjColors[k]))s.prefs.subjColors[str(k,30)]=P0.subjColors[k]});
   s.prefs.name=str(P0.name,24).trim();s.sessions=cleanSess(o.sessions);s.timer=cleanTimer(o.timer);s.sw=cleanSw(o.sw);if(!s.timer&&o.timer&&typeof o.timer==='object'&&o.timer.dur===undefined&&DRE.test(o.timer.date)){var la=Number(o.timer.acc);if(isFinite(la)&&la>=0)s.sw={run:false,acc:Math.min(864e5,la+(o.timer.run===true?Math.max(0,Date.now()-Number(o.timer.start)):0)),startAt:0,subj:str(o.timer.subj,30),date:o.timer.date}}return s}
@@ -676,10 +677,10 @@ function render(keep){
   applyTheme();
   var dr=document.getElementById('rt')||document.getElementById('ru');if(dr)rtDraft=dr.value;
   if(state.subjects)SUBJ=state.subjects;
-  var noTabs=!state.setup||tab==='timer'||tab==='stopwatch'||tab==='search'||tab==='settings'||/^s_/.test(tab);document.getElementById('tabs').hidden=noTabs;
+  var noTabs=!state.setup||tab==='timer'||tab==='stopwatch'||tab==='search'||tab==='settings'||tab==='workout'||/^s_/.test(tab);document.getElementById('tabs').hidden=noTabs;
   var fb=document.getElementById('fab');if(fb)fb.hidden=noTabs||!/^(home|routine|records)$/.test(tab);
   if(!state.setup){var y0=window.scrollY;document.getElementById('view').innerHTML=vOnboard();document.getElementById('tabs').innerHTML='';if(keep)window.scrollTo(0,y0);trTree(document.getElementById('view'));return}
-  var y=window.scrollY,v={home:vHome,routine:vRoutine,records:vRecords,logs:vLogs,settings:vMore,avatar:vAvatar,search:vSearch,timer:vTimer,stopwatch:vSw,s_appearance:vSAppearance,s_language:vSLanguage,s_profile:vSProfile,s_data:vSData,s_about:vSAbout}[tab]||vHome;
+  var y=window.scrollY,v={home:vHome,routine:vRoutine,records:vRecords,logs:vLogs,settings:vMore,avatar:vAvatar,search:vSearch,timer:vTimer,stopwatch:vSw,s_appearance:vSAppearance,s_language:vSLanguage,s_profile:vSProfile,s_data:vSData,s_about:vSAbout,workout:vWorkout,s_workout:vWkSettings}[tab]||vHome;
   document.getElementById('view').innerHTML=v();if(tab==='timer'&&!state.timer)initDrums();renderTabs();if(keep)window.scrollTo(0,y);
   var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
   if(tab==='settings'&&updWorker)showUpdate(updWorker);
@@ -1173,10 +1174,12 @@ function vMore(){
     +srow('s_profile',I.p,'Profile & Avatar','Your name and picture')
     +srow('s_data',I.d,'Routine & Data','Update routine, daily limit, backup')
     +srow('logs',I.g,'Logs','Weak chapters and mistake log')
-    +srow('s_about',I.i,'About Agradia','Version, your data, install')}
+    +srow('s_about',I.i,'About Agradia','Version, your data, install')
+    +srow('s_workout','<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>','Workout Settings','Workout routines, time and options')}
 function vSAppearance(){var t=state.prefs.theme,m=t.mode,h=head('Appearance');
   h+='<h3>Theme</h3>'+[['light','Light'],['dark','Dark'],['mono','Monochrome']].map(function(o){return'<button class="opt'+(m===o[0]?' on':'')+'" data-act="tmode" data-v="'+o[0]+'"><i></i>'+o[1]+'</button>'}).join('');
   if(m!=='mono'){h+='<h3>Accent color</h3><p class="sub">Forest Green is the default identity. Any accent works in both light and dark.</p><div class="swatches">'+[['','Forest Green (default)']].concat(PALETTES.slice(1)).map(function(p){var v=p[0],sel=v?t.accent===v:!t.accent;return'<button class="sw'+(sel?' on':'')+'" data-act="pacc" data-v="'+v+'" aria-label="'+p[1]+'"><i style="background:'+(v||'#1F4D3A')+'"></i>'+p[1]+'</button>'}).join('')+'</div>'}
+  h+='<h3>Animations</h3><p class="sub">Icon and slide animations in the app, including the Workout section. Turn off for instant transitions.</p><label class="sc wide"><input type="checkbox" data-pref="anim"'+(state.prefs.animations!==false?' checked':'')+'><span>Animations on</span></label>';
   h+='<h3>Pop-up messages</h3><p class="sub">How long small messages stay on screen. Tap or swipe a message to close it at once.</p><select data-pref="toastSec" aria-label="Message duration">'+[2,3,4,5,8].map(function(n){return'<option value="'+n+'"'+(state.prefs.toastSec===n?' selected':'')+'>'+n+' seconds</option>'}).join('')+'</select>';
   return h}
 function vSLanguage(){var L=state.prefs.lang,h=head('Language & Text');
@@ -1358,5 +1361,6 @@ setInterval(function(){if(!state)return;var T=state.timer;
   var e=document.getElementById('tmr');if(e&&T)e.textContent=fmtClock(trem());
   var w=document.getElementById('swt');if(w&&state.sw)w.textContent=fmtClock(sela())},1000);
 </script>
+<script src="workout.js"></script>
 </body>
 </html>
