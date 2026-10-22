@@ -1324,6 +1324,7 @@ function vMore(){
 function vSAppearance(){var t=state.prefs.theme,m=t.mode,h=head('Appearance');
   h+='<h3>Theme</h3>'+[['light','Light'],['dark','Dark'],['mono-light','Monochrome Light'],['mono-dark','Monochrome Dark']].map(function(o){return'<button class="opt'+(m===o[0]?' on':'')+'" data-act="tmode" data-v="'+o[0]+'"><i></i>'+o[1]+'</button>'}).join('');
   if(m!=='mono'&&m!=='mono-light'&&m!=='mono-dark'){h+='<h3>Accent color</h3><p class="sub">Forest Green is the default identity. Any accent works in both light and dark.</p><div class="swatches">'+[['','Forest Green (default)']].concat(PALETTES.slice(1)).map(function(p){var v=p[0],sel=v?t.accent===v:!t.accent;return'<button class="sw'+(sel?' on':'')+'" data-act="pacc" data-v="'+v+'" aria-label="'+p[1]+'"><i style="background:'+(v||'#1F4D3A')+'"></i>'+p[1]+'</button>'}).join('')+'</div>'}
+  if(m!=='mono'&&m!=='mono-light'&&m!=='mono-dark'){h+='<h3>Custom color</h3><p class="sub">Pick any color. The whole app follows it, and text on it adjusts automatically to stay readable in Light and Dark.</p><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><input type="color" class="cpick" data-cacc="1" value="'+(t.accent||'#1F4D3A')+'" aria-label="Custom color"><span style="font-size:13.5px;color:var(--muted)">'+(t.accent||'Forest Green (default)')+'</span><button class="ghost sm" data-act="pacc">Reset to Forest Green</button></div>';}
   h+='<h3>Animations</h3><p class="sub">Icon and slide animations in the app, including the Workout section. Turn off for instant transitions.</p><label class="sc wide"><input type="checkbox" data-pref="anim"'+(state.prefs.animations!==false?' checked':'')+'><span>Animations on</span></label>';
   h+='<h3>Pop-up messages</h3><p class="sub">How long small messages stay on screen. Tap or swipe a message to close it at once.</p><select data-pref="toastSec" aria-label="Message duration">'+[2,3,4,5,8].map(function(n){return'<option value="'+n+'"'+(state.prefs.toastSec===n?' selected':'')+'>'+n+' seconds</option>'}).join('')+'</select>';
   return h}
@@ -1377,6 +1378,7 @@ document.addEventListener('change',function(e){
   else if(D.pref==='weekstart'){var w0=parseInt(t.value,10);if(w0>=0&&w0<=6){state.prefs.weekStart=w0;save();render(true)}}
   else if(D.avc){avDraft[D.avc]=t.value;render(true)}
   else if(D.sc){state.prefs.subjColors[D.sc]=t.value;save();render(true)}
+  else if(D.cacc){state.prefs.theme.accent=t.value.toUpperCase();save();render(true)}
   else if(t.id==='avfile'&&t.files[0]){var af=t.files[0];t.value='';cropDlg(af)}
   else if(D.pref==='fs'){if(FS[t.value]){state.prefs.fs=t.value;save();render(true)}}
   else if(D.pname!==undefined){state.prefs.name=str(t.value,24).trim();save()}
