@@ -1314,8 +1314,8 @@ function vMore(){
     +srow('s_profile',I.p,'Profile & Avatar','Your name and picture')
     +srow('s_data',I.d,'Routine & Data','Update routine, daily limit, backup')
     +srow('logs',I.g,'Logs','Weak chapters and mistake log')
-    +srow('s_about',I.i,'About Agradia','Version, your data, install')
-    +srow('s_workout','<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>','Workout Settings','Workout routines, time and options')}
+    +srow('s_workout','<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>','Workout Settings','Workout routines, time and options')
+    +srow('s_about',I.i,'About Agradia','Version, your data, install')}
 function vSAppearance(){var t=state.prefs.theme,m=t.mode,h=head('Appearance');
   h+='<h3>Theme</h3>'+[['light','Light'],['dark','Dark'],['mono','Monochrome']].map(function(o){return'<button class="opt'+(m===o[0]?' on':'')+'" data-act="tmode" data-v="'+o[0]+'"><i></i>'+o[1]+'</button>'}).join('');
   if(m!=='mono'){h+='<h3>Accent color</h3><p class="sub">Forest Green is the default identity. Any accent works in both light and dark.</p><div class="swatches">'+[['','Forest Green (default)']].concat(PALETTES.slice(1)).map(function(p){var v=p[0],sel=v?t.accent===v:!t.accent;return'<button class="sw'+(sel?' on':'')+'" data-act="pacc" data-v="'+v+'" aria-label="'+p[1]+'"><i style="background:'+(v||'#1F4D3A')+'"></i>'+p[1]+'</button>'}).join('')+'</div>'}
