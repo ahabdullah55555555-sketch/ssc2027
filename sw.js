@@ -1,5 +1,5 @@
 /* Network first: the newest index.html is used whenever the phone is online, so updating the app means replacing index.html only. */
-const CACHE='agradia-cache',FONTS='agradia-fonts';
+const CACHE='agradia-cache-v2',FONTS='agradia-fonts';
 const FILES=['./','./index.html','./manifest.json','./icon.svg','./hills.svg','./workout.js','./workout.css'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).catch(()=>{}))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
