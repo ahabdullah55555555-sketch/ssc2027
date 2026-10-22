@@ -509,9 +509,63 @@ var N={
 };
 Object.keys(N).forEach(function(k){if(!(k in window.I18N_BN))window.I18N_BN[k]=N[k]});
 })();
-
-
-
+/* Translation coverage fix: visible Workout + Home strings that were missing, plus patterns for dynamic sentences */
+(function(){
+var N={
+"Today's Progress":'আজকের অগ্রগতি',
+"Today's Tasks":'আজকের কাজগুলো',
+'Welcome!':'স্বাগতম!',
+'No entries yet':'এখনো কোনো এন্ট্রি নেই',
+'Weight log':'ওজনের লগ',
+'Measurements (chest / waist / arm)':'মাপ (বুক / কোমর / হাত)',
+'Tests (push-up max / plank)':'টেস্ট (পুশ-আপ সর্বোচ্চ / প্ল্যাঙ্ক)',
+'This routine has no days yet.':'এই রুটিনে এখনো কোনো দিন নেই।',
+"The next day appears only after you finish today's day. A missed day stays.":'পরের দিন শুধু আজকের দিন শেষ করলেই আসবে। মিস হওয়া দিন থেকে যাবে।',
+'Exercises show the equipment tag you pick here. Add anything new you get later.':'এখানে বাছা সরঞ্জাম ট্যাগ ব্যায়ামগুলোতে দেখাবে। পরে নতুন কিছু পেলে যোগ করুন।',
+'Animations are switched on or off in the main Settings > Appearance page. Colour theme is changed only from the main Settings and applies to the whole app.':'অ্যানিমেশন মেইন Settings > Appearance পেজ থেকে চালু/বন্ধ করা যায়। রঙের থিম শুধু মেইন Settings থেকে বদলানো যায়, পুরো অ্যাপে প্রযোজ্য।',
+"Copy this prompt, give it to any AI tool together with a routine, then paste the AI's formatted reply below. The prompt contains no personal details — it only reformats.":'এই প্রম্পট কপি করে যেকোনো AI টুলে রুটিনসহ দিন, তারপর AI-এর ফরম্যাট করা উত্তর নিচে পেস্ট করুন। প্রম্পটে কোনো ব্যক্তিগত তথ্য নেই — এটা শুধু ফরম্যাট বদলায়।',
+'Paste the formatted routine':'ফরম্যাট করা রুটিন পেস্ট করুন',
+'AI prompt':'AI প্রম্পট',
+'Preview':'প্রিভিউ',
+'Set as Active after import':'ইমপোর্টের পর চালু করুন',
+'Import as New Routine':'নতুন রুটিন হিসেবে ইমপোর্ট করুন',
+'Add a day':'দিন যোগ করুন',
+'Amount':'পরিমাণ',
+'Sets':'সেট',
+'Rest (seconds)':'বিশ্রাম (সেকেন্ড)',
+'Reps or seconds':'রেপস বা সেকেন্ড',
+'Exercise name':'ব্যায়ামের নাম',
+'Name':'নাম',
+'Note (optional)':'নোট (ঐচ্ছিক)',
+'Weight (kg)':'ওজন (কেজি)',
+'Weight (kg, optional)':'ওজন (কেজি, ঐচ্ছিক)',
+'Chest':'বুক',
+'Waist':'কোমর',
+'Arm':'হাত',
+'Push-up max':'পুশ-আপ সর্বোচ্চ',
+'Plank (seconds)':'প্ল্যাঙ্ক (সেকেন্ড)',
+'Export active routine':'চালু রুটিন এক্সপোর্ট করুন',
+'Tap Add routine and build one the same way you add study tasks: add a day, then add exercises inside it.':'রুটিন যোগ করুন বোতাম চাপুন, পড়ার কাজ যোগ করার মতো করে: প্রথমে দিন যোগ করুন, তারপর তার ভেতরে ব্যায়াম যোগ করুন।',
+'Workout could not open':'ওয়ার্কআউট খুলতে পারেনি',
+'Form illustration (original artwork). A licensed demo clip for this exercise is not bundled yet — follow the steps below.':'ফর্ম চিত্র (আসল আর্টওয়ার্ক)। এই ব্যায়ামের লাইসেন্স করা ডেমো ক্লিপ এখনো দেওয়া হয়নি — নিচের ধাপগুলো অনুসরণ করুন।',
+'Close':'বন্ধ করুন',
+'More':'আরও',
+'Active':'চালু'
+};
+Object.keys(N).forEach(function(k){if(!(k in window.I18N_BN))window.I18N_BN[k]=N[k]});
+window.I18N_PAT.push(
+[/^Workout streak: (\d+) days · This week: (\d+) of (\d+) days$/,function(m){return'ওয়ার্কআউট স্ট্রিক: '+m[1]+' দিন · এই সপ্তাহে: '+m[3]+' দিনের মধ্যে '+m[2]+' দিন'}],
+[/^(\d+) of (\d+) exercises ticked$/,function(m){return m[2]+'টি ব্যায়ামের মধ্যে '+m[1]+'টি টিক দেওয়া হয়েছে'}],
+[/^(\d+) days$/,function(m){return m[1]+' দিন'}],
+[/^Workout time (.+)$/,function(m){return'ব্যায়ামের সময় '+m[1]}],
+[/^(.+) · Streak (\d+)$/,function(m){return m[1]+' · স্ট্রিক '+m[2]}],
+[/^Chest (.+) · Waist (.+) · Arm (.+)$/,function(m){return'বুক '+m[1]+' · কোমর '+m[2]+' · হাত '+m[3]}],
+[/^Push-ups (.+) · Plank (.+) sec$/,function(m){return'পুশ-আপ '+m[1]+' · প্ল্যাঙ্ক '+m[2]+' সেকেন্ড'}],
+[/^(\d+) × (\d+) (reps|sec) · Rest (\d+)s · (.+)$/,function(m){return m[1]+' × '+m[2]+' '+(m[3]==='reps'?'রেপস':'সেকেন্ড')+' · বিশ্রাম '+m[4]+' সেকেন্ড · '+m[5]}],
+[/^(\d+) days · (\d+) exercises$/,function(m){return m[1]+' দিন · '+m[2]+'টি ব্যায়াম'}],
+[/^(\d+(?:\.\d+)?) kg$/,function(m){return m[1]+' কেজি'}]
+);
+})();
 
 </script>
 <script>
