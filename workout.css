@@ -4,8 +4,10 @@
 .wk{font-family:'Poppins','Hind Siliguri','Noto Sans Bengali',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:19px;line-height:1.6}
 .wk h1,.wk h2{font-family:'Archivo Black','Hind Siliguri','Noto Sans Bengali',sans-serif;font-weight:700;line-height:1.25;letter-spacing:0}
 .wk h2{font-size:24px;margin:0 0 10px}
-.wk-head{position:sticky;top:0;z-index:4;background:var(--bg);transition:transform .25s ease,opacity .25s ease,margin-bottom .25s ease}
+.wk-head{position:fixed;top:0;left:22px;right:22px;z-index:4;background:var(--bg);padding:max(18px,env(safe-area-inset-top)) 0 0;transition:transform .25s ease,opacity .25s ease}
 .wk-head.wkhide{transform:translateY(-110%);opacity:0;pointer-events:none}
+.wk{padding-top:150px}
+.wk.wk-sub{padding-top:82px}
 .wk-top{display:flex;align-items:center;gap:10px;margin-bottom:20px}
 .wk-top h1{flex:1;font-size:26px;margin:0}
 .wk-back{width:44px;min-height:44px;padding:0;border-radius:50%;background:var(--soft);color:var(--text);flex:none}
