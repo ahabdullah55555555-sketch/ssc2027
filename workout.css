@@ -62,3 +62,7 @@
 .wk-ico-back{animation:wkSlide .25s ease}
 body.anim-off .wk,body.anim-off .wk *{animation:none!important;transition:none!important}
 @media (prefers-reduced-motion:reduce){.wk,.wk *{animation:none!important;transition:none!important}}
+
+.wkhero-photo.wkhero-bn .wkhello{font-family:'Hind Siliguri',sans-serif;font-weight:700;letter-spacing:0}
+.wkhero-photo.wkhero-bn .wkname{font-family:'Hind Siliguri',sans-serif;font-weight:700}
+.wkhero-photo.wkhero-bn .wktoday,.wkhero-photo.wkhero-bn .wkworkout{font-family:'Hind Siliguri',sans-serif;font-weight:700;letter-spacing:0;line-height:1.15}
