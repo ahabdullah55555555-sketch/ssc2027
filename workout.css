@@ -2,7 +2,7 @@
    white cards, forest-green accents, Archivo Black headlines,
    the main app's body font unchanged, big phone-readable type. */
 .wk{font-family:'Poppins','Hind Siliguri','Noto Sans Bengali',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:19px;line-height:1.6}
-.wk h1,.wk h2{font-family:'Archivo Black','Hind Siliguri','Noto Sans Bengali',sans-serif;font-weight:400}
+.wk h1,.wk h2{font-family:'Archivo Black','Hind Siliguri','Noto Sans Bengali',sans-serif;font-weight:700;line-height:1.25;letter-spacing:0}
 .wk h2{font-size:24px;margin:0 0 10px}
 .wk-top{display:flex;align-items:center;gap:10px;margin-bottom:20px}
 .wk-top h1{flex:1;font-size:26px;margin:0}
@@ -29,7 +29,7 @@
 .wkhero p{margin:4px 0 0;opacity:.92;font-size:16px}
 .wkfig{width:84px;height:84px;flex:none}
 .wkcard{background:none;border:0;border-radius:0;padding:0;margin:0 0 36px}
-.wkcard h3{font-size:18px;margin:0 0 8px}
+.wkcard h3{font-size:18px;margin:0 0 8px;font-weight:700;line-height:1.3}
 .wkcard .sub{font-size:16px}
 .wktask{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #EDE9DC}
 .wktask:last-child{border-bottom:0}
