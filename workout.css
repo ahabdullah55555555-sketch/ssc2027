@@ -63,6 +63,9 @@
 body.anim-off .wk,body.anim-off .wk *{animation:none!important;transition:none!important}
 @media (prefers-reduced-motion:reduce){.wk,.wk *{animation:none!important;transition:none!important}}
 
+.wkhero-photo.wkhero-bn{padding:16px 22px}
+.wkhero-photo.wkhero-bn>div{max-width:65%}
 .wkhero-photo.wkhero-bn .wkhello{font-family:'Hind Siliguri',sans-serif;font-weight:700;letter-spacing:0}
-.wkhero-photo.wkhero-bn .wkname{font-family:'Hind Siliguri',sans-serif;font-weight:700}
-.wkhero-photo.wkhero-bn .wktoday,.wkhero-photo.wkhero-bn .wkworkout{font-family:'Hind Siliguri',sans-serif;font-weight:700;letter-spacing:0;line-height:1.15}
+.wkhero-photo.wkhero-bn .wkname{font-family:'Hind Siliguri',sans-serif;font-weight:700;font-size:18px}
+.wkhero-photo.wkhero-bn .wktoday,.wkhero-photo.wkhero-bn .wkworkout{font-family:'Hind Siliguri',sans-serif;font-weight:700;letter-spacing:0;line-height:1.05;font-size:clamp(34px,10.5vw,48px)}
+.wkhero-photo.wkhero-bn .wksub{font-size:13px;margin-top:4px}
