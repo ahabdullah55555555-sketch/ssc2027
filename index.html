@@ -68,7 +68,7 @@ label.f{color:var(--muted);font-size:14px;display:block;margin-top:6px}
 .time{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
 .item{background:var(--soft);border-radius:18px;padding:14px 16px;margin:0 0 10px}
 .item small{color:var(--muted);font-size:14px;display:block}
-.tabs{position:fixed;left:22px;right:92px;max-width:320px;bottom:calc(14px + env(safe-area-inset-bottom));background:var(--soft);border-radius:28px;display:flex;padding:8px;gap:6px;z-index:5;box-shadow:0 12px 44px rgba(0,0,0,.45),0 3px 10px rgba(0,0,0,.28)}
+.tabs{position:fixed;left:22px;right:92px;max-width:320px;bottom:calc(14px + env(safe-area-inset-bottom));background:var(--soft);border-radius:28px;display:flex;padding:8px;gap:6px;z-index:5;box-shadow:0 12px 44px rgba(0,0,0,.45),0 3px 10px rgba(0,0,0,.28);transition:transform .25s ease,opacity .25s ease}.tabs.navhide{transform:translateY(140%);opacity:0;pointer-events:none}.fab.navhide{transform:translateY(140%);opacity:0;pointer-events:none}
 .tabs button{flex:1;background:none;color:var(--muted);min-height:54px;padding:0;border-radius:20px}
 .tabs button svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .tabs button.on{background:var(--accent);color:var(--onacc)}
@@ -736,7 +736,7 @@ function render(keep){
   applyTheme();
   var dr=document.getElementById('rt')||document.getElementById('ru');if(dr)rtDraft=dr.value;
   if(state.subjects)SUBJ=state.subjects;
-  var noTabs=!state.setup||tab==='timer'||tab==='stopwatch'||tab==='search'||tab==='settings'||tab==='workout'||/^s_/.test(tab);document.getElementById('tabs').hidden=noTabs;
+  var noTabs=!state.setup||tab==='timer'||tab==='stopwatch'||tab==='search'||tab==='settings'||tab==='workout'||/^s_/.test(tab);document.getElementById('tabs').hidden=noTabs;if(!noTabs){document.getElementById('tabs').classList.remove('navhide');var fb0=document.getElementById('fab');if(fb0)fb0.classList.remove('navhide');navLastY=window.scrollY||0;navHidden=false;}
   var fb=document.getElementById('fab');if(fb)fb.hidden=noTabs||!/^(home|routine|records)$/.test(tab);
   if(!state.setup){var y0=window.scrollY;document.getElementById('view').innerHTML=vOnboard();document.getElementById('tabs').innerHTML='';if(keep)window.scrollTo(0,y0);trTree(document.getElementById('view'));return}
   var y=window.scrollY,v={home:vHome,routine:vRoutine,records:vRecords,logs:vLogs,settings:vMore,avatar:vAvatar,search:vSearch,timer:vTimer,stopwatch:vSw,s_appearance:vSAppearance,s_language:vSLanguage,s_profile:vSProfile,s_data:vSData,s_about:vSAbout,workout:vWorkout,s_workout:vWkSettings}[tab]||vHome;
@@ -744,7 +744,7 @@ function render(keep){
   var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
   if(tab==='settings'&&updWorker)showUpdate(updWorker);
   trTree(document.getElementById('view'));trTree(document.getElementById('tabs'))}
-function go(t){closeMenu();tab=t;navAnim=true;render();navAnim=false;window.scrollTo(0,0);var v=document.getElementById('view');v.classList.remove('pg');void v.offsetWidth;if(!/^s_|^logs$|^search$|^avatar$/.test(t))v.classList.add('pg');try{history.pushState({tab:t},'')}catch(e){}}
+var navLastY=0,navHidden=false;window.addEventListener('scroll',function(){var y=window.scrollY||0;var te=document.getElementById('tabs'),fe=document.getElementById('fab');if(!te||te.hidden){navLastY=y;return}if(y>navLastY+10&&y>80){if(!navHidden){navHidden=true;te.classList.add('navhide');if(fe)fe.classList.add('navhide')}}else if(y<navLastY-5||y<=0){if(navHidden){navHidden=false;te.classList.remove('navhide');if(fe)fe.classList.remove('navhide')}}navLastY=y},{passive:true});function go(t){closeMenu();tab=t;navAnim=true;render();navAnim=false;window.scrollTo(0,0);var v=document.getElementById('view');v.classList.remove('pg');void v.offsetWidth;if(!/^s_|^logs$|^search$|^avatar$/.test(t))v.classList.add('pg');try{history.pushState({tab:t},'')}catch(e){}}
 var backToastAt=0;
 window.addEventListener('popstate',function(e){var t=e.state&&e.state.tab;
   if(t){if(t!==tab){closeMenu();tab=t;render();window.scrollTo(0,0)}return}
