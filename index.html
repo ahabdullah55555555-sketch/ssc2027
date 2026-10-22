@@ -32,7 +32,7 @@ h3{font-family:'Sora','Hind Siliguri','Noto Sans Bengali','Poppins',sans-serif;f
 .ring svg{transform:rotate(-90deg)}
 .ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:26px;font-weight:600}
 .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;flex:1;min-width:0}
-.stat{background:var(--soft);border-radius:18px;padding:14px}
+.stat{background:var(--soft);border-radius:18px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.18)}
 .stat b{display:block;font-size:22px;font-weight:600;color:var(--accent)}.stat span{color:var(--muted);font-size:13.5px;line-height:1.3;display:block}
 .bar{height:8px;background:var(--track);border-radius:8px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent);border-radius:8px;transition:width .35s ease}
@@ -66,10 +66,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 input::placeholder,textarea::placeholder{color:var(--muted)}
 label.f{color:var(--muted);font-size:14px;display:block;margin-top:6px}
 .time{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
-.item{background:var(--soft);border-radius:18px;padding:14px 16px;margin:0 0 10px}
+.item{background:var(--soft);border-radius:18px;padding:14px 16px;margin:0 0 10px;box-shadow:0 2px 10px rgba(0,0,0,.18)}
 .item small{color:var(--muted);font-size:14px;display:block}
 .tabs{position:fixed;left:22px;right:92px;max-width:320px;bottom:calc(14px + env(safe-area-inset-bottom));background:var(--soft);border-radius:28px;display:flex;padding:8px;gap:6px;z-index:5;box-shadow:0 12px 44px rgba(0,0,0,.45),0 3px 10px rgba(0,0,0,.28);transition:transform .25s ease,opacity .25s ease}.tabs.navhide{transform:translateY(140%);opacity:0;pointer-events:none}.fab.navhide{transform:translateY(140%);opacity:0;pointer-events:none}
-.tabs button{flex:1;background:none;color:var(--muted);min-height:54px;padding:0;border-radius:20px}
+.tabs button{flex:1;background:none;color:var(--muted);min-height:54px;padding:0;border-radius:20px;transition:transform .12s ease,background .15s ease}button:active{transform:scale(.97)}
 .tabs button svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .tabs button.on{background:var(--accent);color:var(--onacc)}
 .tabs button.on svg{stroke:var(--onacc)}.tabs[hidden]{display:none}
@@ -567,6 +567,8 @@ window.I18N_PAT.push(
 );
 })();
 
+
+(function(){var N={'Solid bars show the time you studied. Light bars behind them show your target. Tap a bar to see subjects for that period.':'গাঢ় রঙের বার আপনার পড়ার সময় দেখায়। পেছনের হালকা বার আপনার লক্ষ্য দেখায়। একটি বারে ট্যাপ করলে ওই সময়ের বিষয়গুলো দেখাবে।','Progress charts':'অগ্রগতির চার্ট','Weight':'ওজন','Log weight or tests to see charts here.':'ওজন বা টেস্ট লগ করলে এখানে চার্ট দেখাবে।'};Object.keys(N).forEach(function(k){if(!(k in window.I18N_BN))window.I18N_BN[k]=N[k]});})();
 </script>
 <script>
 "use strict";
@@ -576,7 +578,7 @@ var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Med
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
 var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in Settings).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
 var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
-var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',avDraft=null,navAnim=false;
+var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',recSel=-1,avDraft=null,navAnim=false;
 /* ---------- helpers ---------- */
 function pad(n){return(n<10?'0':'')+n}
 function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
@@ -642,6 +644,7 @@ document.addEventListener('click',function(e){
   if(t.closest&&t.closest('#fab'))return;
   closeFabMenu()},true);
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeFabMenu()});
+document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-recbar]'):null;if(!g)return;recSel=+g.dataset.recbar;render(true)});
 function confirmBox(t,msg,ok,danger){return modal(t,'<p>'+esc(msg)+'</p>',[{label:'Cancel',cls:'ghost',val:false},{label:ok,cls:danger?'danger':'',val:true}]).then(function(r){return r.val===true})}
 /* ---------- data + storage ---------- */
 function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:'custom',routine:{days:[],tasks:[]},done:{},time:{},sessions:[],timer:null,sw:null,weak:[],mistakes:[],subjects:[],setup:false,legacy:false,prefs:{limit:450,lang:'en',fs:'m',toastSec:4,routineView:'list',weekStart:6,avatar:null,name:'',subjColors:{},theme:{mode:'light',accent:null},animations:true}}}
@@ -737,7 +740,7 @@ function vHome(){
   var td=today(),T=tasksOn(td),n=T.filter(isDone).length,tt=T.length,p=tt?Math.round(n/tt*100):0,od=viewTasks('overdue').length,nm=state.prefs.name,Tm=state.timer,Sw=state.sw;
   var h='<div class="top"><button class="avb" data-act="avatar" aria-label="Change avatar">'+avatarEl()+'</button><div style="flex:1;min-width:0"><div class="hgreet">'+daypart()+'</div><div class="hname">'+(nm?esc(nm)+' 👋':'Welcome!')+'</div></div><div class="hdrb">'+dots()+'</div></div>';
   h+='<button class="hsearch" data-act="search" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Search anything</span></button>';
-  h+='<section class="pbanner"><svg class="hillsart" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="hshade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient></defs><rect width="400" height="220" style="fill:var(--accent)"/><rect width="400" height="220" fill="url(#hshade)"/><circle cx="316" cy="52" r="38" fill="#fff" opacity=".14"/><circle cx="316" cy="52" r="26" fill="#fff" opacity=".9"/><path d="M0 150 Q 90 96 190 128 T 400 108 V220 H0 Z" fill="#000" opacity=".16"/><path d="M0 176 Q 110 130 230 160 T 400 148 V220 H0 Z" fill="#000" opacity=".26"/><g fill="#000" opacity=".42"><path d="M52 158 l14 -30 l14 30 z"/><path d="M78 164 l11 -24 l11 24 z"/><path d="M300 150 l14 -30 l14 30 z"/><path d="M326 156 l11 -24 l11 24 z"/><path d="M180 172 l12 -26 l12 26 z"/></g><g fill="#000" opacity=".5"><rect x="57" y="158" width="4" height="12"/><rect x="305" y="150" width="4" height="12"/></g><path d="M0 200 Q 130 172 260 192 T 400 186 V220 H0 Z" fill="#fff" opacity=".1"/><g fill="#fff" opacity=".55"><circle cx="80" cy="40" r="2.2"/><circle cx="140" cy="66" r="1.6"/><circle cx="220" cy="36" r="2"/><circle cx="260" cy="80" r="1.5"/><circle cx="40" cy="90" r="1.6"/></g></svg><svg class="leafdeco" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 36 Q8 28 10 12 Q26 14 20 36 Z" fill="#fff" opacity=".22"/><path d="M20 34 Q20 22 14 14" stroke="#fff" stroke-width="1.4" fill="none" opacity=".28"/></svg><div class="pin"><h2>Today\'s Progress</h2><div class="pnum">'+n+' / '+tt+' <span style="font-size:15px;font-weight:400">Tasks</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div><p class="pmot">'+motivate(p,n)+'</p></div></section>';
+  h+='<section class="pbanner"><svg class="hillsart" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="hshade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient></defs><rect width="400" height="220" style="fill:var(--accent)"/><rect width="400" height="220" fill="url(#hshade)"/><circle cx="316" cy="52" r="38" fill="#fff" opacity=".14"/><circle cx="316" cy="52" r="26" fill="#fff" opacity=".9"/><path d="M0 150 Q 90 96 190 128 T 400 108 V220 H0 Z" fill="#000" opacity=".16"/><path d="M0 176 Q 110 130 230 160 T 400 148 V220 H0 Z" fill="#000" opacity=".26"/><g fill="#000" opacity=".42"><path d="M52 158 l14 -30 l14 30 z"/><path d="M78 164 l11 -24 l11 24 z"/><path d="M300 150 l14 -30 l14 30 z"/><path d="M326 156 l11 -24 l11 24 z"/><path d="M180 172 l12 -26 l12 26 z"/></g><g fill="#000" opacity=".5"><rect x="57" y="158" width="4" height="12"/><rect x="305" y="150" width="4" height="12"/></g><path d="M0 200 Q 130 172 260 192 T 400 186 V220 H0 Z" fill="#fff" opacity=".1"/><g fill="#fff" opacity=".55"><circle cx="80" cy="40" r="2.2"/><circle cx="140" cy="66" r="1.6"/><circle cx="220" cy="36" r="2"/><circle cx="260" cy="80" r="1.5"/><circle cx="40" cy="90" r="1.6"/></g></svg><svg class="leafdeco" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 36 Q8 28 10 12 Q26 14 20 36 Z" fill="#fff" opacity=".22"/><path d="M20 34 Q20 22 14 14" stroke="#fff" stroke-width="1.4" fill="none" opacity=".28"/></svg><div class="pin"><div style="display:flex;gap:14px;align-items:center"><div style="flex:1;min-width:0"><h2>Today\'s Progress</h2><div class="pnum">'+n+' / '+tt+' <span style="font-size:15px;font-weight:400">Tasks</span></div></div><svg width="72" height="72" viewBox="0 0 72 72" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'" style="flex:none"><circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="7"/><circle cx="36" cy="36" r="30" fill="none" stroke="#8FCBA4" stroke-width="7" stroke-linecap="round" stroke-dasharray="188.5" stroke-dashoffset="'+(188.5*(1-p/100)).toFixed(1)+'" transform="rotate(-90 36 36)"/><text x="36" y="40" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">'+p+'%</text></svg></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div><p class="pmot">'+motivate(p,n)+'</p></div></section>';
   h+='<h2 class="qah">Quick actions</h2><div class="qa">'
     +qac('gotimer',QA_ICONS.timer,'Timer',Tm?fmtClock(trem())+' left':'Countdown focus',!!Tm)
     +qac('gosw',QA_ICONS.stopwatch,'Stopwatch',Sw?fmtClock(sela())+' elapsed':'Count up',!!Sw)
@@ -1155,12 +1158,12 @@ function recChart(B){
   function Y(v){return Tp+ph-v/top*ph}
   var g='',v,slot=pw/N,bw=slot*.64;
   for(v=0;v<=top;v+=step)g+='<line x1="'+L+'" x2="'+(W-6)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'"/><text x="'+(L-5)+'" y="'+(Y(v)+3).toFixed(1)+'" text-anchor="end">'+(v/60)+'h</text>';
-  B.forEach(function(b,i){var x=L+slot*i+(slot-bw)/2;
+  B.forEach(function(b,i){var x=L+slot*i+(slot-bw)/2;g+='<g data-recbar="'+i+'" style="cursor:pointer">';
     if(b.t>0)g+='<rect x="'+x.toFixed(1)+'" y="'+Y(b.t).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(Y(0)-Y(b.t)).toFixed(1)+'" rx="3" style="fill:var(--neon);opacity:.22"/>';
     var names=Object.keys(b.subj).sort(),sum=0;names.forEach(function(n){sum+=b.subj[n]});var tot=Math.max(b.s,sum),base=0;
     function seg(len,col){if(len<=0)return;var y1=Y(base+len),h1=Y(base)-y1;g+='<rect x="'+x.toFixed(1)+'" y="'+y1.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h1.toFixed(1)+'" rx="2" style="fill:'+col+'"/>';base+=len}
     if(tot>0){seg(tot-sum,'var(--neon)');names.forEach(function(n){seg(b.subj[n],subjColor(n))})}
-    g+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-9)+'" text-anchor="middle">'+esc(b.lab)+'</text>'});
+    g+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-9)+'" text-anchor="middle">'+esc(b.lab)+'</text></g>'});
   return'<svg class="rg" viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Study time chart">'+g+'</svg>'}
 function recRange(B){var a=B[0],z=B[B.length-1];
   if(recP==='daily'||recP==='weekly')return fmtShort(a.from)+' – '+fmtShort(z.to);
@@ -1184,9 +1187,10 @@ function vRecords(){
   var B=recFill(recBuckets()),ts=0,tt=0,act=0,best=0,M=dayMapAll(),lo=B[0].from,hi=B[B.length-1].to;
   B.forEach(function(b){ts+=b.s;tt+=b.t});Object.keys(M).forEach(function(k){if(k>=lo&&k<=hi&&M[k].s>0){act++;best=Math.max(best,M[k].s)}});
   h+='<div class="nav"><button class="ghost" data-act="recnav" data-n="-1">&lt; Prev</button><b style="text-align:center;align-self:center;font-size:15px">'+esc(recRange(B))+'</b><button class="ghost" data-act="recnav" data-n="1">Next &gt;</button></div>';
-  h+='<section class="card">'+recChart(B)+'<p class="sub" style="margin:6px 0 0;font-size:14.5px">Solid bars show the time you studied. Light bars behind them show your target.</p>';
+  h+='<section class="card">'+recChart(B)+'<p class="sub" style="margin:6px 0 0;font-size:14.5px">Solid bars show the time you studied. Light bars behind them show your target. Tap a bar to see subjects for that period.</p>';
   var legend='',seen={},tot={},un=false,unTot=0;B.forEach(function(b){var sum=0;Object.keys(b.subj).forEach(function(n){sum+=b.subj[n];tot[n]=(tot[n]||0)+b.subj[n];if(!seen[n])seen[n]=1});if(b.s>sum){un=true;unTot+=b.s-sum}});Object.keys(seen).forEach(function(n){legend+='<span><i class="dot" style="background:'+subjColor(n)+'"></i>'+esc(n||'Other')+' <b style="color:var(--text)">'+fmtMin(tot[n]||0)+'</b></span>'});
   if(legend)h+='<div class="leg2">'+legend+(un?'<span><i class="dot" style="background:var(--neon)"></i>Not assigned <b style="color:var(--text)">'+fmtMin(unTot)+'</b></span>':'')+'</div>';
+  if(recSel>=0&&recSel<B.length){var sb=B[recSel],sNames=Object.keys(sb.subj).sort(),sSum=0;sNames.forEach(function(n){sSum+=sb.subj[n]});var sUn=Math.max(0,sb.s-sSum);h+='<section class="card"><h2>'+esc(sb.full)+'</h2><p class="sub">'+fmtMin(sb.s)+(sb.t?' / '+fmtMin(sb.t):'')+'</p>';sNames.forEach(function(n){h+='<div class="row" style="margin-top:8px"><span><i class="dot" style="background:'+subjColor(n)+'"></i>'+esc(n||'Other')+'</span><b>'+fmtMin(sb.subj[n])+'</b></div>'});if(sUn>0)h+='<div class="row" style="margin-top:8px"><span><i class="dot" style="background:var(--neon)"></i>Not assigned</span><b>'+fmtMin(sUn)+'</b></div>';if(!sNames.length&&!sUn)h+='<p class="sub">No study records in this period yet.</p>';h+='</section>'}
   h+='</section><section class="card"><div class="stats"><div class="stat"><b>'+fmtMin(ts)+'</b><span>Studied</span></div><div class="stat"><b>'+fmtMin(tt)+'</b><span>Target</span></div><div class="stat"><b>'+(act?fmtMin(Math.round(ts/act)):'0m')+'</b><span>Average per study day</span></div><div class="stat"><b>'+fmtMin(best)+'</b><span>Best day</span></div></div></section>';
   var rows=B.filter(function(b){return b.s||b.t}).reverse();
   h+='<section class="card"><h2>Details</h2>';
@@ -1407,10 +1411,10 @@ document.addEventListener('click',function(e){
     case'avsave':state.prefs.avatar={type:'svg',cfg:clone(avDraft)};save();backTo();toast('Avatar saved.');break;
     case'avdef':state.prefs.avatar=null;save();if(tab==='avatar')backTo();else render(true);toast('Default avatar restored.');break;
     case'avphoto':var af2=document.getElementById('avfile');if(af2)af2.click();break;
-    case'recp':recP=D.v;recAnchor='';render(true);break;
+    case'recp':recP=D.v;recAnchor='';recSel=-1;render(true);break;
     case'recnav':var rn=+D.n,ra=recAnchor||today(),rp=pd(ra);
       if(recP==='daily')recAnchor=addDays(ra,14*rn);else if(recP==='weekly')recAnchor=addDays(ra,56*rn);else if(recP==='monthly')recAnchor=isoOf(new Date(rp.getFullYear(),rp.getMonth()+12*rn,1));else recAnchor=isoOf(new Date(rp.getFullYear()+5*rn,0,1));
-      render(true);break;
+      recSel=-1;render(true);break;
     case'calnav':var cy=+calM.slice(0,4),cmn=+calM.slice(5,7)-1+(+D.n),cd2=new Date(cy,cmn,1);calM=isoOf(cd2).slice(0,7);render(true);break;
     case'tstart':var tse=document.getElementById('tsub'),td=drumMs();if(td<60000){toast('Pick at least 1 minute.');break}state.timer={run:true,dur:td,rem:td,endAt:Date.now()+td,subj:tse?tse.value:'',date:today()};save();render(true);break;
     case'tpause':var T0=state.timer;if(T0){if(T0.run){T0.rem=Math.max(0,T0.endAt-Date.now());T0.run=false}else{T0.run=true;T0.endAt=Date.now()+T0.rem}save();render(true)}break;
