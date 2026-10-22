@@ -1185,8 +1185,8 @@ function vRecords(){
   B.forEach(function(b){ts+=b.s;tt+=b.t});Object.keys(M).forEach(function(k){if(k>=lo&&k<=hi&&M[k].s>0){act++;best=Math.max(best,M[k].s)}});
   h+='<div class="nav"><button class="ghost" data-act="recnav" data-n="-1">&lt; Prev</button><b style="text-align:center;align-self:center;font-size:15px">'+esc(recRange(B))+'</b><button class="ghost" data-act="recnav" data-n="1">Next &gt;</button></div>';
   h+='<section class="card">'+recChart(B)+'<p class="sub" style="margin:6px 0 0;font-size:14.5px">Solid bars show the time you studied. Light bars behind them show your target.</p>';
-  var legend='',seen={},un=false;B.forEach(function(b){var sum=0;Object.keys(b.subj).forEach(function(n){sum+=b.subj[n];if(!seen[n]){seen[n]=1;legend+='<span><i class="dot" style="background:'+subjColor(n)+'"></i>'+esc(n||'Other')+'</span>'}});if(b.s>sum)un=true});
-  if(legend)h+='<div class="leg2">'+legend+(un?'<span><i class="dot" style="background:var(--neon)"></i>Not assigned</span>':'')+'</div>';
+  var legend='',seen={},tot={},un=false,unTot=0;B.forEach(function(b){var sum=0;Object.keys(b.subj).forEach(function(n){sum+=b.subj[n];tot[n]=(tot[n]||0)+b.subj[n];if(!seen[n])seen[n]=1});if(b.s>sum){un=true;unTot+=b.s-sum}});Object.keys(seen).forEach(function(n){legend+='<span><i class="dot" style="background:'+subjColor(n)+'"></i>'+esc(n||'Other')+' <b style="color:var(--text)">'+fmtMin(tot[n]||0)+'</b></span>'});
+  if(legend)h+='<div class="leg2">'+legend+(un?'<span><i class="dot" style="background:var(--neon)"></i>Not assigned <b style="color:var(--text)">'+fmtMin(unTot)+'</b></span>':'')+'</div>';
   h+='</section><section class="card"><div class="stats"><div class="stat"><b>'+fmtMin(ts)+'</b><span>Studied</span></div><div class="stat"><b>'+fmtMin(tt)+'</b><span>Target</span></div><div class="stat"><b>'+(act?fmtMin(Math.round(ts/act)):'0m')+'</b><span>Average per study day</span></div><div class="stat"><b>'+fmtMin(best)+'</b><span>Best day</span></div></div></section>';
   var rows=B.filter(function(b){return b.s||b.t}).reverse();
   h+='<section class="card"><h2>Details</h2>';
