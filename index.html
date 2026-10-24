@@ -1193,9 +1193,9 @@ function calHtml(){
 function dayMapAll(){var M={};Object.keys(state.time).forEach(function(k){var l=logged(k);if(l)(M[k]=M[k]||{s:0,t:0}).s=l});R().days.forEach(function(d){var t=dayLoad(d.date);if(t)(M[d.date]=M[d.date]||{s:0,t:0}).t=t});return M}
 function recBuckets(){var a=recAnchor||today(),B=[],i,d;
   if(recP==='daily'){for(i=13;i>=0;i--){d=addDays(a,-i);B.push({from:d,to:d,lab:String(+d.slice(8)),full:fmtShort(d)})}}
-  else if(recP==='weekly'){var wst=state.prefs.weekStart==null?6:state.prefs.weekStart,ws=addDays(a,-((pd(a).getDay()-wst+7)%7));for(i=7;i>=0;i--){var f=addDays(ws,-7*i),t=addDays(f,6);B.push({from:f,to:t,lab:fmtShort(f),full:fmtShort(f)+' – '+fmtShort(t)})}}
-  else if(recP==='monthly'){var y=+a.slice(0,4),m=+a.slice(5,7)-1;for(i=11;i>=0;i--){var dt=new Date(y,m-i,1);B.push({from:isoOf(dt),to:isoOf(new Date(dt.getFullYear(),dt.getMonth()+1,0)),lab:dt.toLocaleDateString(LOC(),{month:'short'}),full:dt.toLocaleDateString(LOC(),{month:'long',year:'numeric'})})}}
-  else{var yy=+a.slice(0,4);for(i=4;i>=0;i--){B.push({from:(yy-i)+'-01-01',to:(yy-i)+'-12-31',lab:String(yy-i),full:String(yy-i)})}}
+  else if(recP==='weekly'){var wst=state.prefs.weekStart==null?6:state.prefs.weekStart,ws=addDays(a,-((pd(a).getDay()-wst+7)%7));for(i=0;i<7;i++){d=addDays(ws,i);B.push({from:d,to:d,lab:String(+d.slice(8)),full:fmtShort(d)})}}
+  else if(recP==='monthly'){var y=+a.slice(0,4),m=+a.slice(5,7)-1,dim=new Date(y,m+1,0).getDate();for(i=1;i<=dim;i++){d=y+'-'+pad(m+1)+'-'+pad(i);B.push({from:d,to:d,lab:String(i),full:fmtShort(d)})}}
+  else{var yy=+a.slice(0,4);for(i=0;i<12;i++){var dt=new Date(yy,i,1);B.push({from:isoOf(dt),to:isoOf(new Date(yy,i+1,0)),lab:dt.toLocaleDateString(LOC(),{month:'short'}),full:dt.toLocaleDateString(LOC(),{month:'long',year:'numeric'})})}}
   return B}
 function recFill(B){var M=dayMapAll();B.forEach(function(b){b.s=0;b.t=0;b.subj={}});
   Object.keys(M).forEach(function(k){B.forEach(function(b){if(k>=b.from&&k<=b.to){b.s+=M[k].s;b.t+=M[k].t}})});
@@ -1216,8 +1216,8 @@ function recChart(B){
   return'<svg class="rg" viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Study time chart">'+g+'</svg>'}
 function recRange(B){var a=B[0],z=B[B.length-1];
   if(recP==='daily'||recP==='weekly')return fmtShort(a.from)+' – '+fmtShort(z.to);
-  if(recP==='monthly')return pd(a.from).toLocaleDateString(LOC(),{month:'short',year:'numeric'})+' – '+pd(z.from).toLocaleDateString(LOC(),{month:'short',year:'numeric'});
-  return a.lab+' – '+z.lab}
+  if(recP==='monthly')return pd(a.from).toLocaleDateString(LOC(),{month:'long',year:'numeric'});
+  return String(pd(a.from).getFullYear())}
 function recSubjects(){
   var tot={},all=0,tm=0,h='';state.sessions.forEach(function(x){tot[x.subj]=(tot[x.subj]||0)+x.mins;all+=x.mins});Object.keys(state.time).forEach(function(k){tm+=logged(k)});
   var names=SUBJ.slice();Object.keys(tot).forEach(function(n){if(n&&names.indexOf(n)<0)names.push(n)});
@@ -1474,17 +1474,17 @@ document.addEventListener('click',function(e){
     case'avphoto':var af2=document.getElementById('avfile');if(af2)af2.click();break;
     case'recp':recP=D.v;recAnchor='';recSel=-1;pieSel=-1;render(true);break;
     case'recnav':var rn=+D.n,ra=recAnchor||today(),rp=pd(ra);
-      if(recP==='daily')recAnchor=addDays(ra,14*rn);else if(recP==='weekly')recAnchor=addDays(ra,56*rn);else if(recP==='monthly')recAnchor=isoOf(new Date(rp.getFullYear(),rp.getMonth()+12*rn,1));else recAnchor=isoOf(new Date(rp.getFullYear()+5*rn,0,1));
+      if(recP==='daily')recAnchor=addDays(ra,14*rn);else if(recP==='weekly')recAnchor=addDays(ra,7*rn);else if(recP==='monthly')recAnchor=isoOf(new Date(rp.getFullYear(),rp.getMonth()+rn,1));else recAnchor=isoOf(new Date(rp.getFullYear()+rn,0,1));
       recSel=-1;render(true);break;
     case'calnav':var cy=+calM.slice(0,4),cmn=+calM.slice(5,7)-1+(+D.n),cd2=new Date(cy,cmn,1);calM=isoOf(cd2).slice(0,7);render(true);break;
     case'tstart':var tse=document.getElementById('tsub'),td=drumMs();if(td<60000){toast('Pick at least 1 minute.');break}state.timer={run:true,dur:td,rem:td,endAt:Date.now()+td,subj:tse?tse.value:'',date:today()};save();render(true);break;
     case'pstart':var pse=document.getElementById('tsub');state.timer={run:true,dur:25*60000,rem:25*60000,endAt:Date.now()+25*60000,subj:pse?pse.value:'',date:today(),pom:true,phase:'focus',cycle:1};save();render(true);break;
     case'tpause':var T0=state.timer;if(T0){if(T0.run){T0.rem=Math.max(0,T0.endAt-Date.now());T0.run=false}else{T0.run=true;T0.endAt=Date.now()+T0.rem}save();render(true)}break;
-    case'tstop':var T1=state.timer;if(T1){if(T1.pom&&T1.phase==='break'){state.timer=null;save();render(true);toast('Pomodoro stopped.');break}var el1=T1.dur-trem(),mm=Math.round(el1/60000);state.timer=null;save();if(mm<1){render(true);toast('Too short to save. Timer stopped.')}else{addSession(T1.date,T1.subj,Math.min(mm,1440));toast('Timer saved as a record.')}}break;
+    case'tstop':var T1=state.timer;if(T1){if(T1.pom&&T1.phase==='break'){state.timer=null;save();render(true);toast('Pomodoro stopped.');break}var el1=T1.dur-trem(),mm=Math.round(el1/60000);state.timer=null;save();if(mm<1){render(true);toast('Too short to save. Timer stopped.')}else{var en1=fmtT(Date.now());addSession(T1.date,T1.subj,Math.min(mm,1440),fromMin(toMin(en1)-mm),en1);toast('Timer saved as a record.')}}break;
     case'tdisc':if(state.timer)confirmBox('Discard timer?','The time on the timer will not be saved.','Discard',true).then(function(ok){if(ok){state.timer=null;save();render(true);toast('Timer discarded.')}});break;
     case'sstart':var sse=document.getElementById('ssub');state.sw={run:true,acc:0,startAt:Date.now(),subj:sse?sse.value:'',date:today()};save();render(true);break;
     case'spause':var S0=state.sw;if(S0){if(S0.run){S0.acc+=Math.max(0,Date.now()-S0.startAt);S0.run=false}else{S0.run=true;S0.startAt=Date.now()}save();render(true)}break;
-    case'sstop':var S1=state.sw;if(S1){var sm=Math.round(sela()/60000);state.sw=null;save();if(sm<1){render(true);toast('Too short to save. Stopwatch stopped.')}else{addSession(S1.date,S1.subj,Math.min(sm,1440));toast('Stopwatch saved as a record.')}}break;
+    case'sstop':var S1=state.sw;if(S1){var sm=Math.round(sela()/60000);state.sw=null;save();if(sm<1){render(true);toast('Too short to save. Stopwatch stopped.')}else{var enS=fmtT(Date.now());addSession(S1.date,S1.subj,Math.min(sm,1440),fromMin(toMin(enS)-sm),enS);toast('Stopwatch saved as a record.')}}break;
     case'sdisc':if(state.sw)confirmBox('Discard stopwatch?','The time on the stopwatch will not be saved.','Discard',true).then(function(ok){if(ok){state.sw=null;save();render(true);toast('Stopwatch discarded.')}});break;
     case'gotimer':if(tab!=='timer')prevTab=tab;go('timer');break;
     case'gosw':if(tab!=='stopwatch')prevTab=tab;go('stopwatch');break;
@@ -1546,7 +1546,7 @@ try{history.pushState({tab:'home'},'')}catch(e){}
 if(state.setup&&!state.prefs.name&&!state.prefs.nameAsked){state.prefs.nameAsked=true;save();setTimeout(function(){modal('What should we call you?','<p class="sub">Agradia will greet you by name on the home screen. You can change it later in Settings.</p><label class="f" for="nm0">Your name</label><input id="nm0" maxlength="24" placeholder="Optional">',[{label:'Skip',cls:'ghost',val:0},{label:'Save',val:1,v:true}]).then(function(r){if(r.val===1){var v=r.q('#nm0').value.trim().slice(0,24);if(v){state.prefs.name=v;save();render(true)}}})},600)}
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().then(function(ok){persisted=ok?'Storage is marked persistent.':'';})}catch(e){}
 setInterval(function(){if(!state)return;var T=state.timer;
-  if(T&&T.run&&trem()<=0){if(T.pom){if(T.phase==='break'){var nc=(T.cycle||1)+1;state.timer={run:true,dur:25*60000,rem:25*60000,endAt:Date.now()+25*60000,subj:T.subj,date:T.date,pom:true,phase:'focus',cycle:nc};save();render(true);toast('Break over! Focus '+nc+' starts.');return}var mm2=Math.max(1,Math.round(T.dur/60000)),d2=T.date,sj2=T.subj,cy=T.cycle||1;var br=(cy%4===0?15:5)*60000;state.timer={run:true,dur:br,rem:br,endAt:Date.now()+br,subj:sj2,date:d2,pom:true,phase:'break',cycle:cy};save();addSession(d2,sj2,Math.min(mm2,1440));render(true);toast('Focus done! Break: ' + (cy%4===0?15:5) + ' min.');return}var mm=Math.max(1,Math.round(T.dur/60000)),d=T.date,sj=T.subj;state.timer=null;save();addSession(d,sj,Math.min(mm,1440));toast("Time's up! Saved as a record.");return}
+  if(T&&T.run&&trem()<=0){if(T.pom){if(T.phase==='break'){var nc=(T.cycle||1)+1;state.timer={run:true,dur:25*60000,rem:25*60000,endAt:Date.now()+25*60000,subj:T.subj,date:T.date,pom:true,phase:'focus',cycle:nc};save();render(true);toast('Break over! Focus '+nc+' starts.');return}var mm2=Math.max(1,Math.round(T.dur/60000)),d2=T.date,sj2=T.subj,cy=T.cycle||1;var br=(cy%4===0?15:5)*60000;state.timer={run:true,dur:br,rem:br,endAt:Date.now()+br,subj:sj2,date:d2,pom:true,phase:'break',cycle:cy};save();var enP=fmtT(Date.now());addSession(d2,sj2,Math.min(mm2,1440),fromMin(toMin(enP)-mm2),enP);render(true);toast('Focus done! Break: ' + (cy%4===0?15:5) + ' min.');return}var mm=Math.max(1,Math.round(T.dur/60000)),d=T.date,sj=T.subj;state.timer=null;save();var enT=fmtT(Date.now());addSession(d,sj,Math.min(mm,1440),fromMin(toMin(enT)-mm),enT);toast("Time's up! Saved as a record.");return}
   var e=document.getElementById('tmr');if(e&&T)e.textContent=fmtClock(trem());
   var w=document.getElementById('swt');if(w&&state.sw)w.textContent=fmtClock(sela())},1000);
 </script>
