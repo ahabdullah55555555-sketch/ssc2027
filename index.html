@@ -601,7 +601,7 @@ var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Med
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
 var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in Settings).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
 var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
-var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',recSel=-1,pieSel=-1,schDate='',schZoomIdx=1,backupPopupShown=false,avDraft=null,navAnim=false;
+var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',recSel=-1,pieSel=-1,schDate='',schPx=52/60,backupPopupShown=false,avDraft=null,navAnim=false;
 /* ---------- helpers ---------- */
 function pad(n){return(n<10?'0':'')+n}
 function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
@@ -847,6 +847,16 @@ function render(keep){
   var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
   if(tab==='settings'&&updWorker)showUpdate(updWorker);
   trTree(document.getElementById('view'));trTree(document.getElementById('tabs'));if(tab==='home'&&state.setup&&!backupPopupShown){var lb2=state.prefs.lastBackup,lbD2=lb2?Math.round((pd(today())-pd(lb2))/86400000):999,lp=state.prefs.lastBackupPopup,lpD=lp?Math.round((pd(today())-pd(lp))/86400000):999;if(lbD2>3&&lpD>=3){backupPopupShown=true;state.prefs.lastBackupPopup=today();save();var bn2=state.prefs.lang==='bn';confirmBox(bn2?'ব্যাকআপ মনে করিয়ে দেওয়া':'Backup reminder',bn2?'আপনার ডেটা শুধু এই ফোনেই আছে। গত ৩ দিনে কোনো ব্যাকআপ নেওয়া হয়নি। এখনই ব্যাকআপ নেবেন?':'Your data is only on this phone. No backup in the last 3 days. Export a backup now?',bn2?'ব্যাকআপ নিন':'Export backup').then(function(ok){if(ok)doExport()})}}}
+
+/* ---------- Schedule graph pinch-to-zoom (graph only, Google Calendar style) ---------- */
+function schStepFor(px){var steps=[1,2,5,10,15,30,60,120,180,240,360,720];for(var i=0;i<steps.length;i++){if(steps[i]*px>=40)return steps[i]}return 720}
+var schPinch=null,schPinchSuppressUntil=0;
+function schPinchLive(pxLive,stepStart){var g=document.getElementById('schgraph');if(!g)return;var ch=g.children;for(var i=0;i<ch.length-1;i++){ch[i].style.minHeight=(pxLive*stepStart).toFixed(1)+'px'}var ov=ch[ch.length-1];if(!ov)return;var bs=ov.children;for(var j=0;j<bs.length;j++){var b=bs[j],sm=+b.getAttribute('data-s'),em=+b.getAttribute('data-e');if(!isFinite(sm)||!isFinite(em))continue;b.style.top=(sm*pxLive).toFixed(1)+'px';b.style.height=Math.max(20,(em-sm)*pxLive-2).toFixed(1)+'px'}}
+document.addEventListener('touchstart',function(e){if(!e.target.closest||!e.target.closest('#schgraph'))return;if(e.touches.length!==2)return;var t0=e.touches[0],t1=e.touches[1],dx=t1.clientX-t0.clientX,dy=t1.clientY-t0.clientY;if(Math.abs(dy)<Math.abs(dx))return;var dist=Math.sqrt(dx*dx+dy*dy);if(!dist)return;schPinch={dist:dist,px:schPx,step:schStepFor(schPx),moved:false}}, {passive:true});
+document.addEventListener('touchmove',function(e){if(!schPinch||e.touches.length!==2)return;e.preventDefault();var t0=e.touches[0],t1=e.touches[1],dx=t1.clientX-t0.clientX,dy=t1.clientY-t0.clientY,dist=Math.sqrt(dx*dx+dy*dy);if(!dist)return;var scale=dist/schPinch.dist;if(Math.abs(scale-1)>0.02)schPinch.moved=true;schPx=Math.min(5,Math.max(0.05,schPinch.px*scale));schPinchLive(schPx,schPinch.step)}, {passive:false});
+function schPinchEnd(e){if(!schPinch)return;if(e.touches&&e.touches.length>=2)return;var moved=schPinch.moved;schPinch=null;if(moved){schPinchSuppressUntil=Date.now()+400;render(true)}}
+document.addEventListener('touchend',schPinchEnd);
+document.addEventListener('touchcancel',schPinchEnd);
 var navLastY=0,navHidden=false,navDir=0,navAcc=0,wkLastY=0,wkHidden=false,wkDir=0,wkAcc=0;window.addEventListener('scroll',function(){var y=window.scrollY||0;var te=document.getElementById('tabs'),fe=document.getElementById('fab');if(!te||te.hidden){navLastY=y;navDir=0;navAcc=0}else{var dy=y-navLastY;if(dy>0){if(navDir!==1){navDir=1;navAcc=0}navAcc+=dy;if(navAcc>10&&y>80&&!navHidden){navHidden=true;te.classList.add('navhide');if(fe)fe.classList.add('navhide');navAcc=0}}else if(dy<0){if(navDir!==-1){navDir=-1;navAcc=0}navAcc+=-dy;if((navAcc>5||y<=0)&&navHidden){navHidden=false;te.classList.remove('navhide');if(fe)fe.classList.remove('navhide');navAcc=0}}navLastY=y}var wh=document.querySelector('.wk-head');if(!wh){wkLastY=y;wkDir=0;wkAcc=0;wkHidden=false}else{var dy2=y-wkLastY;if(dy2>0){if(wkDir!==1){wkDir=1;wkAcc=0}wkAcc+=dy2;if(wkAcc>10&&y>80&&!wkHidden){wkHidden=true;wh.classList.add('wkhide');wkAcc=0}}else if(dy2<0){if(wkDir!==-1){wkDir=-1;wkAcc=0}wkAcc+=-dy2;if((wkAcc>5||y<=0)&&wkHidden){wkHidden=false;wh.classList.remove('wkhide');wkAcc=0}}wkLastY=y}},{passive:true});function go(t){closeMenu();tab=t;navAnim=true;render();navAnim=false;window.scrollTo(0,0);var v=document.getElementById('view');v.classList.remove('pg');void v.offsetWidth;if(!/^s_|^logs$|^search$|^avatar$/.test(t))v.classList.add('pg');try{history.pushState({tab:t},'')}catch(e){}}
 var backToastAt=0;
 window.addEventListener('popstate',function(e){var t=e.state&&e.state.tab;
@@ -1240,7 +1250,7 @@ function schItems(d){if(!state.schedule)state.schedule={};return state.schedule[
 function vSchedule(){
   var bn=state.prefs.lang==='bn';
   var d=schDate||today();
-  var ZL=[{step:120,row:48},{step:60,row:52},{step:30,row:36},{step:15,row:24}];var zl=ZL[schZoomIdx]||ZL[1];var step=zl.step,rowH=zl.row,px=rowH/step;
+  var px=Math.min(5,Math.max(0.05,schPx||52/60));var step=schStepFor(px),rowH=step*px;
   var items=schItems(d).map(function(x){return clone(x)}).sort(function(a,b){return toMin(a.start)-toMin(b.start)||toMin(a.end)-toMin(b.end)});
   var clusters=[],cur=null;
   items.forEach(function(it){var s=toMin(it.start),e=toMin(it.end);if(!cur||s>=cur.maxEnd){cur={items:[],maxEnd:e,cols:[]};clusters.push(cur)}cur.items.push(it);if(e>cur.maxEnd)cur.maxEnd=e});
@@ -1251,10 +1261,10 @@ function vSchedule(){
   h+='<div class="row" style="margin-bottom:12px"><span class="sub">'+(bn?'জুম: ':'Zoom: ')+(step>=60?(step/60)+'h':step+'min')+'</span><div style="display:flex;gap:6px;margin-left:auto"><button class="ghost sm" data-act="schzoomin">+</button><button class="ghost sm" data-act="schzoomout">-</button><button class="ghost sm" data-act="schzoomreset">'+(bn?'ডিফল্ট':'Default')+'</button></div></div>';
   h+='<button class="sm" data-act="schadd" style="width:100%;margin-bottom:14px">+ '+(bn?'কাজ যোগ করুন':'Add task')+'</button>';
   h+='<p class="sub" style="margin:0 0 10px">'+(bn?'এটি শুধু সময়সূচি - পড়ার সময় হিসেবে গোনা হবে না।':'This is a schedule only - it is not counted as study time.')+'</p>';
-  h+='<div style="position:relative">';
+  h+='<div id="schgraph" style="position:relative;touch-action:none">';
   for(var tm=0;tm<1440;tm+=step){h+='<div style="display:flex;border-top:1px solid var(--hair);min-height:'+rowH+'px"><div style="width:58px;flex:none;color:var(--muted);font-size:13px;padding-top:6px">'+pad(Math.floor(tm/60))+':'+pad(tm%60)+'</div><div style="flex:1"></div></div>'}
   h+='<div style="position:absolute;top:0;left:58px;right:0;height:100%">';
-  items.forEach(function(it){var s=toMin(it.start),e=toMin(it.end);var top=(s*px).toFixed(1),ht=Math.max(20,(e-s)*px-2).toFixed(1);var bg=it.color?it.color:'var(--accent)',fg=it.color?'#fff':'var(--onacc)';var left=(it._col*100/it._ncol).toFixed(2),wid=(100/it._ncol).toFixed(2);h+='<button data-schitem="'+esc(it.id)+'" style="position:absolute;top:'+top+'px;height:'+ht+'px;left:calc('+left+'% + 1px);width:calc('+wid+'% - 2px);background:'+bg+';color:'+fg+';border:0;border-radius:10px;padding:6px 8px;overflow:hidden;text-align:left;font-size:14px;cursor:pointer"><b style="display:block;font-size:14px;line-height:1.3">'+esc(it.title)+'</b><span style="font-size:12px;opacity:.9">'+esc(it.start)+' - '+esc(it.end)+'</span></button>'});
+  items.forEach(function(it){var s=toMin(it.start),e=toMin(it.end);var top=(s*px).toFixed(1),ht=Math.max(20,(e-s)*px-2).toFixed(1);var bg=it.color?it.color:'var(--accent)',fg=it.color?'#fff':'var(--onacc)';var left=(it._col*100/it._ncol).toFixed(2),wid=(100/it._ncol).toFixed(2);h+='<button data-schitem="'+esc(it.id)+'" data-s="'+s+'" data-e="'+e+'" style="position:absolute;top:'+top+'px;height:'+ht+'px;left:calc('+left+'% + 1px);width:calc('+wid+'% - 2px);background:'+bg+';color:'+fg+';border:0;border-radius:10px;padding:6px 8px;overflow:hidden;text-align:left;font-size:14px;cursor:pointer"><b style="display:block;font-size:14px;line-height:1.3">'+esc(it.title)+'</b><span style="font-size:12px;opacity:.9">'+esc(it.start)+' - '+esc(it.end)+'</span></button>'});
   h+='</div></div>';
   if(!items.length)h+='<p class="sub" style="margin-top:12px">'+(bn?'এই দিনে কোনো কাজ নেই।':'No tasks on this day.')+'</p>';
   return h}
@@ -1548,7 +1558,7 @@ document.addEventListener('click',function(e){
   if(D.delmis)return confirmBox('Delete this mistake?','It will be removed from the log.','Delete',true).then(function(ok){if(ok){state.mistakes=state.mistakes.filter(function(m){return m.id!==D.delmis});save();render(true)}});
   if(D.delsess)return delSession(D.delsess);
   if(D.editsess){var es=state.sessions.filter(function(x){return x.id===D.editsess})[0];if(es)recDlg(es.date,es);return}
-  if(D.schitem){var sd=schDate||today(),si=schItems(sd).filter(function(x){return x.id===D.schitem})[0];if(si)schDlg(sd,si);return}
+  if(D.schitem){if(Date.now()<schPinchSuppressUntil)return;var sd=schDate||today(),si=schItems(sd).filter(function(x){return x.id===D.schitem})[0];if(si)schDlg(sd,si);return}
   if(D.delnote){var dn=D.delnote.split('|');if(state.dayNotes&&state.dayNotes[dn[0]]){state.dayNotes[dn[0]]=state.dayNotes[dn[0]].filter(function(n){return n.id!==dn[1]});if(!state.dayNotes[dn[0]].length)delete state.dayNotes[dn[0]];save();render(true)}return}
   var id=D.id;
   switch(D.act){
@@ -1618,9 +1628,9 @@ document.addEventListener('click',function(e){
     case'schnext':schDate=addDays(schDate||today(),1);render(true);break;
     case'schtoday':schDate=today();render(true);break;
     case'schadd':schDlg(schDate||today(),null);break;
-    case'schzoomin':if(schZoomIdx<3)schZoomIdx++;render(true);break;
-    case'schzoomout':if(schZoomIdx>0)schZoomIdx--;render(true);break;
-    case'schzoomreset':schZoomIdx=1;render(true);break;
+    case'schzoomin':schPx=Math.min(5,schPx*1.5);render(true);break;
+    case'schzoomout':schPx=Math.max(0.05,schPx/1.5);render(true);break;
+    case'schzoomreset':schPx=52/60;render(true);break;
     case'goroutine':go('routine');break;
     case'gorecords':go('records');break;
     case'fab':toggleFabMenu();break;
