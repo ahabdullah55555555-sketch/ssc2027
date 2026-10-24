@@ -1192,7 +1192,7 @@ function calHtml(){
 /* ---------- records page ---------- */
 function dayMapAll(){var M={};Object.keys(state.time).forEach(function(k){var l=logged(k);if(l)(M[k]=M[k]||{s:0,t:0}).s=l});R().days.forEach(function(d){var t=dayLoad(d.date);if(t)(M[d.date]=M[d.date]||{s:0,t:0}).t=t});return M}
 function recBuckets(){var a=recAnchor||today(),B=[],i,d;
-  if(recP==='daily'){for(i=13;i>=0;i--){d=addDays(a,-i);B.push({from:d,to:d,lab:String(+d.slice(8)),full:fmtShort(d)})}}
+  if(recP==='daily'){B.push({from:a,to:a,lab:String(+a.slice(8)),full:fmtShort(a)})}
   else if(recP==='weekly'){var wst=state.prefs.weekStart==null?6:state.prefs.weekStart,ws=addDays(a,-((pd(a).getDay()-wst+7)%7));for(i=0;i<7;i++){d=addDays(ws,i);B.push({from:d,to:d,lab:String(+d.slice(8)),full:fmtShort(d)})}}
   else if(recP==='monthly'){var y=+a.slice(0,4),m=+a.slice(5,7)-1,dim=new Date(y,m+1,0).getDate();for(i=1;i<=dim;i++){d=y+'-'+pad(m+1)+'-'+pad(i);B.push({from:d,to:d,lab:String(i),full:fmtShort(d)})}}
   else{var yy=+a.slice(0,4);for(i=0;i<12;i++){var dt=new Date(yy,i,1);B.push({from:isoOf(dt),to:isoOf(new Date(yy,i+1,0)),lab:dt.toLocaleDateString(LOC(),{month:'short'}),full:dt.toLocaleDateString(LOC(),{month:'long',year:'numeric'})})}}
@@ -1212,10 +1212,11 @@ function recChart(B){
     var names=Object.keys(b.subj).sort(),sum=0;names.forEach(function(n){sum+=b.subj[n]});var tot=Math.max(b.s,sum),base=0;
     function seg(len,col){if(len<=0)return;var y1=Y(base+len),h1=Y(base)-y1;g+='<rect x="'+x.toFixed(1)+'" y="'+y1.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h1.toFixed(1)+'" rx="2" style="fill:'+col+'"/>';base+=len}
     if(tot>0){seg(tot-sum,'var(--neon)');names.forEach(function(n){seg(b.subj[n],subjColor(n))})}
-    g+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-9)+'" text-anchor="middle">'+esc(b.lab)+'</text></g>'});
+    var labT=(recP==='monthly'&&!(+b.lab===1||+b.lab%5===0))?'':b.lab;g+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-9)+'" text-anchor="middle">'+esc(labT)+'</text></g>'});
   return'<svg class="rg" viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Study time chart">'+g+'</svg>'}
 function recRange(B){var a=B[0],z=B[B.length-1];
-  if(recP==='daily'||recP==='weekly')return fmtShort(a.from)+' – '+fmtShort(z.to);
+  if(recP==='daily')return fmtShort(a.from);
+  if(recP==='weekly')return fmtShort(a.from)+' – '+fmtShort(z.to);
   if(recP==='monthly')return pd(a.from).toLocaleDateString(LOC(),{month:'long',year:'numeric'});
   return String(pd(a.from).getFullYear())}
 function recSubjects(){
@@ -1245,7 +1246,6 @@ function vRecords(){
     else{var sNames2=Object.keys(sb.subj).sort(),sSum2=0;sNames2.forEach(function(n){sSum2+=sb.subj[n]});var sUn2=Math.max(0,sb.s-sSum2);h+='<section class="card rec-detail"><h2>'+esc(sb.full)+'</h2><p class="sub">'+fmtMin(sb.s)+(sb.t?' / '+fmtMin(sb.t):'')+'</p>';sNames2.forEach(function(n){h+='<div class="row" style="margin-top:8px"><span><i class="dot" style="background:'+subjColor(n)+'"></i>'+esc(n||'Other')+'</span><b>'+fmtMin(sb.subj[n])+'</b></div>'});if(sUn2>0)h+='<div class="row" style="margin-top:8px"><span><i class="dot" style="background:var(--neon)"></i>Not assigned</span><b>'+fmtMin(sUn2)+'</b></div>';if(!sNames2.length&&!sUn2)h+='<p class="sub">No study records in this period yet.</p>';var sessBy={};state.sessions.forEach(function(x){(sessBy[x.date]=sessBy[x.date]||[]).push(x)});var notesBy=state.dayNotes||{};for(var dd=sb.from;dd<=sb.to;dd=addDays(dd,1)){var daySess=sessBy[dd]||[],dayNotes=notesBy[dd]||[];if(!daySess.length&&!dayNotes.length&&!logged(dd))continue;h+='<hr style="margin:14px 0;border:0;border-top:1px solid var(--hair)">'+dayDetailHtml(dd)}h+='</section>'}}
   h+='</section><section class="card"><div class="stats"><div class="stat"><b>'+fmtMin(ts)+'</b><span>Studied</span></div><div class="stat"><b>'+fmtMin(tt)+'</b><span>Target</span></div><div class="stat"><b>'+(act?fmtMin(Math.round(ts/act)):'0m')+'</b><span>Average per study day</span></div><div class="stat"><b>'+fmtMin(best)+'</b><span>Best day</span></div></div></section>';
   var rows=B.filter(function(b){return b.s||b.t}).reverse();
-  var wTo=today(),wFrom=addDays(wTo,-6),wS=0,wT=0,wDays=0,wBest=0,wBestD='';for(var wi=0;wi<7;wi++){var wd=addDays(wFrom,wi),wl=logged(wd),wt=dayLoad(wd);wS+=wl;wT+=wt;if(wl>0)wDays++;if(wl>wBest){wBest=wl;wBestD=wd}}h+='<section class="card"><h2>Weekly report</h2><p class="sub">'+fmtShort(wFrom)+' - '+fmtShort(wTo)+'</p><div class="row" style="margin-top:8px"><span>Studied</span><b>'+fmtMin(wS)+'</b></div><div class="row" style="margin-top:8px"><span>Target</span><b>'+fmtMin(wT)+'</b></div><div class="row" style="margin-top:8px"><span>Days studied</span><b>'+wDays+' / 7</b></div><div class="row" style="margin-top:8px"><span>Best day</span><b>'+(wBestD?fmtShort(wBestD)+' - '+fmtMin(wBest):'--')+'</b></div></section>';
   h+='<section class="card"><h2>Details</h2>';
   if(!rows.length)h+='<div class="empty">'+illHill()+'<p class="sub">No study records in this period yet.</p></div>';
   rows.forEach(function(b){h+='<div class="item"><div class="row"><b>'+esc(b.full)+'</b><span class="sub">'+fmtMin(b.s)+(b.t?' / '+fmtMin(b.t):'')+'</span></div>'+bar(b.t?Math.min(100,Math.round(b.s/b.t*100)):(b.s?100:0),b.t&&b.s>b.t)+'</div>'});
@@ -1474,7 +1474,7 @@ document.addEventListener('click',function(e){
     case'avphoto':var af2=document.getElementById('avfile');if(af2)af2.click();break;
     case'recp':recP=D.v;recAnchor='';recSel=-1;pieSel=-1;render(true);break;
     case'recnav':var rn=+D.n,ra=recAnchor||today(),rp=pd(ra);
-      if(recP==='daily')recAnchor=addDays(ra,14*rn);else if(recP==='weekly')recAnchor=addDays(ra,7*rn);else if(recP==='monthly')recAnchor=isoOf(new Date(rp.getFullYear(),rp.getMonth()+rn,1));else recAnchor=isoOf(new Date(rp.getFullYear()+rn,0,1));
+      if(recP==='daily')recAnchor=addDays(ra,rn);else if(recP==='weekly')recAnchor=addDays(ra,7*rn);else if(recP==='monthly')recAnchor=isoOf(new Date(rp.getFullYear(),rp.getMonth()+rn,1));else recAnchor=isoOf(new Date(rp.getFullYear()+rn,0,1));
       recSel=-1;render(true);break;
     case'calnav':var cy=+calM.slice(0,4),cmn=+calM.slice(5,7)-1+(+D.n),cd2=new Date(cy,cmn,1);calM=isoOf(cd2).slice(0,7);render(true);break;
     case'tstart':var tse=document.getElementById('tsub'),td=drumMs();if(td<60000){toast('Pick at least 1 minute.');break}state.timer={run:true,dur:td,rem:td,endAt:Date.now()+td,subj:tse?tse.value:'',date:today()};save();render(true);break;
