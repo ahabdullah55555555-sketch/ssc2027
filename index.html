@@ -787,7 +787,7 @@ function vHome(){
   var tasksHtml='<div class="tprevh" style="border-left:3px solid var(--accent);padding-left:10px"><h2>Today\'s Tasks</h2>'+(tt>5?'<button class="ghost sm" data-act="goroutine">See all</button>':'')+'</div>';
   if(!tt)tasksHtml+='<div class="empty">'+illBooks()+'<p class="sub">No tasks today. Open Routine to add or import your plan.</p><button class="ghost sm" data-act="goroutine">Open Routine</button></div>';
   else{T.slice(0,5).forEach(function(t){tasksHtml+=taskRow(t,td,0,1)});if(tt>5)tasksHtml+='<button class="ghost sm" data-act="goroutine" style="width:100%">Show all '+tt+' tasks</button>'}
-  h+=tasksHtml+countdownsCard()+bannerHtml+whatsNewCard()+smartRevisionCard()+analyticsCard();
+  h+=bannerHtml+tasksHtml+countdownsCard()+whatsNewCard()+smartRevisionCard()+analyticsCard();
   var lb=state.prefs.lastBackup,lbDays=lb?Math.round((pd(today())-pd(lb))/86400000):999;if(lbDays>3)h+='<div class="flag" style="background:var(--warnsoft);color:var(--warn)">Your data is only on this phone. No backup in the last 3 days.<button class="sm" style="margin-top:8px;width:100%" data-act="export">Export backup</button></div>';
   if(od)h+='<div class="flag">'+od+' overdue task'+(od>1?'s':'')+' not done. <button class="sm" style="margin-top:8px;width:100%" data-act="gooverdue">Review and reschedule</button></div>';
   h+=reminderCard();
