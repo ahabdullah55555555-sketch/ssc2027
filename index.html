@@ -644,6 +644,7 @@ function fabMenuList(){
   if(state.sw)it.push({icon:QA_ICONS.stopwatch,label:'Continue stopwatch',run:function(){if(tab!=='stopwatch')prevTab=tab;go('stopwatch')}});
   if(state.timer)it.push({icon:QA_ICONS.timer,label:'Continue timer',run:function(){if(tab!=='timer')prevTab=tab;go('timer')}});
   it.push({icon:ICONS.records,label:'Add record',run:function(){recDlg(today())}});
+  it.push({icon:ICONS.schedule,label:state.prefs.lang==='bn'?'কাজ যোগ করুন':'Add schedule task',run:function(){go('schedule');schDlg(schDate||today(),null)}});
   it.push({icon:'<path d="M5 3h14v18H5z"/><path d="M8 7h8M8 11h8M8 15h5"/>',label:state.prefs.lang==='bn'?'নোট যোগ করুন':'Add note',run:function(){noteDlg(today())}});
   it.push({icon:'<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>',label:state.prefs.lang==='bn'?'ওয়ার্কআউট শুরু করুন':'Start workout',run:function(){try{if(typeof wkStartGuide==='function')wkStartGuide();else go('workout')}catch(e){go('workout')}}});
   return it}
@@ -1262,24 +1263,77 @@ function schDlg(d,ex){
   var presets=['#1F4D3A','#1E6FB8','#D97706','#7C3AED','#DC2626','#059669'];
   var curCol=ex?ex.color:'';
   var isPreset=presets.indexOf(curCol)>-1;
-  var colHtml='<label class="f">'+(bn?'রং':'Color')+'</label><div>';
-  colHtml+='<label style="display:inline-block;margin:0 10px 10px 0"><input type="radio" name="schcol" value=""'+(curCol===''?' checked':'')+'> '+(bn?'ডিফল্ট (অ্যাপ থিম)':'Default (app theme)')+'</label>';
-  presets.forEach(function(c){colHtml+='<label style="display:inline-block;margin:0 8px 10px 0"><input type="radio" name="schcol" value="'+c+'"'+(curCol===c?' checked':'')+'><span style="display:inline-block;width:26px;height:26px;border-radius:50%;background:'+c+';vertical-align:middle;margin-left:4px"></span></label>'});
-  colHtml+='<label style="display:inline-block;margin:0 8px 10px 0"><input type="radio" name="schcol" value="custom"'+(curCol&&!isPreset?' checked':'')+'> '+(bn?'কাস্টম':'Custom')+' <input type="color" id="schcustom" value="'+(curCol&&!isPreset?curCol:'#1F4D3A')+'" style="vertical-align:middle"></label>';
-  colHtml+='</div>';
+  var selCol=curCol;
+  var durMin=(ex&&ex.start&&ex.end&&toMin(ex.end)>toMin(ex.start))?(toMin(ex.end)-toMin(ex.start)):0;
+  var dh0=Math.floor(durMin/60),dm0=durMin%60;
+  function dotBtn(val,bg,sel){
+    return '<button type="button" data-schcol="'+val+'" aria-label="'+val+'" style="position:relative;background:none;border:0;padding:4px;cursor:pointer;border-radius:50%"><span class="schdot" style="display:block;width:36px;height:36px;border-radius:50%;background:'+bg+'"></span><span class="schtick" style="position:absolute;left:0;right:0;top:0;bottom:0;display:'+(sel?'grid':'none')+';place-items:center;color:#fff;font-weight:700;font-size:18px">✓</span></button>'}
+  var colHtml='<label class="f">'+(bn?'রং':'Color')+'</label>'+
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">'+dotBtn('','var(--accent)',selCol==='')+'<span>'+(bn?'ডিফল্ট (অ্যাপ থিম)':'Default (app theme)')+'</span></div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">'+presets.map(function(c){return dotBtn(c,c,selCol===c)}).join('')+'</div>'+
+    '<div data-schcustom-row style="display:flex;align-items:center;gap:10px"><input type="color" id="schcustom" value="'+(curCol&&!isPreset?curCol:'#1F4D3A')+'" style="width:40px;height:40px;padding:2px;cursor:pointer"><span>'+(bn?'কাস্টম':'Custom')+'</span></div>';
   var btns=ex?[{label:bn?'বাতিল':'Cancel',cls:'ghost',val:0},{label:bn?'মুছুন':'Delete',cls:'danger',val:2},{label:bn?'সেভ':'Save',val:1,v:true}]:[{label:bn?'বাতিল':'Cancel',cls:'ghost',val:0},{label:bn?'সেভ':'Save',val:1,v:true}];
-  modal(bn?(ex?'কাজ এডিট করুন':'কাজ যোগ করুন'):(ex?'Edit task':'Add task'),
+  var prom=modal(bn?(ex?'কাজ এডিট করুন':'কাজ যোগ করুন'):(ex?'Edit task':'Add task'),
     '<label class="f" for="scht">'+(bn?'কাজের নাম':'Task name')+'</label><input id="scht" maxlength="100" value="'+esc(ex?ex.title:'')+'">'+
     '<label class="f" for="schs">'+(bn?'শুরু':'Start')+'</label><input id="schs" type="time" value="'+(ex?ex.start:'')+'">'+
-    '<label class="f" for="sche">'+(bn?'শেষ':'End')+'</label><input id="sche" type="time" value="'+(ex?ex.end:'')+'">'+colHtml,
+    '<label class="f" for="sche">'+(bn?'শেষ':'End')+'</label><input id="sche" type="time" value="'+(ex?ex.end:'')+'">'+
+    '<label class="f">'+(bn?'কতক্ষণ চলবে':'Duration')+'</label><div style="display:flex;gap:10px"><div style="flex:1"><label class="f" for="schdh">'+(bn?'ঘণ্টা':'Hours')+'</label><input id="schdh" type="number" min="0" max="12" step="1" value="'+dh0+'"></div><div style="flex:1"><label class="f" for="schdm">'+(bn?'মিনিট':'Minutes')+'</label><input id="schdm" type="number" min="0" max="59" step="5" value="'+dm0+'"></div></div>'+colHtml,
     btns,
     function(q){var ti=q('#scht').value.trim();if(!ti)return bn?'কাজের নাম দিন।':'Enter a task name.';var st=q('#schs').value,en=q('#sche').value;if(!st||!en)return bn?'শুরু ও শেষ সময় দিন।':'Enter start and end times.';if(toMin(en)<=toMin(st))return bn?'শেষ সময় শুরুর পরে হতে হবে।':'End must be after start.';return''}
-  ).then(function(r){
+  );
+  (function(){
+    var mods=document.querySelectorAll('.modal');if(!mods.length)return;var mEl=mods[mods.length-1];
+    var sEl=mEl.querySelector('#schs'),eEl=mEl.querySelector('#sche'),dhEl=mEl.querySelector('#schdh'),dmEl=mEl.querySelector('#schdm');
+    if(!sEl||!eEl||!dhEl||!dmEl)return;
+    function paint(){
+      mEl.querySelectorAll('[data-schcol]').forEach(function(b){
+        var v=b.getAttribute('data-schcol'),on=(v===selCol);
+        b.style.boxShadow=on?'0 0 0 2px var(--bg),0 0 0 5px var(--accent)':'none';
+        var tk=b.querySelector('.schtick');if(tk)tk.style.display=on?'grid':'none';
+      });
+      var cust=mEl.querySelector('#schcustom'),row=mEl.querySelector('[data-schcustom-row]');
+      if(cust&&row){var onCust=(selCol!==''&&presets.indexOf(selCol)<0);row.style.outline=onCust?'2px solid var(--accent)':'none';row.style.outlineOffset='4px';row.style.borderRadius='10px'}
+    }
+    mEl.querySelectorAll('[data-schcol]').forEach(function(b){
+      b.addEventListener('click',function(){selCol=b.getAttribute('data-schcol');paint()});
+    });
+    var custEl=mEl.querySelector('#schcustom');
+    if(custEl)custEl.addEventListener('input',function(){selCol=(custEl.value||'').toUpperCase();paint()});
+    paint();
+    var busy=false;
+    function getDur(){var h=parseInt(dhEl.value,10)||0,m=parseInt(dmEl.value,10)||0;h=Math.max(0,Math.min(12,h));m=Math.max(0,Math.min(59,m));dhEl.value=h;dmEl.value=m;return h*60+m}
+    function setDur(mins){mins=Math.max(0,mins);dhEl.value=Math.floor(mins/60);dmEl.value=mins%60}
+    function onStart(){
+      if(busy)return;busy=true;
+      var st=sEl.value,en=eEl.value;
+      if(st&&en&&toMin(en)>toMin(st))setDur(toMin(en)-toMin(st));
+      else if(st){var dur=getDur();if(dur>0){var sum=toMin(st)+dur;if(sum>=1440){eEl.value='23:59';setDur(toMin('23:59')-toMin(st))}else eEl.value=fromMin(sum)}}
+      busy=false;
+    }
+    function onEnd(){
+      if(busy)return;busy=true;
+      var st=sEl.value,en=eEl.value;
+      if(st&&en){if(toMin(en)>toMin(st))setDur(toMin(en)-toMin(st));else setDur(0)}
+      else if(en){var dur=getDur();if(dur>0){var diff=toMin(en)-dur;if(diff<0){sEl.value='00:00';setDur(toMin(en))}else sEl.value=fromMin(diff)}}
+      busy=false;
+    }
+    function onDur(){
+      if(busy)return;busy=true;
+      var dur=getDur(),st=sEl.value,en=eEl.value;
+      if(st){if(dur>0){var sum=toMin(st)+dur;if(sum>=1440){eEl.value='23:59';setDur(toMin('23:59')-toMin(st))}else eEl.value=fromMin(sum)}}
+      else if(en){if(dur>0){var diff=toMin(en)-dur;if(diff<0){sEl.value='00:00';setDur(toMin(en))}else sEl.value=fromMin(diff)}}
+      busy=false;
+    }
+    sEl.addEventListener('input',onStart);sEl.addEventListener('change',onStart);
+    eEl.addEventListener('input',onEnd);eEl.addEventListener('change',onEnd);
+    dhEl.addEventListener('input',onDur);dhEl.addEventListener('change',onDur);
+    dmEl.addEventListener('input',onDur);dmEl.addEventListener('change',onDur);
+  })();
+  prom.then(function(r){
     if(r.val===2&&ex){if(!state.schedule[d])return;mutate(function(){state.schedule[d]=state.schedule[d].filter(function(x){return x.id!==ex.id});if(!state.schedule[d].length)delete state.schedule[d]},bn?'কাজ মুছে ফেলা হয়েছে।':'Task deleted.');return}
     if(r.val!==1)return;
     var ti=r.q('#scht').value.trim(),st=r.q('#schs').value,en=r.q('#sche').value;
-    var picked=r.q('input[name="schcol"]:checked');var pv=picked?picked.value:'';
-    var col=pv==='custom'?(r.q('#schcustom').value||'').toUpperCase():(pv||'');
+    var col=selCol||'';
     if(ex){var old=(state.schedule[d]||[]).filter(function(x){return x.id===ex.id})[0];if(!old)return;mutate(function(){old.title=ti;old.start=st;old.end=en;old.color=col},bn?'কাজ আপডেট হয়েছে।':'Task updated.')}
     else{mutate(function(){if(!state.schedule)state.schedule={};if(!state.schedule[d])state.schedule[d]=[];state.schedule[d].push({id:uid(),title:ti,start:st,end:en,color:col})},bn?'কাজ যোগ হয়েছে।':'Task added.')}
   });
