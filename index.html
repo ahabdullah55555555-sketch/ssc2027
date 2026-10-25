@@ -38,6 +38,11 @@ h3{font-family:'Sora','Hind Siliguri','Noto Sans Bengali','Poppins',sans-serif;f
 .bar i{display:block;height:100%;background:var(--accent);border-radius:8px;transition:width .35s ease}
 .bar.warn i{background:var(--warn)}
 .row{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.ic{flex:none;vertical-align:-3px}
+.ic18{width:18px;height:18px}
+.ic20{width:20px;height:20px}
+.ic22{width:22px;height:22px}
+.ic30{width:30px;height:30px}
 .pill{background:var(--accsoft);color:var(--accent);font-weight:600;border-radius:20px;padding:4px 14px;font-size:14px;white-space:nowrap}
 .pill.warn{background:var(--warnsoft);color:var(--warn)}
 .task{display:flex;gap:16px;align-items:center;min-height:62px;padding:10px 0;font-size:17px;cursor:pointer}
@@ -250,6 +255,18 @@ img.av{object-fit:cover;display:block}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M9.5 1C12 3.5 15 6 17 9C18 7.5 19 7 20 8.5C22 11.5 22.5 15 20.5 18C18.5 21 15.5 22.5 12 22.5C8.5 22.5 5.5 21 4 18C2.5 15 3 12 5 10.5C4 9.5 4.5 8.5 6 8C7 5.5 8 3 9.5 1Z" fill="#FF7A00"/><path d="M12 5C13.8 8 16 10.2 16 13.6A4 4 0 0 1 8 13.6C8 10.5 10 8 12 5Z" fill="#FFA02E"/><path d="M12 15C13 16.8 14.5 18 14.5 20A2.5 2.5 0 0 1 9.5 20C9.5 18 11 16.8 12 15Z" fill="#FFD93D"/></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#F2B705" stroke="#B97E0A" stroke-width="1.4"/><circle cx="12" cy="12" r="5" fill="none" stroke="#B97E0A" stroke-width="1.4"/><circle cx="9" cy="9" r="1.6" fill="#FFE27A"/></symbol>
+<symbol id="i-medal" viewBox="0 0 24 24"><path d="M8.5 2 L11 10 L7.5 10 Z" fill="#1F4D3A"/><path d="M15.5 2 L13 10 L16.5 10 Z" fill="#8FCBA4"/><circle cx="12" cy="15.5" r="6" fill="#F2B705" stroke="#B97E0A" stroke-width="1.2"/><path d="M12 12.2 L13.1 14.4 L15.5 14.8 L13.8 16.5 L14.2 18.9 L12 17.7 L9.8 18.9 L10.2 16.5 L8.5 14.8 L10.9 14.4 Z" fill="#fff"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 L5 13.5 L11 13.5 L9 22 L19 9.5 L12.5 9.5 Z" fill="#F2B705" stroke="#B97E0A" stroke-width="1" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2 L15.1 8.6 L22 9.3 L17 14.1 L18.2 21 L12 17.8 L5.8 21 L7 14.1 L2 9.3 L8.9 8.6 Z" fill="#1F4D3A"/></symbol>
+<symbol id="i-phoenix" viewBox="0 0 24 24"><path d="M12 11 C9 7 4 5.5 2 8 C4.5 8.8 6 10 7.5 12 C8.5 13.5 10.5 13 12 11Z" fill="#E8A317"/><path d="M12 11 C15 7 20 5.5 22 8 C19.5 8.8 18 10 16.5 12 C15.5 13.5 13.5 13 12 11Z" fill="#E8A317"/><path d="M12 8 C13.2 10.5 14.5 12.5 14.5 15.5 A2.5 2.5 0 0 1 9.5 15.5 C9.5 12.5 10.8 10.5 12 8Z" fill="#FF7A00"/><path d="M12 13.5 C12.6 14.6 13.4 15.4 13.4 16.6 A1.4 1.4 0 0 1 10.6 16.6 C10.6 15.4 11.4 14.6 12 13.5Z" fill="#FFD93D"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2 L13.8 10.2 L22 12 L13.8 13.8 L12 22 L10.2 13.8 L2 12 L10.2 10.2 Z" fill="#8FCBA4"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="#1F4D3A" stroke-width="1.8" stroke-linecap="round"><path d="M8.2 10.8 L15.8 6.2"/><path d="M8.2 13.2 L15.8 17.8"/></g><circle cx="6" cy="12" r="2.4" fill="#1F4D3A"/><circle cx="18" cy="5" r="2.4" fill="#1F4D3A"/><circle cx="18" cy="19" r="2.4" fill="#1F4D3A"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#1F4D3A" stroke-width="1.8"/><path d="M8 12.5 L11 15 L16 9.5" fill="none" stroke="#1F4D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-todo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#5A645D" stroke-width="1.8" stroke-dasharray="4 3"/></symbol>
+</defs></svg>
 <div id="splash" aria-hidden="true"><div class="splash-bars"><i style="--d:0s;background:#145DA0;height:40%"></i><i style="--d:.25s;background:#1E7BD6;height:65%"></i><i style="--d:.5s;background:#FF8A1E;height:90%"></i></div></div>
 <main id="view" aria-live="polite"></main>
 <nav class="tabs" id="tabs" aria-label="Sections"></nav>
@@ -615,7 +632,7 @@ var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Med
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
 var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in Settings).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
 var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
-var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',recSel=-1,pieSel=-1,recDay='',recDetail=false,schDate='',schPx=52/60,backupPopupShown=false,avDraft=null,navAnim=false;
+var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',recSel=-1,pieSel=-1,recDay='',streakView=false,schDate='',schPx=52/60,backupPopupShown=false,avDraft=null,navAnim=false;
 /* ---------- helpers ---------- */
 function pad(n){return(n<10?'0':'')+n}
 function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
@@ -688,7 +705,7 @@ document.addEventListener('click',function(e){var g=e.target.closest?e.target.cl
 document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-pie]'):null;if(!g)return;var v=+g.dataset.pie;pieSel=(pieSel===v?-1:v);render(true)});
 document.addEventListener('click',function(e){if(pieSel<0&&recSel<0&&!recDay)return;var t=e.target;if(!t.closest)return;if(t.closest('[data-pie],[data-recbar],.pie-detail,.rec-detail,button,a,input,select,textarea,[data-act],.modal,.fabmenu,.menu,.wkmenu'))return;pieSel=-1;recSel=-1;recDay='';render(true)});
 document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-day]'):null;if(!g)return;var v=g.dataset.day;recDay=(recDay===v?'':v);render(true)});
-document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-recchip]'):null;if(!g)return;recDetail=!recDetail;render(true)});
+document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-recchip]'):null;if(!g)return;streakView=true;try{history.pushState({tab:'records',streak:1},'')}catch(e){}render();window.scrollTo(0,0)});
 document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-shop]'):null;if(!g)return;var a=g.dataset.shop,bn=state.prefs.lang==='bn';if(!state.shop)state.shop={freezeDates:[],spent:0,aura:'none',auraStrong:false};if(!Array.isArray(state.shop.freezeDates))state.shop.freezeDates=[];var S=studyStats();if(a==='freeze'){if(S.coins<50){toast(bn?'কয়েন কম! ৫০ কয়েন লাগবে।':'Not enough coins. You need 50 coins.');return}state.shop.spent+=50;state.shop.freezeDates.push(today());save();render(true);toast(bn?'Freeze কেনা হয়েছে!':'Freeze bought!')}else if(a.indexOf('aura')===0){var au=a.slice(5);if(au==='strong'&&!state.shop.auraStrong){if(S.coins<20){toast(bn?'কয়েন কম! ২০ কয়েন লাগবে।':'Not enough coins. You need 20 coins.');return}state.shop.spent+=20;state.shop.auraStrong=true}state.shop.aura=au;save();render(true)}});
 document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-share]'):null;if(!g)return;shareStreakPng()});
 function confirmBox(t,msg,ok,danger){return modal(t,'<p>'+esc(msg)+'</p>',[{label:'Cancel',cls:'ghost',val:false},{label:ok,cls:danger?'danger':'',val:true}]).then(function(r){return r.val===true})}
@@ -877,9 +894,11 @@ document.addEventListener('touchmove',function(e){if(!schPinch||e.touches.length
 function schPinchEnd(e){if(!schPinch)return;if(e.touches&&e.touches.length>=2)return;var moved=schPinch.moved;schPinch=null;if(moved){schPinchSuppressUntil=Date.now()+400;render(true)}}
 document.addEventListener('touchend',schPinchEnd);
 document.addEventListener('touchcancel',schPinchEnd);
-var navLastY=0,navHidden=false,navDir=0,navAcc=0,wkLastY=0,wkHidden=false,wkDir=0,wkAcc=0;window.addEventListener('scroll',function(){var y=window.scrollY||0;var te=document.getElementById('tabs'),fe=document.getElementById('fab');if(!te||te.hidden){navLastY=y;navDir=0;navAcc=0}else{var dy=y-navLastY;if(dy>0){if(navDir!==1){navDir=1;navAcc=0}navAcc+=dy;if(navAcc>10&&y>80&&!navHidden){navHidden=true;te.classList.add('navhide');if(fe)fe.classList.add('navhide');navAcc=0}}else if(dy<0){if(navDir!==-1){navDir=-1;navAcc=0}navAcc+=-dy;if((navAcc>5||y<=0)&&navHidden){navHidden=false;te.classList.remove('navhide');if(fe)fe.classList.remove('navhide');navAcc=0}}navLastY=y}var wh=document.querySelector('.wk-head');if(!wh){wkLastY=y;wkDir=0;wkAcc=0;wkHidden=false}else{var dy2=y-wkLastY;if(dy2>0){if(wkDir!==1){wkDir=1;wkAcc=0}wkAcc+=dy2;if(wkAcc>10&&y>80&&!wkHidden){wkHidden=true;wh.classList.add('wkhide');wkAcc=0}}else if(dy2<0){if(wkDir!==-1){wkDir=-1;wkAcc=0}wkAcc+=-dy2;if((wkAcc>5||y<=0)&&wkHidden){wkHidden=false;wh.classList.remove('wkhide');wkAcc=0}}wkLastY=y}},{passive:true});function go(t){closeMenu();tab=t;navAnim=true;render();navAnim=false;window.scrollTo(0,0);var v=document.getElementById('view');v.classList.remove('pg');void v.offsetWidth;if(!/^s_|^logs$|^search$|^avatar$/.test(t))v.classList.add('pg');try{history.pushState({tab:t},'')}catch(e){}}
+var navLastY=0,navHidden=false,navDir=0,navAcc=0,wkLastY=0,wkHidden=false,wkDir=0,wkAcc=0;window.addEventListener('scroll',function(){var y=window.scrollY||0;var te=document.getElementById('tabs'),fe=document.getElementById('fab');if(!te||te.hidden){navLastY=y;navDir=0;navAcc=0}else{var dy=y-navLastY;if(dy>0){if(navDir!==1){navDir=1;navAcc=0}navAcc+=dy;if(navAcc>10&&y>80&&!navHidden){navHidden=true;te.classList.add('navhide');if(fe)fe.classList.add('navhide');navAcc=0}}else if(dy<0){if(navDir!==-1){navDir=-1;navAcc=0}navAcc+=-dy;if((navAcc>5||y<=0)&&navHidden){navHidden=false;te.classList.remove('navhide');if(fe)fe.classList.remove('navhide');navAcc=0}}navLastY=y}var wh=document.querySelector('.wk-head');if(!wh){wkLastY=y;wkDir=0;wkAcc=0;wkHidden=false}else{var dy2=y-wkLastY;if(dy2>0){if(wkDir!==1){wkDir=1;wkAcc=0}wkAcc+=dy2;if(wkAcc>10&&y>80&&!wkHidden){wkHidden=true;wh.classList.add('wkhide');wkAcc=0}}else if(dy2<0){if(wkDir!==-1){wkDir=-1;wkAcc=0}wkAcc+=-dy2;if((wkAcc>5||y<=0)&&wkHidden){wkHidden=false;wh.classList.remove('wkhide');wkAcc=0}}wkLastY=y}},{passive:true});function go(t){closeMenu();tab=t;streakView=false;navAnim=true;render();navAnim=false;window.scrollTo(0,0);var v=document.getElementById('view');v.classList.remove('pg');void v.offsetWidth;if(!/^s_|^logs$|^search$|^avatar$/.test(t))v.classList.add('pg');try{history.pushState({tab:t},'')}catch(e){}}
 var backToastAt=0;
 window.addEventListener('popstate',function(e){var t=e.state&&e.state.tab;
+  if(e.state&&e.state.streak&&tab==='records'){streakView=true;render();window.scrollTo(0,0);return}
+  if(streakView){streakView=false;render();window.scrollTo(0,0);return}
   if(t){if(t!==tab){closeMenu();tab=t;render();window.scrollTo(0,0)}return}
   if(tab==='home'){var now=Date.now();if(now-backToastAt<2000){backToastAt=0;try{history.back()}catch(x){}}else{backToastAt=now;toast('Press Back again to exit Agradia.');try{history.pushState({tab:'home'},'')}catch(x){}}}
   else backTo()});
@@ -1485,7 +1504,7 @@ function leagueStats(){
   return{weeks:weeks,division:div,rank:rank,need:need}
 }
 function badgesFor(maxStreak){
-  var defs=[{m:7,n:'Week Warrior',e:'🏅'},{m:14,n:'Lightning',e:'⚡'},{m:21,n:'Three-Week Star',e:'⭐'},{m:28,n:'Phoenix',e:'🔥'}];
+  var defs=[{m:7,n:'Week Warrior',e:'i-medal'},{m:14,n:'Lightning',e:'i-bolt'},{m:21,n:'Three-Week Star',e:'i-star'},{m:28,n:'Phoenix',e:'i-phoenix'}];
   return defs.map(function(d){return{m:d.m,n:d.n,e:d.e,lit:maxStreak>=d.m}});
 }
 function flameStage(st){
@@ -1498,11 +1517,11 @@ function flameStage(st){
 function shopHtml(){
   var bn=state.prefs.lang==='bn',S=studyStats(),sh=state.shop||{freezeDates:[],aura:'none',auraStrong:false};
   var au=sh.aura||'none';
-  function ab(v,label,price){var on=au===v;return'<button data-shop="aura-'+v+'" class="'+(on?'':'ghost')+'" style="min-height:44px;padding:0 16px">'+label+(on?' ✓':'')+(price?' · '+price+' 🪙':'')+'</button>'}
+  function ab(v,label,price){var on=au===v;return'<button data-shop="aura-'+v+'" class="'+(on?'':'ghost')+'" style="min-height:44px;padding:0 16px">'+label+(on?' <svg class="ic ic18"><use href="#i-check"/></svg>':'')+(price?' · '+price+' <svg class="ic ic18"><use href="#i-coin"/></svg>':'')+'</button>'}
   return'<section class="card"><h2>'+(bn?'কয়েনের দোকান':'Coin shop')+'</h2>'
-  +'<p class="sub">'+(bn?'ব্যালেন্স: ':'Balance: ')+'🪙 '+S.coins+' · 🧊 '+(bn?'Freeze: ':'Freezes: ')+S.freezesAvail+'</p>'
+  +'<p class="sub">'+(bn?'ব্যালেন্স: ':'Balance: ')+'<svg class="ic ic18"><use href="#i-coin"/></svg> '+S.coins+' · 🧊 '+(bn?'Freeze: ':'Freezes: ')+S.freezesAvail+'</p>'
   +'<div style="margin-top:12px"><h3>🧊 '+(bn?'Streak Freeze':'Streak Freeze')+'</h3><p class="sub">'+(bn?'মিস হওয়ার আগেই কিনে রাখতে হবে — তাহলে ওই দিনটা নিজে নিজে বাঁচবে: স্ট্রিক ভাঙবে না, কয়েন কাটা যাবে না।':'Buy it before the missed day — then it auto-saves that day: your streak survives and no coins are lost.')+'</p><button data-shop="freeze" style="margin-top:8px">🧊 '+(bn?'কিনুন — ৫০ কয়েন':'Buy — 50 coins')+'</button></div>'
-  +'<div style="margin-top:16px"><h3>✨ '+(bn?'আগুনের আভা':'Flame aura')+'</h3><p class="sub">'+(bn?'শুধু আভার জোর বদলায়, আগুনের রঙ অরেঞ্জ/হলুদই থাকবে।':'Only the glow changes — the flame stays orange/yellow.')+'</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">'+ab('none',bn?'আভা ছাড়া':'No glow','')+ab('soft',bn?'হালকা আভা':'Soft glow','')+ab('strong',bn?'জোরালো আভা':'Strong glow',sh.auraStrong?'':'20')+'</div></div></section>';
+  +'<div style="margin-top:16px"><h3><svg class="ic ic22"><use href="#i-sparkle"/></svg> '+(bn?'আগুনের আভা':'Flame aura')+'</h3><p class="sub">'+(bn?'শুধু আভার জোর বদলায়, আগুনের রঙ অরেঞ্জ/হলুদই থাকবে।':'Only the glow changes — the flame stays orange/yellow.')+'</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">'+ab('none',bn?'আভা ছাড়া':'No glow','')+ab('soft',bn?'হালকা আভা':'Soft glow','')+ab('strong',bn?'জোরালো আভা':'Strong glow',sh.auraStrong?'':'20')+'</div></div></section>';
 }
 function shareStreakPng(){
   var bn=state.prefs.lang==='bn';var S=studyStats(),FS=flameStage(S.streak);
@@ -1524,7 +1543,7 @@ function streakCardHtml(){
   tiers.forEach(function(m){if(S.streak>=m)cur=m;else if(nxt===null)nxt=m});
   var pct=nxt===null?100:Math.round((S.streak-cur)/(nxt-cur)*100);
   var nd=nxt===null?0:(nxt-S.streak);
-  var mileBar='<div style="display:flex;align-items:center;gap:12px;margin-top:22px"><span style="width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none;background:'+(cur>0?'var(--accent)':'var(--soft)')+';color:'+(cur>0?'var(--onacc)':'var(--muted)')+'">'+cur+'</span><span style="flex:1;height:8px;background:var(--soft);border-radius:4px;overflow:hidden"><i style="display:block;height:8px;width:'+pct+'%;background:var(--accent);border-radius:4px"></i></span><span style="width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none;background:var(--soft);color:var(--muted)">'+(nxt===null?'✓':nxt)+'</span></div><div class="sub" style="text-align:center;margin-top:10px">'+(nxt===null?(bn?'সব মাইলস্টোন খোলা হয়েছে':'All milestones unlocked'):(bn?('পরের মাইলস্টোন পেতে আর '+nd+' দিন বাকি।'):(nd===1?'1 more day to unlock your next milestone.':nd+' more days to unlock your next milestone.')))+'</div>';
+  var mileBar='<div style="display:flex;align-items:center;gap:12px;margin-top:22px"><span style="width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none;background:'+(cur>0?'var(--accent)':'var(--soft)')+';color:'+(cur>0?'var(--onacc)':'var(--muted)')+'">'+cur+'</span><span style="flex:1;height:8px;background:var(--soft);border-radius:4px;overflow:hidden"><i style="display:block;height:8px;width:'+pct+'%;background:var(--accent);border-radius:4px"></i></span><span style="width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none;background:var(--soft);color:var(--muted)">'+(nxt===null?'<svg class="ic ic18"><use href="#i-check"/></svg>':nxt)+'</span></div><div class="sub" style="text-align:center;margin-top:10px">'+(nxt===null?(bn?'সব মাইলস্টোন খোলা হয়েছে':'All milestones unlocked'):(bn?('পরের মাইলস্টোন পেতে আর '+nd+' দিন বাকি।'):(nd===1?'1 more day to unlock your next milestone.':nd+' more days to unlock your next milestone.')))+'</div>';
   var wk=S.week.map(function(w){
     var ring=w.today?'box-shadow:inset 0 0 0 2px var(--accent);':'';
     var inner='';
@@ -1549,12 +1568,12 @@ function streakCardHtml(){
   var flameSvg='<svg width="150" height="150" viewBox="0 0 24 24" aria-hidden="true"'+(FS.glow?' style="filter:'+FS.glow+'"':'')+'><g transform="'+scG+'">'+wings+smoke+'<g class="'+lCls[0]+'"><use href="#fl" fill="'+fCol[0]+'"/></g><g class="'+lCls[1]+'"><use href="#fl" fill="'+fCol[1]+'" transform="translate(0 -.8) translate(12 22.5) scale(.70) translate(-12 -22.5)"/></g><g class="'+lCls[2]+'"><use href="#flc" fill="'+fCol[2]+'" transform="translate(.5 0)"/></g></g></svg>';
   var flameWrap='<div style="display:inline-block;transform:scale('+liveSc.toFixed(2)+');filter:'+filt+';transform-origin:50% 100%">'+(restDay&&!dead?'<div class="breathe" style="transform-origin:50% 100%">'+flameSvg+'</div>':flameSvg)+'</div>';
   var hero='<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><path id="fl" d="M9.5 1C12 3.5 15 6 17 9C18 7.5 19 7 20 8.5C22 11.5 22.5 15 20.5 18C18.5 21 15.5 22.5 12 22.5C8.5 22.5 5.5 21 4 18C2.5 15 3 12 5 10.5C4 9.5 4.5 8.5 6 8C7 5.5 8 3 9.5 1Z"/><path id="flc" d="M12 15C13 16.8 14.5 18 14.5 20A2.5 2.5 0 0 1 9.5 20C9.5 18 11 16.8 12 15Z"/></defs></svg>'
-  +'<div style="text-align:center;margin:6px 0 2px;position:relative">'+flameWrap+(S.maxStreak>=14?'<span style="position:absolute;top:2px;right:calc(50% - 82px);font-size:26px;filter:drop-shadow(0 0 6px rgba(255,200,0,.9))">⚡</span>':'')+'</div>'
+  +'<div style="text-align:center;margin:6px 0 2px;position:relative">'+flameWrap+(S.maxStreak>=14?'<svg class="ic" style="position:absolute;top:2px;right:calc(50% - 82px);width:26px;height:26px;filter:drop-shadow(0 0 6px rgba(255,200,0,.9))"><use href="#i-bolt"/></svg>':'')+'</div>'
   +'<div style="text-align:center;margin-top:-38px;position:relative"><svg width="200" height="76" viewBox="0 0 200 76" style="display:block;margin:0 auto" aria-hidden="true"><text x="100" y="58" text-anchor="middle" font-size="64" font-weight="800" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" style="fill:var(--text);stroke:var(--bg)" stroke-width="12" paint-order="stroke" stroke-linejoin="round">'+S.streak+'</text></svg></div>'
   +'<div style="text-align:center;font-size:16px;color:#FF7A00;font-weight:700;margin-top:2px">'+(bn?'দিনের স্ট্রিক':'days streak')+'</div>'
-  +'<div style="text-align:center;margin-top:12px"><span style="background:var(--soft);border-radius:999px;padding:7px 16px;font-weight:700;font-size:15px">🪙 '+S.coins+' '+(bn?'কয়েন':'Coins')+'</span></div>'
-  +'<div style="text-align:center;margin-top:12px"><button class="ghost" data-share="streak" style="min-height:44px;padding:0 18px">📤 '+(bn?'স্ট্রিক ছবি শেয়ার':'Share streak image')+'</button></div>';
-  return'<section class="card">'+(S.streak===28?'<div style="text-align:center;background:var(--soft);border-radius:12px;padding:10px;margin-bottom:12px;font-weight:700">🎉 Phoenix + Lightning celebration — 28 days!</div>':'')+hero
+  +'<div style="text-align:center;margin-top:12px"><span style="background:var(--soft);border-radius:999px;padding:7px 16px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:6px"><svg class="ic ic18"><use href="#i-coin"/></svg> '+S.coins+' '+(bn?'কয়েন':'Coins')+'</span></div>'
+  +'<div style="text-align:center;margin-top:12px"><button class="ghost" data-share="streak" style="min-height:44px;padding:0 18px"><svg class="ic ic18"><use href="#i-share"/></svg> '+(bn?'স্ট্রিক ছবি শেয়ার':'Share streak image')+'</button></div>';
+  return'<section class="card">'+(S.streak===28?'<div style="text-align:center;background:var(--soft);border-radius:12px;padding:10px;margin-bottom:12px;font-weight:700"><svg class="ic ic20"><use href="#i-phoenix"/></svg> Phoenix + Lightning celebration — 28 days!</div>':'')+hero
   +'<div class="sub" style="margin:22px 0 10px">'+(bn?'এই সপ্তাহে':'This week')+'</div>'
   +'<div style="display:flex;gap:4px">'+wk+'</div>'
   +'<p class="sub" style="text-align:center;margin-top:8px">'+(bn?'কোনো দিনে ট্যাপ করলে সেদিনের ডিটেইল দেখাবে।':'Tap a day to see its details.')+'</p>'
@@ -1564,14 +1583,14 @@ function streakCardHtml(){
 }
 function chipHtml(){
   var S=studyStats();
-  return'<button data-recchip="1" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--soft);border:0;border-radius:14px;padding:12px 14px;font-size:16px;font-weight:700;color:var(--text);cursor:pointer;margin-bottom:22px">🔥 '+S.streak+' days <span style="font-weight:400;color:var(--muted)">•</span> 🪙 '+S.coins+' coins <span style="font-weight:400;color:var(--muted)">•</span> Lv '+S.level+' <span style="margin-left:auto;color:var(--muted)">'+(recDetail?'▴':'▾')+'</span></button>'
+  return'<button data-recchip="1" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--soft);border:0;border-radius:14px;padding:12px 14px;font-size:16px;font-weight:700;color:var(--text);cursor:pointer;margin-bottom:22px"><svg class="ic ic18"><use href="#i-flame"/></svg> '+S.streak+' days <span style="font-weight:400;color:var(--muted)">•</span> <svg class="ic ic18"><use href="#i-coin"/></svg> '+S.coins+' coins <span style="font-weight:400;color:var(--muted)">•</span> Lv '+S.level+'</button>'
 }
 function rewardsHtml(){
   var bn=state.prefs.lang==='bn',S=studyStats();
-  var cards=S.badges.map(function(b){return'<div style="flex:1;min-width:0;text-align:center;background:var(--soft);border-radius:14px;padding:12px 6px;opacity:'+(b.lit?'1':'.45')+'"><div style="font-size:24px">'+b.e+'</div><div style="font-size:13px;font-weight:700;margin-top:4px">'+b.n+'</div><div style="font-size:11px;color:var(--muted)">'+b.m+' '+(bn?'দিন':'days')+'</div></div>'}).join('');
+  var cards=S.badges.map(function(b){return'<div style="flex:1;min-width:0;text-align:center;background:var(--soft);border-radius:14px;padding:12px 6px;opacity:'+(b.lit?'1':'.45')+'"><svg class="ic ic30"><use href="#'+b.e+'"/></svg><div style="font-size:13px;font-weight:700;margin-top:4px">'+b.n+'</div><div style="font-size:11px;color:var(--muted)">'+b.m+' '+(bn?'দিন':'days')+'</div></div>'}).join('');
   var ff=S.freeFreeze;
   var ffLine=ff.earned?(bn?('ফ্রি Freeze: '+(ff.used?'ব্যবহার হয়েছে':'তৈরি আছে')):('Free Freeze: '+(ff.used?'used':'ready'))):(bn?'৭ দিনের স্ট্রিকে একটি ফ্রি Freeze পাবে।':'Reach a 7-day streak to earn a free Freeze.');
-  return'<section class="card"><h2>'+(bn?'পুরস্কার ও ব্যাজ':'Rewards & badges')+'</h2><div style="display:flex;gap:8px;margin-top:12px">'+cards+'</div><p class="sub" style="margin:12px 0 0">🧊 '+ffLine+'</p>'+(S.maxStreak>=14?'<p class="sub" style="margin:8px 0 0">⚡ '+(bn?'লাইটনিং খোলা হয়েছে — আগুনের পাশে বজ্র চিহ্ন দেখাবে।':'Lightning unlocked — it shows beside your flame.')+'</p>':'')+'</section>'
+  return'<section class="card"><h2>'+(bn?'পুরস্কার ও ব্যাজ':'Rewards & badges')+'</h2><div style="display:flex;gap:8px;margin-top:12px">'+cards+'</div><p class="sub" style="margin:12px 0 0">🧊 '+ffLine+'</p>'+(S.maxStreak>=14?'<p class="sub" style="margin:8px 0 0"><svg class="ic ic18"><use href="#i-bolt"/></svg> '+(bn?'লাইটনিং খোলা হয়েছে — আগুনের পাশে বজ্র চিহ্ন দেখাবে।':'Lightning unlocked — it shows beside your flame.')+'</p>':'')+'</section>'
 }
 function xpHtml(){
   var bn=state.prefs.lang==='bn',S=studyStats();
@@ -1590,12 +1609,12 @@ function questsHtml(){
   var nSubs=Object.keys(subsToday).length,minsToday=logged(td);
   var wst=(state.prefs&&state.prefs.weekStart!=null)?state.prefs.weekStart:6,ws=weekStartOf(td,wst),daysThisWeek=0;
   for(var i=0;i<7;i++){var wd=addDays(ws,i);if(wd<=td&&logged(wd)>0)daysThisWeek++}
-  function row(done,label,bonus){return'<div class="row" style="margin-top:8px"><span>'+(done?'✅ ':'○ ')+label+'</span><b>+'+bonus+' 🪙</b></div>'}
+  function row(done,label,bonus){return'<div class="row" style="margin-top:8px"><span style="display:inline-flex;align-items:center;gap:8px">'+(done?'<svg class="ic ic18"><use href="#i-check"/></svg>':'<svg class="ic ic18"><use href="#i-todo"/></svg>')+label+'</span><b style="display:inline-flex;align-items:center;gap:6px">+'+bonus+' <svg class="ic ic18"><use href="#i-coin"/></svg></b></div>'}
   return'<section class="card"><h2>'+(bn?'কুয়েস্ট':'Quests')+'</h2>'
   +row(nSubs>=3,bn?'আজ ৩+ বিষয় পড়ো':'Study 3+ subjects today',5)
   +row(minsToday>=120,bn?'আজ ১২০+ মিনিট পড়ো':'Study 120+ minutes today',5)
   +row(daysThisWeek>=5,bn?'এই সপ্তাহে ৫+ দিন পড়ো':'Study 5+ days this week',20)
-  +'<p class="sub" style="margin:12px 0 0">'+(bn?'কুয়েস্ট থেকে মোট বোনাস: ':'Total quest bonuses: ')+'+'+S.questBonus+' 🪙</p></section>'
+  +'<p class="sub" style="margin:12px 0 0">'+(bn?'কুয়েস্ট থেকে মোট বোনাস: ':'Total quest bonuses: ')+'+'+S.questBonus+' <svg class="ic ic18"><use href="#i-coin"/></svg></p></section>'
 }
 function sampleBannerHtml(){
   if(!state.demo)return'';
@@ -1611,10 +1630,16 @@ function riskHtml(){
   var bn=state.prefs.lang==='bn';
   return'<div class="flag" style="background:var(--warnsoft);color:var(--warn)">'+(bn?'আজকের প্ল্যান এখনো পড়া হয়নি — রাত হয়ে গেছে, স্ট্রিকটা বাঁচাও!':'No study yet on a planned day and it is already evening — save today\'s streak!')+'</div>'
 }
+function vStreak(){
+  var bn=state.prefs.lang==='bn';
+  var h='<div style="display:flex;align-items:center;gap:12px;margin-bottom:22px"><button class="ghost" data-act="backstreak">‹ '+(bn?'ফিরুন':'Back')+'</button><h1 style="margin:0">'+(bn?'স্ট্রিক':'Streak')+'</h1></div>';
+  h+=streakCardHtml()+rewardsHtml()+xpHtml()+leagueHtml()+questsHtml()+shopHtml();
+  return h;
+}
 function vRecords(){
+  if(streakView)return vStreak();
   var h='<div class="row" style="margin-bottom:22px"><h1>Records</h1><div class="hdrb">'+sbtn()+dots()+'</div></div>';
   h+=sampleBannerHtml();h+=riskHtml();h+=chipHtml();
-  if(recDetail){h+=streakCardHtml();h+=rewardsHtml();h+=xpHtml();h+=leagueHtml();h+=questsHtml();h+=shopHtml();}
   h+='<div class="seg">'+[['daily','Daily'],['weekly','Weekly'],['monthly','Monthly'],['yearly','Yearly'],['subjects','Subjects']].map(function(p){return'<button data-act="recp" data-v="'+p[0]+'" class="'+(recP===p[0]?'on':'')+'">'+p[1]+'</button>'}).join('')+'</div>';
   if(recP==='subjects')return h+recSubjects();
   var B=recFill(recBuckets()),ts=0,tt=0,act=0,best=0,M=dayMapAll(),lo=B[0].from,hi=B[B.length-1].to;
@@ -1905,6 +1930,7 @@ document.addEventListener('click',function(e){
     case'schzoomreset':schPx=schDefPx();render(true);break;
     case'goroutine':go('routine');break;
     case'gorecords':go('records');break;
+    case'backstreak':streakView=false;render();window.scrollTo(0,0);break;
     case'fab':toggleFabMenu();break;
     case'addrec':recDlg(D.k);break;
     case'addnote':noteDlg(D.k||today());break;
