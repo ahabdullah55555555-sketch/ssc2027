@@ -43,6 +43,11 @@ h3{font-family:'Sora','Hind Siliguri','Noto Sans Bengali','Poppins',sans-serif;f
 .ic20{width:20px;height:20px}
 .ic22{width:22px;height:22px}
 .ic30{width:30px;height:30px}
+.ic26{width:26px;height:26px}
+.hmgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 36px}
+.hmcard{background:var(--soft);color:var(--text);min-height:0;padding:16px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:4px}
+.hmcard b{font-size:15px}
+.hmcard small{color:var(--muted);font-size:12.5px;font-weight:400}
 .pill{background:var(--accsoft);color:var(--accent);font-weight:600;border-radius:20px;padding:4px 14px;font-size:14px;white-space:nowrap}
 .pill.warn{background:var(--warnsoft);color:var(--warn)}
 .task{display:flex;gap:16px;align-items:center;min-height:62px;padding:10px 0;font-size:17px;cursor:pointer}
@@ -266,6 +271,12 @@ img.av{object-fit:cover;display:block}
 <symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="#1F4D3A" stroke-width="1.8" stroke-linecap="round"><path d="M8.2 10.8 L15.8 6.2"/><path d="M8.2 13.2 L15.8 17.8"/></g><circle cx="6" cy="12" r="2.4" fill="#1F4D3A"/><circle cx="18" cy="5" r="2.4" fill="#1F4D3A"/><circle cx="18" cy="19" r="2.4" fill="#1F4D3A"/></symbol>
 <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#1F4D3A" stroke-width="1.8"/><path d="M8 12.5 L11 15 L16 9.5" fill="none" stroke="#1F4D3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-todo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#5A645D" stroke-width="1.8" stroke-dasharray="4 3"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7 V12 L15.5 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-bars" viewBox="0 0 24 24"><g fill="currentColor"><rect x="4" y="12" width="3.5" height="8" rx="1"/><rect x="10" y="7" width="3.5" height="13" rx="1"/><rect x="16" y="3" width="3.5" height="17" rx="1"/></g></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5 A3.5 3.5 0 0 1 8 3.5 H20 V19 H8 A3.5 3.5 0 0 0 4 21.5 Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 5.5 V21.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+<symbol id="i-pie" viewBox="0 0 24 24"><path d="M12 3 A9 9 0 0 1 21 12 H12 Z" fill="currentColor"/><path d="M12 12 L21 12 A9 9 0 0 1 12 21 Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M5 17 H19 M6.5 17 A5.5 5.5 0 0 1 17.5 17 M12 4 A2.5 2.5 0 0 1 14.5 6.5 H9.5 A2.5 2.5 0 0 1 12 4 Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="19.5" r="1.6" fill="currentColor"/></symbol>
+<symbol id="i-checklist" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6 L9 10 L13 5"/><path d="M15 6 H20"/><path d="M5 12 L9 16 L13 11"/><path d="M15 12 H20"/><path d="M5 18 L9 20 L13 17"/><path d="M15 18 H20"/></g></symbol>
 </defs></svg>
 <div id="splash" aria-hidden="true"><div class="splash-bars"><i style="--d:0s;background:#145DA0;height:40%"></i><i style="--d:.25s;background:#1E7BD6;height:65%"></i><i style="--d:.5s;background:#FF8A1E;height:90%"></i></div></div>
 <main id="view" aria-live="polite"></main>
@@ -632,7 +643,7 @@ var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Med
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
 var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in Settings).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
 var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
-var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',recSel=-1,pieSel=-1,recDay='',streakView=false,schDate='',schPx=52/60,backupPopupShown=false,avDraft=null,navAnim=false;
+var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',recSel=-1,pieSel=-1,recDay='',streakView=false,homeView='',schDate='',schPx=52/60,backupPopupShown=false,avDraft=null,navAnim=false;
 /* ---------- helpers ---------- */
 function pad(n){return(n<10?'0':'')+n}
 function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
@@ -811,7 +822,45 @@ function reminderCard(){var bn=state.prefs.lang==='bn';var now=new Date();var hm
 function whatsNewCard(){if(state.prefs.seenVersion===APP_VERSION)return'';var bn=state.prefs.lang==='bn';var items=bn?['নতুন কালো ধাপের লোগো + ১ সেকেন্ডের স্প্ল্যাশ এনিমেশন','নিজের কাউন্টডাউন \u2014 নাম, তারিখ, সময় দিয়ে যতগুলো ইচ্ছা','ব্যাকআপ চেক ও শেয়ার (Drive-এ পাঠানো যাবে)','আজকের রিমাইন্ডার ও নোটিফিকেশন পরীক্ষা']:['New black steps logo + 1-second splash animation','Your own countdowns \u2014 name, date, time, as many as you want','Backup check and share (can send to Drive)','Today\'s reminders and notification test'];return '<section class="card"><h2 style="margin:0">'+(bn?'নতুন কী এলো \u2014 ৩.১.০':'What\'s new \u2014 3.1.0')+'</h2><ul style="margin:10px 0">'+items.map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul><button class="sm" data-act="seenew" style="width:100%">'+(bn?'ঠিক আছে':'Got it')+'</button></section>'}
 function smartRevisionCard(){var bn=state.prefs.lang==='bn';var wk=(state.weak||[]).filter(function(w){return !w.done});var ms=state.mistakes||[];if(!wk.length&&!ms.length)return'';var items=wk.slice(0,3).map(function(w){return'<div class="item"><b>'+esc(w.subject+(w.chapter?' · '+w.chapter:''))+'</b>'+(w.note?'<small>'+esc(w.note)+'</small>':'')+'</div>'}).join('');if(wk.length<3)items+=ms.slice(0,3-wk.length).map(function(m){return'<div class="item"><b>'+esc(m.subject+(m.chapter?' · '+m.chapter:''))+'</b><small>'+esc(m.what)+'</small></div>'}).join('');return '<section class="card"><h2 style="margin:0">'+(bn?'স্মার্ট রিভিশন':'Smart revision')+'</h2><p class="sub">'+(bn?'আজ এই দুর্বল অধ্যায় / ভুলগুলো আবার দেখো।':'Review these weak chapters and mistakes today.')+'</p>'+items+'<button class="sm" data-act="gologs" style="width:100%">'+(bn?'লগ দেখুন':'See logs')+'</button></section>';}
 function analyticsCard(){var bn=state.prefs.lang==='bn';var td=today();var past=(R().tasks||[]).filter(function(t){return t.date&&t.date<=td});if(!past.length)return'';var done=past.filter(isDone).length;var overdue=past.filter(function(t){return !isDone(t)&&t.date<td}).length;var hp2=dayLoad(td),hd2=logged(td);var msg=overdue>0?(bn?overdue+'টি কাজ পিছিয়ে আছে।':overdue+' tasks behind.'):(bn?'সব ঠিক আছে, পিছিয়ে নেই।':'On track, nothing behind.');return '<section class="card"><h2 style="margin:0">'+(bn?'পড়ার হিসাব':'Study analytics')+'</h2><p class="sub">'+msg+'</p><div class="item"><b>'+(bn?'আজ পর্যন্ত কাজ':'Tasks up to today')+'</b><small>'+done+' / '+past.length+' '+(bn?'শেষ':'done')+'</small></div><div class="item"><b>'+(bn?'আজকের পড়া':'Today studied')+'</b><small>'+fmtMin(hd2)+' / '+fmtMin(hp2)+'</small></div><button class="sm" data-act="gorecords" style="width:100%">'+(bn?'রেকর্ড দেখুন':'See records')+'</button></section>';}
+function tasksSummaryCard(){
+  var bn=state.prefs.lang==='bn';
+  var td=today(),T=tasksOn(td),tt=T.length,n=T.filter(isDone).length,hDone=logged(td),hPlan=dayLoad(td);
+  var h='<section class="card"><h2 style="margin:0;display:flex;align-items:center;gap:8px"><svg class="ic ic26"><use href="#i-checklist"/></svg> '+(bn?'আজকের কাজ':"Today's tasks")+'</h2>';
+  if(!tt){h+='<p class="sub">'+(bn?'আজ কোনো কাজ নেই।':'No tasks today.')+'</p><button class="sm" data-act="goroutine" style="width:100%">'+(bn?'রুটিন খুলুন':'Open Routine')+'</button></section>';return h}
+  h+='<p class="sub">'+n+' / '+tt+' '+(bn?'শেষ':'done')+' · '+fmtMin(hDone)+' / '+fmtMin(hPlan)+'</p>';
+  var nx=null;for(var i=0;i<T.length;i++){if(!isDone(T[i])){nx=T[i];break}}
+  if(nx)h+='<div class="item"><b>'+esc(nx.text)+'</b>'+(nx.chapter?'<small>'+esc(nx.chapter)+'</small>':'')+'</div>';
+  else h+='<p class="sub">'+(bn?'সব শেষ!':'All done!')+'</p>';
+  h+='<button class="sm" data-act="goroutine" style="width:100%">'+(bn?'সব কাজ দেখুন':'See all tasks')+'</button></section>';
+  return h}
+function homeMenuHtml(){
+  var bn=state.prefs.lang==='bn';
+  var cdList=(state.countdowns||[]).slice().sort(function(a,b){return cdTarget(a)-cdTarget(b)});
+  var cdNext=null;for(var i=0;i<cdList.length;i++){if(cdTarget(cdList[i])>=pd(today())){cdNext=cdList[i];break}}
+  if(!cdNext&&cdList.length)cdNext=cdList[0];
+  var cdSub=cdNext?esc(cdNext.name)+' · '+cdLeft(cdNext,bn):(bn?'এখনো কোনো কাউন্টডাউন নেই':'No countdown yet');
+  function mc(act,icon,name,sub){return'<button class="hmcard" data-act="'+act+'"><svg class="ic ic26"><use href="#'+icon+'"/></svg><b>'+name+'</b><small>'+sub+'</small></button>'}
+  return'<div class="hmgrid">'
+    +mc('homecountdowns','i-clock',bn?'কাউন্টডাউন':'Countdowns',cdSub)
+    +mc('gorecords','i-bars',bn?'রেকর্ড':'Records',bn?'স্ট্রিক, কয়েন, চার্ট':'Streak, coins, charts')
+    +mc('gologs','i-book',bn?'স্মার্ট রিভিশন':'Smart revision',bn?'দুর্বল অধ্যায় ও ভুল':'Weak chapters and mistakes')
+    +mc('gorecords','i-pie',bn?'পড়ার হিসাব':'Study analytics',bn?'অগ্রগতি ও পিছিয়ে থাকা':'Progress and what is behind')
+    +mc('homereminders','i-bell',bn?'রিমাইন্ডার':'Reminders',bn?'আজকের রিমাইন্ডার':"Today's reminders")
+    +'</div>';
+}
+function vCountdowns(){
+  var bn=state.prefs.lang==='bn';
+  var h='<div style="display:flex;align-items:center;gap:12px;margin-bottom:22px"><button class="ghost" data-act="backhome">‹ '+(bn?'ফিরুন':'Back')+'</button><h1 style="margin:0">'+(bn?'কাউন্টডাউন':'Countdowns')+'</h1></div>';
+  h+=countdownsCard();
+  return h}
+function vReminders(){
+  var bn=state.prefs.lang==='bn';
+  var h='<div style="display:flex;align-items:center;gap:12px;margin-bottom:22px"><button class="ghost" data-act="backhome">‹ '+(bn?'ফিরুন':'Back')+'</button><h1 style="margin:0">'+(bn?'রিমাইন্ডার':'Reminders')+'</h1></div>';
+  h+=reminderCard();
+  return h}
 function vHome(){
+  if(homeView==='countdowns')return vCountdowns();
+  if(homeView==='reminders')return vReminders();
   var td=today(),T=tasksOn(td),n=T.filter(isDone).length,tt=T.length,p=tt?Math.round(n/tt*100):0,hPlan=dayLoad(td),hDone=logged(td),hp=hPlan?Math.min(100,Math.round(hDone/hPlan*100)):0,od=viewTasks('overdue').length,nm=state.prefs.name,Tm=state.timer,Sw=state.sw;
   var h='<div class="top"><button class="avb" data-act="avatar" aria-label="Change avatar">'+avatarEl()+'</button><div style="flex:1;min-width:0"><div class="hgreet">'+daypart()+'</div><div class="hname">'+(nm?esc(nm)+' 👋':'Welcome!')+'</div></div><div class="hdrb">'+dots()+'</div></div>';
   var bn=state.prefs.lang==='bn';
@@ -823,13 +872,9 @@ function vHome(){
     cdRing='<div style="text-align:center"><svg width="68" height="68" viewBox="0 0 68 68" style="display:block;margin:0 auto"><circle cx="34" cy="34" r="28" fill="none" style="stroke:var(--banbartrack,rgba(255,255,255,.25))" stroke-width="7"/><circle cx="34" cy="34" r="28" fill="none" style="stroke:var(--bantext,#FFFFFF)" stroke-width="7" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="0"/><text x="34" y="38" text-anchor="middle" style="fill:var(--bantext,#fff)" font-size="15" font-weight="700">'+cdDays+'</text></svg><div style="font-size:13px;margin-top:4px">'+esc(cdNext.name.slice(0,14))+' · '+cdLabel+'</div></div>';}
   h+='<button class="hsearch" data-act="search" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Search anything</span></button>';
   var bannerHtml='<section class="pbanner"><svg class="hillsart" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="hshade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient></defs><rect width="400" height="220" style="fill:var(--accent)"/><rect width="400" height="220" fill="url(#hshade)"/><path d="M0 150 Q 90 96 190 128 T 400 108 V220 H0 Z" style="fill:var(--bantext)" opacity=".20"/><path d="M0 176 Q 110 130 230 160 T 400 148 V220 H0 Z" style="fill:var(--bantext)" opacity=".30"/><g style="fill:var(--bantext)" opacity=".40"><path d="M52 158 l14 -30 l14 30 z"/><path d="M78 164 l11 -24 l11 24 z"/><path d="M300 150 l14 -30 l14 30 z"/><path d="M326 156 l11 -24 l11 24 z"/><path d="M180 172 l12 -26 l12 26 z"/></g><g style="fill:var(--bantext)" opacity=".45"><rect x="57" y="158" width="4" height="12"/><rect x="305" y="150" width="4" height="12"/></g><path d="M0 200 Q 130 172 260 192 T 400 186 V220 H0 Z" fill="#fff" opacity=".1"/><g fill="#fff" opacity=".55"><circle cx="80" cy="40" r="2.2"/><circle cx="140" cy="66" r="1.6"/><circle cx="220" cy="36" r="2"/><circle cx="260" cy="80" r="1.5"/><circle cx="40" cy="90" r="1.6"/></g></svg><svg class="leafdeco" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 36 Q8 28 10 12 Q26 14 20 36 Z" fill="#fff" opacity=".22"/><path d="M20 34 Q20 22 14 14" stroke="#fff" stroke-width="1.4" fill="none" opacity=".28"/></svg><div class="pin"><h2>Today\'s Progress</h2><div class="banrings"><div style="text-align:center"><svg width="68" height="68" viewBox="0 0 68 68" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'" style="display:block;margin:0 auto"><circle cx="34" cy="34" r="28" fill="none" style="stroke:var(--banbartrack,rgba(255,255,255,.25))" stroke-width="7"/><circle cx="34" cy="34" r="28" fill="none" style="stroke:var(--bantext,#FFFFFF)" stroke-width="7" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="'+(175.9*(1-p/100)).toFixed(1)+'" transform="rotate(-90 34 34)" style="filter:drop-shadow(0 0 2px var(--banbartrack,rgba(255,255,255,.45)))"/><text x="34" y="38" text-anchor="middle" style="fill:var(--bantext,#fff)" font-size="15" font-weight="700">'+p+'%</text></svg><div style="font-size:13px;margin-top:4px">'+n+' / '+tt+' <span>Tasks</span></div></div><div style="text-align:center"><svg width="68" height="68" viewBox="0 0 68 68" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+hp+'" style="display:block;margin:0 auto"><circle cx="34" cy="34" r="28" fill="none" style="stroke:var(--banbartrack,rgba(255,255,255,.25))" stroke-width="7"/><circle cx="34" cy="34" r="28" fill="none" style="stroke:var(--bantext,#FFFFFF)" stroke-width="7" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="'+(175.9*(1-hp/100)).toFixed(1)+'" transform="rotate(-90 34 34)" style="filter:drop-shadow(0 0 2px var(--banbartrack,rgba(255,255,255,.45)))"/><text x="34" y="38" text-anchor="middle" style="fill:var(--bantext,#fff)" font-size="15" font-weight="700">'+hp+'%</text></svg><div style="font-size:13px;margin-top:4px">'+fmtMin(hDone)+' / '+fmtMin(hPlan)+' <span>Hours</span></div></div>' + cdRing + '</div><div class="banqa"><button data-act="gotimer"><svg viewBox="0 0 24 24">' + QA_ICONS.timer + '</svg><span>Timer</span></button><button data-act="gosw"><svg viewBox="0 0 24 24">' + QA_ICONS.stopwatch + '</svg><span>Stopwatch</span></button><button data-act="goroutine"><svg viewBox="0 0 24 24">' + ICONS.routine + '</svg><span>Routine</span></button><button data-act="gorecords"><svg viewBox="0 0 24 24">' + ICONS.records + '</svg><span>Records</span></button></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div><p class="pmot">'+motivate(p,n)+'</p></div></section>';
-  var tasksHtml='<div class="tprevh" style="border-left:3px solid var(--accent);padding-left:10px"><h2>Today\'s Tasks</h2>'+(tt>5?'<button class="ghost sm" data-act="goroutine">See all</button>':'')+'</div>';
-  if(!tt)tasksHtml+='<div class="empty">'+illBooks()+'<p class="sub">No tasks today. Open Routine to add or import your plan.</p><button class="sm" data-act="goroutine">Open Routine</button></div>';
-  else{T.slice(0,5).forEach(function(t){tasksHtml+=taskRow(t,td,0,1)});if(tt>5)tasksHtml+='<button class="ghost sm" data-act="goroutine" style="width:100%">Show all '+tt+' tasks</button>'}
-  h+=bannerHtml+sampleBannerHtml()+riskHtml()+tasksHtml+countdownsCard()+whatsNewCard()+smartRevisionCard()+analyticsCard();
+  h+=bannerHtml+sampleBannerHtml()+riskHtml()+tasksSummaryCard()+whatsNewCard()+homeMenuHtml();
   var lb=state.prefs.lastBackup,lbDays=lb?Math.round((pd(today())-pd(lb))/86400000):999;if(lbDays>3)h+='<div class="flag" style="background:var(--warnsoft);color:var(--warn)">Your data is only on this phone. No backup in the last 3 days.<button class="sm" style="margin-top:8px;width:100%" data-act="export">Export backup</button></div>';
   if(od)h+='<div class="flag">'+od+' overdue task'+(od>1?'s':'')+' not done. <button class="sm" style="margin-top:8px;width:100%" data-act="gooverdue">Review and reschedule</button></div>';
-  h+=reminderCard();
   return h}
 function chip(k,top,bot,cls){return'<button class="chip'+(selKey===k?' sel':'')+(cls||'')+'" data-act="pick" data-k="'+k+'"><b>'+esc(top)+'</b>'+esc(bot)+'</button>'}
 function vRoutine(){
@@ -894,11 +939,13 @@ document.addEventListener('touchmove',function(e){if(!schPinch||e.touches.length
 function schPinchEnd(e){if(!schPinch)return;if(e.touches&&e.touches.length>=2)return;var moved=schPinch.moved;schPinch=null;if(moved){schPinchSuppressUntil=Date.now()+400;render(true)}}
 document.addEventListener('touchend',schPinchEnd);
 document.addEventListener('touchcancel',schPinchEnd);
-var navLastY=0,navHidden=false,navDir=0,navAcc=0,wkLastY=0,wkHidden=false,wkDir=0,wkAcc=0;window.addEventListener('scroll',function(){var y=window.scrollY||0;var te=document.getElementById('tabs'),fe=document.getElementById('fab');if(!te||te.hidden){navLastY=y;navDir=0;navAcc=0}else{var dy=y-navLastY;if(dy>0){if(navDir!==1){navDir=1;navAcc=0}navAcc+=dy;if(navAcc>10&&y>80&&!navHidden){navHidden=true;te.classList.add('navhide');if(fe)fe.classList.add('navhide');navAcc=0}}else if(dy<0){if(navDir!==-1){navDir=-1;navAcc=0}navAcc+=-dy;if((navAcc>5||y<=0)&&navHidden){navHidden=false;te.classList.remove('navhide');if(fe)fe.classList.remove('navhide');navAcc=0}}navLastY=y}var wh=document.querySelector('.wk-head');if(!wh){wkLastY=y;wkDir=0;wkAcc=0;wkHidden=false}else{var dy2=y-wkLastY;if(dy2>0){if(wkDir!==1){wkDir=1;wkAcc=0}wkAcc+=dy2;if(wkAcc>10&&y>80&&!wkHidden){wkHidden=true;wh.classList.add('wkhide');wkAcc=0}}else if(dy2<0){if(wkDir!==-1){wkDir=-1;wkAcc=0}wkAcc+=-dy2;if((wkAcc>5||y<=0)&&wkHidden){wkHidden=false;wh.classList.remove('wkhide');wkAcc=0}}wkLastY=y}},{passive:true});function go(t){closeMenu();tab=t;streakView=false;navAnim=true;render();navAnim=false;window.scrollTo(0,0);var v=document.getElementById('view');v.classList.remove('pg');void v.offsetWidth;if(!/^s_|^logs$|^search$|^avatar$/.test(t))v.classList.add('pg');try{history.pushState({tab:t},'')}catch(e){}}
+var navLastY=0,navHidden=false,navDir=0,navAcc=0,wkLastY=0,wkHidden=false,wkDir=0,wkAcc=0;window.addEventListener('scroll',function(){var y=window.scrollY||0;var te=document.getElementById('tabs'),fe=document.getElementById('fab');if(!te||te.hidden){navLastY=y;navDir=0;navAcc=0}else{var dy=y-navLastY;if(dy>0){if(navDir!==1){navDir=1;navAcc=0}navAcc+=dy;if(navAcc>10&&y>80&&!navHidden){navHidden=true;te.classList.add('navhide');if(fe)fe.classList.add('navhide');navAcc=0}}else if(dy<0){if(navDir!==-1){navDir=-1;navAcc=0}navAcc+=-dy;if((navAcc>5||y<=0)&&navHidden){navHidden=false;te.classList.remove('navhide');if(fe)fe.classList.remove('navhide');navAcc=0}}navLastY=y}var wh=document.querySelector('.wk-head');if(!wh){wkLastY=y;wkDir=0;wkAcc=0;wkHidden=false}else{var dy2=y-wkLastY;if(dy2>0){if(wkDir!==1){wkDir=1;wkAcc=0}wkAcc+=dy2;if(wkAcc>10&&y>80&&!wkHidden){wkHidden=true;wh.classList.add('wkhide');wkAcc=0}}else if(dy2<0){if(wkDir!==-1){wkDir=-1;wkAcc=0}wkAcc+=-dy2;if((wkAcc>5||y<=0)&&wkHidden){wkHidden=false;wh.classList.remove('wkhide');wkAcc=0}}wkLastY=y}},{passive:true});function go(t){closeMenu();tab=t;streakView=false;homeView='';navAnim=true;render();navAnim=false;window.scrollTo(0,0);var v=document.getElementById('view');v.classList.remove('pg');void v.offsetWidth;if(!/^s_|^logs$|^search$|^avatar$/.test(t))v.classList.add('pg');try{history.pushState({tab:t},'')}catch(e){}}
 var backToastAt=0;
 window.addEventListener('popstate',function(e){var t=e.state&&e.state.tab;
   if(e.state&&e.state.streak&&tab==='records'){streakView=true;render();window.scrollTo(0,0);return}
   if(streakView){streakView=false;render();window.scrollTo(0,0);return}
+  if(e.state&&e.state.homeView&&tab==='home'){homeView=e.state.homeView;render();window.scrollTo(0,0);return}
+  if(homeView){homeView='';render();window.scrollTo(0,0);return}
   if(t){if(t!==tab){closeMenu();tab=t;render();window.scrollTo(0,0)}return}
   if(tab==='home'){var now=Date.now();if(now-backToastAt<2000){backToastAt=0;try{history.back()}catch(x){}}else{backToastAt=now;toast('Press Back again to exit Agradia.');try{history.pushState({tab:'home'},'')}catch(x){}}}
   else backTo()});
@@ -1931,6 +1978,9 @@ document.addEventListener('click',function(e){
     case'goroutine':go('routine');break;
     case'gorecords':go('records');break;
     case'backstreak':streakView=false;render();window.scrollTo(0,0);break;
+    case'homecountdowns':homeView='countdowns';try{history.pushState({tab:'home',homeView:'countdowns'},'')}catch(e){}render();window.scrollTo(0,0);break;
+    case'homereminders':homeView='reminders';try{history.pushState({tab:'home',homeView:'reminders'},'')}catch(e){}render();window.scrollTo(0,0);break;
+    case'backhome':homeView='';render();window.scrollTo(0,0);break;
     case'fab':toggleFabMenu();break;
     case'addrec':recDlg(D.k);break;
     case'addnote':noteDlg(D.k||today());break;
