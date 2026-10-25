@@ -1155,7 +1155,7 @@ function dots(){return'<button class="dotb" data-act="menu" aria-label="Menu"><s
 function closeMenu(){var m=document.getElementById('menu');if(m)m.remove();closeFabMenu()}
 function menuHtml(sub){var h='',v=state.prefs.routineView,bn=state.prefs.lang==='bn';
   if(sub==='view')h='<button data-act="mi" data-v="back">‹ Back</button><button data-act="mi" data-v="vlist" class="'+(v==='list'?'on':'')+'">List view</button><button data-act="mi" data-v="vcal" class="'+(v==='cal'?'on':'')+'">Calendar view</button>';
-  else{if(tab==='routine')h+='<button data-act="mi" data-v="edit">'+(edit?'Done editing':'Edit routine')+'</button><button data-act="mi" data-v="view">View</button>';if(tab==='schedule')h+='<button data-act="mi" data-v="schsettings">'+(bn?'সেটিংস':'Settings')+'</button>';else h+='<button data-act="mi" data-v="settings">Settings</button>'}
+  else{if(tab==='routine')h+='<button data-act="mi" data-v="edit">'+(edit?'Done editing':'Edit routine')+'</button><button data-act="mi" data-v="view">View</button>';h+='<button data-act="mi" data-v="settings">Settings</button>'}
   return'<div class="menu" role="menu">'+h+'</div>'}
 function openMenu(sub){closeFabMenu();var m=document.getElementById('menu');if(!m){m=document.createElement('div');m.id='menu';m.className='menuwrap';m.addEventListener('click',function(e){if(e.target===m)closeMenu()});document.body.appendChild(m)}m.innerHTML=menuHtml(sub)}
 /* ---------- study records, timer ---------- */
@@ -1482,6 +1482,7 @@ function vMore(){
     +srow('s_data',I.d,'Routine & Data','Update routine, daily limit, backup')
     +srow('logs',I.g,'Logs','Weak chapters and mistake log')
     +srow('s_workout','<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>','Workout Settings','Workout routines, time and options')
+    +srow('schsettings',ICONS.schedule,'Schedule Settings','Default time difference')
     +srow('s_about',I.i,'About Agradia','Version, your data, install')}
 function vSAppearance(){var t=state.prefs.theme,m=t.mode,h=head('Appearance');
   h+='<h3>Theme</h3>'+[['light','Light'],['dark','Dark'],['mono-light','Monochrome Light'],['mono-dark','Monochrome Dark']].map(function(o){return'<button class="opt'+(m===o[0]?' on':'')+'" data-act="tmode" data-v="'+o[0]+'"><i></i>'+o[1]+'</button>'}).join('');
@@ -1598,7 +1599,7 @@ document.addEventListener('click',function(e){
       else if(mv2==='vlist'||mv2==='vcal'){state.prefs.routineView=mv2==='vcal'?'cal':'list';save();render(true)}
       break;
     case'back':backTo();break;
-    case'sp':setY=window.scrollY;go(D.v);break;
+    case'sp':if(D.v==='schsettings'){schSettingsDlg();break}setY=window.scrollY;go(D.v);break;
     case'search':if(tab!=='search')prevTab=tab;searchQ='';go('search');setTimeout(function(){var q=document.getElementById('sq');if(q)q.focus()},60);break;
     case'srt':selKey=D.k;edit=false;go('routine');break;
     case'srs':recP='subjects';recAnchor='';go('records');break;
