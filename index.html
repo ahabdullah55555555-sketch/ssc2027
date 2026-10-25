@@ -205,7 +205,11 @@ img.av{object-fit:cover;display:block}
 .fl-out{animation:lick1 1.6s ease-in-out infinite}
 .fl-mid{animation:lick2 1.1s ease-in-out infinite}
 .fl-core{animation:lick3 .7s ease-in-out infinite}
-@media (prefers-reduced-motion:reduce){.fl-out,.fl-mid,.fl-core{animation:none}}
+@keyframes breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.03)}}
+@keyframes smoke{0%{opacity:0;transform:translateY(3px)}30%{opacity:.85}100%{opacity:0;transform:translateY(-7px)}}
+.breathe{transform-box:fill-box;transform-origin:50% 100%;animation:breathe 3s ease-in-out infinite}
+.smoke{animation:smoke 2.6s ease-out infinite}
+@media (prefers-reduced-motion:reduce){.fl-out,.fl-mid,.fl-core,.breathe,.smoke{animation:none}}
 .qah{margin:0 0 10px;font-size:20px}
 .qa{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -22px;padding:2px 22px 20px}
 .qa::-webkit-scrollbar{display:none}
@@ -611,7 +615,7 @@ var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Med
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
 var RULES=['On the day before an exam and until the exam morning, revise only that exam\'s subject and cover the whole book.','Prioritize upcoming exams. On gap days, focus on the subject of the next exam.','After an exam, begin preparing for the next subject that afternoon.','Daily study time must not exceed your daily limit (7h 30m by default; you can change it in Settings).','The exact exam timetable has not been supplied. No exam dates are shown as verified facts.','Subject-only instructions are kept exactly as written.'];
 var LEG=[['ICT','Information and Communication Technology'],['Islam','Islamic Studies'],['C','Chemistry'],['BGS','Bangladesh and Global Studies'],['Bio','Biology'],['HM','Higher Mathematics'],['Eng 1st','English First Paper'],['Eng 2nd','English Second Paper'],['Bangla 1st','Bangla First Paper'],['Bangla 2nd','Bangla Second Paper'],['G','Grammar'],['L','Lesson'],['B','Block'],['rev','Revision']];
-var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',recSel=-1,pieSel=-1,schDate='',schPx=52/60,backupPopupShown=false,avDraft=null,navAnim=false;
+var state,memOnly=false,tab='home',hd='',followToday=true,selKey='',edit=false,sel={},undoStack=[],deferred=null,dragId=null,updating=false,persisted='',rtDraft='',promptOpen=false,prevTab='home',calM='',calSync='',recP='daily',recAnchor='',recSel=-1,pieSel=-1,recDay='',schDate='',schPx=52/60,backupPopupShown=false,avDraft=null,navAnim=false;
 /* ---------- helpers ---------- */
 function pad(n){return(n<10?'0':'')+n}
 function isoOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
@@ -682,10 +686,13 @@ document.addEventListener('click',function(e){
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeFabMenu()});
 document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-recbar]'):null;if(!g)return;var v=+g.dataset.recbar;recSel=(recSel===v?-1:v);render(true)});
 document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-pie]'):null;if(!g)return;var v=+g.dataset.pie;pieSel=(pieSel===v?-1:v);render(true)});
-document.addEventListener('click',function(e){if(pieSel<0&&recSel<0)return;var t=e.target;if(!t.closest)return;if(t.closest('[data-pie],[data-recbar],.pie-detail,.rec-detail,button,a,input,select,textarea,[data-act],.modal,.fabmenu,.menu,.wkmenu'))return;pieSel=-1;recSel=-1;render(true)});
+document.addEventListener('click',function(e){if(pieSel<0&&recSel<0&&!recDay)return;var t=e.target;if(!t.closest)return;if(t.closest('[data-pie],[data-recbar],.pie-detail,.rec-detail,button,a,input,select,textarea,[data-act],.modal,.fabmenu,.menu,.wkmenu'))return;pieSel=-1;recSel=-1;recDay='';render(true)});
+document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-day]'):null;if(!g)return;var v=g.dataset.day;recDay=(recDay===v?'':v);render(true)});
+document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-shop]'):null;if(!g)return;var a=g.dataset.shop,bn=state.prefs.lang==='bn';if(!state.shop)state.shop={freezeDates:[],spent:0,aura:'none',auraStrong:false};if(!Array.isArray(state.shop.freezeDates))state.shop.freezeDates=[];var S=studyStats();if(a==='freeze'){if(S.coins<50){toast(bn?'কয়েন কম! ৫০ কয়েন লাগবে।':'Not enough coins. You need 50 coins.');return}state.shop.spent+=50;state.shop.freezeDates.push(today());save();render(true);toast(bn?'Freeze কেনা হয়েছে!':'Freeze bought!')}else if(a.indexOf('aura')===0){var au=a.slice(5);if(au==='strong'&&!state.shop.auraStrong){if(S.coins<20){toast(bn?'কয়েন কম! ২০ কয়েন লাগবে।':'Not enough coins. You need 20 coins.');return}state.shop.spent+=20;state.shop.auraStrong=true}state.shop.aura=au;save();render(true)}});
+document.addEventListener('click',function(e){var g=e.target.closest?e.target.closest('[data-share]'):null;if(!g)return;shareStreakPng()});
 function confirmBox(t,msg,ok,danger){return modal(t,'<p>'+esc(msg)+'</p>',[{label:'Cancel',cls:'ghost',val:false},{label:ok,cls:danger?'danger':'',val:true}]).then(function(r){return r.val===true})}
 /* ---------- data + storage ---------- */
-function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:'custom',routine:{days:[],tasks:[]},done:{},time:{},sessions:[],timer:null,sw:null,weak:[],mistakes:[],countdowns:[],subjects:['Language','English','Mathematics','Science'],dayNotes:{},schedule:{},setup:false,legacy:false,prefs:{limit:450,lang:'en',fs:'m',toastSec:4,routineView:'list',schDefaultMin:60,weekStart:6,avatar:null,name:'',subjColors:{},theme:{mode:'light',accent:null},animations:true}}}
+function fresh(){return{app:'ssc2027-tracker',schema:SCHEMA,routineVersion:'custom',routine:{days:[],tasks:[]},done:{},time:{},sessions:[],shop:{freezeDates:[],spent:0,aura:'none',auraStrong:false},timer:null,sw:null,weak:[],mistakes:[],countdowns:[],subjects:['Language','English','Mathematics','Science'],dayNotes:{},schedule:{},setup:false,legacy:false,prefs:{limit:450,lang:'en',fs:'m',toastSec:4,routineView:'list',schDefaultMin:60,weekStart:6,avatar:null,name:'',subjColors:{},theme:{mode:'light',accent:null},animations:true}}}
 function cleanRoutine(r,subs){subs=subs||SUBJ;
   if(!r||!Array.isArray(r.days)||!Array.isArray(r.tasks))throw new Error('Routine data is missing.');
   var seen={},days=[],tasks=[],ids={};
@@ -716,7 +723,7 @@ function clean(o){
   var P0=o.prefs||{},ts=parseInt(P0.toastSec,10);s.prefs.animations=P0.animations===false?false:true;s.prefs.toastSec=[2,3,4,5,8].indexOf(ts)>-1?ts:4;s.prefs.routineView=P0.routineView==='cal'?'cal':'list';var sdm=parseInt(P0.schDefaultMin,10);s.prefs.schDefaultMin=[15,30,60,120,240].indexOf(sdm)>-1?sdm:60;
   var av=P0.avatar;if(av&&av.type==='svg'&&av.cfg&&typeof av.cfg==='object')s.prefs.avatar={type:'svg',cfg:cleanCfg(av.cfg)};else if(av&&av.type==='img'&&typeof av.data==='string'&&av.data.length<400000&&/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(av.data))s.prefs.avatar={type:'img',data:av.data};
   if(P0.subjColors&&typeof P0.subjColors==='object')Object.keys(P0.subjColors).slice(0,80).forEach(function(k){if(HX.test(P0.subjColors[k]))s.prefs.subjColors[str(k,30)]=P0.subjColors[k]});
-  s.prefs.name=str(P0.name,24).trim();if(P0.seenVersion)s.prefs.seenVersion=str(P0.seenVersion,20);if(P0.nameAsked===true)s.prefs.nameAsked=true;if(P0.lastBackup&&DRE.test(P0.lastBackup))s.prefs.lastBackup=P0.lastBackup;if(P0.lastBackupPopup&&DRE.test(P0.lastBackupPopup))s.prefs.lastBackupPopup=P0.lastBackupPopup;s.sessions=cleanSess(o.sessions);s.timer=cleanTimer(o.timer);s.sw=cleanSw(o.sw);if(!s.timer&&o.timer&&typeof o.timer==='object'&&o.timer.dur===undefined&&DRE.test(o.timer.date)){var la=Number(o.timer.acc);if(isFinite(la)&&la>=0)s.sw={run:false,acc:Math.min(864e5,la+(o.timer.run===true?Math.max(0,Date.now()-Number(o.timer.start)):0)),startAt:0,subj:str(o.timer.subj,30),date:o.timer.date}}return s}
+  s.prefs.name=str(P0.name,24).trim();if(P0.seenVersion)s.prefs.seenVersion=str(P0.seenVersion,20);if(P0.nameAsked===true)s.prefs.nameAsked=true;if(P0.lastBackup&&DRE.test(P0.lastBackup))s.prefs.lastBackup=P0.lastBackup;if(P0.lastBackupPopup&&DRE.test(P0.lastBackupPopup))s.prefs.lastBackupPopup=P0.lastBackupPopup;if(o.shop&&typeof o.shop==='object'){if(Array.isArray(o.shop.freezeDates)){var fdl=[];o.shop.freezeDates.forEach(function(x){if(DRE.test(x))fdl.push(x)});s.shop.freezeDates=fdl.sort().slice(0,365)}s.shop.spent=Math.max(0,parseInt(o.shop.spent,10)||0);s.shop.aura=(o.shop.aura==='soft'||o.shop.aura==='strong')?o.shop.aura:'none';s.shop.auraStrong=o.shop.auraStrong===true}s.sessions=cleanSess(o.sessions);s.timer=cleanTimer(o.timer);s.sw=cleanSw(o.sw);if(!s.timer&&o.timer&&typeof o.timer==='object'&&o.timer.dur===undefined&&DRE.test(o.timer.date)){var la=Number(o.timer.acc);if(isFinite(la)&&la>=0)s.sw={run:false,acc:Math.min(864e5,la+(o.timer.run===true?Math.max(0,Date.now()-Number(o.timer.start)):0)),startAt:0,subj:str(o.timer.subj,30),date:o.timer.date}}return s}
 function cleanSchedule(o){var out={},n=0,TM=/^([01]\d|2[0-3]):[0-5]\d$/,HX=/^#[0-9a-fA-F]{6}$/;if(!o||typeof o!=='object')return out;var dates=Object.keys(o);for(var di=0;di<dates.length&&n<500;di++){var d=dates[di];if(!DRE.test(d)||!Array.isArray(o[d]))continue;var arr=[];for(var i=0;i<o[d].length&&n<500;i++){var x=o[d][i];if(!x||typeof x.title!=='string'||!x.title.trim()||!TM.test(x.start||'')||!TM.test(x.end||'')||toMin(x.end)<=toMin(x.start))continue;arr.push({id:str(x.id,40).replace(/[^\w-]/g,'_')||uid(),title:str(x.title,100).trim(),start:x.start,end:x.end,color:HX.test(x.color||'')?x.color.toUpperCase():''});n++}if(arr.length)out[d]=arr}return out}
 function cleanDayNotes(o){var out={};if(!o||typeof o!=='object')return out;Object.keys(o).forEach(function(d){if(!DRE.test(d))return;var a=Array.isArray(o[d])?o[d]:[];var arr=a.filter(function(n){return n&&typeof n.text==='string'&&n.text.trim()}).slice(0,100).map(function(n){return{id:str(n.id,40)||uid(),text:str(n.text,500).trim()}});if(arr.length)out[d]=arr});return out}
 function cleanSess(a){return Array.isArray(a)?a.slice(0,5000).filter(function(s){return s&&DRE.test(s.date)&&mn(s.mins)}).map(function(s){var tm=/^([01]\d|2[0-3]):[0-5]\d$/;return{id:str(s.id,40).replace(/[^\w-]/g,'_')||uid(),date:s.date,subj:str(s.subj,30),mins:mn(s.mins),start:tm.test(s.start||'')?s.start:'',end:tm.test(s.end||'')?s.end:''}}):[]}
@@ -1370,10 +1377,15 @@ function studyStats(){
   all.sort();
   var start=all.length?all[0]:td,back=addDays(td,-1825);
   if(start<back)start=back;
-  var bal=0,streak=0;
+  var bal=0,streak=0,lastBreak='';
+  var fds=((state.shop&&state.shop.freezeDates)||[]).slice().sort(),fi=0,frozenDays=[];
+  var spent=(state.shop&&state.shop.spent)||0;
   for(var d=start;d<=td;d=addDays(d,1)){
     if(studied[d]){bal+=Math.floor(logged(d)/10);streak++}
-    else if(d!==td&&planned[d]){if(streak>0)bal=Math.floor(bal*0.9);streak=0}
+    else if(d!==td&&planned[d]){
+      if(fi<fds.length&&fds[fi]<=d){frozenDays.push(d);fi++}
+      else{if(streak>0)bal=Math.floor(bal*0.9);streak=0;lastBreak=d}
+    }
   }
   var sun=addDays(td,-pd(td).getDay()),week=[];
   for(var i=0;i<7;i++){
@@ -1381,7 +1393,37 @@ function studyStats(){
     var st=studied[wd]?'done':(wd>td?'future':(planned[wd]?'missed':'rest'));
     week.push({d:wd,lab:['Su','Mo','Tu','We','Th','Fr','Sa'][i],state:st,today:wd===td});
   }
-  return{streak:streak,coins:bal,week:week}
+  return{streak:streak,coins:Math.max(0,bal-spent),week:week,lastBreak:lastBreak,frozenDays:frozenDays,freezesAvail:fds.length-fi}
+}
+function flameStage(st){
+  if(st>=28)return{sc:1.22,col:['#FF7A00','#FFA02E','#FFD93D'],wings:true,glow:'drop-shadow(0 0 18px rgba(255,184,0,.6))',name:'phoenix'};
+  if(st>=21)return{sc:1.22,col:['#FF7A00','#FFA02E','#FFD93D'],wings:false,glow:'drop-shadow(0 0 16px rgba(255,122,0,.55))',name:'inferno'};
+  if(st>=14)return{sc:1,col:['#FF7A00','#FFA02E','#FFD93D'],wings:false,glow:'',name:'flame'};
+  if(st>=7)return{sc:.82,col:['#FF7A00','#FFA02E','#FFD93D'],wings:false,glow:'',name:'spark'};
+  return{sc:.62,col:['#7C2D12','#9A3412','#EA580C'],wings:false,glow:'',name:'ember'};
+}
+function shopHtml(){
+  var bn=state.prefs.lang==='bn',S=studyStats(),sh=state.shop||{freezeDates:[],aura:'none',auraStrong:false};
+  var au=sh.aura||'none';
+  function ab(v,label,price){var on=au===v;return'<button data-shop="aura-'+v+'" class="'+(on?'':'ghost')+'" style="min-height:44px;padding:0 16px">'+label+(on?' ✓':'')+(price?' · '+price+' 🪙':'')+'</button>'}
+  return'<section class="card"><h2>'+(bn?'কয়েনের দোকান':'Coin shop')+'</h2>'
+  +'<p class="sub">'+(bn?'ব্যালেন্স: ':'Balance: ')+'🪙 '+S.coins+' · 🧊 '+(bn?'Freeze: ':'Freezes: ')+S.freezesAvail+'</p>'
+  +'<div style="margin-top:12px"><h3>🧊 '+(bn?'Streak Freeze':'Streak Freeze')+'</h3><p class="sub">'+(bn?'মিস হওয়ার আগেই কিনে রাখতে হবে — তাহলে ওই দিনটা নিজে নিজে বাঁচবে: স্ট্রিক ভাঙবে না, কয়েন কাটা যাবে না।':'Buy it before the missed day — then it auto-saves that day: your streak survives and no coins are lost.')+'</p><button data-shop="freeze" style="margin-top:8px">🧊 '+(bn?'কিনুন — ৫০ কয়েন':'Buy — 50 coins')+'</button></div>'
+  +'<div style="margin-top:16px"><h3>✨ '+(bn?'আগুনের আভা':'Flame aura')+'</h3><p class="sub">'+(bn?'শুধু আভার জোর বদলায়, আগুনের রঙ অরেঞ্জ/হলুদই থাকবে।':'Only the glow changes — the flame stays orange/yellow.')+'</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">'+ab('none',bn?'আভা ছাড়া':'No glow','')+ab('soft',bn?'হালকা আভা':'Soft glow','')+ab('strong',bn?'জোরালো আভা':'Strong glow',sh.auraStrong?'':'20')+'</div></div></section>';
+}
+function shareStreakPng(){
+  var bn=state.prefs.lang==='bn';var S=studyStats(),FS=flameStage(S.streak);
+  var tiers=[7,14,21,28],cur=0;tiers.forEach(function(m){if(S.streak>=m)cur=m});
+  var mile=cur>0?(bn?cur+' দিনের মাইলস্টোন খোলা':cur+'-day milestone unlocked'):(bn?'এগিয়ে যাও!':'Keep going!');
+  var fl='M9.5 1C12 3.5 15 6 17 9C18 7.5 19 7 20 8.5C22 11.5 22.5 15 20.5 18C18.5 21 15.5 22.5 12 22.5C8.5 22.5 5.5 21 4 18C2.5 15 3 12 5 10.5C4 9.5 4.5 8.5 6 8C7 5.5 8 3 9.5 1Z';
+  var flc='M12 15C13 16.8 14.5 18 14.5 20A2.5 2.5 0 0 1 9.5 20C9.5 18 11 16.8 12 15Z';
+  var wings=FS.wings?'<path d="M7.5 16 C5 14.5 3 12 2.2 9 C4.5 10.2 6.5 12 7.8 14.5 Z" fill="#FFB800"/><path d="M16.5 16 C19 14.5 21 12 21.8 9 C19.5 10.2 17.5 12 16.2 14.5 Z" fill="#FFB800"/>':'';
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" width="720" height="720" viewBox="0 0 720 720"><rect width="720" height="720" fill="#F6F3EA"/><g transform="translate(230 90) scale(10)">'+wings+'<path d="'+fl+'" fill="'+FS.col[0]+'"/><path d="'+fl+'" fill="'+FS.col[1]+'" transform="translate(0 -.8) translate(12 22.5) scale(.70) translate(-12 -22.5)"/><path d="'+flc+'" fill="'+FS.col[2]+'" transform="translate(.5 0)"/></g><text x="360" y="470" text-anchor="middle" font-family="sans-serif" font-size="120" font-weight="800" fill="#1F2937">'+S.streak+'</text><text x="360" y="530" text-anchor="middle" font-family="sans-serif" font-size="44" font-weight="700" fill="#FF7A00">'+(bn?'দিনের স্ট্রিক':'days streak')+'</text><text x="360" y="600" text-anchor="middle" font-family="sans-serif" font-size="32" fill="#6B7280">'+S.coins+' Coins · '+mile+'</text><text x="360" y="660" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#1F4D3A">Agradia</text></svg>';
+  var url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+  var img=new Image();
+  img.onload=function(){var c=document.createElement('canvas');c.width=720;c.height=720;c.getContext('2d').drawImage(img,0,0);URL.revokeObjectURL(url);var a=document.createElement('a');a.download='agradia-streak.png';a.href=c.toDataURL('image/png');a.click();toast(bn?'ছবি ডাউনলোড হয়েছে।':'Streak image downloaded.')};
+  img.onerror=function(){toast(bn?'ডাউনলোড করা যায়নি।':'Could not download the image.')};
+  img.src=url;
 }
 function streakCardHtml(){
   var bn=state.prefs.lang==='bn',S=studyStats();
@@ -1396,22 +1438,40 @@ function streakCardHtml(){
     if(w.state==='done')inner='<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#fl" fill="#FF7A00"/></svg>';
     else if(w.state==='rest')inner='<span style="width:7px;height:7px;border-radius:50%;background:var(--muted)"></span>';
     var extra=w.state==='missed'?'outline:2px dashed var(--muted);outline-offset:-2px;background:transparent;':'';
-    return'<div style="flex:1;text-align:center"><div style="width:34px;height:34px;margin:0 auto;border-radius:50%;background:var(--soft);display:grid;place-items:center;'+ring+extra+'">'+inner+'</div><div style="font-size:11px;color:var(--muted);margin-top:4px">'+w.lab+'</div></div>'
+    var sel=(typeof recDay!=='undefined'&&recDay===w.d)?'box-shadow:inset 0 0 0 2px #FF7A00;':'';
+    return'<button data-day="'+w.d+'" style="flex:1;background:none;border:0;padding:0;cursor:pointer"><div style="width:34px;height:34px;margin:0 auto;border-radius:50%;background:var(--soft);display:grid;place-items:center;'+ring+sel+extra+'">'+inner+'</div><div style="font-size:11px;color:var(--muted);margin-top:4px">'+w.lab+'</div></button>'
   }).join('');
+  var td0=today(),tdMin=logged(td0),plannedToday=R().tasks.some(function(t){return t.date===td0});
+  var dead=S.streak===0&&!!S.lastBreak,restDay=!plannedToday&&tdMin<=0;
+  var FS=flameStage(S.streak);
+  var aura=(state.shop&&state.shop.aura)||'none';
+  var liveSc=1+Math.min(tdMin,180)/180*0.15,liveBr=.9+Math.min(tdMin,180)/180*.2;
+  var auraGlow=aura==='strong'?'drop-shadow(0 0 22px rgba(255,122,0,.7))':(aura==='soft'?'drop-shadow(0 0 10px rgba(255,122,0,.45))':'');
+  var filt='brightness('+liveBr.toFixed(2)+')'+(auraGlow?' '+auraGlow:'');
+  var lCls=dead?['','','']:(FS.name==='ember'?['breathe','breathe','breathe']:['fl-out','fl-mid','fl-core']);
+  var fCol=dead?['#6B7280','#9CA3AF','#E5E7EB']:FS.col;
+  var scG='translate(12 22.5) scale('+FS.sc+') translate(-12 -22.5)';
+  var wings=FS.wings?'<path d="M7.5 16 C5 14.5 3 12 2.2 9 C4.5 10.2 6.5 12 7.8 14.5 Z" fill="#FFB800"/><path d="M16.5 16 C19 14.5 21 12 21.8 9 C19.5 10.2 17.5 12 16.2 14.5 Z" fill="#FFB800"/>':'';
+  var smoke=dead?'<g class="smoke"><path d="M12 7 C10.5 5.5 13.5 4.5 12 2.5" fill="none" stroke="#9CA3AF" stroke-width=".8" stroke-linecap="round"/></g>':'';
+  var flameSvg='<svg width="150" height="150" viewBox="0 0 24 24" aria-hidden="true"'+(FS.glow?' style="filter:'+FS.glow+'"':'')+'><g transform="'+scG+'">'+wings+smoke+'<g class="'+lCls[0]+'"><use href="#fl" fill="'+fCol[0]+'"/></g><g class="'+lCls[1]+'"><use href="#fl" fill="'+fCol[1]+'" transform="translate(0 -.8) translate(12 22.5) scale(.70) translate(-12 -22.5)"/></g><g class="'+lCls[2]+'"><use href="#flc" fill="'+fCol[2]+'" transform="translate(.5 0)"/></g></g></svg>';
+  var flameWrap='<div style="display:inline-block;transform:scale('+liveSc.toFixed(2)+');filter:'+filt+';transform-origin:50% 100%">'+(restDay&&!dead?'<div class="breathe" style="transform-origin:50% 100%">'+flameSvg+'</div>':flameSvg)+'</div>';
   var hero='<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><path id="fl" d="M9.5 1C12 3.5 15 6 17 9C18 7.5 19 7 20 8.5C22 11.5 22.5 15 20.5 18C18.5 21 15.5 22.5 12 22.5C8.5 22.5 5.5 21 4 18C2.5 15 3 12 5 10.5C4 9.5 4.5 8.5 6 8C7 5.5 8 3 9.5 1Z"/><path id="flc" d="M12 15C13 16.8 14.5 18 14.5 20A2.5 2.5 0 0 1 9.5 20C9.5 18 11 16.8 12 15Z"/></defs></svg>'
-  +'<div style="text-align:center;margin:6px 0 2px"><svg width="150" height="150" viewBox="0 0 24 24" aria-hidden="true"><g class="fl-out"><use href="#fl" fill="#FF7A00"/></g><g class="fl-mid"><use href="#fl" fill="#FFA02E" transform="translate(0 -.8) translate(12 22.5) scale(.70) translate(-12 -22.5)"/></g><g class="fl-core"><use href="#flc" fill="#FFD93D" transform="translate(.5 0)"/></g></svg></div>'
+  +'<div style="text-align:center;margin:6px 0 2px">'+flameWrap+'</div>'
   +'<div style="text-align:center;margin-top:-38px;position:relative"><svg width="200" height="76" viewBox="0 0 200 76" style="display:block;margin:0 auto" aria-hidden="true"><text x="100" y="58" text-anchor="middle" font-size="64" font-weight="800" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" style="fill:var(--text);stroke:var(--bg)" stroke-width="12" paint-order="stroke" stroke-linejoin="round">'+S.streak+'</text></svg></div>'
   +'<div style="text-align:center;font-size:16px;color:#FF7A00;font-weight:700;margin-top:2px">'+(bn?'দিনের স্ট্রিক':'days streak')+'</div>'
-  +'<div style="text-align:center;margin-top:12px"><span style="background:var(--soft);border-radius:999px;padding:7px 16px;font-weight:700;font-size:15px">🪙 '+S.coins+' '+(bn?'কয়েন':'Coins')+'</span></div>';
+  +'<div style="text-align:center;margin-top:12px"><span style="background:var(--soft);border-radius:999px;padding:7px 16px;font-weight:700;font-size:15px">🪙 '+S.coins+' '+(bn?'কয়েন':'Coins')+'</span></div>'
+  +'<div style="text-align:center;margin-top:12px"><button class="ghost" data-share="streak" style="min-height:44px;padding:0 18px">📤 '+(bn?'স্ট্রিক ছবি শেয়ার':'Share streak image')+'</button></div>';
   return'<section class="card">'+hero
   +'<div class="sub" style="margin:22px 0 10px">'+(bn?'এই সপ্তাহে':'This week')+'</div>'
   +'<div style="display:flex;gap:4px">'+wk+'</div>'
+  +'<p class="sub" style="text-align:center;margin-top:8px">'+(bn?'কোনো দিনে ট্যাপ করলে সেদিনের ডিটেইল দেখাবে।':'Tap a day to see its details.')+'</p>'
+  +(typeof recDay!=='undefined'&&recDay?'<div class="rec-detail" style="margin-top:12px;padding:12px 14px;background:var(--soft);border-radius:14px">'+dayDetailHtml(recDay)+'</div>':'')
   +mileBar
-  +'<p class="sub" style="margin:18px 0 0">'+(bn?'প্রতি ১০ মিনিট পড়ায় ১ কয়েন। পড়া থাকার দিনে না পড়লে ১০% কয়েন কাটা যাবে।':'1 coin per 10 minutes studied. A missed planned day takes 10% of coins.')+'</p></section>'
+  +'<p class="sub" style="margin:18px 0 0">'+(bn?'প্রতি ১০ মিনিট পড়ায় ১ কয়েন। প্ল্যান-থাকা দিনে না পড়লে ১০% কয়েন কাটা যাবে, তবে Freeze থাকলে বাঁচবে।':'1 coin per 10 minutes studied. A missed planned day takes 10% of coins, unless a Freeze saves it.')+'</p></section>'
 }
 function vRecords(){
   var h='<div class="row" style="margin-bottom:22px"><h1>Records</h1><div class="hdrb">'+sbtn()+dots()+'</div></div>';
-  h+=streakCardHtml();h+='<div class="seg">'+[['daily','Daily'],['weekly','Weekly'],['monthly','Monthly'],['yearly','Yearly'],['subjects','Subjects']].map(function(p){return'<button data-act="recp" data-v="'+p[0]+'" class="'+(recP===p[0]?'on':'')+'">'+p[1]+'</button>'}).join('')+'</div>';
+  h+=streakCardHtml();h+=shopHtml();h+='<div class="seg">'+[['daily','Daily'],['weekly','Weekly'],['monthly','Monthly'],['yearly','Yearly'],['subjects','Subjects']].map(function(p){return'<button data-act="recp" data-v="'+p[0]+'" class="'+(recP===p[0]?'on':'')+'">'+p[1]+'</button>'}).join('')+'</div>';
   if(recP==='subjects')return h+recSubjects();
   var B=recFill(recBuckets()),ts=0,tt=0,act=0,best=0,M=dayMapAll(),lo=B[0].from,hi=B[B.length-1].to;
   B.forEach(function(b){ts+=b.s;tt+=b.t});Object.keys(M).forEach(function(k){if(k>=lo&&k<=hi&&M[k].s>0){act++;best=Math.max(best,M[k].s)}});
@@ -1675,7 +1735,7 @@ document.addEventListener('click',function(e){
     case'avsave':state.prefs.avatar={type:'svg',cfg:clone(avDraft)};save();backTo();toast('Avatar saved.');break;
     case'avdef':state.prefs.avatar=null;save();if(tab==='avatar')backTo();else render(true);toast('Default avatar restored.');break;
     case'avphoto':var af2=document.getElementById('avfile');if(af2)af2.click();break;
-    case'recp':recP=D.v;recAnchor='';recSel=-1;pieSel=-1;render(true);break;
+    case'recp':recP=D.v;recAnchor='';recSel=-1;pieSel=-1;recDay='';render(true);break;
     case'recnav':var rn=+D.n,ra=recAnchor||today(),rp=pd(ra);
       if(recP==='daily')recAnchor=addDays(ra,rn);else if(recP==='weekly')recAnchor=addDays(ra,7*rn);else if(recP==='monthly')recAnchor=isoOf(new Date(rp.getFullYear(),rp.getMonth()+rn,1));else recAnchor=isoOf(new Date(rp.getFullYear()+rn,0,1));
       recSel=-1;render(true);break;
