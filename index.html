@@ -1888,6 +1888,10 @@ function vSAbout(){var h=head('About Agradia');
   h+='<h3>How your data is kept</h3><ol><li><b>Saved on this phone.</b> Every change is saved automatically. '+(memOnly?'<span style="color:var(--warn)">Storage is blocked right now.</span>':'<span class="ok">Working.</span>')+(persisted?' '+esc(persisted):'')+'</li><li><b>Offline copy of the app.</b> '+(navigator.serviceWorker&&navigator.serviceWorker.controller?'<span class="ok">Ready: the app opens without internet.</span>':'Not ready yet. Open the app once while online, then reopen it.')+' This stores app files only, not your data.</li><li><b>No automatic cloud sync.</b> GitHub Pages only hosts the files. Nothing is uploaded by the app itself and devices do not sync. Use Export backup, Share backup (to Drive or Gmail from this phone), or Import backup.</li></ol><p class="sub">Going back online never resets your data. Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>.</p>';
   h+='<h3>Install on Android</h3><ol><li>Open the app link in Chrome and let it load once while online.</li><li>Tap the three-dot menu, then Install app (or Add to Home screen).</li></ol>'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':'');
   h+='<h3>What\'s new in 3.1.0</h3><ul><li>Final black steps logo (SVG master) and a 1-second splash: bars grow one by one like steps, then the app opens.</li><li>PNG app icons (192 / 512 / maskable) and splash screen for a clean home-screen install.</li><li>Your own countdowns on Home: add as many as you want, each with a name, date and time, showing days left. No default countdown.</li><li>Backup check (reads a backup file and reports whether it is valid, without importing it) and Share backup to Drive/Gmail.</li><li>Today\'s reminders on Home and a browser-notification test. Limit: notifications do not arrive while the app is closed, because there is no server.</li></ul>';
+  h+='<h3>Cloud sync (manual)</h3><p class="sub">কিছুই নিজে থেকে upload হয় না। তুমি চাপলেই কেবল এই phone-এর data Firebase-এ যাবে বা আসবে।</p>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="connect">Connect</button><button data-cloud="upload">Upload</button><button data-cloud="download">Download check</button><button data-cloud="load">Load cloud data</button></div>'
+    +'<p class="sub" id="fbstatus">Status: not connected</p><p class="sub" id="fbdetail"></p>'
+    +'<label class="f">Firebase config (প্রথমবার একবার paste করো)</label><textarea id="fbcfg" rows="4" placeholder="Console থেকে SDK setup & configuration-এর config object এখানে paste করো"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="saveconfig">Save config</button></div>';
   if(state.legacy)h+='<h3>Scheduling rules</h3><ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol><h3>Subject abbreviations</h3><div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div>';
   return h}
 /* ---------- events ---------- */
@@ -1912,7 +1916,23 @@ document.addEventListener('change',function(e){
 document.addEventListener('input',function(e){var t=e.target,D=t.dataset||{};
   if(D.search!==undefined){searchQ=t.value;var r=document.getElementById('sres');if(r){r.innerHTML=searchRes(searchQ);trTree(r)}}});
 document.addEventListener('click',function(e){
-  var b=e.target.closest('button');if(!b||b.dataset.bi!==undefined)return;var D=b.dataset;
+  var b=e.target.closest('button');
+  if(b&&b.dataset.cloud){
+    var act=b.dataset.cloud, fbSt=document.getElementById('fbstatus');
+    if(act==='saveconfig'){
+      var raw=(document.getElementById('fbcfg')||{}).value||'';
+      var body=raw.slice(raw.indexOf('{'), raw.lastIndexOf('}')+1);
+      var cfg=null;
+      try{ cfg=JSON.parse(body); }catch(e){ try{ cfg=(new Function('return ('+body+')'))(); }catch(e2){} }
+      if(!cfg || !cfg.apiKey){ if(fbSt) fbSt.textContent='Status: Config চিনতে পারিনি — পুরো config object paste করো।'; return; }
+      try{ localStorage.setItem('agradia.firebaseConfig', JSON.stringify(cfg)); }catch(e){}
+      if(fbSt) fbSt.textContent='Status: Config saved — এবার Connect চাপো।';
+      return;
+    }
+    if(fbSt) fbSt.textContent='Status: '+act+' চাপা হয়েছে, কাজ চলছে...';
+    if(!window.__fbCloud){ if(fbSt) fbSt.textContent='Status: Cloud code load হয়নি — app-টা online-এ reopen করে আবার চাপো।'; return; }
+    window.__fbCloud(act);return}
+  if(!b||b.dataset.bi!==undefined)return;var D=b.dataset;
   if(D.tab)return go(D.tab);
   if(D.delweak){state.weak=state.weak.filter(function(w){return w.id!==D.delweak});save();return render(true)}
   if(D.delcd){var dc=(state.countdowns||[]).filter(function(c){return c.id===D.delcd})[0];return confirmBox('Delete this countdown?',dc?dc.name:'','Delete',true).then(function(ok){if(ok){state.countdowns=(state.countdowns||[]).filter(function(c){return c.id!==D.delcd});save();render(true)}})}
@@ -2070,5 +2090,52 @@ setInterval(function(){if(!state)return;var T=state.timer;
   var w=document.getElementById('swt');if(w&&state.sw)w.textContent=fmtClock(sela())},1000);
 </script>
 <script src="workout.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+let app=null, auth=null, db=null, uid=null;
+function st(m){ var el=document.getElementById('fbstatus'); if(el) el.textContent='Status: '+m; }
+function dt(m){ var el=document.getElementById('fbdetail'); if(el) el.textContent=m; }
+function getCfg(){ try{ return JSON.parse(localStorage.getItem('agradia.firebaseConfig')||'null'); }catch(e){ return null; } }
+async function ensure(){
+  const cfg=getCfg();
+  if(!cfg){ st('Config পাওয়া যায়নি — উপরের box-এ config paste করে Save config চাপো।'); return false; }
+  if(!app){ app=initializeApp(cfg); auth=getAuth(app); db=getFirestore(app);
+    onAuthStateChanged(auth, u=>{ uid=u?u.uid:null; if(uid) st('Connected, UID: '+uid); }); }
+  if(!auth.currentUser){ await signInAnonymously(auth); }
+  uid=auth.currentUser.uid; st('Connected, UID: '+uid); return true;
+}
+function appState(){ try{ return localStorage.getItem('ssc2027.data.v2')||'{}'; }catch(e){ return '{}'; } }
+window.__fbCloud = async function(act){
+  try{
+    if(act==='connect'){ await ensure(); return; }
+    if(!await ensure()) return;
+    const ref=doc(db,'users',uid);
+    if(act==='upload'){
+      const s=appState();
+      await setDoc(ref,{state:s,app:'agradia',updatedAt:serverTimestamp()},{merge:true});
+      st('Uploaded'); dt('Size: '+(s.length)+' characters. এই phone-এর data Firebase-এ গেছে।');
+    } else if(act==='download'){
+      const snap=await getDoc(ref);
+      if(!snap.exists()){ st('Cloud-এ কোনো data নেই'); dt(''); return; }
+      const d=snap.data();
+      st('Cloud data পাওয়া গেছে'); dt('Size: '+((d.state||'').length)+' characters. Load চাপলে এই phone-এ বসবে।');
+    } else if(act==='load'){
+      const snap=await getDoc(ref);
+      if(!snap.exists()){ st('Cloud-এ কোনো data নেই'); return; }
+      const d=snap.data();
+      if(!d.state){ st('Cloud data খালি'); return; }
+      const ok=await window.confirmBox('Load cloud data?','এখনকার data-র একটা backup এই phone-এ রাখা হবে, তারপর cloud data বসবে।','Load',true);
+      if(!ok){ st('Load বাতিল করা হয়েছে।'); return; }
+      try{ localStorage.setItem('ssc2027.data.v2.backup-before-cloud', appState()); }catch(e){}
+      try{ localStorage.setItem('ssc2027.data.v2', d.state); }catch(e){ st('Load ব্যর্থ — storage-এ জায়গা নেই।'); return; }
+      st('Loaded — app reload হচ্ছে...');
+      setTimeout(function(){ location.reload(); }, 600);
+    }
+  }catch(err){ st('Error: '+(err&&err.message?err.message:err)); }
+};
+</script>
 </body>
 </html>
