@@ -70,6 +70,7 @@ h3{font-family:'Sora','Hind Siliguri','Noto Sans Bengali','Poppins',sans-serif;f
 button,.btn{font:inherit;font-weight:600;min-height:54px;padding:0 22px;border-radius:18px;border:0;background:var(--accent);color:var(--onacc);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-align:center;transition:transform .12s,opacity .2s}
 button.addbtn::before{content:"+";margin-right:7px;font-weight:700}
 button:active{transform:scale(.97)}
+.avbig .av{width:84px;height:84px}
 .gbtn{background:#ffffff!important;color:#1f1f1f!important;border:1px solid #dadce0!important;border-radius:8px!important;padding:12px 16px!important;display:flex!important;align-items:center;justify-content:center;gap:12px;font-weight:600;width:100%}
 button.ghost,.btn.ghost{background:var(--soft);border:0;color:var(--text)}
 button.danger{background:var(--warnsoft);color:var(--warn)}
@@ -783,7 +784,7 @@ function selIds(){return Object.keys(sel).filter(function(k){return sel[k]})}
 /* ---------- views ---------- */
 var ICONS={home:'<path d="M3 11l9-8 9 8v10H3z"/>',routine:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/>',subjects:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',logs:'<path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',records:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',schedule:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/><circle cx="12" cy="16" r="3"/><path d="M12 14.5V16l1.2 1.2"/>'};
 var TABS=[['home','Home'],['routine','Routine'],['records','Records'],['schedule','Schedule']];
-function renderTabs(){document.getElementById('tabs').innerHTML=TABS.map(function(t){return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on'+(navAnim?' pop':''):'')+'" aria-label="'+t[1]+'"'+(tab===t[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg></button>'}).join('')}
+function renderTabs(){var list=TABS;try{if(typeof wkLoad==='function'&&wkLoad().showNav===false)list=TABS.filter(function(t){return t[0]!=='workout'})}catch(e){}document.getElementById('tabs').innerHTML=list.map(function(t){return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on'+(navAnim?' pop':''):'')+'" aria-label="'+t[1]+'"'+(tab===t[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg></button>'}).join('')}
 function ring(p,lbl){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--track)" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--neon)" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+(lbl||p+'%')+'</b></div>'}
 function bar(p,w){return'<div class="bar'+(w?' warn':'')+'" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div>'}
 function taskRow(t,k,i,n){
@@ -1845,7 +1846,8 @@ function vMore(){
     +srow('s_workout','<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>','Workout Settings','Workout routines, time and options')
     +srow('schsettings',ICONS.schedule,'Schedule Settings','Default time difference')
     +srow('s_howto',I.i,'How to use','App-ta kivabe use korben')
-    +srow('s_about',I.i,'About Agradia','Version, your data, install')}
+    +srow('s_about',I.i,'About Agradia','Version, your data, install')
+    +(window.__fbUser?('<hr style="margin:16px 0 4px;border:0;border-top:1px solid var(--hair)"><button data-cloud="logout" style="display:flex;align-items:center;gap:14px;width:100%;min-height:56px;padding:10px 4px;background:none;color:#B3261E;text-align:left;font-size:16px;font-weight:500"><span style="width:21px;height:21px;flex:none"><svg viewBox="0 0 24 24" style="width:21px;height:21px;fill:none;stroke:#B3261E;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span><span>Log out</span></button>'):'')}
 function vSAppearance(){var t=state.prefs.theme,m=t.mode,h=head('Appearance');
   h+='<h3>Theme</h3>'+[['light','Light'],['dark','Dark'],['mono-light','Monochrome Light'],['mono-dark','Monochrome Dark']].map(function(o){return'<button class="opt'+(m===o[0]?' on':'')+'" data-act="tmode" data-v="'+o[0]+'"><i></i>'+o[1]+'</button>'}).join('');
   if(m!=='mono'&&m!=='mono-light'&&m!=='mono-dark'){h+='<h3>Accent color</h3><div class="swatches">'+[['','Brand Blue (default)']].concat(PALETTES.slice(1)).map(function(p){var v=p[0],sel=v?t.accent===v:!t.accent;return'<button class="sw'+(sel?' on':'')+'" data-act="pacc" data-v="'+v+'" aria-label="'+p[1]+'"><i style="background:'+(v||'#145DA0')+'"></i>'+p[1]+'</button>'}).join('')+'</div>'}
@@ -1889,11 +1891,13 @@ function vSData(){var lim=state.prefs.limit,h=head('Routine & Data');
   return h}
 function vSAccount(){var u=window.__fbUser||null;
   if(u){var h=head('Account');
-    var initial=((u.email||'A').trim().charAt(0)||'A').toUpperCase();
+    var nm=state.prefs.name||'';
     var prov=(u.provider==='google.com')?'Signed in with Google':(u.provider==='password'?'Signed in with Email':'Signed in');
-    h+='<div style="display:flex;gap:14px;align-items:center;margin:8px 0 16px"><span style="width:52px;height:52px;border-radius:50%;background:#145DA0;color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;flex:none">'+esc(initial)+'</span><span><b style="display:block">'+esc(u.email||'')+'</b><span class="sub">'+prov+'</span></span></div>'
-    +'<p class="sub">Auto-sync is on. Your data syncs when you are online.</p>'
-    +'<div style="margin-top:32px"><button style="background:#B3261E;color:#ffffff;border-radius:12px;width:100%;padding:14px;font-weight:700" data-cloud="logout">Log out</button></div>';return h}
+    h+='<div style="display:grid;place-items:center;text-align:center;margin:8px 0 16px"><span class="avbig" style="position:relative;display:block;width:84px;height:84px">'+avatarEl()+'<button data-act="sp" data-v="s_profile" aria-label="Edit avatar" style="position:absolute;right:0;bottom:0;width:26px;height:26px;min-height:0;padding:0;border-radius:50%;background:var(--bg);border:1px solid var(--hair);display:grid;place-items:center;color:var(--text)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></button></span>'
+    +(nm?('<b style="display:block;font-size:20px;margin-top:12px">'+esc(nm)+'</b>'):'')
+    +'<span class="sub" style="display:block;margin-top:4px">'+esc(u.email||'')+'</span>'
+    +'<span class="sub" style="display:block">'+prov+'</span></div>'
+    +'<div style="margin-top:8px"><div class="row"><span>Sync</span><b>Auto-sync on</b></div><div class="row" style="margin-top:8px"><span>Sign-in method</span><b>'+(u.provider==='google.com'?'Google':'Email')+'</b></div></div>';return h}
   var mode=window.__acctMode||'signin', isUp=(mode==='signup'), h=head(isUp?'Sign up':'Sign in');
   h+='<p class="sub">'+(isUp?'Create an account to sync your data across devices.':'Welcome back. Sign in to sync your data.')+'</p>'
     +(window.__fbAuthError?('<p class="sub">Last sign-in error: '+esc(window.__fbAuthError)+'</p>'):'')
