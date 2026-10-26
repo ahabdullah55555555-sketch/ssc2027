@@ -765,7 +765,7 @@ function load(){
   var old=null;try{old=localStorage.getItem(OLDKEY)}catch(e){}
   if(old){try{state=migrateV1(JSON.parse(old));save();toast('Found data from the earlier app version. Study time, weak chapters and mistakes were kept. Old checkboxes belonged to the old routine and were not carried over. The old data is still stored.');return}catch(e){}}
   state=fresh();save()}
-function save(){try{if(!memOnly)localStorage.setItem(KEY,JSON.stringify(state))}catch(e){memOnly=true;toast('Could not save. Export a backup from Settings.')}}
+function save(){try{if(!memOnly)localStorage.setItem(KEY,JSON.stringify(state))}catch(e){memOnly=true;toast('Could not save. Export a backup from Settings.')}try{if(window.__fbAutoUpload)window.__fbAutoUpload()}catch(e){}}
 function snap(){undoStack.push(JSON.stringify({routine:state.routine,done:state.done,subjects:state.subjects,limit:state.prefs.limit,rv:state.routineVersion,sessions:state.sessions,time:state.time,schedule:state.schedule,demo:state.demo}));if(undoStack.length>25)undoStack.shift()}
 function undo(){var s=undoStack.pop();if(!s)return;var o=JSON.parse(s);state.routine=o.routine;state.done=o.done;if(o.subjects)state.subjects=o.subjects;if(o.limit)state.prefs.limit=o.limit;if(o.rv)state.routineVersion=o.rv;if(o.sessions)state.sessions=o.sessions;if(o.time)state.time=o.time;if(o.schedule)state.schedule=o.schedule;if(o.demo!==undefined)state.demo=o.demo;sel={};save();render(true);toast('Undone.')}
 function mutate(fn,msg){snap();fn();save();render(true);if(msg)toast(msg,'Undo',undo)}
@@ -920,7 +920,7 @@ function render(keep){
   var dr=document.getElementById('rt')||document.getElementById('ru');if(dr)rtDraft=dr.value;
   if(state.subjects)SUBJ=state.subjects;
   if(!state.setup){var y0=window.scrollY;document.getElementById('view').innerHTML=vOnboard();document.getElementById('tabs').innerHTML='';if(keep)window.scrollTo(0,y0);trTree(document.getElementById('view'));return}
-  var y=window.scrollY,vf={home:vHome,routine:vRoutine,records:vRecords,logs:vLogs,settings:vMore,avatar:vAvatar,search:vSearch,timer:vTimer,stopwatch:vSw,s_appearance:vSAppearance,s_language:vSLanguage,s_profile:vSProfile,s_data:vSData,s_about:vSAbout,workout:vWorkout,s_workout:vWkSettings,schedule:vSchedule}[tab]||vHome,viewHtml;
+  var y=window.scrollY,vf={home:vHome,routine:vRoutine,records:vRecords,logs:vLogs,settings:vMore,s_account:vSAccount,avatar:vAvatar,search:vSearch,timer:vTimer,stopwatch:vSw,s_appearance:vSAppearance,s_language:vSLanguage,s_profile:vSProfile,s_data:vSData,s_about:vSAbout,workout:vWorkout,s_workout:vWkSettings,schedule:vSchedule}[tab]||vHome,viewHtml;
   try{viewHtml=vf()}catch(err){try{toast('This section could not open. Please try again.')}catch(e2){}if(tab==='workout'){tab='home';return render(keep)}return}
   var noTabs=!state.setup||tab==='timer'||tab==='stopwatch'||tab==='search'||tab==='settings'||tab==='workout'||/^s_/.test(tab);document.getElementById('tabs').hidden=noTabs;if(!noTabs){document.getElementById('tabs').classList.remove('navhide');var fb0=document.getElementById('fab');if(fb0)fb0.classList.remove('navhide');navLastY=window.scrollY||0;navHidden=false;navDir=0;navAcc=0;}wkLastY=window.scrollY||0;wkDir=0;wkAcc=0;wkHidden=false;
   var fb=document.getElementById('fab');if(fb)fb.hidden=noTabs||!/^(home|routine|records|schedule)$/.test(tab);
@@ -1841,6 +1841,7 @@ function vMore(){
     +srow('logs',I.g,'Logs','Weak chapters and mistake log')
     +srow('s_workout','<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>','Workout Settings','Workout routines, time and options')
     +srow('schsettings',ICONS.schedule,'Schedule Settings','Default time difference')
+    +srow('s_account',I.p,'Account & Sync','Google / Email sign-in, auto-sync')
     +srow('s_about',I.i,'About Agradia','Version, your data, install')}
 function vSAppearance(){var t=state.prefs.theme,m=t.mode,h=head('Appearance');
   h+='<h3>Theme</h3>'+[['light','Light'],['dark','Dark'],['mono-light','Monochrome Light'],['mono-dark','Monochrome Dark']].map(function(o){return'<button class="opt'+(m===o[0]?' on':'')+'" data-act="tmode" data-v="'+o[0]+'"><i></i>'+o[1]+'</button>'}).join('');
@@ -1883,6 +1884,16 @@ function vSData(){var lim=state.prefs.limit,h=head('Routine & Data');
   h+='<h3>Routine tools</h3><p class="sub">Remove your current routine and upload a new one from the start. Study time, weak chapters and mistakes are kept. Export a backup first.</p><button class="danger" data-act="rmroutine" style="width:100%">Remove routine and start fresh</button>';
   h+='<h3>Reset study records</h3><p class="sub">Clears ticks, study time, weak chapters, and mistakes. Your routine stays. Export a backup first.</p><button class="danger" data-act="resetprog" style="width:100%">Reset progress</button>';
   return h}
+function vSAccount(){var h=head('Account & Sync');var u=window.__fbUser||null;
+  var cfg=null;try{cfg=JSON.parse(localStorage.getItem('agradia.firebaseConfig')||'null')}catch(e){}
+  if(!cfg){h+='<p class="sub">প্রথমে একবার Firebase config দিতে হবে।</p><label class="f">Firebase config</label><textarea id="fbcfg" rows="4" placeholder="Console থেকে SDK setup & configuration-এর config object এখানে paste করো"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="saveconfig">Save config</button></div>';return h}
+  if(!u){h+='<p class="sub">Sign-in করলে এই phone-এর data তোমার account-এর সাথে sync হবে। Sign-in না করলে data শুধু এই phone-এই থাকবে।</p>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="google">Google দিয়ে সাইন ইন</button><button data-cloud="email">ইমেইল দিয়ে সাইন ইন / সাইন আপ</button></div>'
+    +'<p class="sub" id="acctstatus">Status: not signed in</p><p class="sub">Google সাইন ইন-এর জন্য Firebase console-এ Authorized domains-এ ahabdullah55555555-sketch.github.io যোগ থাকতে হবে।</p>';return h}
+  h+='<p class="sub">Signed in as <b>'+esc(u.email||u.uid)+'</b></p><p class="sub">Auto-sync: চালু — save করলেই internet থাকলে cloud-এ উঠে যাবে।</p>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="upload">Upload now</button><button data-cloud="download">Download check</button><button data-cloud="load">Load cloud data</button><button class="ghost" data-cloud="logout">Log out</button></div>'
+    +'<p class="sub" id="acctstatus">Status: signed in</p><p class="sub" id="fbstatus"></p><p class="sub" id="fbdetail"></p>'
+    +'<p class="sub">Log out করলে এই phone-এর data মুছবে না, শুধু auto-sync বন্ধ হবে।</p>';return h}
 function vSAbout(){var h=head('About Agradia');
   h+='<div class="empty"><img src="icon.svg" width="76" height="76" style="border-radius:22px" alt=""><h2 style="margin:12px 0 0">Agradia</h2><p class="sub">Version '+APP_VERSION+'</p></div>';
   h+='<h3>How your data is kept</h3><ol><li><b>Saved on this phone.</b> Every change is saved automatically. '+(memOnly?'<span style="color:var(--warn)">Storage is blocked right now.</span>':'<span class="ok">Working.</span>')+(persisted?' '+esc(persisted):'')+'</li><li><b>Offline copy of the app.</b> '+(navigator.serviceWorker&&navigator.serviceWorker.controller?'<span class="ok">Ready: the app opens without internet.</span>':'Not ready yet. Open the app once while online, then reopen it.')+' This stores app files only, not your data.</li><li><b>No automatic cloud sync.</b> GitHub Pages only hosts the files. Nothing is uploaded by the app itself and devices do not sync. Use Export backup, Share backup (to Drive or Gmail from this phone), or Import backup.</li></ol><p class="sub">Going back online never resets your data. Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>.</p>';
@@ -1927,8 +1938,15 @@ document.addEventListener('click',function(e){
       if(!cfg || !cfg.apiKey){ if(fbSt) fbSt.textContent='Status: Config চিনতে পারিনি — পুরো config object paste করো।'; return; }
       try{ localStorage.setItem('agradia.firebaseConfig', JSON.stringify(cfg)); }catch(e){}
       if(fbSt) fbSt.textContent='Status: Config saved — এবার Connect চাপো।';
+      var aSt=document.getElementById('acctstatus'); if(aSt) aSt.textContent='Status: Config saved — এবার সাইন ইন করো।';
+      if(typeof tab!=='undefined' && tab==='s_account'){ try{ render(true); }catch(e){} }
       return;
     }
+    var stEl=document.getElementById('acctstatus')||fbSt;
+    if(stEl) stEl.textContent='Status: '+act+' চাপা হয়েছে, কাজ চলছে...';
+    if(act==='google'||act==='email'||act==='logout'){
+      if(!window.__fbAccount){ if(stEl) stEl.textContent='Status: Account code load হয়নি — app-টা online-এ reopen করে আবার চাপো।'; return; }
+      window.__fbAccount(act);return}
     if(fbSt) fbSt.textContent='Status: '+act+' চাপা হয়েছে, কাজ চলছে...';
     if(!window.__fbCloud){ if(fbSt) fbSt.textContent='Status: Cloud code load হয়নি — app-টা online-এ reopen করে আবার চাপো।'; return; }
     window.__fbCloud(act);return}
@@ -2093,29 +2111,126 @@ setInterval(function(){if(!state)return;var T=state.timer;
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-let app=null, auth=null, db=null, uid=null;
+let app=null, auth=null, db=null, uid=null, handledUid=null, autoTimer=null, listenerSet=false, loadingCloud=false;
 function st(m){ var el=document.getElementById('fbstatus'); if(el) el.textContent='Status: '+m; }
+function stA(m){ var el=document.getElementById('acctstatus'); if(el) el.textContent='Status: '+m; else st(m); }
 function dt(m){ var el=document.getElementById('fbdetail'); if(el) el.textContent=m; }
 function getCfg(){ try{ return JSON.parse(localStorage.getItem('agradia.firebaseConfig')||'null'); }catch(e){ return null; } }
+function appState(){ try{ return localStorage.getItem('ssc2027.data.v2')||'{}'; }catch(e){ return '{}'; } }
+function getLinked(){ try{ return localStorage.getItem('agradia.cloudUid')||''; }catch(e){ return ''; } }
+function setLinked(v){ try{ localStorage.setItem('agradia.cloudUid', v); }catch(e){} }
+function getLastSync(){ try{ return +(localStorage.getItem('agradia.lastSyncAt')||0); }catch(e){ return 0; } }
+function setLastSync(v){ try{ localStorage.setItem('agradia.lastSyncAt', String(v)); }catch(e){} }
+function cloudMillis(d){ try{ var t=d.updatedAt; if(t && t.toMillis) return t.toMillis(); if(typeof t==='number') return t; }catch(e){} return 0; }
+async function uploadLocal(u){ const s=appState(); await setDoc(doc(db,'users',u),{state:s,app:'agradia',updatedAt:serverTimestamp()},{merge:true}); setLastSync(Date.now()); return s; }
+async function loadCloudState(u, d){
+  loadingCloud=true;
+  try{ localStorage.setItem('ssc2027.data.v2.backup-before-cloud', appState()); }catch(e){}
+  try{ localStorage.setItem('ssc2027.data.v2', d.state); }catch(e){ loadingCloud=false; return false; }
+  setLastSync(cloudMillis(d)||Date.now()); setLinked(u); loadingCloud=false; return true;
+}
+async function chooseCloudOrPhone(title, msg){
+  try{ var r=await window.modal(title,'<p>'+msg+'</p>',[{label:'Phone-এর data upload করো',val:1},{label:'Cloud data load করো',cls:'ghost',val:2},{label:'Cancel',cls:'ghost',val:0}]); return r.val; }catch(e){ return 0; }
+}
+async function handleUser(u){
+  try{
+    var linked=getLinked(), ref=doc(db,'users',u.uid), snap=await getDoc(ref), hasCloud=snap.exists()&&!!snap.data().state;
+    if(!linked){
+      if(!hasCloud){ await uploadLocal(u.uid); setLinked(u.uid); stA('Account linked — phone-এর data cloud-এ উঠেছে।'); return; }
+      var c=await chooseCloudOrPhone('Cloud-এ data আছে','এই account-এর cloud-এ আগের data আছে, আর এই phone-এও data আছে। কোনটা রাখবো?');
+      if(c===1){ await uploadLocal(u.uid); setLinked(u.uid); stA('Phone-এর data cloud-এ উঠেছে।'); }
+      else if(c===2){ if(await loadCloudState(u.uid, snap.data())){ stA('Cloud data load হচ্ছে...'); setTimeout(function(){ location.reload(); }, 600); } }
+      else { await signOut(auth); stA('Cancelled — sign out করা হয়েছে।'); }
+      return;
+    }
+    if(linked!==u.uid){
+      var c2=await chooseCloudOrPhone('অন্য account','এই phone আগে অন্য account-এর সাথে linked ছিল। ভুল account-এ phone-এর data যাতে না যায়, তাই নিশ্চিত করো।');
+      if(c2===1){ await uploadLocal(u.uid); setLinked(u.uid); stA('Phone-এর data নতুন account-এ উঠেছে।'); }
+      else if(c2===2){ var s2=await getDoc(ref); if(s2.exists()&&s2.data().state){ if(await loadCloudState(u.uid, s2.data())){ setTimeout(function(){ location.reload(); }, 600); } } else { setLinked(u.uid); stA('এই account-এ cloud data নেই — phone-এর data-ই থাকবে।'); } }
+      else { await signOut(auth); stA('Cancelled — sign out করা হয়েছে।'); }
+      return;
+    }
+    if(hasCloud){
+      var cm=cloudMillis(snap.data());
+      if(cm>getLastSync() && snap.data().state!==appState()){
+        if(await loadCloudState(u.uid, snap.data())){ setTimeout(function(){ location.reload(); }, 600); return; }
+      }
+    }
+  }catch(err){ stA('Sync error: '+(err&&err.message?err.message:err)); }
+}
+function init(){
+  if(listenerSet) return true;
+  const cfg=getCfg(); if(!cfg) return false;
+  app=initializeApp(cfg); auth=getAuth(app); db=getFirestore(app); listenerSet=true;
+  onAuthStateChanged(auth, function(u){
+    if(!u || u.isAnonymous){ window.__fbUser=null; uid=u?u.uid:null; if(typeof tab!=='undefined' && tab==='s_account'){ try{ render(true); }catch(e){} } return; }
+    window.__fbUser={uid:u.uid, email:u.email||'', displayName:u.displayName||''}; uid=u.uid;
+    if(typeof tab!=='undefined' && tab==='s_account'){ try{ render(true); }catch(e){} }
+    if(handledUid===u.uid) return; handledUid=u.uid; handleUser(u);
+  });
+  try{ getRedirectResult(auth).catch(function(e){ window.__fbAuthError=e.message; stA('Google sign-in error: '+e.message); }); }catch(e){}
+  return true;
+}
 async function ensure(){
-  const cfg=getCfg();
-  if(!cfg){ st('Config পাওয়া যায়নি — উপরের box-এ config paste করে Save config চাপো।'); return false; }
-  if(!app){ app=initializeApp(cfg); auth=getAuth(app); db=getFirestore(app);
-    onAuthStateChanged(auth, u=>{ uid=u?u.uid:null; if(uid) st('Connected, UID: '+uid); }); }
+  if(!init()){ st('Config পাওয়া যায়নি — Settings > Account-এ config paste করে Save config চাপো।'); return false; }
   if(!auth.currentUser){ await signInAnonymously(auth); }
   uid=auth.currentUser.uid; st('Connected, UID: '+uid); return true;
 }
-function appState(){ try{ return localStorage.getItem('ssc2027.data.v2')||'{}'; }catch(e){ return '{}'; } }
+window.__fbAutoUpload = function(){
+  try{ clearTimeout(autoTimer); }catch(e){}
+  autoTimer=setTimeout(async function(){
+    try{
+      if(loadingCloud) return;
+      if(!auth || !auth.currentUser || auth.currentUser.isAnonymous) return;
+      if(getLinked()!==auth.currentUser.uid) return;
+      await uploadLocal(auth.currentUser.uid);
+    }catch(e){}
+  }, 1500);
+};
+window.addEventListener('online', function(){
+  try{
+    if(window.__fbAutoUpload) window.__fbAutoUpload();
+    if(auth && auth.currentUser && !auth.currentUser.isAnonymous && getLinked()===auth.currentUser.uid){
+      getDoc(doc(db,'users',auth.currentUser.uid)).then(function(snap){
+        if(snap.exists()&&snap.data().state&&cloudMillis(snap.data())>getLastSync()&&snap.data().state!==appState()){
+          try{ toast('Cloud-এ নতুন data আছে — Account থেকে Load চাপলে আসবে।'); }catch(e){}
+        }
+      }).catch(function(){});
+    }
+  }catch(e){}
+});
+window.__fbAccount = async function(act){
+  try{
+    if(act==='google'){
+      if(!init()){ stA('Config পাওয়া যায়নি — উপরে config paste করে Save config চাপো।'); return; }
+      await signInWithRedirect(auth, new GoogleAuthProvider()); return;
+    }
+    if(act==='logout'){
+      if(!init()) return;
+      handledUid=null; await signOut(auth); window.__fbUser=null;
+      try{ toast('Logged out — phone-এর data আছে।'); }catch(e){}
+      try{ render(true); }catch(e){} return;
+    }
+    if(act==='email'){
+      if(!init()){ stA('Config পাওয়া যায়নি — উপরে config paste করে Save config চাপো।'); return; }
+      var r=await window.modal('ইমেইল দিয়ে সাইন ইন','<label class="f">ইমেইল</label><input id="em" type="email" placeholder="you@example.com"><label class="f">পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><input id="pw" type="password" placeholder="Password">',[{label:'সাইন ইন',val:1,v:true},{label:'সাইন আপ',val:2,v:true},{label:'পাসওয়ার্ড ভুলে গেছি',cls:'ghost',val:3}],function(q){ var e=(q('#em').value||'').trim(), pw=q('#pw').value||''; if(e.indexOf('@')<1) return 'সঠিক ইমেইল দাও।'; if(pw.length<6) return 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে।'; return ''; });
+      var em=(r.q('#em').value||'').trim(), pw2=r.q('#pw').value||'';
+      if(r.val===1){ await signInWithEmailAndPassword(auth, em, pw2); }
+      else if(r.val===2){ await createUserWithEmailAndPassword(auth, em, pw2); }
+      else if(r.val===3){ if(em.indexOf('@')<1){ stA('পাসওয়ার্ড রিসেটের জন্য সঠিক ইমেইল দাও।'); return; } await sendPasswordResetEmail(auth, em); stA('পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে।'); }
+      return;
+    }
+  }catch(err){ stA('Error: '+(err&&err.message?err.message:err)); }
+};
 window.__fbCloud = async function(act){
   try{
     if(act==='connect'){ await ensure(); return; }
     if(!await ensure()) return;
     const ref=doc(db,'users',uid);
     if(act==='upload'){
-      const s=appState();
-      await setDoc(ref,{state:s,app:'agradia',updatedAt:serverTimestamp()},{merge:true});
+      const s=await uploadLocal(uid);
       st('Uploaded'); dt('Size: '+(s.length)+' characters. এই phone-এর data Firebase-এ গেছে।');
     } else if(act==='download'){
       const snap=await getDoc(ref);
@@ -2129,13 +2244,11 @@ window.__fbCloud = async function(act){
       if(!d.state){ st('Cloud data খালি'); return; }
       const ok=await window.confirmBox('Load cloud data?','এখনকার data-র একটা backup এই phone-এ রাখা হবে, তারপর cloud data বসবে।','Load',true);
       if(!ok){ st('Load বাতিল করা হয়েছে।'); return; }
-      try{ localStorage.setItem('ssc2027.data.v2.backup-before-cloud', appState()); }catch(e){}
-      try{ localStorage.setItem('ssc2027.data.v2', d.state); }catch(e){ st('Load ব্যর্থ — storage-এ জায়গা নেই।'); return; }
-      st('Loaded — app reload হচ্ছে...');
-      setTimeout(function(){ location.reload(); }, 600);
+      if(await loadCloudState(uid, d)){ st('Loaded — app reload হচ্ছে...'); setTimeout(function(){ location.reload(); }, 600); }
     }
   }catch(err){ st('Error: '+(err&&err.message?err.message:err)); }
 };
+if(getCfg()){ try{ init(); }catch(e){} }
 </script>
 </body>
 </html>
