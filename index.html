@@ -499,7 +499,8 @@ var N={
 'Search':'খুঁজুন','Back':'পিছনে','Tasks':'কাজ','No results.':'কোনো ফলাফল নেই।','Search tasks, subjects, chapters, weak chapters and mistakes.':'কাজ, বিষয়, অধ্যায়, দুর্বল অধ্যায় ও ভুল খুঁজুন।',
 'Appearance':'চেহারা','Light, dark or your own colors':'লাইট, ডার্ক বা নিজের রং','Language & Text':'ভাষা ও লেখা','Language and text size':'ভাষা ও লেখার আকার','Profile & Avatar':'প্রোফাইল ও অ্যাভাটার','Your name and picture':'আপনার নাম ও ছবি','Routine & Data':'রুটিন ও ডেটা','Update routine, daily limit, backup':'রুটিন আপডেট, দৈনিক সীমা, ব্যাকআপ','About Agradia':'Agradia সম্পর্কে','Version, your data, install':'ভার্সন, আপনার ডেটা, ইনস্টল',
 'Theme':'থিম','Light':'লাইট','Dark':'ডার্ক','Custom':'কাস্টম','Custom colors':'নিজের রং','Choose your own colors. Text on the main color changes automatically so it stays readable.':'নিজের রং বাছুন। মূল রঙের ওপরের লেখা নিজে থেকে বদলে পড়ার উপযোগী থাকবে।','Surface color':'সারফেসের রং','Secondary text color':'দ্বিতীয় লেখার রং','Warning color':'সতর্কতার রং','Reset custom colors':'নিজের রং রিসেট করুন','Pop-up messages':'পপআপ বার্তা',
-'Your name':'আপনার নাম','Optional':'ঐচ্ছিক','Choose an avatar':'একটি অ্যাভাটার বাছুন'
+'Your name':'আপনার নাম','Optional':'ঐচ্ছিক','Choose an avatar':'একটি অ্যাভাটার বাছুন',
+'Account':'অ্যাকাউন্ট','Sign in':'সাইন ইন','Schedule Settings':'সময়সূচি সেটিংস','How to use':'কীভাবে ব্যবহার করবেন','Weak chapters and mistake log':'দুর্বল অধ্যায় ও ভুলের লগ','Workout routines, time and options':'ওয়ার্কআউট রুটিন, সময় ও অপশন','Default time difference':'ডিফল্ট সময়ের ব্যবধান','Display':'ডিসপ্লে','About & Support':'সম্পর্কে ও সাহায্য','Privacy Policy':'প্রাইভেসি পলিসি','Terms of Use':'ব্যবহারের শর্তাবলী','Data & Privacy':'ডেটা ও প্রাইভেসি','Log out':'লগ আউট'
 };
 Object.keys(N).forEach(function(k){if(!(k in window.I18N_BN))window.I18N_BN[k]=N[k]});
 window.I18N_PAT.push(
@@ -639,7 +640,7 @@ window.I18N_PAT.push(
 </script>
 <script>
 "use strict";
-var APP_VERSION='3.2.2',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.2.3',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -821,7 +822,7 @@ function cdLeft(c,bn){if(!c.time){var dd=Math.round((pd(c.date)-pd(today()))/864
 function countdownsCard(){var bn=state.prefs.lang==='bn';if(!state.countdowns)state.countdowns=[];var list=state.countdowns.slice().sort(function(a,b){return cdTarget(a)-cdTarget(b)});var h='<section class="card"><h2 style="margin:0">'+(bn?'কাউন্টডাউন':'Countdowns')+'</h2>';if(!list.length)h+='<p class="sub">'+(bn?'এখনো কোনো কাউন্টডাউন নেই। নিচের বোতামে নাম, তারিখ আর সময় দিয়ে যোগ করুন।':'No countdown yet. Add one with a name, date and time below.')+'</p>';list.forEach(function(c){h+='<div class="item"><b>'+esc(c.name)+'</b><small>'+c.date+(c.time?' \u00b7 '+c.time:'')+'</small><div style="font-weight:700;margin-top:4px">'+cdLeft(c,bn)+'</div><button class="ghost sm" data-editcd="'+esc(c.id)+'" style="margin-top:8px">'+(bn?'এডিট':'Edit')+'</button> <button class="ghost sm" data-delcd="'+esc(c.id)+'" style="margin-top:8px">'+(bn?'মুছুন':'Delete')+'</button></div>'});h+='<button class="sm" data-act="addcd" style="width:100%">'+(bn?'কাউন্টডাউন যোগ করুন':'Add countdown')+'</button></section>';return h}
 function cdDlg(ex){var bn=state.prefs.lang==='bn';modal(ex?(bn?'কাউন্টডাউন এডিট':'Edit countdown'):(bn?'কাউন্টডাউন যোগ করুন':'Add countdown'),'<label class="f">'+(bn?'নাম':'Name')+'</label><input id="cn" maxlength="100" value="'+esc(ex?ex.name:'')+'"><label class="f">'+(bn?'তারিখ':'Date')+'</label><input id="cd" type="date" value="'+(ex?ex.date:today())+'"><label class="f">'+(bn?'সময় (ঐচ্ছিক)':'Time (optional)')+'</label><input id="ct" type="time" value="'+(ex?ex.time:'')+'">',[{label:bn?'বাতিল':'Cancel',cls:'ghost',val:0},{label:bn?'সেভ':'Save',val:1,v:true}],function(q){var n=q('#cn').value.trim(),d=q('#cd').value,t=q('#ct').value;if(!n)return bn?'নাম দিন।':'Enter a name.';if(!d)return bn?'তারিখ দিন।':'Pick a date.';if(t&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(t))return bn?'সময় ঠিকভাবে দিন।':'Enter a valid time.';return''}).then(function(r){if(r.val!==1)return;var n=r.q('#cn').value.trim(),d=r.q('#cd').value,t=r.q('#ct').value;if(!state.countdowns)state.countdowns=[];if(ex){ex.name=n;ex.date=d;ex.time=t}else state.countdowns.push({id:uid(),name:n,date:d,time:t});save();render(true);toast(bn?'কাউন্টডাউন সেভ হয়েছে।':'Countdown saved.')})}
 function reminderCard(){var bn=state.prefs.lang==='bn';var now=new Date();var hm=now.getHours()*60+now.getMinutes();var cur=hm>=330&&hm<365?'study':hm>=365&&hm<420?'tuition':'';var t1=bn?'পড়া \u2014 সকাল ৬:০০':'Study \u2014 6:00 AM';var t2=bn?'টিউশন \u2014 সন্ধ্যা ৬:০৫':'Tuition \u2014 6:05 PM';var t3=bn?'ব্যাকআপ \u2014 প্রতি ৩ দিনে একবার':'Backup \u2014 once every 3 days';return '<section class="card"><h2 style="margin:0">'+(bn?'আজকের রিমাইন্ডার':'Today\'s reminders')+'</h2><p class="sub" style="margin:6px 0">'+(cur==='study'?(bn?'এখন পড়ার সময়।':'It is study time now.'):(cur==='tuition'?(bn?'এখন টিউশন পড়ানোর সময়।':'It is tuition time now.'):(bn?'সময় হলে এখানে বর্তমান কাজটি হাইলাইট হবে।':'The current item is highlighted when its time comes.')))+'</p><div>'+(cur==='study'?'<b>'+t1+'</b>':t1)+'<br>'+(cur==='tuition'?'<b>'+t2+'</b>':t2)+'<br>'+t3+'</div><button class="ghost sm" data-act="testnotif" style="margin-top:10px;width:100%">'+(bn?'ব্রাউজার নোটিফিকেশন পরীক্ষা করুন':'Test browser notification')+'</button><p class="sub" style="margin:8px 0 0">'+(bn?'সীমা: ফোন বন্ধ থাকলে নোটিফিকেশন আসবে না, কারণ এই অ্যাপের কোনো সার্ভার নেই। অ্যাপ খোলা থাকলে রিমাইন্ডার দেখা যাবে।':'Limit: no notification arrives while the phone/app is closed, because this app has no server. Reminders show while the app is open.')+'</p></section>'}
-function whatsNewCard(){if(state.prefs.seenVersion===APP_VERSION)return'';var bn=state.prefs.lang==='bn';var items=bn?['প্রথম screen নতুন — অ্যাকাউন্ট দিয়ে Continue, নিচে ছোট Skip, উপরে ভাষা বাছাই']:['New first screen — Continue with an account, small Skip below, language picker on top'];return '<section class="card"><h2 style="margin:0">'+(bn?'নতুন কী এলো \u2014 '+APP_VERSION:'What\'s new \u2014 '+APP_VERSION)+'</h2><ul style="margin:10px 0">'+items.map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul><button class="sm" data-act="seenew" style="width:100%">'+(bn?'ঠিক আছে':'Got it')+'</button></section>'}
+function whatsNewCard(){if(state.prefs.seenVersion===APP_VERSION)return'';var bn=state.prefs.lang==='bn';var items=bn?['Settings এখন section-এ সাজানো, gear আইকন দিয়ে Settings, About-এ Privacy Policy']:['Settings now in labelled sections, gear icon for Settings, Privacy Policy in About'];return '<section class="card"><h2 style="margin:0">'+(bn?'নতুন কী এলো \u2014 '+APP_VERSION:'What\'s new \u2014 '+APP_VERSION)+'</h2><ul style="margin:10px 0">'+items.map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul><button class="sm" data-act="seenew" style="width:100%">'+(bn?'ঠিক আছে':'Got it')+'</button></section>'}
 function smartRevisionCard(){var bn=state.prefs.lang==='bn';var wk=(state.weak||[]).filter(function(w){return !w.done});var ms=state.mistakes||[];if(!wk.length&&!ms.length)return'';var items=wk.slice(0,3).map(function(w){return'<div class="item"><b>'+esc(w.subject+(w.chapter?' · '+w.chapter:''))+'</b>'+(w.note?'<small>'+esc(w.note)+'</small>':'')+'</div>'}).join('');if(wk.length<3)items+=ms.slice(0,3-wk.length).map(function(m){return'<div class="item"><b>'+esc(m.subject+(m.chapter?' · '+m.chapter:''))+'</b><small>'+esc(m.what)+'</small></div>'}).join('');return '<section class="card"><h2 style="margin:0">'+(bn?'স্মার্ট রিভিশন':'Smart revision')+'</h2>'+items+'<button class="sm" data-act="gologs" style="width:100%">'+(bn?'লগ দেখুন':'See logs')+'</button></section>';}
 function analyticsCard(){var bn=state.prefs.lang==='bn';var td=today();var past=(R().tasks||[]).filter(function(t){return t.date&&t.date<=td});if(!past.length)return'';var done=past.filter(isDone).length;var overdue=past.filter(function(t){return !isDone(t)&&t.date<td}).length;var hp2=dayLoad(td),hd2=logged(td);var msg=overdue>0?(bn?overdue+'টি কাজ পিছিয়ে আছে।':overdue+' tasks behind.'):(bn?'সব ঠিক আছে, পিছিয়ে নেই।':'On track, nothing behind.');return '<section class="card"><h2 style="margin:0">'+(bn?'পড়ার হিসাব':'Study analytics')+'</h2><p class="sub">'+msg+'</p><div class="item"><b>'+(bn?'আজ পর্যন্ত কাজ':'Tasks up to today')+'</b><small>'+done+' / '+past.length+' '+(bn?'শেষ':'done')+'</small></div><div class="item"><b>'+(bn?'আজকের পড়া':'Today studied')+'</b><small>'+fmtMin(hd2)+' / '+fmtMin(hp2)+'</small></div><button class="sm" data-act="gorecords" style="width:100%">'+(bn?'রেকর্ড দেখুন':'See records')+'</button></section>';}
 function tasksSummaryCard(){
@@ -864,7 +865,7 @@ function vHome(){
   if(homeView==='countdowns')return vCountdowns();
   if(homeView==='reminders')return vReminders();
   var td=today(),T=tasksOn(td),n=T.filter(isDone).length,tt=T.length,p=tt?Math.round(n/tt*100):0,hPlan=dayLoad(td),hDone=logged(td),hp=hPlan?Math.min(100,Math.round(hDone/hPlan*100)):0,od=viewTasks('overdue').length,nm=state.prefs.name,Tm=state.timer,Sw=state.sw;
-  var h='<div class="top"><button class="avb" data-act="avatar" aria-label="Change avatar">'+avatarEl()+'</button><div style="flex:1;min-width:0"><div class="hgreet">'+daypart()+'</div><div class="hname">'+(nm?esc(nm)+' 👋':'Welcome!')+'</div></div><div class="hdrb">'+dots()+'</div></div>';
+  var h='<div class="top"><button class="avb" data-act="avatar" aria-label="Change avatar">'+avatarEl()+'</button><div style="flex:1;min-width:0"><div class="hgreet">'+daypart()+'</div><div class="hname">'+(nm?esc(nm)+' 👋':'Welcome!')+'</div></div><div class="hdrb">'+gear()+'</div></div>';
   var bn=state.prefs.lang==='bn';
   var cdList=(state.countdowns||[]).slice().sort(function(a,b){return cdTarget(a)-cdTarget(b)});
   var cdNext=null;for(var ci=0;ci<cdList.length;ci++){if(cdTarget(cdList[ci])>=pd(today())){cdNext=cdList[ci];break}}
@@ -883,7 +884,7 @@ function vRoutine(){
   if(!selKey)selKey=today();
   var td=today(),cal=state.prefs.routineView==='cal',isDate=DRE.test(selKey),n=selIds().length;
   var extra=chip('backlog',String(viewTasks('backlog').length),'Backlog','')+chip('overdue',String(viewTasks('overdue').length),'Overdue','')+'<button class="chip" data-act="adddate"><b>+</b>Date</button>';
-  var h='<div class="row" style="margin-bottom:22px"><h1>Routine</h1><div class="hdrb">'+(undoStack.length?'<button class="ghost sm" data-act="undo">Undo</button>':'')+(edit?'<button class="sm" data-act="toggleedit">Done editing</button>':'')+sbtn()+dots()+'</div></div>';
+  var h='<div class="row" style="margin-bottom:22px"><h1>Routine</h1><div class="hdrb">'+(undoStack.length?'<button class="ghost sm" data-act="undo">Undo</button>':'')+(edit?'<button class="sm" data-act="toggleedit">Done editing</button>':'')+sbtn()+gear()+dots()+'</div></div>';
   if(cal)h+=calHtml()+'<div class="chips">'+extra+'</div>';
   else{var chips=R().days.map(function(d){var T=tasksOn(d.date),all=T.length&&T.every(isDone);return chip(d.date,String(+d.date.slice(8)),pd(d.date).toLocaleDateString(LOC(),{month:'short'}),(d.date===td?' today':'')+(all?' full':'')+(d.red?' red':''))}).join('');
     h+='<div class="chips" id="chips">'+chips+extra+'</div>'}
@@ -1285,10 +1286,11 @@ function cropDlg(file){
   im.src=url}
 /* ---------- three-dot menu ---------- */
 function dots(){return'<button class="dotb" data-act="menu" aria-label="Menu"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg></button>'}
+function gear(){return'<button class="dotb ln" data-act="gear" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/></svg></button>'}
 function closeMenu(){var m=document.getElementById('menu');if(m)m.remove();closeFabMenu()}
 function menuHtml(sub){var h='',v=state.prefs.routineView,bn=state.prefs.lang==='bn';
   if(sub==='view')h='<button data-act="mi" data-v="back">‹ Back</button><button data-act="mi" data-v="vlist" class="'+(v==='list'?'on':'')+'">List view</button><button data-act="mi" data-v="vcal" class="'+(v==='cal'?'on':'')+'">Calendar view</button>';
-  else{if(tab==='routine')h+='<button data-act="mi" data-v="edit">'+(edit?'Done editing':'Edit routine')+'</button><button data-act="mi" data-v="view">View</button>';h+='<button data-act="mi" data-v="settings">Settings</button>'}
+  else{if(tab==='routine')h+='<button data-act="mi" data-v="edit">'+(edit?'Done editing':'Edit routine')+'</button><button data-act="mi" data-v="view">View</button>';}
   return'<div class="menu" role="menu">'+h+'</div>'}
 function openMenu(sub){closeFabMenu();var m=document.getElementById('menu');if(!m){m=document.createElement('div');m.id='menu';m.className='menuwrap';m.addEventListener('click',function(e){if(e.target===m)closeMenu()});document.body.appendChild(m)}m.innerHTML=menuHtml(sub)}
 /* ---------- study records, timer ---------- */
@@ -1421,7 +1423,7 @@ function vSchedule(){
   var clusters=[],cur=null;
   items.forEach(function(it){var s=toMin(it.start),e=toMin(it.end);if(!cur||s>=cur.maxEnd){cur={items:[],maxEnd:e,cols:[]};clusters.push(cur)}cur.items.push(it);if(e>cur.maxEnd)cur.maxEnd=e});
   clusters.forEach(function(cl){cl.items.forEach(function(it){var s=toMin(it.start),c=0;while(c<cl.cols.length&&cl.cols[c]>s)c++;cl.cols[c]=toMin(it.end);it._col=c});cl.items.forEach(function(it){it._ncol=cl.cols.length})});
-  var h='<div class="row" style="margin-bottom:22px"><h1>'+(bn?'সময়সূচি':'Schedule')+'</h1><div class="hdrb">'+dots()+'</div></div>';
+  var h='<div class="row" style="margin-bottom:22px"><h1>'+(bn?'সময়সূচি':'Schedule')+'</h1><div class="hdrb">'+gear()+'</div></div>';
   h+='<div class="nav"><button class="ghost" data-act="schprev">&lt; '+(bn?'আগের':'Prev')+'</button><input type="date" class="jump" data-schjump="1" value="'+d+'" aria-label="Jump to date"><button class="ghost" data-act="schtoday">'+(bn?'আজ':'Today')+'</button><button class="ghost" data-act="schnext">'+(bn?'পরের':'Next')+' &gt;</button></div>';
   h+='<p class="sub" style="margin:6px 0">'+esc(fmtLong(d))+'</p>';
   h+='<div class="row" style="margin-bottom:12px"><span class="sub">'+(bn?'জুম: ':'Zoom: ')+(step>=60?(step/60)+'h':step+'min')+'</span><div style="display:flex;gap:6px;margin-left:auto"><button class="ghost sm" data-act="schzoomin">+</button><button class="ghost sm" data-act="schzoomout">-</button><button class="ghost sm" data-act="schzoomreset">'+(bn?'ডিফল্ট':'Default')+'</button></div></div>';
@@ -1734,7 +1736,7 @@ function vStreak(){
 }
 function vRecords(){
   if(streakView)return vStreak();
-  var h='<div class="row" style="margin-bottom:22px"><h1>Records</h1><div class="hdrb">'+sbtn()+dots()+'</div></div>';
+  var h='<div class="row" style="margin-bottom:22px"><h1>Records</h1><div class="hdrb">'+sbtn()+gear()+'</div></div>';
   h+=sampleBannerHtml();h+=riskHtml();h+=chipHtml();
   h+='<div class="seg">'+[['daily','Daily'],['weekly','Weekly'],['monthly','Monthly'],['yearly','Yearly'],['subjects','Subjects']].map(function(p){return'<button data-act="recp" data-v="'+p[0]+'" class="'+(recP===p[0]?'on':'')+'">'+p[1]+'</button>'}).join('')+'</div>';
   if(recP==='subjects')return h+recSubjects();
@@ -1799,7 +1801,7 @@ function illAplus(){return'<svg class="ill" viewBox="0 0 140 120" aria-hidden="t
 /* ---------- headers, rows ---------- */
 function sbtn(){return'<button class="dotb ln" data-act="search" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>'}
 function backBtn(){return'<button class="back" data-act="back" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>'}
-function head(title){return'<div class="head slide">'+backBtn()+'<h1>'+title+'</h1></div>'}
+function head(title){return'<div class="head slide">'+backBtn()+'<h1>'+title+'</h1>'+(title==='Settings'?'':gear())+'</div>'}
 function srow(page,icon,title,desc){return'<button class="srow" data-act="sp" data-v="'+page+'"><span class="ic"><svg viewBox="0 0 24 24">'+icon+'</svg></span><span class="st"><b>'+title+'</b><small>'+desc+'</small></span><i class="ch"></i></button>'}
 function daypart(){var h=new Date().getHours();return h>=4&&h<12?'Good morning':h>=12&&h<17?'Good afternoon':h>=17&&h<21?'Good evening':'Good night'}
 function motivate(p,n){return p>=100?'All done — amazing work!':p>=60?'Keep going, you are doing great!':n>0?'Good start — one step at a time.':'A fresh day. Let us begin.'}
@@ -1859,16 +1861,21 @@ function vSearch(){return'<div class="head slide">'+backBtn()+'<h1>Search</h1></
 function vMore(){
   var I={a:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>',l:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',p:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 15-5 16 0"/>',d:'<path d="M4 7c0-2 16-2 16 0v10c0 2-16 2-16 0z"/><path d="M4 12c0 2 16 2 16 0"/>',g:'<path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/>',i:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>'};
   var acctSub=(window.__fbUser&&window.__fbUser.email)?('Signed in as '+window.__fbUser.email):'Sign in';
+  var sec=function(t,first){return'<p class="sub" style="margin:'+(first?'0':'18px')+' 0 6px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase">'+t+'</p>'};
   return head('Settings')+'<div id="upd"></div>'
+    +sec('Account',true)
     +srow('s_account',I.p,'Account',acctSub)
+    +srow('s_profile',I.p,'Profile & Avatar','Your name and picture')
+    +sec('Display')
     +srow('s_appearance',I.a,'Appearance','Light, dark or your own colors')
     +srow('s_language',I.l,'Language & Text','Language and text size')
-    +srow('s_profile',I.p,'Profile & Avatar','Your name and picture')
+    +sec('App')
     +srow('s_data',I.d,'Routine & Data','Update routine, daily limit, backup')
     +srow('logs',I.g,'Logs','Weak chapters and mistake log')
     +srow('s_workout','<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>','Workout Settings','Workout routines, time and options')
     +srow('schsettings',ICONS.schedule,'Schedule Settings','Default time difference')
-    +srow('s_howto',I.i,'How to use','App-ta kivabe use korben')
+    +sec('About & Support')
+    +srow('s_howto',I.i,'How to use','Guides for each section')
     +srow('s_about',I.i,'About Agradia','Version, your data, install')
     +(window.__fbUser?('<hr style="margin:16px 0 4px;border:0;border-top:1px solid var(--hair)"><button data-cloud="logout" style="display:flex;align-items:center;gap:14px;width:100%;min-height:56px;padding:10px 4px;background:none;color:#B3261E;text-align:left;font-size:16px;font-weight:500"><span style="width:21px;height:21px;flex:none"><svg viewBox="0 0 24 24" style="width:21px;height:21px;fill:none;stroke:#B3261E;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span><span>Log out</span></button>'):'')}
 function vSAppearance(){var t=state.prefs.theme,m=t.mode,h=head('Appearance');
@@ -1944,6 +1951,8 @@ function vSHowto(){var h=head('How to use');
 function vSAbout(){var h=head('About Agradia');
   h+='<div class="empty"><img src="icon.svg" width="76" height="76" style="border-radius:22px" alt=""><h2 style="margin:12px 0 0">Agradia</h2><p class="sub">Version '+APP_VERSION+'</p></div>';
   h+='<p class="sub">Your data stays on this phone, and syncs only when you sign in.</p>';
+  h+='<h3>Privacy Policy</h3><p class="sub">Agradia is a personal study tracker. Your routine, ticks, study time, weak chapters, mistakes, workout data, name and avatar (if you set them) are stored on this phone. If you sign in, the same data syncs to your own account in Firebase (project agradia-test), protected by per-account rules so only you can read or write it. No data is sold, no ads are shown, and no location, contacts or advertising tracking is collected. Logging out first syncs to the cloud, then wipes this phone; the cloud copy stays until you remove it from your own Firebase project. There is currently no in-app button to delete the cloud copy.</p>';
+  h+='<h3>Terms of Use</h3><p class="sub">Agradia is provided as-is for personal study tracking. You are responsible for your own backups — export one regularly, especially before logging out or changing devices. The app does not replace your school routine, and its records are only as accurate as what you enter.</p>';
   h+='<h3>Install on Android</h3><ol><li>Open the app link in Chrome and let it load once while online.</li><li>Tap the three-dot menu, then Install app (or Add to Home screen).</li></ol>'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':'');
   if(state.legacy)h+='<h3>Scheduling rules</h3><ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol><h3>Subject abbreviations</h3><div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div>';
   return h}
@@ -1977,7 +1986,7 @@ document.addEventListener('click',function(e){
       var body=raw.slice(raw.indexOf('{'), raw.lastIndexOf('}')+1);
       var cfg=null;
       try{ cfg=JSON.parse(body); }catch(e){ try{ cfg=(new Function('return ('+body+')'))(); }catch(e2){} }
-      if(!cfg || !cfg.apiKey){ try{ toast('Config চিনতে পারিনি — পুরো config object paste করো।'); }catch(e){} return; }
+      if(!cfg || !cfg.apiKey){ try{ toast(state.prefs.lang==='bn'?'Config চিনতে পারিনি — পুরো config object paste করো।':'Could not recognise the config — paste the full config object.'); }catch(e){} return; }
       try{ localStorage.setItem('agradia.firebaseConfig', JSON.stringify(cfg)); }catch(e){}
       // config override saved silently; UI change (if any) comes from the re-render below
       if(typeof tab!=='undefined' && (tab==='s_account'||(typeof state!=='undefined'&&state&&!state.setup))){ try{ render(true); }catch(e){} }
@@ -1986,12 +1995,12 @@ document.addEventListener('click',function(e){
     if(act==='togglepw'){ var pw=document.getElementById('acctPw'); if(pw){ var show=(pw.type==='password'); pw.type=show?'text':'password'; b.textContent=show?'Hide':'Show'; } return; }
     if(act==='acctmode'){ try{ var em0=document.getElementById('acctEm'); if(em0) window.__acctEm=em0.value; }catch(e){} window.__acctMode=(window.__acctMode==='signup')?'signin':'signup'; try{ render(true); }catch(e){} return; }
     if(act==='emailsubmit'||act==='forgot'){
-      if(!window.__fbAccount){ try{ toast('Account code load হয়নি — app-টা online-এ reopen করে আবার চাপো।'); }catch(e){} return; }
+      if(!window.__fbAccount){ try{ toast(state.prefs.lang==='bn'?'Account code load হয়নি — app-টা online-এ reopen করে আবার চাপো।':'Account code did not load — reopen the app online and try again.'); }catch(e){} return; }
       window.__fbAccount(act);return}
     if(act==='google'||act==='email'||act==='logout'){
-      if(!window.__fbAccount){ try{ toast('Account code load হয়নি — app-টা online-এ reopen করে আবার চাপো।'); }catch(e){} return; }
+      if(!window.__fbAccount){ try{ toast(state.prefs.lang==='bn'?'Account code load হয়নি — app-টা online-এ reopen করে আবার চাপো।':'Account code did not load — reopen the app online and try again.'); }catch(e){} return; }
       window.__fbAccount(act);return}
-    if(!window.__fbCloud){ try{ toast('Cloud code load হয়নি — app-টা online-এ reopen করে আবার চাপো।'); }catch(e){} return; }
+    if(!window.__fbCloud){ try{ toast(state.prefs.lang==='bn'?'Cloud code load হয়নি — app-টা online-এ reopen করে আবার চাপো।':'Cloud code did not load — reopen the app online and try again.'); }catch(e){} return; }
     window.__fbCloud(act);return}
   if(!b||b.dataset.bi!==undefined)return;var D=b.dataset;
   if(D.tab)return go(D.tab);
@@ -2042,6 +2051,7 @@ document.addEventListener('click',function(e){
     case'pmore':promptOpen=!promptOpen;var pb=document.getElementById('pbox');if(pb)pb.classList.toggle('open',promptOpen);b.textContent=promptOpen?'See less':'See more';break;
     case'pcopy':copyText(buildPrompt()).then(function(ok){if(ok)toast('Prompt copied. Paste it into your AI tool.');else{promptOpen=true;render(true);toast('Could not copy automatically. Tap See more and copy the text by hand.')}});break;
     case'menu':openMenu();break;
+    case'gear':if(tab!=='settings'){prevTab=tab;go('settings')}break;
     case'mi':var mv2=D.v;if(mv2==='view'){openMenu('view');break}if(mv2==='back'){openMenu();break}closeMenu();
       if(mv2==='edit'){edit=!edit;sel={};render(true)}
       else if(mv2==='settings'){prevTab=tab;go('settings')}
@@ -2162,8 +2172,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 let app=null, auth=null, db=null, uid=null, handledUid=null, autoTimer=null, listenerSet=false, loadingCloud=false;
-function isErrMsg(m){ return /error|failed|invalid|already|weak|পাওয়া যায়নি|চিনতে পারিনি|ব্যর্থ/i.test(m||'') || (m||'').indexOf('পাসওয়ার্ড রিসেট লিংক')>=0; }
+function isErrMsg(m){ return /error|failed|invalid|already|weak|not found|valid email|at least 6|reset link|linked|cancelled|no cloud data|পাওয়া যায়নি|চিনতে পারিনি|ব্যর্থ/i.test(m||'') || (m||'').indexOf('পাসওয়ার্ড রিসেট লিংক')>=0; }
 function st(m){ if(isErrMsg(m)){ try{ toast(m); }catch(e){} } }
+function __L(en,bn){try{return (typeof state!=='undefined'&&state&&state.prefs&&state.prefs.lang==='bn')?bn:en}catch(e){return en}}
 function stA(m){ if(!isErrMsg(m)) return; window.__fbAuthError=m; try{ toast(m); }catch(e){} if(typeof tab!=='undefined' && tab==='s_account'){ try{ render(true); }catch(e){} } }
 function dt(m){}
 const DEFAULT_CFG={apiKey:"AIzaSyBs0IDRDVOow1McJdFnpzsjEtlmgZHAj2g",authDomain:"agradia-test.firebaseapp.com",projectId:"agradia-test",storageBucket:"agradia-test.firebasestorage.app",messagingSenderId:"657991764458",appId:"1:657991764458:web:d68cc1e3a4eb5006908a93"};
@@ -2254,31 +2265,31 @@ async function chooseMerge(title){
 }
 async function applyMerge(u, snap){
   var merged=mergeStates(snap.data().state||'{}', appState());
-  if(merged===null){ await signOut(auth); stA('Merge failed — data বদলানো হয়নি।'); return; }
+  if(merged===null){ await signOut(auth); stA(__L('Merge failed — data was not changed.','Merge failed — data বদলানো হয়নি।')); return; }
   var mergedW=mergeWorkout(snap.data().workout||'', workoutState());
-  if(mergedW===null){ await signOut(auth); stA('Merge failed — data বদলানো হয়নি।'); return; }
+  if(mergedW===null){ await signOut(auth); stA(__L('Merge failed — data was not changed.','Merge failed — data বদলানো হয়নি।')); return; }
   try{ localStorage.setItem('ssc2027.data.v2.backup-before-cloud', appState()); }catch(e){}
   try{ localStorage.setItem('ssc2027.workout.v1.backup-before-cloud', workoutState()); }catch(e){}
-  try{ localStorage.setItem('ssc2027.data.v2', merged); if(mergedW) localStorage.setItem('ssc2027.workout.v1', mergedW); }catch(e){ stA('Merge failed — data বদলানো হয়নি।'); return; }
+  try{ localStorage.setItem('ssc2027.data.v2', merged); if(mergedW) localStorage.setItem('ssc2027.workout.v1', mergedW); }catch(e){ stA(__L('Merge failed — data was not changed.','Merge failed — data বদলানো হয়নি।')); return; }
   setLinked(u); await uploadLocal(u); setTimeout(function(){ location.reload(); }, 600);
 }
 async function handleUser(u){
   try{
     var linked=getLinked(), ref=doc(db,'users',u.uid), snap=await getDoc(ref), hasCloud=snap.exists()&&!!(snap.data().state||snap.data().workout);
     if(!linked){
-      if(!hasCloud){ await uploadLocal(u.uid); setLinked(u.uid); stA('Account linked — phone-এর data cloud-এ উঠেছে।'); return; }
+      if(!hasCloud){ await uploadLocal(u.uid); setLinked(u.uid); stA(__L('Account linked — phone data uploaded to cloud.','Account linked — phone-এর data cloud-এ উঠেছে।')); return; }
       if(isEmptyPhone()){ if(await loadCloudState(u.uid, snap.data())){ setTimeout(function(){ location.reload(); }, 600); } return; }
       var c=await chooseMerge('Cloud-এ data আছে');
       if(c===1){ await applyMerge(u.uid, snap); }
       else if(c===2){ if(await loadCloudState(u.uid, snap.data())){ setTimeout(function(){ location.reload(); }, 600); } }
-      else { await signOut(auth); stA('Cancelled — sign out করা হয়েছে।'); }
+      else { await signOut(auth); stA(__L('Cancelled — signed out.','Cancelled — sign out করা হয়েছে।')); }
       return;
     }
     if(linked!==u.uid){
       var c2=await chooseMerge('অন্য account');
       if(c2===1){ var s2a=await getDoc(ref); if(s2a.exists()&&(s2a.data().state||s2a.data().workout)){ await applyMerge(u.uid, s2a); } else { await uploadLocal(u.uid); setLinked(u.uid); } }
-      else if(c2===2){ var s2=await getDoc(ref); if(s2.exists()&&(s2.data().state||s2.data().workout)){ if(await loadCloudState(u.uid, s2.data())){ setTimeout(function(){ location.reload(); }, 600); } } else { setLinked(u.uid); stA('এই account-এ cloud data নেই — phone-এর data-ই থাকবে।'); } }
-      else { await signOut(auth); stA('Cancelled — sign out করা হয়েছে।'); }
+      else if(c2===2){ var s2=await getDoc(ref); if(s2.exists()&&(s2.data().state||s2.data().workout)){ if(await loadCloudState(u.uid, s2.data())){ setTimeout(function(){ location.reload(); }, 600); } } else { setLinked(u.uid); stA(__L('No cloud data in this account — phone data will stay.','এই account-এ cloud data নেই — phone-এর data-ই থাকবে।')); } }
+      else { await signOut(auth); stA(__L('Cancelled — signed out.','Cancelled — sign out করা হয়েছে।')); }
       return;
     }
     if(hasCloud){
@@ -2325,7 +2336,7 @@ window.addEventListener('online', function(){
     if(auth && auth.currentUser && !auth.currentUser.isAnonymous && getLinked()===auth.currentUser.uid){
       getDoc(doc(db,'users',auth.currentUser.uid)).then(function(snap){
         if(snap.exists()&&cloudMillis(snap.data())>getLastSync()&&(snap.data().state!==appState()||(snap.data().workout||'')!==workoutState())){
-          try{ toast('Cloud-এ নতুন data আছে — Account থেকে Load চাপলে আসবে।'); }catch(e){}
+          try{ toast(state.prefs.lang==='bn'?'Cloud-এ নতুন data আছে — Account থেকে Load চাপলে আসবে।':'New cloud data is available — tap Load in Account to get it.'); }catch(e){}
         } else if(window.__fbAutoUpload) window.__fbAutoUpload();
       }).catch(function(){ if(window.__fbAutoUpload) window.__fbAutoUpload(); });
     } else if(window.__fbAutoUpload) window.__fbAutoUpload();
@@ -2334,7 +2345,7 @@ window.addEventListener('online', function(){
 window.__fbAccount = async function(act){
   try{
     if(act==='google'){
-      if(!init()){ stA('Config পাওয়া যায়নি।'); return; }
+      if(!init()){ stA(__L('Config not found.','Config পাওয়া যায়নি।')); return; }
       try{
         await signInWithPopup(auth, new GoogleAuthProvider());
       }catch(e){
@@ -2366,24 +2377,24 @@ window.__fbAccount = async function(act){
       try{ location.reload(); }catch(e){ try{ render(true); }catch(e2){} } return;
     }
     if(act==='emailsubmit'||act==='forgot'){
-      if(!init()){ stA('Config পাওয়া যায়নি।'); return; }
+      if(!init()){ stA(__L('Config not found.','Config পাওয়া যায়নি।')); return; }
       var emEl=document.getElementById('acctEm'), pwEl=document.getElementById('acctPw');
       var em=emEl?emEl.value.trim():'', pw=pwEl?pwEl.value:'';
-      if(em.indexOf('@')<1){ stA('সঠিক ইমেইল দাও।'); return; }
-      if(act==='forgot'){ await sendPasswordResetEmail(auth, em); stA('পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে।'); return; }
-      if(pw.length<6){ stA('পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে।'); return; }
+      if(em.indexOf('@')<1){ stA(__L('Enter a valid email.','সঠিক ইমেইল দাও।')); return; }
+      if(act==='forgot'){ await sendPasswordResetEmail(auth, em); stA(__L('Password reset link sent to your email.','পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে।')); return; }
+      if(pw.length<6){ stA(__L('Password must be at least 6 characters.','পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে।')); return; }
       try{ window.__acctEm=em; }catch(e){}
       if(window.__acctMode==='signup'){ await createUserWithEmailAndPassword(auth, em, pw); }
       else { await signInWithEmailAndPassword(auth, em, pw); }
       return;
     }
     if(act==='email'){
-      if(!init()){ stA('Config পাওয়া যায়নি — উপরে config paste করে Save config চাপো।'); return; }
-      var r=await window.modal('ইমেইল দিয়ে সাইন ইন','<label class="f">ইমেইল</label><input id="em" type="email" placeholder="you@example.com"><label class="f">পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><input id="pw" type="password" placeholder="Password">',[{label:'সাইন ইন',val:1,v:true},{label:'সাইন আপ',val:2,v:true},{label:'পাসওয়ার্ড ভুলে গেছি',cls:'ghost',val:3}],function(q){ var e=(q('#em').value||'').trim(), pw=q('#pw').value||''; if(e.indexOf('@')<1) return 'সঠিক ইমেইল দাও।'; if(pw.length<6) return 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে।'; return ''; });
+      if(!init()){ stA(__L('Config not found — paste the full config above and save it.','Config পাওয়া যায়নি — উপরে config paste করে Save config চাপো।')); return; }
+      var r=await window.modal('ইমেইল দিয়ে সাইন ইন','<label class="f">ইমেইল</label><input id="em" type="email" placeholder="you@example.com"><label class="f">পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><input id="pw" type="password" placeholder="Password">',[{label:'সাইন ইন',val:1,v:true},{label:'সাইন আপ',val:2,v:true},{label:'পাসওয়ার্ড ভুলে গেছি',cls:'ghost',val:3}],function(q){ var e=(q('#em').value||'').trim(), pw=q('#pw').value||''; if(e.indexOf('@')<1) return __L('Enter a valid email.','সঠিক ইমেইল দাও।'); if(pw.length<6) return __L('Password must be at least 6 characters.','পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে।'); return ''; });
       var em=(r.q('#em').value||'').trim(), pw2=r.q('#pw').value||'';
       if(r.val===1){ await signInWithEmailAndPassword(auth, em, pw2); }
       else if(r.val===2){ await createUserWithEmailAndPassword(auth, em, pw2); }
-      else if(r.val===3){ if(em.indexOf('@')<1){ stA('পাসওয়ার্ড রিসেটের জন্য সঠিক ইমেইল দাও।'); return; } await sendPasswordResetEmail(auth, em); stA('পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে।'); }
+      else if(r.val===3){ if(em.indexOf('@')<1){ stA(__L('Enter a valid email for password reset.','পাসওয়ার্ড রিসেটের জন্য সঠিক ইমেইল দাও।')); return; } await sendPasswordResetEmail(auth, em); stA(__L('Password reset link sent to your email.','পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে।')); }
       return;
     }
   }catch(err){ stA('Error: '+(err&&err.message?err.message:err)); }
