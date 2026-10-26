@@ -72,7 +72,7 @@ function wkExForm(r,d,ex){var e=ex||{name:'',sets:3,unit:'reps',amount:10,rest:6
 function wkNameForm(title,cur,cb){modal(title,'<label class="f" for="wn1">Name</label><input id="wn1" maxlength="100" value="'+esc(cur||'')+'">',[{label:'Cancel',cls:'ghost',val:0},{label:'Save',val:1,v:true}],function(q){return q('#wn1').value.trim()?'':'Enter a name.'}).then(function(res){if(res.val===1)cb(res.q('#wn1').value.trim().slice(0,100))})}
 function wkSwap(arr,i,j){var t=arr[i];arr[i]=arr[j];arr[j]=t}
 function wkHandle(D){var W=wkLoad();switch(D.act){
-case 'wkback':wkMenu=false;if(wkTab!=='today'){wkTab='today';render(true)}else{go(wkPrev||'home')}break;
+case 'wkback':wkMenu=false;if(wkTab!=='today'){wkTab='today';render(true)}else{if(typeof goBack==='function'){try{prevTab=wkPrev||'home'}catch(e){}goBack()}else go(wkPrev||'home')}break;
 case 'wkexit':wkMenu=false;go(wkPrev||'home');break;
 case 'wkmenuclose':wkMenu=false;render(true);break;
 case 'wkmenu':wkMenu=!wkMenu;render(true);break;
