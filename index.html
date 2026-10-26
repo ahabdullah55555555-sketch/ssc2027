@@ -887,6 +887,7 @@ function vRoutine(){
     h+='<div class="chips" id="chips">'+chips+extra+'</div>'}
   if(isDate)h+='<div class="row nav"><button class="ghost" data-act="shift" data-n="-1">&lt; Prev</button><input type="date" class="jump" data-jump="1" value="'+selKey+'" aria-label="Jump to date"><button class="ghost" data-act="shift" data-n="1">Next &gt;</button></div>';
   if(edit)h+='<div class="note">Edit mode: tick the square boxes to select tasks, then use the bar at the bottom. Tasks can also be dragged to reorder. Switch edit mode off to tick tasks as done.</div>';
+  h+='<section class="card"><button class="sm" data-act="createday" style="width:100%">'+(state.prefs.lang==='bn'?'+ একদিনের রুটিন বানান':'+ Create a one-day routine')+'</button><p class="sub" style="margin:8px 0 0">'+(state.prefs.lang==='bn'?'ফাইল আপলোড ছাড়াই, একটা তারিখের জন্য নিজের মতো করে কাজ লিখে একবারে সেভ করুন।':'No file upload needed — pick a date, write your tasks, save them all at once.')+'</p></section>';
   h+=dayCard(selKey,false);
   if(edit&&n)h+='<div class="selbar"><b>'+n+' selected</b><button class="sm" data-act="movesel">Move</button><button class="ghost sm" data-act="dupsel">Duplicate</button><button class="danger sm" data-act="delsel">Delete</button><button class="ghost sm" data-act="clrsel">Clear</button></div>';
   return h+updateAcc()}
@@ -968,6 +969,29 @@ function dupTasks(ids){var set={};ids.forEach(function(i){set[i]=1});mutate(func
 function delTasks(ids){if(!ids.length)return;confirmBox('Delete '+ids.length+' task'+(ids.length>1?'s':'')+'?','They will be removed from the routine along with their ticks. You can tap Undo right afterwards.','Delete',true).then(function(ok){if(!ok)return;var set={};ids.forEach(function(i){set[i]=1});mutate(function(){R().tasks=R().tasks.filter(function(t){return!set[t.id]});ids.forEach(function(i){delete state.done[i]});sel={}},'Deleted.')})}
 function nudge(id,dir){var list=viewTasks(selKey||today()),i=list.map(function(t){return t.id}).indexOf(id),o=list[i+dir];if(i<0||!o)return;mutate(function(){var T=R().tasks,a=T.indexOf(list[i]),b=T.indexOf(o),x=T[a];T[a]=T[b];T[b]=x})}
 function dropOn(src,dst){mutate(function(){var T=R().tasks,a=T.filter(function(t){return t.id===src})[0],b=T.filter(function(t){return t.id===dst})[0];if(!a||!b)return;T.splice(T.indexOf(a),1);T.splice(T.indexOf(b),0,a);a.date=b.date})}
+function createDayDlg(){
+  var bn=state.prefs.lang==='bn',def=DRE.test(selKey)?selKey:today();
+  modal(bn?'একদিনের রুটিন বানান':'Create a one-day routine',
+    '<label class="f" for="cdd">'+(bn?'তারিখ':'Date')+'</label><input id="cdd" type="date" value="'+def+'">'
+    +'<label class="f" for="cdn">'+(bn?'দিনের নোট (ঐচ্ছিক)':'Day note (optional)')+'</label><input id="cdn" maxlength="300" placeholder="'+(bn?'যেমন: ইংরেজি পরীক্ষার আগের দিন':'Example: Day before English exam')+'">'
+    +'<label class="f" for="cdt">'+(bn?'কাজ — প্রতি লাইনে একটা কাজ':'Tasks — one task per line')+'</label><textarea id="cdt" rows="6" maxlength="2000" placeholder="'+(bn?'ইংরেজি ১ম পত্র রিভিশন\nগণিত অনুশীলনী ৫.২\nপদার্থবিজ্ঞান নোট পড়া':'English 1st paper revision\nMaths exercise 5.2\nPhysics notes')+'"></textarea>'
+    +'<p class="sub">'+(bn?'প্রতি লাইন একটা কাজ হবে। পরে প্রতিটা কাজ আলাদাভাবে এডিট করা যাবে।':'Each line becomes one task. You can edit each task later.')+'</p>',
+    [{label:bn?'বাতিল':'Cancel',cls:'ghost',val:0},{label:bn?'সেভ করুন':'Save day',val:1,v:true}],
+    function(q){var v=q('#cdd').value,lines=q('#cdt').value.split('\n').map(function(s){return s.trim()}).filter(function(s){return s});
+      if(!v)return bn?'তারিখ বাছুন।':'Pick a date.';
+      if(!lines.length)return bn?'অন্তত একটা কাজ লিখুন।':'Write at least one task.';
+      return''}).then(function(r){
+    if(r.val!==1)return;
+    var q=r.q,dt=q('#cdd').value,nt=q('#cdn').value.trim().slice(0,300);
+    var lines=q('#cdt').value.split('\n').map(function(s){return s.trim()}).filter(function(s){return s});
+    mutate(function(){
+      ensureDay(dt);
+      var d=dayOf(dt); if(d){ d.note=nt; }
+      lines.forEach(function(txt){ R().tasks.push({id:uid(),date:dt,subj:[],chapter:'',text:txt.slice(0,200),mins:null}); });
+      selKey=dt;
+    },bn?('দিনের রুটিন সেভ হয়েছে: '+lines.length+'টি কাজ'):('Day routine saved: '+lines.length+' tasks'));
+  });
+}
 function dayDlg(date){
   var d=date&&dayOf(date),isNew=!d;
   modal(isNew?'Add date':'Day info',(isNew?'<label class="f" for="dd">Date</label><input id="dd" type="date" value="'+(date||today())+'">':'<label class="f" for="dd">Date (change it to move the whole day)</label><input id="dd" type="date" value="'+d.date+'">')+hm('dp',d&&d.planned,'Planned')+'<label class="f" for="dn">Note (for example Rest, or a subject focus)</label><input id="dn" maxlength="300" value="'+esc(d?d.note:'')+'">'+'<label class="sc wide"><input type="checkbox" id="dred"'+(d&&d.red?' checked':'')+'><span>Mark red in calendar (exam day)</span></label>',[{label:'Cancel',cls:'ghost',val:0},{label:'Save',val:1,v:true}],function(q){var v=q('#dd').value;if(!v)return'Pick a date.';if((isNew||v!==date)&&dayOf(v))return'That date already exists. Use Copy day to combine days.';return''}).then(function(r){
@@ -1910,6 +1934,7 @@ document.addEventListener('click',function(e){
     case'up':nudge(id,-1);break;case'dn':nudge(id,1);break;
     case'dayinfo':dayDlg(curDate());break;
     case'adddate':dayDlg(null);break;
+    case'createday':createDayDlg();break;
     case'copyday':copyDlg(curDate());break;
     case'delday':delDay(curDate());break;
     case'selall':viewTasks(selKey||today()).forEach(function(t){sel[t.id]=true});render(true);break;
