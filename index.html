@@ -1889,9 +1889,11 @@ function vSData(){var lim=state.prefs.limit,h=head('Routine & Data');
   return h}
 function vSAccount(){var u=window.__fbUser||null;
   if(u){var h=head('Account');
-    h+='<p class="sub">Signed in as <b>'+esc(u.email||u.uid)+'</b></p><p class="sub">Your data syncs automatically when you are online.</p>'
-    +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="ghost" data-cloud="logout">Log out</button></div>'
-    +'';return h}
+    var initial=((u.email||'A').trim().charAt(0)||'A').toUpperCase();
+    var prov=(u.provider==='google.com')?'Signed in with Google':(u.provider==='password'?'Signed in with Email':'Signed in');
+    h+='<div style="display:flex;gap:14px;align-items:center;margin:8px 0 16px"><span style="width:52px;height:52px;border-radius:50%;background:#145DA0;color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;flex:none">'+esc(initial)+'</span><span><b style="display:block">'+esc(u.email||'')+'</b><span class="sub">'+prov+'</span></span></div>'
+    +'<p class="sub">Auto-sync is on. Your data syncs when you are online.</p>'
+    +'<div style="margin-top:32px"><button style="background:#B3261E;color:#ffffff;border-radius:12px;width:100%;padding:14px;font-weight:700" data-cloud="logout">Log out</button></div>';return h}
   var mode=window.__acctMode||'signin', isUp=(mode==='signup'), h=head(isUp?'Sign up':'Sign in');
   h+='<p class="sub">'+(isUp?'Create an account to sync your data across devices.':'Welcome back. Sign in to sync your data.')+'</p>'
     +(window.__fbAuthError?('<p class="sub">Last sign-in error: '+esc(window.__fbAuthError)+'</p>'):'')
@@ -1904,7 +1906,7 @@ function vSAccount(){var u=window.__fbUser||null;
     +'<div style="text-align:center;margin-top:16px"><button class="ghost sm" data-cloud="acctmode">'+(isUp?'Already have an account? Sign in':'New user? Create an account')+'</button></div>'
     +'';return h}
 function vSHowto(){var h=head('How to use');
-  h+='<h3>Account ও Sync</h3><p>Google বা ইমেইল দিয়ে সাইন ইন করলে তোমার ডেটা তোমার অ্যাকাউন্টের সাথে সিঙ্ক হবে। সাইন ইন থাকলে সেভ করলেই ইন্টারনেট থাকলে ডেটা নিজে থেকে ক্লাউডে উঠে যাবে, বারবার চাপতে হবে না। লগ আউট করলে ফোনের ডেটা মুছবে না, শুধু সিঙ্ক বন্ধ হবে। প্রথমবার সাইন ইন করলে ফোনের পুরনো ডেটাই আগে ক্লাউডে উঠবে, খালি ক্লাউড তোমার ডেটা মুছবে না।</p>';
+  h+='<h3>Account ও Sync</h3><p>Google বা ইমেইল দিয়ে সাইন ইন করলে তোমার ডেটা তোমার অ্যাকাউন্টের সাথে সিঙ্ক হবে। সাইন ইন থাকলে সেভ করলেই ইন্টারনেট থাকলে ডেটা নিজে থেকে ক্লাউডে উঠে যাবে, বারবার চাপতে হবে না। লগ আউট করলে ফোনের ডেটা মুছবে না, শুধু সিঙ্ক বন্ধ হবে। Google দিয়ে Continue করলে আলাদা Sign up করতে হয় না — অ্যাকাউন্ট আগে থেকে থাকুক বা না থাকুক, একই বাটন কাজ করবে; না থাকলে নতুন অ্যাকাউন্ট তৈরি হবে, থাকলে সাইন ইন হবে। প্রথমবার সাইন ইন করলে ফোনের পুরনো ডেটাই আগে ক্লাউডে উঠবে, খালি ক্লাউড তোমার ডেটা মুছবে না।</p>';
   h+='<h3>রুটিন</h3><p>রুটিন একবার আপলোড করলেই পুরো অ্যাপ চলে। আলাদা কোনো একদিনের জন্য নিজের মতো রুটিন বানাতে চাইলে Routine-এ “একদিনের রুটিন বানান” চাপো — ফাইল লাগবে না, তারিখ বাছো, প্রতি লাইনে একটা করে কাজ লিখো, একবারে সেভ করো। পরে প্রতিটা কাজ আলাদাভাবে এডিট করা যাবে। কাজ সরাতে বা কপি করতে চাইলে ওই দিনের কাজ সিলেক্ট করো।</p>';
   h+='<h3>রেকর্ড ও গ্রাফ</h3><p>গ্রাফে গাঢ় বার মানে তুমি যতক্ষণ পড়েছো, পেছনের হালকা বার মানে ওই দিনের লক্ষ্য। কোনো বারে ট্যাপ করলে ওই সময়ের বিষয়গুলো দেখাবে, আবার একই বারে বা বাইরে ট্যাপ করলে বন্ধ হবে। টাইমার, স্টপওয়াচ বা Add record দিয়ে রেকর্ড যোগ করা যায়। প্রতি ১০ মিনিট পড়ায় ১ কয়েন পাওয়া যায়। স্ট্রিক ফ্রিজ মিস হওয়ার আগেই কিনে রাখতে হয়, তাহলে ওই দিনটা নিজে নিজে বাঁচবে।</p>';
   h+='<h3>চেহারা</h3><p>ব্র্যান্ড ব্লু হলো ডিফল্ট পরিচয়। যেকোনো অ্যাকসেন্ট লাইট ও ডার্ক দুটোতেই কাজ করে। নিজের পছন্দের রং বাছলে পুরো অ্যাপ ওই রং অনুসরণ করবে, আর তার ওপরের লেখা নিজে থেকে পড়ার মতো থাকবে। Settings → Language & Text থেকে লেখার আকার বদলানো যায়, পুরো অ্যাপে সেটা লাগবে।</p>';
@@ -2125,7 +2127,7 @@ setInterval(function(){if(!state)return;var T=state.timer;
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 let app=null, auth=null, db=null, uid=null, handledUid=null, autoTimer=null, listenerSet=false, loadingCloud=false;
 function isErrMsg(m){ return /error|failed|invalid|already|weak|পাওয়া যায়নি|চিনতে পারিনি|ব্যর্থ/i.test(m||'') || (m||'').indexOf('পাসওয়ার্ড রিসেট লিংক')>=0; }
@@ -2181,10 +2183,11 @@ function init(){
   const cfg=getCfg(); if(!cfg) return false;
   app=initializeApp(cfg); auth=getAuth(app); db=getFirestore(app); listenerSet=true;
   onAuthStateChanged(auth, function(u){
-    if(!u || u.isAnonymous){ window.__fbUser=null; uid=u?u.uid:null; if(typeof tab!=='undefined' && (tab==='s_account'||tab==='settings')){ try{ render(true); }catch(e){} } return; }
-    window.__fbUser={uid:u.uid, email:u.email||'', displayName:u.displayName||''}; uid=u.uid; window.__fbAuthError=null;
+    if(!u || u.isAnonymous){ window.__fbUser=null; uid=u?u.uid:null; try{ render(true); }catch(e){} return; }
+    var pd=(u.providerData&&u.providerData[0])?u.providerData[0].providerId:'';
+    window.__fbUser={uid:u.uid, email:u.email||'', displayName:u.displayName||'', provider:pd}; uid=u.uid; window.__fbAuthError=null;
     try{ if(localStorage.getItem('agradia.afterLogin')){ localStorage.removeItem('agradia.afterLogin'); try{ toast('Signed in as '+(u.email||'')); }catch(e){} setTimeout(function(){ try{ go('s_account'); }catch(e){} }, 400); } }catch(e){}
-    if(typeof tab!=='undefined' && (tab==='s_account'||tab==='settings')){ try{ render(true); }catch(e){} }
+    try{ render(true); }catch(e){}
     if(handledUid===u.uid) return; handledUid=u.uid; handleUser(u);
   });
   try{ getRedirectResult(auth).catch(function(e){ window.__fbAuthError=e.message; try{ toast('Google sign-in failed: '+e.message); }catch(e2){} stA('Google sign-in error: '+e.message); }); }catch(e){}
@@ -2221,9 +2224,20 @@ window.addEventListener('online', function(){
 window.__fbAccount = async function(act){
   try{
     if(act==='google'){
-      if(!init()){ stA('Config পাওয়া যায়নি — উপরে config paste করে Save config চাপো।'); return; }
-      try{ localStorage.setItem('agradia.afterLogin','1'); }catch(e){}
-      await signInWithRedirect(auth, new GoogleAuthProvider()); return;
+      if(!init()){ stA('Config পাওয়া যায়নি।'); return; }
+      try{
+        await signInWithPopup(auth, new GoogleAuthProvider());
+      }catch(e){
+        var code=(e&&e.code)?e.code:'';
+        if(code==='auth/popup-closed-by-user' || code==='auth/cancelled-popup-request'){ return; }
+        if(code==='auth/popup-blocked' || code==='auth/operation-not-supported'){
+          try{ localStorage.setItem('agradia.afterLogin','1'); }catch(e2){}
+          await signInWithRedirect(auth, new GoogleAuthProvider());
+          return;
+        }
+        throw e;
+      }
+      return;
     }
     if(act==='logout'){
       if(!init()) return;
