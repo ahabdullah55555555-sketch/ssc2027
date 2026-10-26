@@ -115,6 +115,6 @@ document.addEventListener('change',function(e){var t=e.target,D=t.dataset||{};if
 /* ---------- hook into the main app (no study behaviour changed) ---------- */
 try{ICONS.workout='<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>'}catch(e){}
 try{TABS.push(['workout','Workout'])}catch(e){}
-var wkOrigGo=window.go;window.go=function(t){if(t==='workout'&&typeof tab!=='undefined'&&tab!=='workout')wkPrev=tab;return wkOrigGo(t)};
+var wkOrigGo=window.go;window.go=function(t){if(t==='workout'&&typeof tab!=='undefined'&&tab!=='workout'&&tab!=='settings'&&!/^s_/.test(tab)&&tab!=='logs')wkPrev=tab;return wkOrigGo(t)};
 var wkOrigRender=window.render;window.render=function(k){try{document.body.classList.toggle('anim-off',!!(state&&state.prefs&&state.prefs.animations===false))}catch(e){}return wkOrigRender(k)};
 try{renderTabs();render()}catch(e){}
