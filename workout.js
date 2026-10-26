@@ -111,7 +111,7 @@ case 'wksaveset':var pn=document.getElementById('wkpname'),tm=document.getElemen
 case 'wkreset':confirmBox('Reset workout data?','All workout routines, logs and streaks on this phone will be cleared. Study data stays.','Reset',true).then(function(ok){if(!ok)return;wkSnap();wk=wkFresh();wkSave();wkTab='today';render(true);toast('Workout data reset.','Undo',wkUndo)});break;
 }}
 document.addEventListener('click',function(e){var b=e.target.closest?e.target.closest('button'):null;if(!b||!b.dataset||!b.dataset.act)return;if(b.dataset.act.indexOf('wk')===0){e.stopPropagation();wkHandle(b.dataset)}});
-document.addEventListener('change',function(e){var t=e.target,D=t.dataset||{};if(D.wktick!==undefined){var W=wkLoad(),key=D.r+':'+D.d;W.ticks[key]=W.ticks[key]||{};if(t.checked){wkSound('tick');W.ticks[key][D.wktick]=true;var fx=wkFind(D.r,D.d,D.wktick);if(fx.x&&fx.x.rest>0)wkRestStart(fx.x.rest)}else delete W.ticks[key][D.wktick];wkSave();render(true)}else if(D.pref==='anim'){state.prefs.animations=t.checked;save();render(true)}});
+document.addEventListener('change',function(e){var t=e.target,D=t.dataset||{};if(t.id==='wknav'){var W=wkLoad();W.showNav=t.checked;wkSave();render(true);return}if(D.wktick!==undefined){var W=wkLoad(),key=D.r+':'+D.d;W.ticks[key]=W.ticks[key]||{};if(t.checked){wkSound('tick');W.ticks[key][D.wktick]=true;var fx=wkFind(D.r,D.d,D.wktick);if(fx.x&&fx.x.rest>0)wkRestStart(fx.x.rest)}else delete W.ticks[key][D.wktick];wkSave();render(true)}else if(D.pref==='anim'){state.prefs.animations=t.checked;save();render(true)}});
 /* ---------- hook into the main app (no study behaviour changed) ---------- */
 try{ICONS.workout='<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>'}catch(e){}
 try{TABS.push(['workout','Workout'])}catch(e){}
