@@ -2141,36 +2141,115 @@ function dt(m){}
 const DEFAULT_CFG={apiKey:"AIzaSyBs0IDRDVOow1McJdFnpzsjEtlmgZHAj2g",authDomain:"agradia-test.firebaseapp.com",projectId:"agradia-test",storageBucket:"agradia-test.firebasestorage.app",messagingSenderId:"657991764458",appId:"1:657991764458:web:d68cc1e3a4eb5006908a93"};
 function getCfg(){ try{ var s=localStorage.getItem('agradia.firebaseConfig'); if(s) return JSON.parse(s); }catch(e){} return DEFAULT_CFG; }
 function appState(){ try{ return localStorage.getItem('ssc2027.data.v2')||'{}'; }catch(e){ return '{}'; } }
+function workoutState(){ try{ return localStorage.getItem('ssc2027.workout.v1')||''; }catch(e){ return ''; } }
 function getLinked(){ try{ return localStorage.getItem('agradia.cloudUid')||''; }catch(e){ return ''; } }
 function setLinked(v){ try{ localStorage.setItem('agradia.cloudUid', v); }catch(e){} }
 function getLastSync(){ try{ return +(localStorage.getItem('agradia.lastSyncAt')||0); }catch(e){ return 0; } }
 function setLastSync(v){ try{ localStorage.setItem('agradia.lastSyncAt', String(v)); }catch(e){} }
 function cloudMillis(d){ try{ var t=d.updatedAt; if(t && t.toMillis) return t.toMillis(); if(typeof t==='number') return t; }catch(e){} return 0; }
-async function uploadLocal(u){ const s=appState(); await setDoc(doc(db,'users',u),{state:s,app:'agradia',updatedAt:serverTimestamp()},{merge:true}); setLastSync(Date.now()); return s; }
+async function uploadLocal(u){ const s=appState(), w=workoutState(); await setDoc(doc(db,'users',u),{state:s,workout:w,app:'agradia',updatedAt:serverTimestamp()},{merge:true}); setLastSync(Date.now()); return s; }
 async function loadCloudState(u, d){
   loadingCloud=true;
   try{ localStorage.setItem('ssc2027.data.v2.backup-before-cloud', appState()); }catch(e){}
-  try{ localStorage.setItem('ssc2027.data.v2', d.state); }catch(e){ loadingCloud=false; return false; }
+  try{ localStorage.setItem('ssc2027.workout.v1.backup-before-cloud', workoutState()); }catch(e){}
+  try{ if(typeof d.state==='string'&&d.state) localStorage.setItem('ssc2027.data.v2', d.state); }catch(e){ loadingCloud=false; return false; }
+  try{ if(typeof d.workout==='string'&&d.workout) localStorage.setItem('ssc2027.workout.v1', d.workout); }catch(e){ loadingCloud=false; return false; }
   setLastSync(cloudMillis(d)||Date.now()); setLinked(u); loadingCloud=false; return true;
 }
-async function chooseCloudOrPhone(title, msg){
-  try{ var r=await window.modal(title,'<p>'+msg+'</p>',[{label:'Phone-এর data upload করো',val:1},{label:'Cloud data load করো',cls:'ghost',val:2},{label:'Cancel',cls:'ghost',val:0}]); return r.val; }catch(e){ return 0; }
+function isEmptyPhone(){
+  try{ var s=appState(); if(!s||s==='{}') return true; var o=JSON.parse(s);
+    if(o.demo===true) return true; if(o.setup!==true) return true;
+    var rt=(o.routine&&o.routine.tasks)?o.routine.tasks.length:0;
+    var ss=(o.sessions)?o.sessions.length:0, tm=o.time?Object.keys(o.time).length:0;
+    var wk=(o.weak)?o.weak.length:0, mi=(o.mistakes)?o.mistakes.length:0;
+    return rt===0&&ss===0&&tm===0&&wk===0&&mi===0;
+  }catch(e){ return false; }
+}
+function mergeById(cloudArr, phoneArr){
+  var seen={}, out=[];
+  (cloudArr||[]).forEach(function(x){ if(x&&x.id&&!seen[x.id]){ seen[x.id]=1; out.push(x); } });
+  (phoneArr||[]).forEach(function(x){ if(x&&x.id&&!seen[x.id]){ seen[x.id]=1; out.push(x); } });
+  return out;
+}
+function mergeStates(cloudStr, phoneStr){
+  try{
+    var c=JSON.parse(cloudStr), p=JSON.parse(phoneStr);
+    if(!c||typeof c!=='object'||!p||typeof p!=='object') return null;
+    var m=JSON.parse(JSON.stringify(c));
+    if(!m.routine) m.routine={days:[],tasks:[]};
+    if(!p.routine) p.routine={days:[],tasks:[]};
+    var dayMap={}; (m.routine.days||[]).forEach(function(d){ if(d&&d.date) dayMap[d.date]=d; });
+    (p.routine.days||[]).forEach(function(d){ if(d&&d.date&&!dayMap[d.date]){ dayMap[d.date]=d; m.routine.days.push(d); } });
+    m.routine.tasks=mergeById(m.routine.tasks||[], p.routine.tasks||[]);
+    m.routine.tasks.forEach(function(t){ if(t&&t.date&&!dayMap[t.date]){ dayMap[t.date]=1; m.routine.days.push({date:t.date,planned:null,note:''}); } });
+    m.routine.days.sort(function(a,b){ return a.date<b.date?-1:(a.date>b.date?1:0); });
+    if(!m.subjects) m.subjects=[]; (p.subjects||[]).forEach(function(s){ if(s&&m.subjects.indexOf(s)<0) m.subjects.push(s); });
+    if(!m.done) m.done={}; Object.keys(p.done||{}).forEach(function(k){ if(p.done[k]===true) m.done[k]=true; });
+    if(!m.time) m.time={}; Object.keys(p.time||{}).forEach(function(k){ var cm=(m.time[k]?((m.time[k].h||0)*60+(m.time[k].m||0)):0), pm=((p.time[k].h||0)*60+(p.time[k].m||0)); var mx=Math.max(cm,pm); m.time[k]={h:Math.floor(mx/60),m:mx%60}; });
+    m.sessions=mergeById(m.sessions||[], p.sessions||[]); m.sessions.sort(function(a,b){ return (a.date||'')<(b.date||'')?-1:1; });
+    m.weak=mergeById(m.weak||[], p.weak||[]); m.mistakes=mergeById(m.mistakes||[], p.mistakes||[]); m.countdowns=mergeById(m.countdowns||[], p.countdowns||[]);
+    if(!m.dayNotes) m.dayNotes={}; Object.keys(p.dayNotes||{}).forEach(function(k){ if(!(k in m.dayNotes)) m.dayNotes[k]=p.dayNotes[k]; });
+    if(!m.schedule) m.schedule={}; Object.keys(p.schedule||{}).forEach(function(k){ if(!m.schedule[k]) m.schedule[k]=p.schedule[k]; else m.schedule[k]=mergeById(m.schedule[k], p.schedule[k]); });
+    if(!m.shop) m.shop={freezeDates:[],spent:0,aura:'none',auraStrong:false};
+    if(!p.shop) p.shop={freezeDates:[],spent:0,aura:'none',auraStrong:false};
+    var fds={}; (m.shop.freezeDates||[]).forEach(function(d){ fds[d]=1; }); (p.shop.freezeDates||[]).forEach(function(d){ if(!fds[d]){ fds[d]=1; m.shop.freezeDates.push(d); } }); m.shop.freezeDates.sort();
+    m.shop.spent=Math.max(m.shop.spent||0, p.shop.spent||0); m.shop.auraStrong=!!(m.shop.auraStrong||p.shop.auraStrong);
+    if((!m.shop.aura||m.shop.aura==='none')&&p.shop.aura) m.shop.aura=p.shop.aura;
+    if(!m.prefs) m.prefs={}; if(!p.prefs) p.prefs={};
+    if(!m.prefs.name&&p.prefs.name) m.prefs.name=p.prefs.name;
+    if(!m.prefs.avatar&&p.prefs.avatar) m.prefs.avatar=p.prefs.avatar;
+    m.setup=true; m.demo=false;
+    return JSON.stringify(m);
+  }catch(e){ return null; }
+}
+function mergeWorkout(cloudStr, phoneStr){
+  try{
+    if(!cloudStr) return phoneStr||''; if(!phoneStr) return cloudStr||'';
+    var c=JSON.parse(cloudStr), p=JSON.parse(phoneStr);
+    if(!c||typeof c!=='object'||!p||typeof p!=='object') return null;
+    var isFreshW=function(o){ return (!o.routines||!o.routines.length)&&(!o.doneDates||!o.doneDates.length)&&(!o.ticks||!Object.keys(o.ticks).length)&&(!o.logs||((!o.logs.weight||!o.logs.weight.length)&&(!o.logs.measure||!o.logs.measure.length)&&(!o.logs.test||!o.logs.test.length))); };
+    if(isFreshW(p)) return cloudStr; if(isFreshW(c)) return phoneStr;
+    var m=JSON.parse(JSON.stringify(c));
+    m.routines=mergeById(m.routines||[], p.routines||[]);
+    m.routines.forEach(function(r){ var pr=(p.routines||[]).filter(function(x){ return x.id===r.id; })[0]; if(pr){ r.days=mergeById(r.days||[], pr.days||[]); r.days.forEach(function(d){ var pd=(pr.days||[]).filter(function(x){ return x.id===d.id; })[0]; if(pd) d.exercises=mergeById(d.exercises||[], pd.exercises||[]); }); } });
+    if(!m.equipment) m.equipment=[]; (p.equipment||[]).forEach(function(e){ if(e&&m.equipment.indexOf(e)<0) m.equipment.push(e); });
+    if(!m.activeId&&p.activeId) m.activeId=p.activeId;
+    if(!m.logs) m.logs={weight:[],measure:[],test:[]};
+    ['weight','measure','test'].forEach(function(k){ m.logs[k]=mergeById(m.logs[k]||[], (p.logs||{})[k]||[]); });
+    var dd={}; (m.doneDates||[]).forEach(function(d){ dd[d]=1; }); (p.doneDates||[]).forEach(function(d){ if(!dd[d]){ dd[d]=1; m.doneDates.push(d); } }); m.doneDates.sort();
+    if(!m.ticks) m.ticks={}; Object.keys(p.ticks||{}).forEach(function(k){ if(!m.ticks[k]) m.ticks[k]=p.ticks[k]; else Object.keys(p.ticks[k]).forEach(function(e){ m.ticks[k][e]=true; }); });
+    return JSON.stringify(m);
+  }catch(e){ return null; }
+}
+async function chooseMerge(title){
+  try{ var r=await window.modal(title,'<p>এই account-এর cloud-এ আগের data আছে, আর এই phone-এও নতুন data আছে। Phone-এর data account-এ যোগ করবো, নাকি আলাদা রাখবো?</p>',[{label:'Phone-এর data account-এ যোগ করো',val:1},{label:'শুধু Cloud data load করো',cls:'ghost',val:2},{label:'Cancel — আলাদা রাখো',cls:'ghost',val:0}]); return r.val; }catch(e){ return 0; }
+}
+async function applyMerge(u, snap){
+  var merged=mergeStates(snap.data().state||'{}', appState());
+  if(merged===null){ await signOut(auth); stA('Merge failed — data বদলানো হয়নি।'); return; }
+  var mergedW=mergeWorkout(snap.data().workout||'', workoutState());
+  if(mergedW===null){ await signOut(auth); stA('Merge failed — data বদলানো হয়নি।'); return; }
+  try{ localStorage.setItem('ssc2027.data.v2.backup-before-cloud', appState()); }catch(e){}
+  try{ localStorage.setItem('ssc2027.workout.v1.backup-before-cloud', workoutState()); }catch(e){}
+  try{ localStorage.setItem('ssc2027.data.v2', merged); if(mergedW) localStorage.setItem('ssc2027.workout.v1', mergedW); }catch(e){ stA('Merge failed — data বদলানো হয়নি।'); return; }
+  setLinked(u); await uploadLocal(u); setTimeout(function(){ location.reload(); }, 600);
 }
 async function handleUser(u){
   try{
-    var linked=getLinked(), ref=doc(db,'users',u.uid), snap=await getDoc(ref), hasCloud=snap.exists()&&!!snap.data().state;
+    var linked=getLinked(), ref=doc(db,'users',u.uid), snap=await getDoc(ref), hasCloud=snap.exists()&&!!(snap.data().state||snap.data().workout);
     if(!linked){
       if(!hasCloud){ await uploadLocal(u.uid); setLinked(u.uid); stA('Account linked — phone-এর data cloud-এ উঠেছে।'); return; }
-      var c=await chooseCloudOrPhone('Cloud-এ data আছে','এই account-এর cloud-এ আগের data আছে, আর এই phone-এও data আছে। কোনটা রাখবো?');
-      if(c===1){ await uploadLocal(u.uid); setLinked(u.uid); stA('Phone-এর data cloud-এ উঠেছে।'); }
-      else if(c===2){ if(await loadCloudState(u.uid, snap.data())){ stA('Cloud data load হচ্ছে...'); setTimeout(function(){ location.reload(); }, 600); } }
+      if(isEmptyPhone()){ if(await loadCloudState(u.uid, snap.data())){ setTimeout(function(){ location.reload(); }, 600); } return; }
+      var c=await chooseMerge('Cloud-এ data আছে');
+      if(c===1){ await applyMerge(u.uid, snap); }
+      else if(c===2){ if(await loadCloudState(u.uid, snap.data())){ setTimeout(function(){ location.reload(); }, 600); } }
       else { await signOut(auth); stA('Cancelled — sign out করা হয়েছে।'); }
       return;
     }
     if(linked!==u.uid){
-      var c2=await chooseCloudOrPhone('অন্য account','এই phone আগে অন্য account-এর সাথে linked ছিল। ভুল account-এ phone-এর data যাতে না যায়, তাই নিশ্চিত করো।');
-      if(c2===1){ await uploadLocal(u.uid); setLinked(u.uid); stA('Phone-এর data নতুন account-এ উঠেছে।'); }
-      else if(c2===2){ var s2=await getDoc(ref); if(s2.exists()&&s2.data().state){ if(await loadCloudState(u.uid, s2.data())){ setTimeout(function(){ location.reload(); }, 600); } } else { setLinked(u.uid); stA('এই account-এ cloud data নেই — phone-এর data-ই থাকবে।'); } }
+      var c2=await chooseMerge('অন্য account');
+      if(c2===1){ var s2a=await getDoc(ref); if(s2a.exists()&&(s2a.data().state||s2a.data().workout)){ await applyMerge(u.uid, s2a); } else { await uploadLocal(u.uid); setLinked(u.uid); } }
+      else if(c2===2){ var s2=await getDoc(ref); if(s2.exists()&&(s2.data().state||s2.data().workout)){ if(await loadCloudState(u.uid, s2.data())){ setTimeout(function(){ location.reload(); }, 600); } } else { setLinked(u.uid); stA('এই account-এ cloud data নেই — phone-এর data-ই থাকবে।'); } }
       else { await signOut(auth); stA('Cancelled — sign out করা হয়েছে।'); }
       return;
     }
@@ -2215,14 +2294,13 @@ window.__fbAutoUpload = function(){
 };
 window.addEventListener('online', function(){
   try{
-    if(window.__fbAutoUpload) window.__fbAutoUpload();
     if(auth && auth.currentUser && !auth.currentUser.isAnonymous && getLinked()===auth.currentUser.uid){
       getDoc(doc(db,'users',auth.currentUser.uid)).then(function(snap){
-        if(snap.exists()&&snap.data().state&&cloudMillis(snap.data())>getLastSync()&&snap.data().state!==appState()){
+        if(snap.exists()&&cloudMillis(snap.data())>getLastSync()&&(snap.data().state!==appState()||(snap.data().workout||'')!==workoutState())){
           try{ toast('Cloud-এ নতুন data আছে — Account থেকে Load চাপলে আসবে।'); }catch(e){}
-        }
-      }).catch(function(){});
-    }
+        } else if(window.__fbAutoUpload) window.__fbAutoUpload();
+      }).catch(function(){ if(window.__fbAutoUpload) window.__fbAutoUpload(); });
+    } else if(window.__fbAutoUpload) window.__fbAutoUpload();
   }catch(e){}
 });
 window.__fbAccount = async function(act){
@@ -2245,9 +2323,19 @@ window.__fbAccount = async function(act){
     }
     if(act==='logout'){
       if(!init()) return;
-      handledUid=null; await signOut(auth); window.__fbUser=null;
-      try{ toast('Logged out — phone-এর data আছে।'); }catch(e){}
-      try{ render(true); }catch(e){} return;
+      var ok=false; try{ ok=await window.confirmBox('Are you sure?','Log out করলে এই phone থেকে সব data মুছে যাবে। Cloud-এ থাকা data আবার sign in করলে ফিরে আসবে।','Yes',true); }catch(e){ ok=false; }
+      if(!ok) return;
+      var cu=auth.currentUser;
+      if(cu&&!cu.isAnonymous){
+        try{
+          if(getLinked()===cu.uid){ await uploadLocal(cu.uid); }
+          else { var pre=await getDoc(doc(db,'users',cu.uid)); if(!pre.exists()||!(pre.data().state||pre.data().workout)){ await uploadLocal(cu.uid); setLinked(cu.uid); } else { throw new Error('not linked'); } }
+        }catch(e){ stA('Sync failed — logout cancelled, data was NOT removed. Check connection and try again.'); return; }
+      }
+      handledUid=null; try{ await signOut(auth); }catch(e){}
+      window.__fbUser=null;
+      try{ localStorage.removeItem('ssc2027.data.v2'); localStorage.removeItem('ssc2027.workout.v1'); localStorage.removeItem('ssc2027.data.v2.backup-before-cloud'); localStorage.removeItem('ssc2027.workout.v1.backup-before-cloud'); localStorage.removeItem('agradia.cloudUid'); localStorage.removeItem('agradia.lastSyncAt'); localStorage.removeItem('agradia.afterLogin'); }catch(e){}
+      try{ location.reload(); }catch(e){ try{ render(true); }catch(e2){} } return;
     }
     if(act==='emailsubmit'||act==='forgot'){
       if(!init()){ stA('Config পাওয়া যায়নি।'); return; }
