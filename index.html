@@ -13,7 +13,7 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--bg:#F6F3EA;--soft:#EDE9DC;--soft2:#E4E0D1;--text:#1B241E;--muted:#5A645D;--accent:#1F4D3A;--onacc:#FFFFFF;--accsoft:#DCE6DC;--track:#E1DDCE;--warn:#B3261E;--warnsoft:#F0DDD8;--hair:#DAD6C8;--bgrgb:246,243,234;
+:root{--bg:#F6F3EA;--soft:#EDE9DC;--soft2:#E4E0D1;--text:#1B241E;--muted:#5A645D;--accent:#145DA0;--onacc:#FFFFFF;--accsoft:#DCE9F5;--track:#E1DDCE;--warn:#B3261E;--warnsoft:#F0DDD8;--hair:#DAD6C8;--bgrgb:246,243,234;
 --neon:var(--accent);--neon2:var(--accent);--lav:var(--muted);--panel:var(--soft);--panel2:var(--soft2);--line:var(--hair);--accl:var(--accent);--ok:var(--accent);--rgb:31,77,58;--glow:transparent}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
@@ -372,8 +372,8 @@ window.I18N_BN={
 'Timer discarded.':'টাইমার বাদ দেওয়া হয়েছে।','Stopwatch discarded.':'স্টপওয়াচ বাদ দেওয়া হয়েছে।',
 'Discard timer?':'টাইমার বাদ দেবেন?','Discard stopwatch?':'স্টপওয়াচ বাদ দেবেন?',
 'The time on the timer will not be saved.':'টাইমারের সময় সেভ হবে না।','The time on the stopwatch will not be saved.':'স্টপওয়াচের সময় সেভ হবে না।',
-'Monochrome':'একরঙা','Accent color':'অ্যাকসেন্ট রঙ','Forest Green (default)':'ফরেস্ট গ্রিন (ডিফল্ট)',
-'Forest Green is the default identity. Any accent works in both light and dark.':'ফরেস্ট গ্রিন ডিফল্ট পরিচয়। যেকোনো অ্যাকসেন্ট লাইট ও ডার্ক দুটোতেই কাজ করে।',
+'Monochrome':'একরঙা','Accent color':'অ্যাকসেন্ট রঙ','Brand Blue (default)':'ব্র্যান্ড ব্লু (ডিফল্ট)',
+'Brand Blue is the default identity. Any accent works in both light and dark.':'ব্র্যান্ড ব্লু ডিফল্ট পরিচয়। যেকোনো অ্যাকসেন্ট লাইট ও ডার্ক দুটোতেই কাজ করে।',
 'No tasks today.':'আজ কোনো কাজ নেই।','Open Routine':'রুটিন খুলুন','Show all':'সব দেখুন',
 'to do today':'টি আজ বাকি','Plan & calendar':'প্ল্যান ও ক্যালেন্ডার','Charts & totals':'চার্ট ও মোট হিসাব',
 'What should we call you?':'তোমাকে কী নামে ডাকবো?',
@@ -747,7 +747,7 @@ function clean(o){
   s.setup=o.setup===undefined?true:o.setup===true;s.legacy=o.legacy===undefined?o.setup===undefined:o.legacy===true;s.demo=o.demo===true;
   if(o.done&&typeof o.done==='object')Object.keys(o.done).slice(0,6000).forEach(function(k){if(o.done[k]===true)s.done[k]=true});
   s.time=cleanTime(o.time);s.weak=cleanWeak(o.weak);s.mistakes=cleanMis(o.mistakes);s.countdowns=cleanCd(o.countdowns);s.dayNotes=cleanDayNotes(o.dayNotes);s.schedule=cleanSchedule(o.schedule);
-  var l=parseInt(o.prefs&&o.prefs.limit,10);s.prefs.limit=l>=60&&l<=1440?l:450;var th=o.prefs&&o.prefs.theme,HX=/^#[0-9a-fA-F]{6}$/;var lg=o.prefs&&o.prefs.lang;s.prefs.lang=lg==='bn'?'bn':'en';var fz=o.prefs&&o.prefs.fs;s.prefs.fs=FS[fz]?fz:'m';var wsn=parseInt(o.prefs&&o.prefs.weekStart,10);s.prefs.weekStart=wsn>=0&&wsn<=6?wsn:6;if(th&&(th.mode==='light'||th.mode==='dark'||th.mode==='mono'||th.mode==='mono-light'||th.mode==='mono-dark'||th.mode==='custom')){if(th.mode==='custom'){var cb=th.custom&&th.custom.bg;s.prefs.theme.mode=(cb&&HX.test(cb)&&lum(cb)<.3)?'dark':'light';if(th.custom&&HX.test(th.custom.accent)&&th.custom.accent.toUpperCase()!=='#1F4D3A')s.prefs.theme.accent=th.custom.accent}else{s.prefs.theme.mode=th.mode==='mono'?'mono-light':th.mode;if(HX.test(th.accent))s.prefs.theme.accent=th.accent}}
+  var l=parseInt(o.prefs&&o.prefs.limit,10);s.prefs.limit=l>=60&&l<=1440?l:450;var th=o.prefs&&o.prefs.theme,HX=/^#[0-9a-fA-F]{6}$/;var lg=o.prefs&&o.prefs.lang;s.prefs.lang=lg==='bn'?'bn':'en';var fz=o.prefs&&o.prefs.fs;s.prefs.fs=FS[fz]?fz:'m';var wsn=parseInt(o.prefs&&o.prefs.weekStart,10);s.prefs.weekStart=wsn>=0&&wsn<=6?wsn:6;if(th&&(th.mode==='light'||th.mode==='dark'||th.mode==='mono'||th.mode==='mono-light'||th.mode==='mono-dark'||th.mode==='custom')){if(th.mode==='custom'){var cb=th.custom&&th.custom.bg;s.prefs.theme.mode=(cb&&HX.test(cb)&&lum(cb)<.3)?'dark':'light';if(th.custom&&HX.test(th.custom.accent)&&th.custom.accent.toUpperCase()!=='#145DA0')s.prefs.theme.accent=th.custom.accent}else{s.prefs.theme.mode=th.mode==='mono'?'mono-light':th.mode;if(HX.test(th.accent)&&th.accent.toUpperCase()!=='#1F4D3A')s.prefs.theme.accent=th.accent}}
   else if(th)s.prefs.theme.mode='dark';
   var P0=o.prefs||{},ts=parseInt(P0.toastSec,10);s.prefs.animations=P0.animations===false?false:true;s.prefs.toastSec=[2,3,4,5,8].indexOf(ts)>-1?ts:4;s.prefs.routineView=P0.routineView==='cal'?'cal':'list';var sdm=parseInt(P0.schDefaultMin,10);s.prefs.schDefaultMin=[15,30,60,120,240].indexOf(sdm)>-1?sdm:60;
   var av=P0.avatar;if(av&&av.type==='svg'&&av.cfg&&typeof av.cfg==='object')s.prefs.avatar={type:'svg',cfg:cleanCfg(av.cfg)};else if(av&&av.type==='img'&&typeof av.data==='string'&&av.data.length<400000&&/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(av.data))s.prefs.avatar={type:'img',data:av.data};
@@ -1388,7 +1388,7 @@ function vSchedule(){
 function schSettingsDlg(){var bn=state.prefs.lang==='bn',cur=schDefMin();var opts=[[15,bn?'১৫ মিনিট':'15min'],[30,bn?'৩০ মিনিট':'30min'],[60,bn?'১ ঘণ্টা':'1h'],[120,bn?'২ ঘণ্টা':'2h'],[240,bn?'৪ ঘণ্টা':'4h']];modal(bn?'সময়সূচি সেটিংস':'Schedule settings','<label class="f" for="schdefmin">'+(bn?'ডিফল্ট টাইম ডিফারেন্স':'Default time difference')+'</label><select id="schdefmin">'+opts.map(function(o){return'<option value="'+o[0]+'"'+(o[0]===cur?' selected':'')+'>'+o[1]+'</option>'}).join('')+'</select><p class="sub">'+(bn?'Schedule খুললেই এই interval দেখাবে; pinch বা + / − দিয়ে সাময়িকভাবে বদলানো যাবে।':'This interval is shown when Schedule opens; pinch or + / − changes it temporarily.')+'</p>',[{label:bn?'বাতিল':'Cancel',cls:'ghost',val:0},{label:bn?'সেভ':'Save',val:1,v:true}],function(q){return ''}).then(function(r){if(r.val!==1)return;var m=parseInt(r.q('#schdefmin').value,10);if([15,30,60,120,240].indexOf(m)<0)m=60;state.prefs.schDefaultMin=m;schPx=52/m;save();render(true);toast(bn?'সেটিংস সেভ হয়েছে।':'Settings saved.')})}
 function schDlg(d,ex){
   var bn=state.prefs.lang==='bn';
-  var presets=['#1F4D3A','#1E6FB8','#D97706','#7C3AED','#DC2626','#059669'];
+  var presets=['#145DA0','#1E6FB8','#D97706','#7C3AED','#DC2626','#059669'];
   var curCol=ex?ex.color:'';
   var isPreset=presets.indexOf(curCol)>-1;
   var selCol=curCol;
@@ -1399,7 +1399,7 @@ function schDlg(d,ex){
   var colHtml='<label class="f">'+(bn?'রং':'Color')+'</label>'+
     '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">'+dotBtn('','var(--accent)',selCol==='')+'<span>'+(bn?'ডিফল্ট (অ্যাপ থিম)':'Default (app theme)')+'</span></div>'+
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">'+presets.map(function(c){return dotBtn(c,c,selCol===c)}).join('')+'</div>'+
-    '<div data-schcustom-row style="display:flex;align-items:center;gap:10px"><input type="color" id="schcustom" value="'+(curCol&&!isPreset?curCol:'#1F4D3A')+'" style="width:40px;height:40px;padding:2px;cursor:pointer"><span>'+(bn?'কাস্টম':'Custom')+'</span></div>';
+    '<div data-schcustom-row style="display:flex;align-items:center;gap:10px"><input type="color" id="schcustom" value="'+(curCol&&!isPreset?curCol:'#145DA0')+'" style="width:40px;height:40px;padding:2px;cursor:pointer"><span>'+(bn?'কাস্টম':'Custom')+'</span></div>';
   var btns=ex?[{label:bn?'বাতিল':'Cancel',cls:'ghost',val:0},{label:bn?'মুছুন':'Delete',cls:'danger',val:2},{label:bn?'সেভ':'Save',val:1,v:true}]:[{label:bn?'বাতিল':'Cancel',cls:'ghost',val:0},{label:bn?'সেভ':'Save',val:1,v:true}];
   var prom=modal(bn?(ex?'কাজ এডিট করুন':'কাজ যোগ করুন'):(ex?'Edit task':'Add task'),
     '<label class="f" for="scht">'+(bn?'কাজের নাম':'Task name')+'</label><input id="scht" maxlength="100" value="'+esc(ex?ex.title:'')+'">'+
@@ -1577,7 +1577,7 @@ function shareStreakPng(){
   var fl='M9.5 1C12 3.5 15 6 17 9C18 7.5 19 7 20 8.5C22 11.5 22.5 15 20.5 18C18.5 21 15.5 22.5 12 22.5C8.5 22.5 5.5 21 4 18C2.5 15 3 12 5 10.5C4 9.5 4.5 8.5 6 8C7 5.5 8 3 9.5 1Z';
   var flc='M12 15C13 16.8 14.5 18 14.5 20A2.5 2.5 0 0 1 9.5 20C9.5 18 11 16.8 12 15Z';
   var wings=FS.wings?'<path d="M7.5 16 C5 14.5 3 12 2.2 9 C4.5 10.2 6.5 12 7.8 14.5 Z" fill="#FFB800"/><path d="M16.5 16 C19 14.5 21 12 21.8 9 C19.5 10.2 17.5 12 16.2 14.5 Z" fill="#FFB800"/>':'';
-  var svg='<svg xmlns="http://www.w3.org/2000/svg" width="720" height="720" viewBox="0 0 720 720"><rect width="720" height="720" fill="#F6F3EA"/><g transform="translate(230 90) scale(10)">'+wings+'<path d="'+fl+'" fill="'+FS.col[0]+'"/><path d="'+fl+'" fill="'+FS.col[1]+'" transform="translate(0 -.8) translate(12 22.5) scale(.70) translate(-12 -22.5)"/><path d="'+flc+'" fill="'+FS.col[2]+'" transform="translate(.5 0)"/></g><text x="360" y="470" text-anchor="middle" font-family="sans-serif" font-size="120" font-weight="800" fill="#1F2937">'+S.streak+'</text><text x="360" y="530" text-anchor="middle" font-family="sans-serif" font-size="44" font-weight="700" fill="#FF7A00">'+(bn?'দিনের স্ট্রিক':'days streak')+'</text><text x="360" y="600" text-anchor="middle" font-family="sans-serif" font-size="32" fill="#6B7280">'+S.coins+' Coins · '+mile+'</text><text x="360" y="660" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#1F4D3A">Agradia</text></svg>';
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" width="720" height="720" viewBox="0 0 720 720"><rect width="720" height="720" fill="#F6F3EA"/><g transform="translate(230 90) scale(10)">'+wings+'<path d="'+fl+'" fill="'+FS.col[0]+'"/><path d="'+fl+'" fill="'+FS.col[1]+'" transform="translate(0 -.8) translate(12 22.5) scale(.70) translate(-12 -22.5)"/><path d="'+flc+'" fill="'+FS.col[2]+'" transform="translate(.5 0)"/></g><text x="360" y="470" text-anchor="middle" font-family="sans-serif" font-size="120" font-weight="800" fill="#1F2937">'+S.streak+'</text><text x="360" y="530" text-anchor="middle" font-family="sans-serif" font-size="44" font-weight="700" fill="#FF7A00">'+(bn?'দিনের স্ট্রিক':'days streak')+'</text><text x="360" y="600" text-anchor="middle" font-family="sans-serif" font-size="32" fill="#6B7280">'+S.coins+' Coins · '+mile+'</text><text x="360" y="660" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#145DA0">Agradia</text></svg>';
   var url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
   var img=new Image();
   img.onload=function(){var c=document.createElement('canvas');c.width=720;c.height=720;c.getContext('2d').drawImage(img,0,0);URL.revokeObjectURL(url);var a=document.createElement('a');a.download='agradia-streak.png';a.href=c.toDataURL('image/png');a.click();toast(bn?'ছবি ডাউনলোড হয়েছে।':'Streak image downloaded.')};
@@ -1757,11 +1757,11 @@ function motivate(p,n){return p>=100?'All done — amazing work!':p>=60?'Keep go
 var QA_ICONS={timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>',stopwatch:'<circle cx="12" cy="14" r="7"/><path d="M12 10v4l2.5 2.5M9 3h6M12 3v3"/>'};
 function qac(act,icon,title,sub,live){return'<button class="qac" data-act="'+act+'"><span class="qic"><svg viewBox="0 0 24 24">'+icon+'</svg></span><b>'+title+'</b></button>'}
 /* ---------- theme ---------- */
-var PAL_L={bg:'#F6F3EA',soft:'#EDE9DC',text:'#1B241E',muted:'#5A645D',accent:'#1F4D3A',warn:'#B3261E'};
-var PAL_D={bg:'#0E1210',soft:'#171C18',text:'#E8EEE9',muted:'#92A096',accent:'#8FCBA4',warn:'#FF8A80'};
+var PAL_L={bg:'#F6F3EA',soft:'#EDE9DC',text:'#1B241E',muted:'#5A645D',accent:'#145DA0',warn:'#B3261E'};
+var PAL_D={bg:'#0E1210',soft:'#171C18',text:'#E8EEE9',muted:'#92A096',accent:'#6AB0F3',warn:'#FF8A80'};
 var PAL_MONO={bg:'#FAFAF9',soft:'#EFEFEE',text:'#1C1C1C',muted:'#6E6E6E',accent:'#2E2E2E',warn:'#5A5A5A'};
 var PAL_MONO_DARK={bg:'#101010',soft:'#1A1A1A',text:'#EDEDED',muted:'#9A9A9A',accent:'#FFFFFF',warn:'#AAAAAA'};
-var PALETTES=[['#1F4D3A','Forest Green'],['#3E5C76','Muted Blue'],['#7A3B4F','Burgundy'],['#5B4E77','Violet'],['#7A5C3E','Earth Brown'],['#1F6F6B','Deep Teal'],['#43566B','Slate Blue'],['#6B7A2A','Olive'],['#E86A1F','Orange']];
+var PALETTES=[['#145DA0','Brand Blue'],['#3E5C76','Muted Blue'],['#7A3B4F','Burgundy'],['#5B4E77','Violet'],['#7A5C3E','Earth Brown'],['#1F6F6B','Deep Teal'],['#43566B','Slate Blue'],['#6B7A2A','Olive'],['#FF8A1E','Orange']];
 function h2r(h){return[1,3,5].map(function(i){return parseInt(h.substr(i,2),16)})}
 function mix(a,b,t){var A=h2r(a),B=h2r(b);return'#'+[0,1,2].map(function(i){return('0'+Math.round(A[i]+(B[i]-A[i])*t).toString(16)).slice(-2)}).join('')}
 function lum(h){var c=h2r(h).map(function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]}
@@ -1820,8 +1820,8 @@ function vMore(){
     +srow('s_about',I.i,'About Agradia','Version, your data, install')}
 function vSAppearance(){var t=state.prefs.theme,m=t.mode,h=head('Appearance');
   h+='<h3>Theme</h3>'+[['light','Light'],['dark','Dark'],['mono-light','Monochrome Light'],['mono-dark','Monochrome Dark']].map(function(o){return'<button class="opt'+(m===o[0]?' on':'')+'" data-act="tmode" data-v="'+o[0]+'"><i></i>'+o[1]+'</button>'}).join('');
-  if(m!=='mono'&&m!=='mono-light'&&m!=='mono-dark'){h+='<h3>Accent color</h3><p class="sub">Forest Green is the default identity. Any accent works in both light and dark.</p><div class="swatches">'+[['','Forest Green (default)']].concat(PALETTES.slice(1)).map(function(p){var v=p[0],sel=v?t.accent===v:!t.accent;return'<button class="sw'+(sel?' on':'')+'" data-act="pacc" data-v="'+v+'" aria-label="'+p[1]+'"><i style="background:'+(v||'#1F4D3A')+'"></i>'+p[1]+'</button>'}).join('')+'</div>'}
-  if(m!=='mono'&&m!=='mono-light'&&m!=='mono-dark'){h+='<h3>Custom color</h3><p class="sub">Pick any color. The whole app follows it, and text on it adjusts automatically to stay readable in Light and Dark.</p><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><input type="color" class="cpick" data-cacc="1" value="'+(t.accent||'#1F4D3A')+'" aria-label="Custom color"><span style="font-size:13.5px;color:var(--muted)">'+(t.accent||'Forest Green (default)')+'</span><button class="ghost sm" data-act="pacc">Reset to Forest Green</button></div>';}
+  if(m!=='mono'&&m!=='mono-light'&&m!=='mono-dark'){h+='<h3>Accent color</h3><p class="sub">Brand Blue is the default identity. Any accent works in both light and dark.</p><div class="swatches">'+[['','Brand Blue (default)']].concat(PALETTES.slice(1)).map(function(p){var v=p[0],sel=v?t.accent===v:!t.accent;return'<button class="sw'+(sel?' on':'')+'" data-act="pacc" data-v="'+v+'" aria-label="'+p[1]+'"><i style="background:'+(v||'#145DA0')+'"></i>'+p[1]+'</button>'}).join('')+'</div>'}
+  if(m!=='mono'&&m!=='mono-light'&&m!=='mono-dark'){h+='<h3>Custom color</h3><p class="sub">Pick any color. The whole app follows it, and text on it adjusts automatically to stay readable in Light and Dark.</p><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><input type="color" class="cpick" data-cacc="1" value="'+(t.accent||'#145DA0')+'" aria-label="Custom color"><span style="font-size:13.5px;color:var(--muted)">'+(t.accent||'Brand Blue (default)')+'</span><button class="ghost sm" data-act="pacc">Reset to Brand Blue</button></div>';}
   h+='<h3>Animations</h3><p class="sub">Icon and slide animations in the app, including the Workout section. Turn off for instant transitions.</p><label class="sc wide"><input type="checkbox" data-pref="anim"'+(state.prefs.animations!==false?' checked':'')+'><span>Animations on</span></label>';
   h+='<h3>Pop-up messages</h3><p class="sub">How long small messages stay on screen. Tap or swipe a message to close it at once.</p><select data-pref="toastSec" aria-label="Message duration">'+[2,3,4,5,8].map(function(n){return'<option value="'+n+'"'+(state.prefs.toastSec===n?' selected':'')+'>'+n+' seconds</option>'}).join('')+'</select>';
   return h}
