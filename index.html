@@ -70,6 +70,7 @@ h3{font-family:'Sora','Hind Siliguri','Noto Sans Bengali','Poppins',sans-serif;f
 button,.btn{font:inherit;font-weight:600;min-height:54px;padding:0 22px;border-radius:18px;border:0;background:var(--accent);color:var(--onacc);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-align:center;transition:transform .12s,opacity .2s}
 button.addbtn::before{content:"+";margin-right:7px;font-weight:700}
 button:active{transform:scale(.97)}
+.gbtn{background:#ffffff!important;color:#1f1f1f!important;border:1px solid #dadce0!important;border-radius:8px!important;padding:12px 16px!important;display:flex!important;align-items:center;justify-content:center;gap:12px;font-weight:600;width:100%}
 button.ghost,.btn.ghost{background:var(--soft);border:0;color:var(--text)}
 button.danger{background:var(--warnsoft);color:var(--warn)}
 button.sm{min-height:44px;padding:0 16px;font-size:14.5px;border-radius:14px}
@@ -1833,7 +1834,9 @@ function vSearch(){return'<div class="head slide">'+backBtn()+'<h1>Search</h1></
 /* ---------- settings ---------- */
 function vMore(){
   var I={a:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>',l:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',p:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 15-5 16 0"/>',d:'<path d="M4 7c0-2 16-2 16 0v10c0 2-16 2-16 0z"/><path d="M4 12c0 2 16 2 16 0"/>',g:'<path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/>',i:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>'};
+  var acctSub=(window.__fbUser&&window.__fbUser.email)?('Signed in as '+window.__fbUser.email):'Sign in';
   return head('Settings')+'<div id="upd"></div>'
+    +srow('s_account',I.p,'Account',acctSub)
     +srow('s_appearance',I.a,'Appearance','Light, dark or your own colors')
     +srow('s_language',I.l,'Language & Text','Language and text size')
     +srow('s_profile',I.p,'Profile & Avatar','Your name and picture')
@@ -1841,7 +1844,6 @@ function vMore(){
     +srow('logs',I.g,'Logs','Weak chapters and mistake log')
     +srow('s_workout','<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>','Workout Settings','Workout routines, time and options')
     +srow('schsettings',ICONS.schedule,'Schedule Settings','Default time difference')
-    +srow('s_account',I.p,'Account & Sync','Google / Email sign-in, auto-sync')
     +srow('s_about',I.i,'About Agradia','Version, your data, install')}
 function vSAppearance(){var t=state.prefs.theme,m=t.mode,h=head('Appearance');
   h+='<h3>Theme</h3>'+[['light','Light'],['dark','Dark'],['mono-light','Monochrome Light'],['mono-dark','Monochrome Dark']].map(function(o){return'<button class="opt'+(m===o[0]?' on':'')+'" data-act="tmode" data-v="'+o[0]+'"><i></i>'+o[1]+'</button>'}).join('');
@@ -1884,23 +1886,21 @@ function vSData(){var lim=state.prefs.limit,h=head('Routine & Data');
   h+='<h3>Routine tools</h3><p class="sub">Remove your current routine and upload a new one from the start. Study time, weak chapters and mistakes are kept. Export a backup first.</p><button class="danger" data-act="rmroutine" style="width:100%">Remove routine and start fresh</button>';
   h+='<h3>Reset study records</h3><p class="sub">Clears ticks, study time, weak chapters, and mistakes. Your routine stays. Export a backup first.</p><button class="danger" data-act="resetprog" style="width:100%">Reset progress</button>';
   return h}
-function vSAccount(){var h=head('Account & Sync');var u=window.__fbUser||null;
-  if(!u){h+='<p class="sub">Sign-in করলে এই phone-এর data তোমার account-এর সাথে sync হবে। Sign-in না করলে data শুধু এই phone-এই থাকবে।</p>'
-    +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="google">Google দিয়ে সাইন ইন</button><button data-cloud="email">ইমেইল দিয়ে সাইন ইন / সাইন আপ</button></div>'
-    +'<p class="sub" id="acctstatus">Status: not signed in</p><p class="sub">Google সাইন ইন-এর জন্য Firebase console-এ Authorized domains-এ ahabdullah55555555-sketch.github.io যোগ থাকতে হবে।</p>';return h}
+function vSAccount(){var h=head('Account');var u=window.__fbUser||null;
+  if(!u){h+='<p class="sub">Sign in to sync your data across devices.</p>'
+    +'<div style="display:flex;flex-direction:column;gap:12px"><button class="gbtn" data-cloud="google"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.6 5.1C9.7 39.7 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>Sign in with Google</button><button class="ghost" data-cloud="email">Sign in with Email</button></div>'
+    +'<p class="sub" id="acctstatus"></p>';return h}
+  h+='<p class="sub">Signed in as <b>'+esc(u.email||u.uid)+'</b></p><p class="sub">Your data syncs automatically when you are online.</p>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="ghost" data-cloud="logout">Log out</button></div>'
+    +'<p class="sub" id="acctstatus"></p>';return h}
   h+='<p class="sub">Signed in as <b>'+esc(u.email||u.uid)+'</b></p><p class="sub">Auto-sync: চালু — save করলেই internet থাকলে cloud-এ উঠে যাবে।</p>'
     +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="upload">Upload now</button><button data-cloud="download">Download check</button><button data-cloud="load">Load cloud data</button><button class="ghost" data-cloud="logout">Log out</button></div>'
     +'<p class="sub" id="acctstatus">Status: signed in</p><p class="sub" id="fbstatus"></p><p class="sub" id="fbdetail"></p>'
     +'<p class="sub">Log out করলে এই phone-এর data মুছবে না, শুধু auto-sync বন্ধ হবে।</p>';return h}
 function vSAbout(){var h=head('About Agradia');
   h+='<div class="empty"><img src="icon.svg" width="76" height="76" style="border-radius:22px" alt=""><h2 style="margin:12px 0 0">Agradia</h2><p class="sub">Version '+APP_VERSION+'</p></div>';
-  h+='<h3>How your data is kept</h3><ol><li><b>Saved on this phone.</b> Every change is saved automatically. '+(memOnly?'<span style="color:var(--warn)">Storage is blocked right now.</span>':'<span class="ok">Working.</span>')+(persisted?' '+esc(persisted):'')+'</li><li><b>Offline copy of the app.</b> '+(navigator.serviceWorker&&navigator.serviceWorker.controller?'<span class="ok">Ready: the app opens without internet.</span>':'Not ready yet. Open the app once while online, then reopen it.')+' This stores app files only, not your data.</li><li><b>No automatic cloud sync.</b> GitHub Pages only hosts the files. Nothing is uploaded by the app itself and devices do not sync. Use Export backup, Share backup (to Drive or Gmail from this phone), or Import backup.</li></ol><p class="sub">Going back online never resets your data. Status: <b id="net">'+(navigator.onLine?'Online':'Offline')+'</b>.</p>';
+  h+='<p class="sub">Your data stays on this phone, and syncs only when you sign in.</p>';
   h+='<h3>Install on Android</h3><ol><li>Open the app link in Chrome and let it load once while online.</li><li>Tap the three-dot menu, then Install app (or Add to Home screen).</li></ol>'+(deferred?'<button data-act="install" style="width:100%">Install now</button>':'');
-  h+='<h3>What\'s new in 3.1.0</h3><ul><li>Final black steps logo (SVG master) and a 1-second splash: bars grow one by one like steps, then the app opens.</li><li>PNG app icons (192 / 512 / maskable) and splash screen for a clean home-screen install.</li><li>Your own countdowns on Home: add as many as you want, each with a name, date and time, showing days left. No default countdown.</li><li>Backup check (reads a backup file and reports whether it is valid, without importing it) and Share backup to Drive/Gmail.</li><li>Today\'s reminders on Home and a browser-notification test. Limit: notifications do not arrive while the app is closed, because there is no server.</li></ul>';
-  h+='<h3>Cloud sync (manual)</h3><p class="sub">কিছুই নিজে থেকে upload হয় না। তুমি চাপলেই কেবল এই phone-এর data Firebase-এ যাবে বা আসবে।</p>'
-    +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="connect">Connect</button><button data-cloud="upload">Upload</button><button data-cloud="download">Download check</button><button data-cloud="load">Load cloud data</button></div>'
-    +'<p class="sub" id="fbstatus">Status: not connected</p><p class="sub" id="fbdetail"></p>'
-    +'<label class="f">Firebase config (দরকার হলে override — সাধারণত লাগবে না)</label><textarea id="fbcfg" rows="4" placeholder="Console থেকে SDK setup & configuration-এর config object এখানে paste করো"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="saveconfig">Save config</button></div>';
   if(state.legacy)h+='<h3>Scheduling rules</h3><ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol><h3>Subject abbreviations</h3><div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div>';
   return h}
 /* ---------- events ---------- */
@@ -2166,6 +2166,7 @@ function init(){
   onAuthStateChanged(auth, function(u){
     if(!u || u.isAnonymous){ window.__fbUser=null; uid=u?u.uid:null; if(typeof tab!=='undefined' && tab==='s_account'){ try{ render(true); }catch(e){} } return; }
     window.__fbUser={uid:u.uid, email:u.email||'', displayName:u.displayName||''}; uid=u.uid;
+    try{ if(sessionStorage.getItem('agradia.afterLogin')){ sessionStorage.removeItem('agradia.afterLogin'); try{ toast('Signed in as '+(u.email||'')); }catch(e){} setTimeout(function(){ try{ go('s_account'); }catch(e){} }, 400); } }catch(e){}
     if(typeof tab!=='undefined' && tab==='s_account'){ try{ render(true); }catch(e){} }
     if(handledUid===u.uid) return; handledUid=u.uid; handleUser(u);
   });
@@ -2204,6 +2205,7 @@ window.__fbAccount = async function(act){
   try{
     if(act==='google'){
       if(!init()){ stA('Config পাওয়া যায়নি — উপরে config paste করে Save config চাপো।'); return; }
+      try{ sessionStorage.setItem('agradia.afterLogin','1'); }catch(e){}
       await signInWithRedirect(auth, new GoogleAuthProvider()); return;
     }
     if(act==='logout'){
