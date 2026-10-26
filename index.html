@@ -1885,8 +1885,6 @@ function vSData(){var lim=state.prefs.limit,h=head('Routine & Data');
   h+='<h3>Reset study records</h3><p class="sub">Clears ticks, study time, weak chapters, and mistakes. Your routine stays. Export a backup first.</p><button class="danger" data-act="resetprog" style="width:100%">Reset progress</button>';
   return h}
 function vSAccount(){var h=head('Account & Sync');var u=window.__fbUser||null;
-  var cfg=null;try{cfg=JSON.parse(localStorage.getItem('agradia.firebaseConfig')||'null')}catch(e){}
-  if(!cfg){h+='<p class="sub">প্রথমে একবার Firebase config দিতে হবে।</p><label class="f">Firebase config</label><textarea id="fbcfg" rows="4" placeholder="Console থেকে SDK setup & configuration-এর config object এখানে paste করো"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="saveconfig">Save config</button></div>';return h}
   if(!u){h+='<p class="sub">Sign-in করলে এই phone-এর data তোমার account-এর সাথে sync হবে। Sign-in না করলে data শুধু এই phone-এই থাকবে।</p>'
     +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="google">Google দিয়ে সাইন ইন</button><button data-cloud="email">ইমেইল দিয়ে সাইন ইন / সাইন আপ</button></div>'
     +'<p class="sub" id="acctstatus">Status: not signed in</p><p class="sub">Google সাইন ইন-এর জন্য Firebase console-এ Authorized domains-এ ahabdullah55555555-sketch.github.io যোগ থাকতে হবে।</p>';return h}
@@ -1902,7 +1900,7 @@ function vSAbout(){var h=head('About Agradia');
   h+='<h3>Cloud sync (manual)</h3><p class="sub">কিছুই নিজে থেকে upload হয় না। তুমি চাপলেই কেবল এই phone-এর data Firebase-এ যাবে বা আসবে।</p>'
     +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="connect">Connect</button><button data-cloud="upload">Upload</button><button data-cloud="download">Download check</button><button data-cloud="load">Load cloud data</button></div>'
     +'<p class="sub" id="fbstatus">Status: not connected</p><p class="sub" id="fbdetail"></p>'
-    +'<label class="f">Firebase config (প্রথমবার একবার paste করো)</label><textarea id="fbcfg" rows="4" placeholder="Console থেকে SDK setup & configuration-এর config object এখানে paste করো"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="saveconfig">Save config</button></div>';
+    +'<label class="f">Firebase config (দরকার হলে override — সাধারণত লাগবে না)</label><textarea id="fbcfg" rows="4" placeholder="Console থেকে SDK setup & configuration-এর config object এখানে paste করো"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button data-cloud="saveconfig">Save config</button></div>';
   if(state.legacy)h+='<h3>Scheduling rules</h3><ol>'+RULES.map(function(r){return'<li>'+esc(r)+'</li>'}).join('')+'</ol><h3>Subject abbreviations</h3><div class="leg">'+LEG.map(function(l){return'<b>'+esc(l[0])+'</b><span>'+esc(l[1])+'</span>'}).join('')+'</div>';
   return h}
 /* ---------- events ---------- */
@@ -2117,7 +2115,8 @@ let app=null, auth=null, db=null, uid=null, handledUid=null, autoTimer=null, lis
 function st(m){ var el=document.getElementById('fbstatus'); if(el) el.textContent='Status: '+m; }
 function stA(m){ var el=document.getElementById('acctstatus'); if(el) el.textContent='Status: '+m; else st(m); }
 function dt(m){ var el=document.getElementById('fbdetail'); if(el) el.textContent=m; }
-function getCfg(){ try{ return JSON.parse(localStorage.getItem('agradia.firebaseConfig')||'null'); }catch(e){ return null; } }
+const DEFAULT_CFG={apiKey:"AIzaSyBs0IDRDVOow1McJdFnpzsjEtlmgZHAj2g",authDomain:"agradia-test.firebaseapp.com",projectId:"agradia-test",storageBucket:"agradia-test.firebasestorage.app",messagingSenderId:"657991764458",appId:"1:657991764458:web:d68cc1e3a4eb5006908a93"};
+function getCfg(){ try{ var s=localStorage.getItem('agradia.firebaseConfig'); if(s) return JSON.parse(s); }catch(e){} return DEFAULT_CFG; }
 function appState(){ try{ return localStorage.getItem('ssc2027.data.v2')||'{}'; }catch(e){ return '{}'; } }
 function getLinked(){ try{ return localStorage.getItem('agradia.cloudUid')||''; }catch(e){ return ''; } }
 function setLinked(v){ try{ localStorage.setItem('agradia.cloudUid', v); }catch(e){} }
