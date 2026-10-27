@@ -642,7 +642,7 @@ window.I18N_PAT.push(
 </script>
 <script>
 "use strict";
-var APP_VERSION='3.3.18',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.3.19',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -2044,6 +2044,9 @@ function vSAccount(){var u=window.__fbUser||null;
     +'<div style="margin-top:8px"><div class="row"><span>Sync</span><b>Auto-sync on</b></div><div class="row" style="margin-top:8px"><span>Sign-in method</span><b>'+(u.provider==='google.com'?'Google':'Email')+'</b></div></div>'
     +'<hr style="margin:16px 0 4px;border:0;border-top:1px solid var(--hair)"><button data-cloud="deleteaccount" style="display:flex;align-items:center;gap:14px;width:100%;min-height:56px;padding:10px 4px;background:none;color:#B3261E;text-align:left;font-size:16px;font-weight:500"><span style="width:21px;height:21px;flex:none"><svg viewBox="0 0 24 24" style="width:21px;height:21px;fill:none;stroke:#B3261E;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></span><span>Delete account</span></button>';return h}
   var mode=window.__acctMode||'signin', isUp=(mode==='signup'), h=head(isUp?'Sign up':'Sign in');
+  var lastA=null;try{lastA=JSON.parse(localStorage.getItem('agradia.lastAccount')||'null')}catch(e){}
+  if(lastA&&lastA.email){h+='<div style="background:var(--soft);border-radius:16px;padding:14px 16px;margin:12px 0"><b>আগে এই অ্যাকাউন্টে সাইন ইন ছিল</b><br><span class="sub">'+esc(lastA.email)+'</span><br><span class="sub">অফলাইনে এটা শেষ সেভ করা তথ্য — এটা দেখানো মানে সাইন ইন নয়, আসল সাইন-ইন নেট এলে নিজে ফিরবে। না ফিরলে নিচে Google দিয়ে এক ট্যাপে আবার সাইন ইন করো।</span></div>'}
+  else if(!window.__fbAuthReady){h+='<p class="sub">সাইন-ইন চেক হচ্ছে… নেট না থাকলে এটা দেখাবে, নেট এলে আসল অবস্থা ফিরবে।</p>'}
   h+='<p class="sub">'+(isUp?'Create an account to sync your data across devices.':'Welcome back. Sign in to sync your data.')+'</p>'
     +(window.__fbAuthError?('<p class="sub">Last sign-in error: '+esc(window.__fbAuthError)+'</p>'):'')
     +'<label class="f">Email Address</label><input id="acctEm" type="email" placeholder="Email Address" value="'+esc(window.__acctEm||'')+'">'
@@ -2103,6 +2106,7 @@ document.addEventListener('pointerup',function(){if(window.__lpTimer)clearTimeou
 document.addEventListener('pointermove',function(e){if(window.__lpTimer){var dx=e.clientX-(window.__lpX||0),dy=e.clientY-(window.__lpY||0);if(dx*dx+dy*dy>196)clearTimeout(window.__lpTimer)}});
 document.addEventListener('pointercancel',function(){if(window.__msgLpTimer)clearTimeout(window.__msgLpTimer);if(window.__lpTimer)clearTimeout(window.__lpTimer)});
 document.addEventListener('contextmenu',function(e){if(e.target.closest&&e.target.closest('[data-msg],[data-msgrow]'))e.preventDefault()});
+window.addEventListener('online',function(){try{render(true)}catch(e){}});
 document.addEventListener('click',function(e){
   var b=e.target.closest('button');
   if(b&&b.dataset.cloud){
@@ -2508,11 +2512,12 @@ async function handleUser(u){
 function init(){
   if(listenerSet) return true;
   const cfg=getCfg(); if(!cfg) return false;
-  app=initializeApp(cfg); auth=getAuth(app); db=getFirestore(app); try{storage=getStorage(app)}catch(e){} try{ setPersistence(auth, browserLocalPersistence).catch(function(){}); }catch(e){} listenerSet=true;
+  app=initializeApp(cfg); auth=getAuth(app); db=getFirestore(app); try{storage=getStorage(app)}catch(e){} try{ setPersistence(auth, browserLocalPersistence).catch(function(){}); }catch(e){} listenerSet=true;window.__fbAuthReady=false;
   onAuthStateChanged(auth, function(u){
+    window.__fbAuthReady=true;
     if(!u || u.isAnonymous){ window.__fbUser=null; uid=u?u.uid:null; try{ render(true); }catch(e){} return; }
     var pd=(u.providerData&&u.providerData[0])?u.providerData[0].providerId:'';
-    window.__fbUser={uid:u.uid, email:u.email||'', displayName:u.displayName||'', provider:pd}; uid=u.uid; window.__fbAuthError=null;
+    window.__fbUser={uid:u.uid, email:u.email||'', displayName:u.displayName||'', provider:pd}; uid=u.uid; try{localStorage.setItem('agradia.lastAccount',JSON.stringify({email:u.email||'',displayName:u.displayName||'',provider:pd,uid:u.uid,at:Date.now()}))}catch(e){} window.__fbAuthError=null;
     try{ if(localStorage.getItem('agradia.afterLogin')){ localStorage.removeItem('agradia.afterLogin'); try{ toast('Signed in as '+(u.email||'')); }catch(e){} setTimeout(function(){ try{ go('s_account'); }catch(e){} }, 400); } }catch(e){}
     try{ render(true); }catch(e){}
     if(handledUid===u.uid) return; handledUid=u.uid; handleUser(u);
@@ -2579,7 +2584,7 @@ window.__fbAccount = async function(act){
         }catch(e){ stA('Sync failed — logout cancelled, data was NOT removed. Check connection and try again.'); return; }
       }
       handledUid=null; try{ await signOut(auth); }catch(e){}
-      window.__fbUser=null;
+      window.__fbUser=null; try{localStorage.removeItem('agradia.lastAccount')}catch(e){}
       try{ localStorage.removeItem('ssc2027.data.v2'); localStorage.removeItem('ssc2027.workout.v1'); localStorage.removeItem('ssc2027.data.v2.backup-before-cloud'); localStorage.removeItem('ssc2027.workout.v1.backup-before-cloud'); localStorage.removeItem('ssc2027.tracker.v1'); localStorage.removeItem('ssc2027.data.v2.corrupt'); localStorage.removeItem('agradia.cloudUid'); localStorage.removeItem('agradia.lastSyncAt'); localStorage.removeItem('agradia.afterLogin'); }catch(e){}
       try{ location.reload(); }catch(e){ try{ render(true); }catch(e2){} } return;
     }
@@ -2604,7 +2609,7 @@ window.__fbAccount = async function(act){
         else { stA(__L('Delete failed — nothing was deleted. Check connection and try again.','Delete হয়নি — কিছুই মুছা হয়নি। কানেকশন দেখে আবার চেষ্টা করো।')); }
         return;
       }
-      handledUid=null; window.__fbUser=null;
+      handledUid=null; window.__fbUser=null; try{localStorage.removeItem('agradia.lastAccount')}catch(e){}
       try{ localStorage.removeItem('ssc2027.data.v2'); localStorage.removeItem('ssc2027.workout.v1'); localStorage.removeItem('ssc2027.data.v2.backup-before-cloud'); localStorage.removeItem('ssc2027.workout.v1.backup-before-cloud'); localStorage.removeItem('ssc2027.tracker.v1'); localStorage.removeItem('ssc2027.data.v2.corrupt'); localStorage.removeItem('agradia.cloudUid'); localStorage.removeItem('agradia.lastSyncAt'); localStorage.removeItem('agradia.afterLogin'); }catch(e){}
       try{ location.reload(); }catch(e){ try{ render(true); }catch(e2){} }
       return;
