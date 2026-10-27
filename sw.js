@@ -10,8 +10,8 @@ self.addEventListener('fetch',e=>{
   const req=e.request;
   if(req.method!=='GET')return;
   const u=new URL(req.url);
-  /* Fonts: keep a copy so they also work offline after the first online visit. */
-  if(u.hostname==='fonts.googleapis.com'||u.hostname==='fonts.gstatic.com'){
+  /* Fonts + QR images: keep a copy so they also work offline after the first online visit. QR code has no expiry - the ID is lifetime, only its image was online-only before. */
+  if(u.hostname==='fonts.googleapis.com'||u.hostname==='fonts.gstatic.com'||u.hostname==='api.qrserver.com'){
     e.respondWith(caches.open(FONTS).then(c=>c.match(req).then(hit=>{
       const net=fetch(req).then(r=>{if(r&&(r.ok||r.type==='opaque'))c.put(req,r.clone());return r}).catch(()=>hit);
       return hit||net;
