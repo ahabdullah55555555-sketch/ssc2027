@@ -642,7 +642,7 @@ window.I18N_PAT.push(
 </script>
 <script>
 "use strict";
-var APP_VERSION='3.3.19',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.3.20',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -2047,6 +2047,8 @@ function vSAccount(){var u=window.__fbUser||null;
   var lastA=null;try{lastA=JSON.parse(localStorage.getItem('agradia.lastAccount')||'null')}catch(e){}
   if(lastA&&lastA.email){h+='<div style="background:var(--soft);border-radius:16px;padding:14px 16px;margin:12px 0"><b>আগে এই অ্যাকাউন্টে সাইন ইন ছিল</b><br><span class="sub">'+esc(lastA.email)+'</span><br><span class="sub">অফলাইনে এটা শেষ সেভ করা তথ্য — এটা দেখানো মানে সাইন ইন নয়, আসল সাইন-ইন নেট এলে নিজে ফিরবে। না ফিরলে নিচে Google দিয়ে এক ট্যাপে আবার সাইন ইন করো।</span></div>'}
   else if(!window.__fbAuthReady){h+='<p class="sub">সাইন-ইন চেক হচ্ছে… নেট না থাকলে এটা দেখাবে, নেট এলে আসল অবস্থা ফিরবে।</p>'}
+  var ls=null;try{ls=JSON.parse(localStorage.getItem('agradia.lastSignout')||'null')}catch(e){}
+  if(ls&&ls.at){try{h+='<p class="sub">সতর্কতা: সাইন-ইন হঠাৎ চলে গিয়েছিল — '+esc(new Date(ls.at).toLocaleString())+'। উপরে Google দিয়ে আবার সাইন ইন করো।</p>'}catch(e){}}
   h+='<p class="sub">'+(isUp?'Create an account to sync your data across devices.':'Welcome back. Sign in to sync your data.')+'</p>'
     +(window.__fbAuthError?('<p class="sub">Last sign-in error: '+esc(window.__fbAuthError)+'</p>'):'')
     +'<label class="f">Email Address</label><input id="acctEm" type="email" placeholder="Email Address" value="'+esc(window.__acctEm||'')+'">'
@@ -2353,7 +2355,7 @@ setInterval(function(){if(!state)return;var T=state.timer;
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, deleteUser, signInAnonymously, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, deleteUser, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, deleteDoc, serverTimestamp, collection, query, where, getDocs, addDoc, orderBy, onSnapshot, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 let app=null, auth=null, db=null, storage=null, uid=null, handledUid=null, autoTimer=null, listenerSet=false, loadingCloud=false;
@@ -2509,15 +2511,17 @@ async function handleUser(u){
     }
   }catch(err){ stA('Sync error: '+(err&&err.message?err.message:err)); }
 }
+var authReadyDone=false,authReadyResolve=null,authReadyP=new Promise(function(r){authReadyResolve=r});
 function init(){
   if(listenerSet) return true;
   const cfg=getCfg(); if(!cfg) return false;
   app=initializeApp(cfg); auth=getAuth(app); db=getFirestore(app); try{storage=getStorage(app)}catch(e){} try{ setPersistence(auth, browserLocalPersistence).catch(function(){}); }catch(e){} listenerSet=true;window.__fbAuthReady=false;
   onAuthStateChanged(auth, function(u){
-    window.__fbAuthReady=true;
+    window.__fbAuthReady=true; if(!authReadyDone){authReadyDone=true; if(authReadyResolve)authReadyResolve();}
+    if((!u||u.isAnonymous)&&window.__fbPrevUser&&!window.__fbExplicitLogout){try{localStorage.setItem('agradia.lastSignout',JSON.stringify({at:Date.now(),uid:window.__fbPrevUser.uid,email:window.__fbPrevUser.email||''}))}catch(e){}}
     if(!u || u.isAnonymous){ window.__fbUser=null; uid=u?u.uid:null; try{ render(true); }catch(e){} return; }
     var pd=(u.providerData&&u.providerData[0])?u.providerData[0].providerId:'';
-    window.__fbUser={uid:u.uid, email:u.email||'', displayName:u.displayName||'', provider:pd}; uid=u.uid; try{localStorage.setItem('agradia.lastAccount',JSON.stringify({email:u.email||'',displayName:u.displayName||'',provider:pd,uid:u.uid,at:Date.now()}))}catch(e){} window.__fbAuthError=null;
+    window.__fbUser={uid:u.uid, email:u.email||'', displayName:u.displayName||'', provider:pd}; uid=u.uid; window.__fbPrevUser={uid:u.uid,email:u.email||''}; try{localStorage.removeItem('agradia.lastSignout')}catch(e){} try{localStorage.setItem('agradia.lastAccount',JSON.stringify({email:u.email||'',displayName:u.displayName||'',provider:pd,uid:u.uid,at:Date.now()}))}catch(e){} window.__fbAuthError=null;
     try{ if(localStorage.getItem('agradia.afterLogin')){ localStorage.removeItem('agradia.afterLogin'); try{ toast('Signed in as '+(u.email||'')); }catch(e){} setTimeout(function(){ try{ go('s_account'); }catch(e){} }, 400); } }catch(e){}
     try{ render(true); }catch(e){}
     if(handledUid===u.uid) return; handledUid=u.uid; handleUser(u);
@@ -2525,9 +2529,9 @@ function init(){
   try{ getRedirectResult(auth).catch(function(e){ window.__fbAuthError=e.message; try{ toast('Google sign-in failed: '+e.message); }catch(e2){} stA('Google sign-in error: '+e.message); }); }catch(e){}
   return true;
 }
-async function ensure(allowAnon){
+async function ensure(){
   if(!init()){ st('Config পাওয়া যায়নি — Settings > Account-এ config paste করে Save config চাপো।'); return false; }
-  if(!auth.currentUser){ if(!allowAnon) return false; await signInAnonymously(auth); }
+  try{ await Promise.race([authReadyP, new Promise(function(r){setTimeout(r,8000)})]); }catch(e){}
   if(!auth.currentUser) return false;
   uid=auth.currentUser.uid; st('Connected, UID: '+uid); return true;
 }
@@ -2583,7 +2587,7 @@ window.__fbAccount = async function(act){
           else { var pre=await getDoc(doc(db,'users',cu.uid)); if(!pre.exists()||!(pre.data().state||pre.data().workout)){ await uploadLocal(cu.uid); setLinked(cu.uid); } else { throw new Error('not linked'); } }
         }catch(e){ stA('Sync failed — logout cancelled, data was NOT removed. Check connection and try again.'); return; }
       }
-      handledUid=null; try{ await signOut(auth); }catch(e){}
+      handledUid=null; window.__fbExplicitLogout=true; try{ await signOut(auth); }catch(e){}
       window.__fbUser=null; try{localStorage.removeItem('agradia.lastAccount')}catch(e){}
       try{ localStorage.removeItem('ssc2027.data.v2'); localStorage.removeItem('ssc2027.workout.v1'); localStorage.removeItem('ssc2027.data.v2.backup-before-cloud'); localStorage.removeItem('ssc2027.workout.v1.backup-before-cloud'); localStorage.removeItem('ssc2027.tracker.v1'); localStorage.removeItem('ssc2027.data.v2.corrupt'); localStorage.removeItem('agradia.cloudUid'); localStorage.removeItem('agradia.lastSyncAt'); localStorage.removeItem('agradia.afterLogin'); }catch(e){}
       try{ location.reload(); }catch(e){ try{ render(true); }catch(e2){} } return;
@@ -2602,7 +2606,7 @@ window.__fbAccount = async function(act){
       var cu=auth.currentUser, docDeleted=false;
       if(!cu||cu.isAnonymous){ stA(__L('Sign in first to delete an account.','Delete করতে আগে sign in করো।')); return; }
       try{
-        await deleteDoc(doc(db,'users',cu.uid)); docDeleted=true;
+        await deleteDoc(doc(db,'users',cu.uid)); docDeleted=true; window.__fbExplicitLogout=true;
         await deleteUser(cu);
       }catch(e){
         if(docDeleted){ stA(__L('Cloud records were deleted, but the account could not be deleted — sign in again and try Delete once more. Your phone data was NOT wiped.','ক্লাউড রেকর্ড মুছে গেছে, কিন্তু অ্যাকাউন্ট মুছতে আবার sign in লাগবে — আবার sign in করে Delete আবার চাপো। ফোনের ডেটা মুছা হয়নি।')); }
@@ -2639,7 +2643,7 @@ window.__fbAccount = async function(act){
 };
 window.__fbCloud = async function(act){
   try{
-    if(act==='connect'){ await ensure(true); return; }
+    if(act==='connect'){ await ensure(); return; }
     if(!await ensure()) return;
     const ref=doc(db,'users',uid);
     if(act==='upload'){
