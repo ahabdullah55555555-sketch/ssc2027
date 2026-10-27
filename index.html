@@ -642,7 +642,7 @@ window.I18N_PAT.push(
 </script>
 <script>
 "use strict";
-var APP_VERSION='3.3.20',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.3.21',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -1355,9 +1355,9 @@ function vAvatar(){
   h+='<section class="card"><button data-act="avsave" style="width:100%">Save avatar</button><div class="btns" style="margin-top:10px"><button class="ghost" data-act="avphoto">Upload a photo</button><button class="ghost" data-act="avdef">Use default avatar</button></div><input type="file" id="avfile" accept="image/*" style="position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none"></section>';
   return h}
 function cropDlg(file){
-  if(!file||!/^image\//.test(file.type)){toast('Please choose an image file.');return}
+  if(!file||!(/^image\//.test(file.type||'')||(!file.type&&/\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name||'')))){toast('Please choose an image file.');return}
   var url='',im=new Image();var rd=new FileReader();rd.onload=function(){url=rd.result;im.src=url};rd.onerror=function(){toast('Could not open that image.')};rd.readAsDataURL(file);
-  im.onerror=function(){toast('Could not open that image.')};
+  im.onerror=function(){toast('Could not open that image — try a JPG or PNG photo.')};
   im.onload=function(){
     var m=document.createElement('div');m.className='modal';
     m.innerHTML='<div class="card glow dlg" role="dialog" aria-modal="true"><h2>Crop your photo</h2><p class="sub" style="margin:0 0 10px">Drag the photo to move it. Use the slider to zoom.</p><div class="crop" id="cbox"></div><label class="f" for="cz">Zoom</label><input id="cz" type="range" min="100" max="400" value="100"><div class="btns"><button class="ghost" data-c="0">Cancel</button><button data-c="1">Use photo</button></div></div>';
