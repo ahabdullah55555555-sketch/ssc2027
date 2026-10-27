@@ -642,7 +642,7 @@ window.I18N_PAT.push(
 </script>
 <script>
 "use strict";
-var APP_VERSION='3.3.21',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.3.22',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -2342,14 +2342,15 @@ function net(){var n=document.getElementById('net');if(n)n.textContent=navigator
 window.addEventListener('online',net);window.addEventListener('offline',net);
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&(tab==='home'||followToday))render(true)});
 /* ---------- start ---------- */
-load();schPx=schDefPx();render();setupSW();
-try{history.pushState({tab:'home'},'')}catch(e){}
-if(state.setup&&!state.prefs.name&&!state.prefs.nameAsked){state.prefs.nameAsked=true;save();setTimeout(function(){modal('What should we call you?','<p class="sub">Agradia will greet you by name on the home screen. You can change it later in Settings.</p><label class="f" for="nm0">Your name</label><input id="nm0" maxlength="24" placeholder="Optional">',[{label:'Skip',cls:'ghost',val:0},{label:'Save',val:1,v:true}]).then(function(r){if(r.val===1){var v=r.q('#nm0').value.trim().slice(0,24);if(v){state.prefs.name=v;save();render(true)}}})},600)}
-try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().then(function(ok){persisted=ok?'Storage is marked persistent.':'';})}catch(e){}
-setInterval(function(){if(!state)return;var T=state.timer;
+load();schPx=schDefPx();render();setInterval(function(){if(!state)return;var T=state.timer;
   if(T&&T.run&&trem()<=0){if(T.pom){if(T.phase==='break'){var nc=(T.cycle||1)+1;state.timer={run:true,dur:25*60000,rem:25*60000,endAt:Date.now()+25*60000,subj:T.subj,date:T.date,pom:true,phase:'focus',cycle:nc};save();render(true);toast('Break over! Focus '+nc+' starts.');return}var mm2=Math.max(1,Math.round(T.dur/60000)),d2=T.date,sj2=T.subj,cy=T.cycle||1;var br=(cy%4===0?15:5)*60000;state.timer={run:true,dur:br,rem:br,endAt:Date.now()+br,subj:sj2,date:d2,pom:true,phase:'break',cycle:cy};save();var enP=fmtT(Date.now());addSession(d2,sj2,Math.min(mm2,1440),fromMin(toMin(enP)-mm2),enP);render(true);toast('Focus done! Break: ' + (cy%4===0?15:5) + ' min.');return}var mm=Math.max(1,Math.round(T.dur/60000)),d=T.date,sj=T.subj;state.timer=null;save();var enT=fmtT(Date.now());addSession(d,sj,Math.min(mm,1440),fromMin(toMin(enT)-mm),enT);toast("Time's up! Saved as a record.");return}
   var e=document.getElementById('tmr');if(e&&T){e.textContent=fmtClock(trem());var rg=document.getElementById('tring');if(rg&&T.dur)rg.style.strokeDashoffset=(660*(1-Math.max(0,Math.min(1,trem()/T.dur)))).toFixed(0)}
   var w=document.getElementById('swt');if(w&&state.sw){w.textContent=fmtClock(sela());var sr=document.getElementById('sring');if(sr)sr.style.strokeDashoffset=(660*(1-swFrac())).toFixed(0);var hd=document.getElementById('shand');if(hd)hd.style.transform='translate(-50%,-100%) rotate('+(swFrac()*360).toFixed(1)+'deg)'}},1000);
+try{setupSW()}catch(e){}
+try{history.pushState({tab:'home'},'')}catch(e){}
+if(state.setup&&!state.prefs.name&&!state.prefs.nameAsked){state.prefs.nameAsked=true;save();setTimeout(function(){modal('What should we call you?','<p class="sub">Agradia will greet you by name on the home screen. You can change it later in Settings.</p><label class="f" for="nm0">Your name</label><input id="nm0" maxlength="24" placeholder="Optional">',[{label:'Skip',cls:'ghost',val:0},{label:'Save',val:1,v:true}]).then(function(r){if(r.val===1){var v=r.q('#nm0').value.trim().slice(0,24);if(v){state.prefs.name=v;save();render(true)}}})},600)}
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().then(function(ok){persisted=ok?'Storage is marked persistent.':'';})}catch(e){}
+
 </script>
 <script src="workout.js"></script>
 
