@@ -1,6 +1,6 @@
 /* Network first: the newest index.html is used whenever the phone is online, so updating the app means replacing index.html only.
-   CACHE v6 (was v5): Otto images are embedded inside index.html itself, so no separate image precache is needed. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
-const CACHE='agradia-cache-v6',FONTS='agradia-fonts';
+   CACHE v7 (was v6): clean slate so no phone keeps the white-background Otto images. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
+const CACHE='agradia-cache-v7',FONTS='agradia-fonts';
 const FILES=['./','./index.html','./manifest.json','./icon.svg','./workout.js','./workout.css'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).catch(()=>{}))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
