@@ -1,6 +1,6 @@
 /* Network first: the newest index.html is used whenever the phone is online, so updating the app means replacing index.html only.
-   CACHE v4 (was v3): a clean slate so a new push cannot mix with a stale v3 cache — this fixes logout-wipe and workout-tab code stuck on old cached files. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
-const CACHE='agradia-cache-v4',FONTS='agradia-fonts';
+   CACHE v5 (was v4): a clean slate so a new push cannot mix with a stale v4 cache — this fixes phones stuck serving an old cached index.html (which kept the dead-tick bug alive across reopens). hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
+const CACHE='agradia-cache-v5',FONTS='agradia-fonts';
 const FILES=['./','./index.html','./manifest.json','./icon.svg','./workout.js','./workout.css'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).catch(()=>{}))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
