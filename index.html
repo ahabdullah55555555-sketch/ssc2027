@@ -663,7 +663,7 @@ window.I18N_PAT.push(
 </script>
 <script>
 "use strict";
-var APP_VERSION='3.3.33',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.3.34',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -1240,7 +1240,7 @@ function copyText(t){return new Promise(function(res){
   function fb(){try{var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(a);a.select();a.setSelectionRange(0,t.length);var ok=document.execCommand('copy');a.remove();res(!!ok)}catch(e){res(false)}}
   if(navigator.clipboard&&navigator.clipboard.writeText&&window.isSecureContext)navigator.clipboard.writeText(t).then(function(){res(true)},fb);else fb()})}
 var obStep='welcome';
-function obBanner(){return '<div style="display:flex;justify-content:center;margin:2px 0 10px">'+ottoRow('excited','Welcome to Agradia! 🎉',160)+'</div>'}
+function obBanner(){var bn=state.prefs.lang==='bn';return '<div style="display:flex;justify-content:center;margin:2px 0 10px">'+ottoRow('excited',bn?'হাই! আমি Otto! 🌟 আমি তোমার পড়ার বন্ধু — তোমাকে উৎসাহ দেবো, তোমার অগ্রগতি উদযাপন করবো, আর কখনো বকবো না।':'Hi! I am Otto! 🌟 I am your study buddy — I will cheer you on, celebrate your progress, and never scold you.',160)+'</div>'}
 function obGlobe(){return '<div style="display:flex;justify-content:flex-end;margin-bottom:4px"><button data-act="oblang" aria-label="Language" style="width:36px;height:36px;min-height:0;padding:0;border-radius:50%;background:var(--soft);color:var(--text);display:grid;place-items:center"><svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></button></div>'}
 function vOnboard(){
   var bn=state.prefs.lang==='bn';
@@ -2103,6 +2103,7 @@ function vSHowto(){var h=head('How to use');
   return h}
 function vSAbout(){var bn=state.prefs.lang==='bn';var h=head(bn?'Agradia সম্পর্কে':'About Agradia');
   h+='<div class="empty"><img src="icon.svg" width="76" height="76" style="border-radius:22px" alt=""><h2 style="margin:12px 0 0">Agradia</h2><p class="sub">'+(bn?'ভার্সন ':'Version ')+APP_VERSION+'</p></div>';
+  h+='<h3>'+(bn?'Otto-র সাথে পরিচয়':'Meet Otto')+'</h3>'+ottoRow('excited',bn?'হাই! আমি Otto! 🌟 আমি তোমার পড়ার বন্ধু — তোমাকে উৎসাহ দেবো, তোমার অগ্রগতি উদযাপন করবো, আর কখনো বকবো না।':'Hi! I am Otto! 🌟 I am your study buddy — I will cheer you on, celebrate your progress, and never scold you.',120);
   h+='<p class="sub">'+(bn?'তোমার ডেটা এই ফোনেই থাকে, আর শুধু সাইন ইন করলেই সিঙ্ক হয়।':'Your data stays on this phone, and syncs only when you sign in.')+'</p>';
   h+='<h3>'+(bn?'প্রাইভেসি পলিসি':'Privacy Policy')+'</h3><p class="sub">'+(bn?'Agradia একটা ব্যক্তিগত পড়াশোনা ট্র্যাকার। তোমার রুটিন, টিক, পড়ার সময়, দুর্বল অধ্যায়, ভুলের লগ, ওয়ার্কআউট ডেটা, নাম আর avatar (যদি দিয়ে থাকো) এই ফোনেই থাকে। সাইন ইন করলে একই ডেটা তোমার নিজের Firebase অ্যাকাউন্টে (প্রজেক্ট agradia-test) সিঙ্ক হয়, per-account নিয়ম দিয়ে সুরক্ষিত — শুধু তুমিই পড়তে বা লিখতে পারবে। কোনো ডেটা বিক্রি করা হয় না, কোনো বিজ্ঞাপন দেখানো হয় না, আর লোকেশন, কন্ট্যাক্ট বা বিজ্ঞাপন ট্র্যাকিং সংগ্রহ করা হয় না। লগআউটের সময় প্রথমে ক্লাউডে সিঙ্ক হয়, তারপর এই ফোনের ডেটা মুছে যায়; ক্লাউড কপি Delete account চাপলে মুছে যাবে, নাহলে থেকে যাবে।':'Agradia is a personal study tracker. Your routine, ticks, study time, weak chapters, mistakes, workout data, name and avatar (if you set them) are stored on this phone. If you sign in, the same data syncs to your own account in Firebase (project agradia-test), protected by per-account rules so only you can read or write it. No data is sold, no ads are shown, and no location, contacts or advertising tracking is collected. Logging out first syncs to the cloud, then wipes this phone; the cloud copy is deleted when you use Delete account, otherwise it stays.')+'</p>';
   h+='<h3>'+(bn?'ব্যবহারের শর্ত':'Terms of Use')+'</h3><p class="sub">'+(bn?'Agradia যেমন আছে তেমনই ব্যক্তিগত পড়াশোনা ট্র্যাকিংয়ের জন্য দেওয়া হয়েছে। তোমার নিজের ব্যাকআপের দায়িত্ব তোমার — নিয়মিত export করো, বিশেষ করে লগআউট বা ডিভাইস বদলানোর আগে। এই app তোমার স্কুল রুটিনের বদলে নয়, আর এর রেকর্ড তুমি যা লিখেছো ঠিক ততটাই সঠিক।':'Agradia is provided as-is for personal study tracking. You are responsible for your own backups — export one regularly, especially before logging out or changing devices. The app does not replace your school routine, and its records are only as accurate as what you enter.')+'</p>';
