@@ -1,6 +1,6 @@
 /* Network first: the newest index.html is used whenever the phone is online, so updating the app means replacing index.html only.
-   CACHE v10 (was v9): Friend QR Otto card + list-view share rows. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
-const CACHE='agradia-cache-v10',FONTS='agradia-fonts';
+   CACHE v11 (was v10): Friend QR size/rotation, WhatsApp logo, left-aligned rows, no row line. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
+const CACHE='agradia-cache-v11',FONTS='agradia-fonts';
 const FILES=['./','./index.html','./manifest.json','./icon.svg','./workout.js','./workout.css'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).catch(()=>{}))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
