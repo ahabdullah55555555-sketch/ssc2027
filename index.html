@@ -648,7 +648,7 @@ window.I18N_PAT.push(
 </script>
 <script>
 "use strict";
-var APP_VERSION='3.3.26',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.3.27',SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -1801,7 +1801,7 @@ function streakCardHtml(){
   +'<div style="text-align:center;font-size:16px;color:#FF7A00;font-weight:700;margin-top:2px">'+(bn?'দিনের স্ট্রিক':'days streak')+'</div>'
   +'<div style="text-align:center;margin-top:12px"><span style="background:var(--soft);border-radius:999px;padding:7px 16px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:6px"><svg class="ic ic18"><use href="#i-coin"/></svg> '+S.coins+' '+(bn?'কয়েন':'Coins')+'</span></div>'
   +'<div style="text-align:center;margin-top:12px"><button class="ghost" data-share="streak" style="min-height:44px;padding:0 18px"><svg class="ic ic18"><use href="#i-share"/></svg> '+(bn?'স্ট্রিক ছবি শেয়ার':'Share streak image')+'</button></div>';
-  return'<section class="card">'+(cur>0?ottoRow('excited',bn?cur+' \u09a6\u09bf\u09a8\u09c7\u09b0 \u09ae\u09be\u0987\u09b2\u09b8\u09cd\u099f\u09cb\u09a8! \uD83D\uDD25':cur+'-day milestone! \uD83D\uDD25'):'')+(S.streak===28?'<div style="text-align:center;background:var(--soft);border-radius:12px;padding:10px;margin-bottom:12px;font-weight:700"><svg class="ic ic20"><use href="#i-phoenix"/></svg> Phoenix + Lightning celebration — 28 days!</div>':'')+hero
+  return'<section class="card">'+(cur>0?ottoRow('excited',bn?(S.streak===cur?cur+' \u09a6\u09bf\u09a8\u09c7\u09b0 \u09ae\u09be\u0987\u09b2\u09b8\u09cd\u099f\u09cb\u09a8! \uD83D\uDD25':S.streak+' \u09a6\u09bf\u09a8\u09c7\u09b0 \u09b8\u09cd\u099f\u09cd\u09b0\u09bf\u0995 \u099a\u09b2\u099b\u09c7! \uD83D\uDD25'):(S.streak===cur?cur+'-day milestone! \uD83D\uDD25':S.streak+'-day streak going! \uD83D\uDD25')):'')+(S.streak===28?'<div style="text-align:center;background:var(--soft);border-radius:12px;padding:10px;margin-bottom:12px;font-weight:700"><svg class="ic ic20"><use href="#i-phoenix"/></svg> Phoenix + Lightning celebration — 28 days!</div>':'')+hero
   +'<div class="sub" style="margin:22px 0 10px">'+(bn?'এই সপ্তাহে':'This week')+'</div>'
   +'<div style="display:flex;gap:4px">'+wk+'</div>'
   +'<p class="sub" style="text-align:center;margin-top:8px">'+(bn?'কোনো দিনে ট্যাপ করলে সেদিনের ডিটেইল দেখাবে।':'Tap a day to see its details.')+'</p>'
