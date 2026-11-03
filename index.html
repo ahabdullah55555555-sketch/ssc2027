@@ -663,7 +663,7 @@ window.I18N_PAT.push(
 </script>
 <script>
 "use strict";
-var APP_VERSION='3.3.36',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.3.37',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.9,'Small'],ls:[0.95,'Lower medium'],m:[1,'Medium'],um:[1.1,'Upper medium'],l:[1.25,'Large'],xl:[1.45,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -2364,7 +2364,7 @@ document.addEventListener('click',function(e){
     case'savelimit':var l=(parseInt(document.getElementById('lh').value,10)||0)*60+(parseInt(document.getElementById('lm').value,10)||0);if(l<60||l>1440){toast('Enter a limit between 1h and 24h.');break}state.prefs.limit=l;save();render(true);toast('Daily limit saved.');break;
     case'install':if(deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;render(true)})}break;
     case'resetprog':confirmBox('Reset study records?','This clears all ticks, study time, weak chapters, and mistakes on this phone. Your routine is kept. This cannot be undone.','Reset progress',true).then(function(ok){if(ok){state.done={};state.time={};state.sessions=[];state.timer=null;state.weak=[];state.mistakes=[];undoStack=[];save();render();toast('Progress reset.')}});break;
-    case'doupdate':updating=true;if(updWorker)updWorker.postMessage({type:'SKIP_WAITING'});break;
+    case'doupdate':updating=true;if(updWorker)updWorker.postMessage({type:'SKIP_WAITING'});setTimeout(function(){try{save()}catch(e){}location.reload()},800);break;
     case'later':var u=document.getElementById('upbar');if(u)u.remove();break}});
 document.addEventListener('toggle',function(e){var a=e.target.dataset&&e.target.dataset.acc;if(a)openAcc[a]=e.target.open},true);
 document.addEventListener('dragstart',function(e){var r=e.target.closest&&e.target.closest('[data-drag]');if(r){dragId=r.dataset.drag;try{e.dataTransfer.setData('text/plain',dragId);e.dataTransfer.effectAllowed='move'}catch(_){}}});
