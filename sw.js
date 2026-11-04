@@ -25,3 +25,6 @@ self.addEventListener('fetch',e=>{
     fromNet(req).then(r=>{if(!done){done=true;clearTimeout(t);res(r)}}).catch(()=>{clearTimeout(t);if(!done){done=true;caches.match(req,{ignoreSearch:true}).then(h=>res(h||(req.mode==='navigate'?caches.match('./index.html'):Response.error())))}})
   }));
 });
+
+self.addEventListener('push',e=>{var d={};try{d=e.data?e.data.json():{}}catch(err){}var t=d.title||'Agradia',b=d.body||'';e.waitUntil(self.registration.showNotification(t,{body:b,icon:'./icon-192.png',data:{url:d.url||'./'}}))});
+self.addEventListener('notificationclick',e=>{e.notification.close();var u=(e.notification.data&&e.notification.data.url)||'./';e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(cs=>{for(var i=0;i<cs.length;i++){if('focus' in cs[i])return cs[i].focus()}if(clients.openWindow)return clients.openWindow(u)}))});
