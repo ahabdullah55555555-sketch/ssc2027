@@ -1,7 +1,7 @@
 /* Network first: the newest index.html is used whenever the phone is online, so updating the app means replacing index.html only.
-   CACHE v23 (was v22): Master Study Streak poster (downloaded A flame, no glow) in shareStreakPng. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
-const CACHE='agradia-cache-v25',FONTS='agradia-fonts';
-const FILES=['./','./index.html','./manifest.json','./icon.svg','./workout.js','./workout.css'];
+   CACHE v26 (was v25): DiceBear Avataaars files cached for offline avatar. CACHE v23 (was v22): Master Study Streak poster (downloaded A flame, no glow) in shareStreakPng. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
+const CACHE='agradia-cache-v26',FONTS='agradia-fonts';
+const FILES=['./','./index.html','./manifest.json','./icon.svg','./workout.js','./workout.css','./dicebear-core.mjs','./avataaars.json'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).catch(()=>{}))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
