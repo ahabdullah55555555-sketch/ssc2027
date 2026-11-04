@@ -1,7 +1,7 @@
 /* Network first: the newest index.html is used whenever the phone is online, so updating the app means replacing index.html only.
    CACHE v27 (was v26): DiceBear Avataaars files cached for offline avatar. CACHE v23 (was v22): Master Study Streak poster (downloaded A flame, no glow) in shareStreakPng. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
-const CACHE='agradia-cache-v28',FONTS='agradia-fonts';
-const FILES=['./','./index.html','./manifest.json','./icon.svg','./workout.js','./workout.css','./dicebear-core.mjs','./avataaars.json','./qrcode-generator.js'];
+/* CACHE v29: notification icon cached. */const CACHE='agradia-cache-v29',FONTS='agradia-fonts';
+const FILES=['./','./index.html','./manifest.json','./icon.svg','./notif-icon.svg','./workout.js','./workout.css','./dicebear-core.mjs','./avataaars.json','./qrcode-generator.js'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).catch(()=>{}))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
@@ -26,5 +26,5 @@ self.addEventListener('fetch',e=>{
   }));
 });
 
-self.addEventListener('push',e=>{var d={};try{d=e.data?e.data.json():{}}catch(err){}var t=d.title||'Agradia',b=d.body||'';e.waitUntil(self.registration.showNotification(t,{body:b,icon:'./icon-192.png',data:{url:d.url||'./'}}))});
+self.addEventListener('push',e=>{var d={};try{d=e.data?e.data.json():{}}catch(err){}var t=d.title||'Agradia',b=d.body||'';e.waitUntil(self.registration.showNotification(t,{body:b,icon:'./notif-icon.svg',data:{url:d.url||'./'}}))});
 self.addEventListener('notificationclick',e=>{e.notification.close();var u=(e.notification.data&&e.notification.data.url)||'./';e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(cs=>{for(var i=0;i<cs.length;i++){if('focus' in cs[i])return cs[i].focus()}if(clients.openWindow)return clients.openWindow(u)}))});

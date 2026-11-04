@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Agradia">
+  <rect width="512" height="512" fill="#FFFFFF"/>
+  <rect x="98" y="256" width="92" height="164" rx="10" fill="#000000"/>
+  <rect x="210" y="174" width="92" height="246" rx="10" fill="#000000"/>
+  <rect x="322" y="92" width="92" height="328" rx="10" fill="#000000"/>
+</svg>
