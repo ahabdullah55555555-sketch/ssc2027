@@ -1,0 +1,1 @@
+{"dependencies":{"firebase-admin":"^13.0.0","web-push":"^3.6.0"},"description":"Cardless GitHub Actions sender for Agradia web push (timer-finish + manual broadcast)","main":"send-push.mjs","name":"agradia-push-sender","private":true,"scripts":{"send":"node send-push.mjs"},"type":"module","version":"1.0.0"}
