@@ -1,9 +1,10 @@
 /* Network first: the newest index.html is used whenever the phone is online, so updating the app means replacing index.html only.
    CACHE v27 (was v26): DiceBear Avataaars files cached for offline avatar. CACHE v23 (was v22): Master Study Streak poster (downloaded A flame, no glow) in shareStreakPng. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
 /* CACHE v29: notification icon cached. */
-/* CACHE v30: notification tap navigates to deep links (#messages). */const CACHE='agradia-cache-v30',FONTS='agradia-fonts';
+/* CACHE v30: notification tap navigates to deep links (#messages). */
+/* CACHE v31: install caches each file on its own, so one failed download on weak Wi-Fi no longer leaves the cache empty. */const CACHE='agradia-cache-v31',FONTS='agradia-fonts';
 const FILES=['./','./index.html','./manifest.json','./icon.svg','./notif-icon.svg','./workout.js','./workout.css','./dicebear-core.mjs','./avataaars.json','./qrcode-generator.js'];
-self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).catch(()=>{}))});
+self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(function(c){return Promise.all(FILES.map(function(u){return c.add(u).catch(function(){})}))}).catch(function(){}))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
 function fromNet(req){return fetch(req,{cache:'no-cache'}).then(r=>{if(r&&r.ok){const c=r.clone();caches.open(CACHE).then(x=>x.put(req,c))}return r})}
