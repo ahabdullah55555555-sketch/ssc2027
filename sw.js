@@ -2,8 +2,10 @@
    CACHE v27 (was v26): DiceBear Avataaars files cached for offline avatar. CACHE v23 (was v22): Master Study Streak poster (downloaded A flame, no glow) in shareStreakPng. hills.svg is NOT pre-cached: it is not rendered anywhere (Home banner is an inline SVG), so caching it only added install risk. */
 /* CACHE v29: notification icon cached. */
 /* CACHE v30: notification tap navigates to deep links (#messages). */
-/* CACHE v31: install caches each file on its own, so one failed download on weak Wi-Fi no longer leaves the cache empty. */const CACHE='agradia-cache-v31',FONTS='agradia-fonts';
-const FILES=['./','./index.html','./manifest.json','./icon.svg','./notif-icon.svg','./workout.js','./workout.css','./dicebear-core.mjs','./avataaars.json','./qrcode-generator.js'];
+/* CACHE v31: install caches each file on its own, so one failed download on weak Wi-Fi no longer leaves the cache empty. */
+/* CACHE v32: 16 locally-bundled font files (Hind Siliguri / Sora / Poppins / Anton / Archivo Black) pre-cached for offline Bangla. */
+/* CACHE v33: habit-icons.svg (lazy habit sprite) pre-cached. */const CACHE='agradia-cache-v33',FONTS='agradia-fonts';
+const FILES=['./','./index.html','./manifest.json','./habit-icons.svg','./icon.svg','./notif-icon.svg','./workout.js','./workout.css','./dicebear-core.mjs','./avataaars.json','./qrcode-generator.js','./fonts/hind-siliguri-400-bengali.woff2','./fonts/hind-siliguri-400-latin.woff2','./fonts/hind-siliguri-500-bengali.woff2','./fonts/hind-siliguri-500-latin.woff2','./fonts/hind-siliguri-600-bengali.woff2','./fonts/hind-siliguri-600-latin.woff2','./fonts/hind-siliguri-700-bengali.woff2','./fonts/hind-siliguri-700-latin.woff2','./fonts/sora-600-latin.woff2','./fonts/sora-700-latin.woff2','./fonts/poppins-400-latin.woff2','./fonts/poppins-500-latin.woff2','./fonts/poppins-600-latin.woff2','./fonts/poppins-700-latin.woff2','./fonts/anton-400-latin.woff2','./fonts/archivo-black-400-latin.woff2'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(function(c){return Promise.all(FILES.map(function(u){return c.add(u).catch(function(){})}))}).catch(function(){}))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
