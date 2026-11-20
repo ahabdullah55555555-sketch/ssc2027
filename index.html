@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#F6F3EA">
 <title>Agradia</title>
 <link rel="manifest" href="manifest.json">
@@ -470,6 +470,82 @@ button[data-act="friendchat"],button[data-act="addfriend"]:not(.dotb),button[dat
 .aiact{background:none;border:0;color:var(--muted);padding:6px;border-radius:8px;display:grid;place-items:center;min-width:36px;min-height:36px}
 .aiact.on{color:var(--accent)}
 .aichip{border:1px solid var(--hair);background:var(--soft);border-radius:999px;padding:8px 14px;font:inherit;color:var(--text);white-space:nowrap}
+.aifab[hidden],.fab[hidden]{display:none}
+.aimenu{display:none}
+.aimenu.open{display:block}
+.ai-fade{opacity:0;transform:translateY(4px);animation:aifade .45s ease forwards}
+@keyframes aifade{to{opacity:1;transform:none}}
+.ai-greet{font-size:29px;font-weight:600;line-height:1.3;background:linear-gradient(90deg,#1a56db,#7c3aed 55%,#c2255c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ai-dark .ai-greet{background-image:linear-gradient(90deg,#4285f4,#9b72cb 55%,#d96570)}
+.ai-greet-sub{font-size:16px;color:var(--muted);margin-top:8px}
+.ai-chip-list{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.ai-chip-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--soft2);border:1px solid var(--hair);border-radius:12px;padding:13px 14px;font:inherit;color:var(--text)}
+.ai-chip-dot{width:8px;height:8px;border-radius:3px;background:linear-gradient(135deg,#4285f4,#9b72cb);flex:none}
+.ai-model-chip{display:inline-flex;align-items:center;gap:4px;background:none;border:0;font:inherit;font-size:13px;color:var(--muted);padding:6px 8px;border-radius:8px}
+.ai-logo{font-weight:800;font-size:19px;letter-spacing:-.5px;color:var(--text)}
+.ai-logo.grad{background:linear-gradient(90deg,#1a56db,#7c3aed 55%,#c2255c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ai-dark .ai-logo.grad{background-image:linear-gradient(90deg,#4285f4,#9b72cb 55%,#d96570)}
+.ai-logo-spark{color:var(--accent);font-size:12px;vertical-align:super;margin-left:1px}
+.ai-logo-ai{font-size:13px;font-weight:700;color:var(--muted);margin-left:5px}
+.ai-logo-pill{font-size:11px;font-weight:800;color:#fff;background:var(--accent);border-radius:999px;padding:2px 7px;margin-left:6px;vertical-align:2px}
+.ai-msg-label{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;margin-bottom:4px}
+.ai-msg p{margin:0 0 10px}.ai-msg p:last-child{margin-bottom:0}
+.ai-msg ul,.ai-msg ol{margin:6px 0 10px;padding-left:22px}.ai-msg li{margin:3px 0}
+.ai-msg code{font:13.5px/1.5 ui-monospace,Menlo,Consolas,monospace;background:var(--soft);border-radius:6px;padding:1px 5px}
+.ai-msg h3{font-size:16px;margin:12px 0 6px}
+.aitable-wrap{overflow-x:auto;margin:8px 0}
+.aitable{width:100%;border-collapse:collapse;font-size:15px}
+.aitable th,.aitable td{border:1px solid var(--hair);padding:7px 10px;text-align:left}
+.aitable th{background:var(--soft);font-weight:700}
+.aiquote{border-left:3px solid var(--accent);margin:10px 0;padding:6px 0 6px 12px;color:var(--muted);font-style:italic}
+.aicode{position:relative;background:var(--soft);border:1px solid var(--hair);border-radius:12px;margin:8px 0;overflow:hidden}
+.aicode-bar{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-bottom:1px solid var(--hair);font-size:12.5px;color:var(--muted)}
+.aicode-bar button{background:none;border:0;color:var(--accent);font:inherit;font-weight:700;padding:2px 6px}
+.aicode pre{margin:0;padding:12px;font:13.5px/1.6 ui-monospace,Menlo,Consolas,monospace;white-space:pre;overflow-x:auto}
+.ai-frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;line-height:1.3}
+.ai-frac-n{border-bottom:1.5px solid currentColor;padding:0 5px}
+.ai-frac-d{padding:0 5px}
+.ai-sqrt{border-top:1.5px solid currentColor;padding:0 2px}
+.aimath{display:block;text-align:center;margin:10px 0;font-size:17px}
+.aimath-in{font-size:15px}
+.aichart{margin:10px 0}
+.aichart-title{font-weight:700;font-size:14px;margin-bottom:4px;text-align:center}
+.ai-comp{display:flex;align-items:flex-end;gap:4px;background:var(--card);border:1px solid var(--hair);border-radius:26px;padding:6px 6px 6px 14px;box-shadow:var(--cardsh)}
+.ai-comp input{flex:1;min-width:0;border:0;background:transparent;color:var(--text);font:inherit;font-size:16px;padding:9px 4px;outline:none}
+.ai-comp input::placeholder{color:var(--muted)}
+.ai-mic-btn{width:40px;height:40px;min-height:40px;border:0;background:transparent;color:var(--muted);display:grid;place-items:center;border-radius:50%;padding:0;flex:none}
+.ai-send-btn{width:42px;height:42px;min-height:42px;border:0;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;padding:0;flex:none;opacity:.38;pointer-events:none;transition:opacity .15s ease}
+.ai-send-btn.ready{opacity:1;pointer-events:auto}
+.ai-recbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--hair);border-radius:26px;padding:6px;box-shadow:var(--cardsh);min-height:54px}
+.ai-rec-x{width:36px;height:36px;min-height:36px;border:0;border-radius:50%;background:transparent;color:var(--muted);display:grid;place-items:center;padding:0;flex:none;font-size:16px}
+.ai-rec-mid{flex:1;display:flex;align-items:center;gap:9px;min-width:0}
+.ai-rec-dot{width:9px;height:9px;border-radius:50%;background:#e5484d;animation:aiblink 1.1s infinite;flex:none}
+@keyframes aiblink{0%,100%{opacity:1}50%{opacity:.25}}
+.ai-rec-wave{display:flex;align-items:center;gap:2.5px;height:20px}
+.ai-rec-wave i{width:3px;border-radius:2px;background:var(--accent);animation:aiwv .9s ease-in-out infinite}
+.ai-rec-wave i:nth-child(1){height:8px}.ai-rec-wave i:nth-child(2){height:15px;animation-delay:.12s}.ai-rec-wave i:nth-child(3){height:19px;animation-delay:.24s}.ai-rec-wave i:nth-child(4){height:12px;animation-delay:.36s}.ai-rec-wave i:nth-child(5){height:16px;animation-delay:.48s}.ai-rec-wave i:nth-child(6){height:9px;animation-delay:.6s}
+@keyframes aiwv{0%,100%{transform:scaleY(.55)}50%{transform:scaleY(1)}}
+.ai-rec-txt{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-rec-stop{border:1px solid var(--hair);background:transparent;color:var(--text);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;min-height:36px;flex:none}
+.ai-actcard{background:var(--soft);border:1px solid var(--hair);border-radius:14px;padding:12px;margin:6px 0}
+.ai-act-title{font-weight:700;font-size:15px;margin-bottom:8px}
+.ai-act-desc{font-size:13.5px;color:var(--muted);margin:0 0 10px}
+.ai-act-row{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:7px 2px;border-top:1px solid var(--hair)}
+.ai-act-row:first-of-type{border-top:0}
+.ai-allow-btn,.ai-open-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:11px;padding:11px;margin-top:9px;font-size:14.5px;font-weight:700;background:var(--accent);color:#fff}
+.ai-allow-btn.done{opacity:.75}
+.ai-drawer-new{display:flex;align-items:center;gap:9px;width:100%;border:0;background:transparent;color:var(--text);font-size:15px;font-weight:600;padding:10px 8px;border-radius:10px;text-align:left}
+.ai-drawer-label{font-size:12px;color:var(--muted);font-weight:600;padding:12px 16px 5px;letter-spacing:.04em}
+.ai-drawer-row{display:flex;align-items:center;gap:9px;width:100%;border:0;background:transparent;color:var(--text);text-align:left;font-size:15px;padding:11px 10px;border-radius:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-drawer-row svg{flex:none;opacity:.85}
+.ai-drawer-row span{overflow:hidden;text-overflow:ellipsis}
+.ai-drawer-row.cur{background:var(--soft)}
+.ai-drawer-foot{border-top:1px solid var(--hair);padding:8px}
+.ai-nav-otto{flex:1;background:none;border:0;min-height:48px;padding:0;border-radius:20px;display:grid;place-items:center;position:relative}
+.ai-nav-otto img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);margin-top:-24px;background:var(--bg);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.ai-ctx{position:fixed;z-index:72;background:var(--bg);border:1px solid var(--hair);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.25);padding:6px;min-width:190px}
+.ai-ctx button{display:flex;width:100%;align-items:center;gap:10px;background:none;border:0;padding:11px 12px;font:inherit;text-align:left;color:var(--text);border-radius:10px}
+.ai-ctx button.danger{color:var(--warn)}
 </style>
 </head>
 <body>
@@ -506,11 +582,11 @@ button[data-act="friendchat"],button[data-act="addfriend"]:not(.dotb),button[dat
 <symbol id="i-schedule" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/><circle cx="12" cy="16" r="3"/><path d="M12 14.5V16l1.2 1.2"/></g></symbol>
 <symbol id="i-logs" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/></g></symbol>
 <symbol id="i-friends" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3 2.5-5 6-5s6 2 6 5"/><path d="M17 4v5M14.5 6.5h5"/></g></symbol>
-</defs></svg>
+<symbol id="i-menu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></g></symbol><symbol id="i-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></g></symbol><symbol id="i-mic-o" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5"/></g></symbol><symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.64 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.51 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.05a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1z"/></g></symbol><symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></g></symbol></defs></svg>
 <div id="splash" aria-hidden="true"><div class="splash-bars"><i style="--d:0s;background:#145DA0;height:40%"></i><i style="--d:.25s;background:#1E7BD6;height:65%"></i><i style="--d:.5s;background:#FF8A1E;height:90%"></i></div></div>
 <main id="view" aria-live="polite"></main>
 <nav class="tabs" id="tabs" aria-label="Sections"></nav>
-<button id="fab" class="fab" data-act="fab" aria-label="Quick actions" hidden>+</button> <button id="fabhint" class="fabhint" data-act="fab" hidden></button> <button id="aifab" class="aifab" data-act="goaichat" aria-label="AI সহায়ক" hidden><img alt=""><span class="spark">✦</span></button>
+<button id="fab" class="fab" data-act="fab" aria-label="Quick actions" hidden>+</button> <button id="fabhint" class="fabhint" data-act="fab" hidden></button> <button id="aifab" class="aifab" data-act="goaichat" aria-label="Agradia AI" hidden><img alt=""><span class="spark">✦</span></button>
 <button id="tpill" class="tpill-float" type="button" hidden><svg viewBox="0 0 24 24"><path d="M6 3h12 M6 21h12 M7 3c0 5 4 6 5 9-1 3-5 4-5 9 M17 3c0 5-4 6-5 9 1 3 5 4 5 9" style="fill:var(--accsoft);stroke:var(--accent)" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="16.5" r="1.4" fill="#FF8A1E" stroke="none"/></svg><span class="tm" id="tpillTime">০০:০০</span><span class="run" id="tpillState">চলছে</span><span class="chev">›</span></button>
 <script>
 /* Bangla translations. English text is the source; this file only maps it to Bangla for display.
@@ -869,7 +945,7 @@ window.I18N_PAT.push(
 <script src="./qrcode-generator.js" defer></script>
 <script>
 "use strict";
-var APP_VERSION='3.12.0',PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.13.0',PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.88,'Small'],ls:[0.92,'Lower medium'],m:[0.95,'Medium'],um:[1.05,'Upper medium'],l:[1.15,'Large'],xl:[1.3,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -920,7 +996,7 @@ function modal(title,body,btns,validate){return new Promise(function(res){
 var fabMenuItems=[];
 function fabMenuList(){
   var it=[];
-  it.push({icon:'<image href="'+OTTO_IMG.head+'" x="1" y="1" width="22" height="22"/>',label:__L('AI Helper','AI সহায়ক'),run:function(){go('aichat')}});
+  it.push({icon:'<image href="'+OTTO_IMG.head+'" x="1" y="1" width="22" height="22"/>',label:__L('Agradia AI','Agradia AI'),run:function(){go('aichat')}});
   if(!state.sw)it.push({icon:QA_ICONS.stopwatch,label:__L('Start stopwatch','স্টপওয়াচ শুরু করুন'),run:function(){if(tab!=='stopwatch')prevTab=tab;go('stopwatch')}});
   if(!state.timer)it.push({icon:QA_ICONS.timer,label:__L('Start timer','টাইমার শুরু করুন'),run:function(){if(tab!=='timer')prevTab=tab;go('timer')}});
   if(state.sw)it.push({icon:QA_ICONS.stopwatch,label:__L('Continue stopwatch','স্টপওয়াচ চালিয়ে যান'),run:function(){if(tab!=='stopwatch')prevTab=tab;go('stopwatch')}});
@@ -1093,7 +1169,7 @@ function selIds(){return Object.keys(sel).filter(function(k){return sel[k]})}
 /* ---------- views ---------- */
 var ICONS={home:'<path d="M3 11l9-8 9 8v10H3z"/>',routine:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/>',subjects:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',logs:'<path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',records:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',schedule:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/><circle cx="12" cy="16" r="3"/><path d="M12 14.5V16l1.2 1.2"/>',friends:'<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3 2.5-5 6-5s6 2 6 5"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M16 14.5c2.7.4 4.5 2.1 4.5 5.5"/>'};
 var TABS=[['home','Home'],['routine','Routine'],['records','Records'],['schedule','Schedule'],['friends','Friends']];
-function renderTabs(){var list=TABS;try{if(state&&state.prefs&&Array.isArray(state.prefs.nav))list=list.filter(function(t){return state.prefs.nav.indexOf(t[0])>-1})}catch(e){}try{if(typeof wkLoad==='function'&&wkLoad().showNav===false)list=list.filter(function(t){return t[0]!=='workout'})}catch(e){}document.getElementById('tabs').innerHTML=list.map(function(t){var unreadDot=((t[0]==='home'||t[0]==='friends')&&window.__chatUnreadIds&&hasUnmutedUnread())?'<span style="position:absolute;top:6px;right:8px;width:10px;height:10px;border-radius:50%;background:var(--warn)"></span>':'';return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on'+(navAnim?' pop':''):'')+'" aria-label="'+(t[0]==='friends'?__L('Friends','বন্ধুরা'):t[0]==='schedule'?__L('Schedule','সময়সূচি'):t[1])+'"'+(tab===t[0]?' aria-current="page"':'')+' style="position:relative"><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+unreadDot+'</button>'}).join('')}
+function renderTabs(){var list=TABS;try{if(state&&state.prefs&&Array.isArray(state.prefs.nav))list=list.filter(function(t){return state.prefs.nav.indexOf(t[0])>-1})}catch(e){}try{if(typeof wkLoad==='function'&&wkLoad().showNav===false)list=list.filter(function(t){return t[0]!=='workout'})}catch(e){}var btns=list.map(function(t){var unreadDot=((t[0]==='home'||t[0]==='friends')&&window.__chatUnreadIds&&hasUnmutedUnread())?'<span style="position:absolute;top:6px;right:8px;width:10px;height:10px;border-radius:50%;background:var(--warn)"></span>':'';return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on'+(navAnim?' pop':''):'')+'" aria-label="'+(t[0]==='friends'?__L('Friends','বন্ধুরা'):t[0]==='schedule'?__L('Schedule','সময়সূচি'):t[1])+'"'+(tab===t[0]?' aria-current="page"':'')+' style="position:relative"><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+unreadDot+'</button>'});var mid=Math.floor(btns.length/2);var otto='<button data-tab="aichat" class="ai-nav-otto" aria-label="Agradia AI"><img alt="" data-otto-nav></button>';if(btns.length>=3){btns[mid]=otto;}else{btns.splice(mid,0,otto);}document.getElementById('tabs').innerHTML=btns.join('');var ni=document.querySelector('#tabs [data-otto-nav]');if(ni&&!ni.getAttribute('src'))ni.src=OTTO_IMG.head;}
 function ring(p,lbl){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--track)" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--neon)" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+(lbl||p+'%')+'</b></div>'}
 function bar(p,w){return'<div class="bar'+(w?' warn':'')+'" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div>'}
 function taskRow(t,k,i,n){
@@ -1391,7 +1467,7 @@ function reminderCard(){if(!state.prefs.pushOn&&'serviceWorker' in navigator&&'P
   h+=(state.prefs.pushOn?'<p class="sub" style="margin:10px 0 0">✓ '+(bn?'নোটিফিকেশন চালু আছে':'Notifications are on')+'</p>':'<button class="ghost sm" data-act="pushsub" style="margin-top:10px;width:100%"><svg class="ic ic18" style="margin-right:8px"><use href="#i-bell"/></svg>'+(bn?'নোটিফিকেশন চালু করুন':'Enable notifications')+'</button>')+'</section>';
   return h;
 }
-function whatsNewCard(){var __wnSeen=state.prefs.seenVersion===APP_VERSION;var bn=state.prefs.lang==='bn';var WN={'3.6.0':{bn:['ঘুরে দেখুন — অ্যাকাউন্ট ছাড়াই ডেমো অ্যাপ ঘুরে দেখো: বন্ধু, মেসেজ, স্ট্রিক, রুটিন সব সাজানো আছে','ডেমোতে যা দেখবে সব নমুনা — তোমার আসল ডেটা আলাদা থাকবে','হ্যাবিট ট্র্যাকার — স্ট্রিক স্ক্রিনেই দৈনন্দিন হ্যাবিট: টিক দাও, স্ট্রিক গড়ো, ১০০+ আইকন থেকে বেছে নাও'],en:['Explore the app — tour a demo app without an account: friends, messages, streak and routine all filled in','Everything in the demo is sample — your real data stays separate','Habit Tracker — daily habits inside the Streak screen: tick, build streaks, pick from 100+ icons']},'3.6.1':{bn:['এড়িয়ে যাওয়া এখন সরাসরি ডেমোতে নিয়ে যায় — আর কোনো বাড়তি জিজ্ঞাসা নেই','ডেমোতে উপরে এখন শুধু ছোট্ট "লগ ইন করুন" লেখা','রুটিন যোগ করার পেজটা এখন আরও সুন্দর — প্রতিটি রুটিনে আইকনসহ কার্ড','ওয়ার্কআউট পেজের ট্যাব আর বোতামগুলো এখন ঠিকঠাক বসে'],en:['Skipping now goes straight into the demo — no extra question','In the demo, only a small "Log in" line sits at the top now','The routine page looks nicer now — icon cards for each routine','Workout page tabs and buttons now sit neatly aligned']},'3.7.0':{bn:['ক্লাউড ব্যাকআপ এখন নিজেই জানাবে — ডেটা অনেক বড় হলে বা ব্যাকআপ ব্যর্থ হলে চোখে দেখা সতর্কতা দেখাবে','সময়ের হিসাব এখন বাংলায় — ২ঘ ১৫মি, ৩০মি এরকম দেখাবে; রুটিনের টেমপ্লেট কার্ড, বন্ধু যোগ করার বোতাম, নোটিফিকেশন শিরোনাম আর লিডারবোর্ড এখন বাংলায়','ফন্ট এখন অ্যাপের ভেতরেই আছে — দুর্বল নেটে বা অফলাইনেও বাংলা ঠিক দেখাবে; শেয়ার করা স্ট্রিক ছবির বাংলাও এখন Hind Siliguri ফন্টে আসবে','দিনের নাম, চ্যাটের সময়, মাস ও রঙের নাম এখন বাংলায়; রেকর্ডসের লেবেলও বাংলায়','মুছে ফেলার আগে ব্যাকআপ নেওয়া বাধ্যতামূলক — ভুল ট্যাপে ডেটা গেলে ৩০ সেকেন্ডের মধ্যে ফিরিয়ে আনা যাবে','ম্যানিফেস্টে আসল আইকন (১৯২/৫১২) যোগ হয়েছে — হোম স্ক্রিনে ঠিক আইকন বসবে; হোম ব্যানারে আজকের % এখন একবারই দেখাবে; About পাতার পুরনো নিয়ম আর সংক্ষিপ্ত নাম এখন বাংলায়; প্রথমবার খোলা হালকা হয়েছে — QR আর Workout পরে লোড হয়; ক্লাউড ডেটা এখন কয়েকটি অংশে ভাগ হয়ে যায় — ৫ MB পর্যন্ত ডেটা ক্লাউডে উঠবে'],en:['Cloud backup now tells you itself — a visible warning if data gets too big or a backup fails','Time units are now Bangla in Bangla mode — 2h 15m becomes ২ঘ ১৫মি; routine template cards, the Add-friend button, Notifications title and Leaderboard are now Bangla too','Fonts are now bundled inside the app — Bangla renders correctly on weak Wi-Fi and offline; shared streak posters now render Bangla in Hind Siliguri','Day names, chat times, months and colour names now in Bangla; Records labels in Bangla too','Deleting now backs up first — a wrong tap can be undone within 30 seconds','Real manifest icons (192/512) added — correct home-screen icon; Home banner shows today\'s % only once; About page legacy rules and abbreviations now in Bangla; lighter first load — QR and Workout load later; cloud data now splits into parts — up to 5 MB fits in the cloud']},'3.8.0':{bn:['থিম এখন চাঁদ-সূর্য টগল — লাইট/ডার্ক বদলাতে টগলটা ট্যাপ করো; একরঙা আর অটো ছোট বোতামে নিচে থাকবে','হোমের মেনু এখন দুই সারিতে ডানে-বামে সোয়াইপ করা যায় — হোম আর লম্বা নয়','স্ট্রিকের পুরস্কার এখন প্রতি সপ্তাহে — ৫২ সপ্তাহ পর্যন্ত; সপ্তাহ পূর্ণ হলে উদযাপনের স্ক্রিন আর সাফল্যের শব্দ বাজবে','আজকের কাজ এখন হোমেই উপরে — সব কাজ একসাথে, রুটিনে যেতে হবে না; ব্যানারের বাড়তি বার আর লাইন সরানো হয়েছে','নোটিফিকেশন খুললে শিরোনাম আর নিচে আবার দেখাবে না — শিরোনাম সেখানেই খুলে যাবে, নিচে শুধু ছোট ব্যাখ্যা','হোমের বড় খোঁজার বাক্স সরানো হয়েছে — উপরে ঘণ্টার পাশে ছোট খোঁজার আইকন','লেখার সাইজ এখন একটু ছোট থেকে শুরু — মাঝারি সাইজ আর বড় সাইজটাও আগের চেয়ে কম বড়'],en:['Theme is now a moon/sun toggle — tap to switch light and dark; monochrome and auto stay as small buttons below','Home menu is now two rows you swipe sideways — Home is no longer so long','Streak rewards now come every week, up to 52 weeks — a celebration screen and success sound when a week completes','The task list now sits at the top of Home — every task together, no trip to Routine; the extra banner bar and line are gone','Opening a notification no longer repeats the headline below — the title unwraps where it is, with only a short note below','The big search box is gone from Home — a small search icon sits up top next to the bell','Text size starts a bit smaller — medium and large are less huge than before']},'3.9.0':{bn:['উদযাপনের পপ-আপ আর বারবার আসবে না — এক সপ্তাহের পুরস্কার একবারই দেখাবে','পপ-আপ ঠিক হয়েছে — ✕ বোতামে আর গোল ব্যাকগ্রাউন্ড নেই, লেখা পরিষ্কার, শিরোনাম এখন "৩ সপ্তাহের স্ট্রিক!"','অ্যাকাউন্টে বানান ঠিক — এখন "সিঙ্ক"','হ্যাবিটে এখন রিং দেখাবে — সপ্তাহে কত দিন হয়েছে এক নজরে','স্ট্রিকের সপ্তাহের সারি এখন পুরোটা দেখা যায় — শনি আর বাইরে যাবে না','বন্ধু যোগ করা সহজ — "অ্যাড" বোতাম এখন আইডির পাশেই','রেকর্ডে আর সাবজেক্ট বাছতে হবে না; শুরুর সময়ের ঘরও তুলে দেওয়া হয়েছে','স্পেশাল কাউন্টডাউন তুলে দেওয়া হয়েছে','হোমের মেনু এখন পেজ ধরে সোয়াইপ — হালকা টানেই পুরো পেজ বদলাবে, নিচের ডটে দেখাবে কোন পেজে আছো','রুটিন ও ডেটা পেজ এখন গ্রুপ করা কার্ডে সাজানো — সব খোলা, কিছু লুকানো নেই','একরঙা এখন নিজের টগলে — রঙিন আর একরঙা বদলাতে টগলটা ট্যাপ করো'],en:['The celebration popup no longer repeats — each weekly reward shows once','Popup fixed — plain ✕ button, crisp text, title now "3-Week Streak!"','Account spelling fixed — now "সিঙ্ক"','Habits now show a progress ring — this week at a glance','The streak week row now fits fully — Saturday stays on screen','Adding a friend is easier — the Add button sits next to the ID','Records no longer need a subject pick; the start-time field is gone too','Special countdown removed','Home menu now pages — a light flick flips the whole page, dots show where you are','Routine & Data is now grouped cards — everything open, nothing hidden','Monochrome now has its own toggle — tap to switch colorful and monochrome']},'3.10.5':{bn:['টাস্কের সাবজেক্ট চিপ এখন ঠিক রঙে দেখা যাবে — আগের টাইমার-চিপের স্টাইল আর এতে লাগবে না','ডে-বার আর টাস্ক কার্ডে আর কোনো বদল নেই'],en:['Task subject chips now show in their real colors — the old timer-chip style no longer leaks into them','Day bar and task cards unchanged otherwise']},'3.11.1':{bn:['ফোন ঝাঁকানো এখন ৩ বার জোরে ঝাঁকালে তবেই কাজ করবে — হালকা নাড়ায় আর শিট খুলবে না','সমস্যা জানানোর শিট এখন নিচ থেকে ওঠে (Facebook-এর মতো), ভেতরেই চালু/বন্ধ টগল আছে'],en:['Shaking now needs 3 firm shakes in a row — light movement no longer opens the sheet','The report sheet now slides up from the bottom (like Facebook), with an on/off toggle inside it']},'3.12.0':{bn:['Otto AI চ্যাট — পড়াশোনার সাহায্য: হোমের মেনু, ভাসমান বোতাম, + বোতাম বা মেসেজ থেকে খোলা যাবে','Otto AI তোমার রুটিন, দুর্বল অধ্যায় আর ভুলের খাতা দেখতে পায় — সেই অনুযায়ী উত্তর দেয়','ফোন ঝাঁকানো এখন ৩ বার জোরে ঝাঁকালে তবেই কাজ করবে — হালকা নাড়ায় আর শিট খুলবে না'],en:['Otto AI chat — study help: open it from the Home menu, the floating button, the + button or Messages','Otto AI can see your routine, weak chapters and error log — and answers accordingly','Shaking now needs 3 firm shakes in a row — light movement no longer opens the sheet']},'3.11.0':{bn:['সাহায্য ও FAQ — ১৮টা সাধারণ প্রশ্ন, ক্যাটাগরি আর সার্চ সহ','সাহায্য চাইলে ইমেইল যাবে, অ্যাপেও নোটিফিকেশন দেখাবে','ফোন ঝাঁকালেই সমস্যা জানানোর শিট খুলবে (Facebook-এর মতো)'],en:['Help & FAQ — 18 common questions with categories and search','Asking for help sends an email, and the app shows a notification too','Shake the phone to open the report sheet (like Facebook)']},'3.10.4':{bn:['টাস্ক লেআউট নতুন — উপরে রঙিন দিনের বার (কোন কাজ কতক্ষণ), নিচে সাবজেক্টের রঙের কার্ড','টিক দিলে কাজের উপর সাবজেক্টের রঙের লাইন পড়বে'],en:['New task layout — a colored day bar on top (how long each task takes), subject-colored cards below','Ticking a task strikes it through in its subject color']},'3.10.3':{bn:['আজকের কাজ আবার ব্যানারের ঠিক নিচে — মেনু তার পরেই, আগের মতো একদম নিচে নয়','ব্যানারের রিং কাটা পড়ার ঠিকটা আছেই'],en:['Today\'s tasks are back right under the banner — the menu sits just below them, not buried at the bottom','The banner ring fix from 3.10.2 is included']},'3.10.2':{bn:['ব্যানারের কাউন্টডাউন রিং আর কাটা পড়বে না — লাইন আর রিং এখন আলাদা লাইনে থাকে','আজকের কাজ আর মেনুর জায়গা নিয়ে কিছু বদলায়নি'],en:['The banner countdown ring no longer gets cut off — the line and the ring now sit on separate lines','Nothing else about the Home order changed']},'3.10.1':{bn:['অফলাইনে এখন অ্যাপ খুলবে — দরকারি ফাইল ফোনে সেভ থাকবে, নেট না থাকলেও চলবে','Firebase-এর ফাইল এখন ফোনে সেভ থাকে, তাই অফলাইনেও অ্যাপ আটকাবে না','নেট দুর্বল হলে আর ভাঙা পেজ আসবে না — সেভ করা কপি দেখাবে','সেটিংস → অ্যাকাউন্টে অফলাইন অবস্থা দেখা যাবে, আর এক চাপে ফাইল আবার সেভ করা যাবে'],en:['The app now opens offline — its files stay saved on the phone','Firebase files are saved on the phone too, so the app no longer stalls offline','On weak net you get the saved copy instead of a broken page','You can see the offline status in Settings → Account and re-save the files with one tap']},'3.10.0':{bn:['টাইমার চালু থাকলে সব পেজে ছোট পিল দেখাবে — চাপলেই টাইমারে যাবে','মিস হওয়া রিমাইন্ডার এখন হোমে কার্ডে দেখাবে','হোমের অগ্রগতি আর মিথ্যা শূন্য দেখাবে না — পরিকল্পনা না থাকলে রিং লুকাবে','স্টপওয়াচ খুললেই আর মডাল আসবে না','ওয়ার্কআউটের নির্দেশনা এখন বাংলায়, ৫টা নতুন ভিডিওসহ','রুটিনে এখন সরাসরি কাজ যোগ, বদল আর মোছা যাবে','রেকর্ডে তারিখ আর নোট যোগ করা যাবে'],en:['A small pill shows on every page while the timer runs — tap it to jump to the Timer','Missed reminders now appear as a card on Home','Home progress no longer shows fake zeros — rings hide when there is no plan','No more popup every time you open the Stopwatch','Workout coaching is now in Bangla, with 5 new videos','You can now add, edit and delete routine tasks right in the app','Records can now carry a date and a note']},'3.9.1':{bn:['হোমের মেনু কার্ড এখন চৌকো — আইকন আর নাম শুধু, বাড়তি লেখা নেই','মেনুর আইকনে আর নীল গোল ব্যাকগ্রাউন্ড নেই — আইকন সরাসরি কার্ডের উপর বসে','পেজের ডট এখন হোম স্ক্রিনের মতো — দ্বিতীয় পেজে গেলে দুই ডট মিলে একটা লম্বা দাগ হবে','রেকর্ড যোগ করার সময় আবার সাবজেক্ট বাছা যাবে'],en:['Home menu cards are square now — icon and name only, no extra text','Menu icons no longer sit on a blue tile — the icon sits straight on the card','Page dots now behave like the phone home screen — on page 2 the two dots merge into one long line','Adding a record lets you pick the subject again']},'3.7.1':{bn:['নোটিফিকেশনে এখন পুরো লেখা দেখা যাবে — কোনো খবরে চাপ দিলে নিচে পুরো বিবরণ খুলে দেখাবে, আর কাটা লেখা থাকবে না'],en:['Notifications now show the full text — tap any notification to expand the complete message below it, no more cut-off text']},'3.6.2':{bn:['ক্লাউড ব্যাকআপ এখন নিজেই জানাবে — ডেটা অনেক বড় হলে বা ব্যাকআপ ব্যর্থ হলে সেটিংসে দেখাবে','সেটিংস → ডেটা-তে এখন ক্লাউড ব্যাকআপের অবস্থা ও শেষ সফল সময় দেখা যায়'],en:['Cloud backup now speaks up — if data gets too big or a backup fails, Settings shows it','Settings → Data now shows cloud backup status and the last successful time']},'3.5.6':{bn:['রিমাইন্ডার এখন সিম্পল — শুধু রিমাইন্ডার যোগ করো, নোটিফিকেশন আসবে','খোঁজার বোতামে এখন "অনুসন্ধান করুন" লেখা থাকবে'],en:['Reminders are simple now — just add a reminder and the notification comes']},'3.5.3':{bn:['স্ট্রিকের আগুন এখন আর কাটা যায় না — ২১ দিনের পরও পুরো আগুন দেখা যাবে'],en:['Streak flame no longer gets cut off — the full flame shows even after 21 days']},'3.5.2':{bn:['মেনুর ১০টা কার্ড এখন আসলেই একরকম — লুকানো রুলটা সারানো হয়েছে','ব্যানারের নিচের বোতামগুলোতে আবার হালকা রঙের পিল ফিরল'],en:['All 10 menu cards now truly look the same — hidden rule fixed','Banner quick-action pills are back with their soft tint']},'3.5.1':{bn:['ব্যানার এখন নরম নিরপেক্ষ — লাইটে হালকা, ডার্কে গাঀ়','স্পেশাল কাউন্টডাউন হোমে সেট করার কার্ডও দেখাবে','মেনুর ১০টা কার্ড এখন সব একরকম'],en:['Banner is now soft and neutral — light in light mode, dark in dark mode','Special countdown setup card now shows on Home too','All 10 menu cards now look the same']},'3.5.0':{bn:['স্পেশাল কাউন্টডাউন এখন হোমেও দেখাবে','মেনুতে টাইমার, স্টপওয়াচ, রুটিন, রেকর্ডস ফিরল','লিডারবোর্ডে নিজের নামে ট্যাপ করলে নিজের Stats','সেটিংসে খোঁজার বোতাম — শুধু সেটিংসেই খুঁজবে','ব্যানারের রং এখন সব থিমে নরম আর পড়া যায়','পুরো অ্যাপে প্রিমিয়াম পলিশ — একরকম লেখা আর কার্ড'],en:['Special countdown now shows on Home too','Menu brings back Timer, Stopwatch, Routine, Records','Tap your own Leaderboard row to see your stats','Settings search — searches only inside Settings','Banner colours are softer and readable in every theme','Premium polish across the app — consistent type and cards']},'3.4.9':{bn:['রুটিন মুছলে বিষয়ও যাবে — আগেই জানাবে','ব্যাকআপে মিউট আর সেটিংস আর হারাবে না','আপডেট বার আর পুশ বোতাম এখন শান্ত','বিষয়ভিত্তিক লক্ষ্য আর সাপ্তাহিক শেয়ার','অটো থিম আর টাইমার কুইক চিপ','সমস্যা জানানোর সারি আর শান্ত বোতাম'],en:['Removing a routine now warns subjects go too','Backup keeps mutes and settings','Update bar and push button are calmer now','Per-subject targets and weekly sharing','Auto theme and timer quick chips','Report-a-problem row and quiet buttons']},'3.4.8':{bn:['রুটিনের আগের/পরের দিনের বোতাম বাংলায়','আগের দিন আর পরের দিন ঠিকভাবে দেখাবে','ক্যালেন্ডার নেভিগেশন আর ইংরেজি থাকবে না','তারিখ জাম্প আগের মতোই কাজ করবে','বাকি সব আগের মতোই থাকবে','কোনো সেটিং বদলাতে হবে না'],en:['Routine previous/next day buttons in Bangla','Previous and next day now read correctly','Calendar navigation no longer stays in English','Date jump works as before','Everything else stays the same','No settings to change']},'3.4.7':{bn:['মোডালের শিরোনাম বাংলায় আসবে','অ্যাকাউন্ট মুছুন, আনফ্রেন্ড — সব বাংলায়','কাজ সরানো আর কপির শিরোনামও বাংলায়','মুছুন, বদলে দিন — বোতামও বাংলায়','রিসেটের সতর্কবার্তাও বাংলায়','বাকি সব আগের মতোই থাকবে'],en:['Modal titles now show in Bangla','Delete account, Unfriend — all in Bangla','Move and Copy titles in Bangla too','Delete and Replace buttons in Bangla','Reset warnings in Bangla as well','Everything else stays the same']},'3.4.6':{bn:['বাংলা মোডে ইংরেজি টোস্টগুলো বাংলায় আসবে','স্টোরেজ, সাইন-ইন আর ডাউনলোডের মেসেজ বাংলায়','নোটিফিকেশনের মেসেজগুলোও বাংলায়','ভুলের মেসেজে আর ইংরেজি থাকবে না','ডায়নামিক মেসেজের শুরুটাও বাংলায়','বাকি সব আগের মতোই থাকবে'],en:['English-only toasts now show in Bangla','Storage, sign-in and download messages in Bangla','Notification messages in Bangla too','Error messages no longer stay in English','Dynamic messages start in Bangla as well','Everything else stays the same']},'3.4.5':{bn:['Freeze কেনায় কনফার্ম চাওয়া হবে','একদিনে দুবার Freeze কেনা যাবে না','ভুল ট্যাপে ৫০ কয়েন আর নষ্ট হবে না','কেনার আগে খরচটা দেখাবে','আজ কেনা থাকলে জানিয়ে দেবে','স্ট্রিক ফ্রিজ আগের মতোই কাজ করবে'],en:['Buying a Freeze now asks first','No second Freeze on the same day','A wrong tap can no longer waste 50 coins','The cost is shown before you buy','It tells you if today is already frozen','Streak Freeze works as before']},'3.4.4':{bn:['স্পেশাল কাউন্টডাউন যোগ হয়েছে','নাম, তারিখ আর দেখানোর ধরন তুমি ঠিক করো','দিন, দিন+ঘণ্টা বা সপ্তাহ+দিন হিসেবে দেখাবে','হোমে দেখাবে কিনা তুমি বাছো','কাউন্টডাউন অংশে সবার ওপরে থাকবে','এডিট আর মুছে ফেলা যাবে'],en:['Special countdown is here','Set its name, date and display style','Shows as days, days+hours or weeks+days','Choose whether it shows on Home','It sits at the top of the Countdown section','Editable and deletable']},'3.4.3':{bn:['স্ক্যান এখন পুরো স্ক্রিন জুড়ে','QR কোড আবার কালো, হালকা গ্রেডিয়েন্ট','ক্যামেরার অনুমতি এখন একবারই','অনুমতি থাকলে ক্যামেরা নিজেই চালু হয়','QR ধরলে অ্যানিমেশনে সোজা হয়ে স্ক্যান হয়','গ্যালারি থেকে স্ক্যানেও একই অ্যানিমেশন'],en:['Scanner is now truly full screen','QR code is black again, with a light gradient','Camera permission is now asked once','Camera starts by itself when permission is granted','Corners fly to the QR and straighten it before scanning','Gallery scans get the same animation']},'3.4.2':{bn:['QR কোড এখন নীল, ছোট লোগো','QR সেভ, শেয়ার আর কপি করা যায়','গ্যালারি থেকে ছবি দিয়ে স্ক্যান','স্ক্যান এখন ফুল-স্ক্রিন ক্যামেরা','QR ধরলে কোণা গিয়ে আটকায়, সোজা হয়','স্ক্যানের লাইন শুধু QR আসলেই চলে'],en:['QR code is now blue with a smaller logo','Save, share and copy the QR code','Scan from a gallery photo','Scanner is now a full-screen camera','Corners fly to the QR and straighten it before scanning','Scan line runs only when a QR code appears']},'3.4.1':{bn:['সব লেখা এখন বাংলায় — অনবোর্ডিং, সেটিংস, ব্যাকআপ','পপ-আপ খোলা থাকলে Back চাপলে পপ-আপ বন্ধ হবে','কনফার্মেশন এখন একবারই (ডিলিট ছাড়া)','Settings থেকে gear আইকন সরানো','QR কোডে নতুন লোগো','অ্যাপ খোলার রং এখন ক্রিম'],en:['Everything now in Bangla — onboarding, settings, backup','Back closes an open popup instead of the page behind it','Confirmation now asks once (except delete)','Settings gear icon removed from Settings','New logo in the QR code','App launch splash is now cream']},'3.4.0':{bn:['টাইমার এখন শেষ সাবজেক্ট আর সময় মনে রাখে','হোম থেকে কাজে টিক, এডিট ছাড়াই কাজ যোগ','সাপ্তাহিক টাইমলাইন, কমপ্যাক্ট মেসেজ আর নোটিফিকেশন','রুটিন ও ডেটা পেজ নতুন করে সাজানো','মুছে ফেলা জিনিস আর ফিরে আসবে না','রিমাইন্ডার যোগ করা যায়, পুশ নোটিফিকেশন তৈরি'],en:['Timer remembers your last subject and duration','Tick tasks from Home, add tasks without Edit mode','Weekly timeline, compact messages and notifications','Routine & Data page redesigned','Deleted items stay deleted after sync','Add reminders; push notifications ready']},'3.3.60':{bn:['নোটিফিকেশন লং-প্রেস এখন ০.৫ সেকেন্ড'],en:['Notification long-press is now 0.5 seconds']},'3.3.59':{bn:['\u09a8\u09cb\u099f\u09bf\u09ab\u09bf\u0995\u09c7\u09b6\u09a8 \u09ac\u09be\u099b\u09be\u0987 \u098f\u0996\u09a8 \u09b2\u0982-\u09aa\u09cd\u09b0\u09c7\u09b8 \u09ac\u09be \u22ee \u09ae\u09c7\u09a8\u09c1 \u09a6\u09bf\u09af\u09bc\u09c7','\u09b0\u09bf\u09ae\u09be\u0987\u09a8\u09cd\u09a1\u09be\u09b0 \u09aa\u09c7\u099c \u098f\u0996\u09a8 \u0996\u09be\u09b2\u09bf \u09a5\u09be\u0995\u09c7 — \u09a8\u09bf\u099c\u09c7\u09b0\u099f\u09be \u09a8\u09bf\u099c\u09c7 \u09af\u09cb\u0997 \u0995\u09b0\u09c1\u09a8'],en:['Notification selection now via long-press or \u22ee menu','Reminders page starts empty \u2014 add your own']},'3.3.58':{bn:['Home-এ Subjects সেকশন ও সাবজেক্ট পিকার','নোটিফিকেশন এখন টাইমলাইন লেআউটে, ডিলিট করা যাবে','ডিলিট করা সাবজেক্ট আর ফিরবে না'],en:['Subjects section on Home and subject picker','Notifications now in timeline layout, deletable','Deleted subjects stay deleted']},'3.3.57':{bn:['স্ট্রিক পোস্টারে এখন নিজের বানানো অরিজিনাল ফ্লেম — বড় সাইজে'],en:['Streak poster now uses an original flame, bigger']},'3.3.56':{bn:['নোটিফিকেশনে এখন অ্যাপের কালো লোগো দেখাবে','A লেখাটা আর থাকবে না'],en:['Notifications now show the app black logo','The A letter is gone']},'3.3.55':{bn:['টাইমার/স্টপওয়াচ চললে নোটিফিকেশনে লাইভ সময় দেখাবে','অ্যাপ বন্ধ থাকলেও নোটিফিকেশন থেকে যাবে, ট্যাপ করলে অ্যাপ খুলবে'],en:['Live timer/stopwatch time now shows in the notification','Notification stays even when the app is closed, tap it to open the app']},'3.3.54':{bn:['পুশ নোটিফিকেশন সেটআপ শেষ','সাবস্ক্রাইব বোতাম চাপলেই নোটিফিকেশন আসবে'],en:['Push notification setup is complete','Tap the subscribe button to receive notifications']},'3.3.53':{bn:['অ্যাপ বন্ধ থাকলেও পুশ নোটিফিকেশন আসবে (সেটআপ শেষ হলে)','নোটিফিকেশন বোতামের পাশে পুশ চালুর বোতাম যোগ হয়েছে'],en:['Push notifications will arrive even when the app is closed (once setup is complete)','A push enable button is added next to the notification test button']},'3.3.52':{bn:['বন্ধুর QR এখন কালো + সাদা-কালো লোগোসহ নতুন রূপে দেখাবে','তিন কোণা কার্ভড, মাঝখানে অ্যাপের লোগো; স্ক্যান আগের মতোই কাজ করবে'],en:['Friend QR now shows a new black design with the app logo in the centre','Curved corners with the logo in the middle, scanning works as before']},'3.3.51':{bn:['স্ট্রিক পেজের শেয়ার বোতামের বানান ঠিক করা হয়েছে','আগুনের নিচের শেয়ার বোতামে এখন সঠিক “স্ট্রিক” দেখাবে'],en:['Fixed the spelling on the Streak page share button','The share button below the flame now shows the correct spelling']},'3.3.50':{bn:['বন্ধুর QR এখন নীল গ্রেডিয়েন্ট + গোল ডটে দেখাবে','স্ক্যান আগের মতোই কাজ করবে, বন্ধু যোগ করায় কিছু বদলায়নি'],en:['Friend QR now shows blue gradient circle dots','Scanning works as before, friend adding unchanged']},'3.3.49':{bn:['ডার্ক থিমে অ্যাভাটার ছবিগুলো এখন হালকা ব্যাকগ্রাউন্ডে দেখাবে','কালো চুল, কালো পোশাক ডার্ক থিমে পরিষ্কার দেখা যাবে; লাইট থিম আগের মতোই থাকবে'],en:['Avatar pictures now have a light background in dark theme','Dark hair and clothes stay visible in dark theme, light theme unchanged']},'3.3.48':{bn:['হোম ব্যানার এখন থিমের রং মানবে','How to use-এ অ্যাপের লিঙ্ক আর About-এ লাইসেন্স ও কৃতজ্ঞতা যোগ হয়েছে','অ্যাভাটার, সেটিংস ও ওয়ার্কআউট এখন ভাষা মানবে','নতুন আপডেটের খবর এখন হোমে নয়, নোটিফিকেশন (ঘণ্টা) আইকনে আসবে'],en:['Home banner now follows the theme color','App link added to How to use, licences and credits added to About','Avatar, Settings and Workout now follow language','Whats New now comes to Notifications (bell) instead of Home']},'3.3.47':{bn:['\u0985\u09cd\u09af\u09be\u09ad\u09be\u099f\u09be\u09b0 \u0985\u09aa\u09b6\u09a8 \u098f\u0996\u09a8 \u099b\u09ac\u09bf \u09a6\u09bf\u09af\u09bc\u09c7 \u09ac\u09be\u099b\u09be \u09af\u09be\u09ac\u09c7 \u2014 \u09a8\u09be\u09ae \u09aa\u09a1\u09bc\u09a4\u09c7 \u09b9\u09ac\u09c7 \u09a8\u09be','\u099a\u09c1\u09b2, \u09a6\u09be\u09a1\u09bc\u09bf, \u099a\u09cb\u0996, \u09ae\u09c1\u0996, \u099a\u09b6\u09ae\u09be, \u09aa\u09cb\u09b6\u09be\u0995 \u2014 \u09b8\u09ac\u0995\u09bf\u099b\u09c1\u09b0 \u099b\u09ac\u09bf \u09a6\u09c7\u0996\u09c7 \u099f\u09cd\u09af\u09be\u09aa \u0995\u09b0\u09b2\u09c7\u0987 \u09b9\u09ac\u09c7'],en:['Avatar options now show pictures - no need to read names','Hair, beard, eyes, mouth, glasses, clothes - tap the picture you like']},'3.3.46':{bn:['\u0985\u09cd\u09af\u09be\u09ad\u09be\u099f\u09be\u09b0 \u098f\u0996\u09a8 Avataaars \u2014 \u09e7\u09e8\u099f\u09be \u099f\u09c7\u09ae\u09aa\u09cd\u09b2\u09c7\u099f \u09b8\u09c7\u099f, \u09b8\u09c7\u0996\u09be\u09a8 \u09a5\u09c7\u0995\u09c7 \u09ac\u09c7\u099b\u09c7 \u09a8\u09bf\u09af\u09bc\u09c7 \u09a8\u09bf\u099c\u09c7\u09b0 \u09ae\u09a4\u09cb \u0995\u09be\u09b8\u09cd\u099f\u09ae\u09be\u0987\u099c \u0995\u09b0\u09be \u09af\u09be\u09ac\u09c7','\u09aa\u09c1\u09b0\u09a8\u09cb \u0985\u09cd\u09af\u09be\u09ad\u09be\u099f\u09be\u09b0 \u0985\u09aa\u09b6\u09a8\u0997\u09c1\u09b2\u09cb \u09ac\u09be\u09a6 \u09a6\u09c7\u0993\u09af\u09bc\u09be \u09b9\u09af\u09bc\u09c7\u099b\u09c7, \u099b\u09ac\u09bf \u0986\u09aa\u09b2\u09cb\u09a1 \u0986\u09b0 \u09a1\u09bf\u09ab\u09b2\u09cd\u099f \u0985\u09cd\u09af\u09be\u09ad\u09be\u099f\u09be\u09b0 \u0986\u0997\u09c7\u09b0 \u09ae\u09a4\u09cb\u0987 \u0986\u099b\u09c7'],en:['Avatar is now Avataaars - 12 template sets, pick one and customise it your way','Old avatar options removed, photo upload and default avatar unchanged']},'3.3.45':{bn:['How to use \u09aa\u09c7\u099c \u098f\u0996\u09a8 \u0987\u0982\u09b0\u09c7\u099c\u09bf\u09a4\u09c7\u0993 \u0987\u0982\u09b0\u09c7\u099c\u09bf \u09a6\u09c7\u0996\u09be\u09ac\u09c7','Account, Cloud/Merge \u0986\u09b0 Workout error \u09b2\u09c7\u0996\u09be\u0993 \u09ad\u09be\u09b7\u09be \u09ae\u09be\u09a8\u09ac\u09c7','\u09b8\u09be\u09b0\u09be \u0985\u09cd\u09af\u09be\u09aa\u09c7 \u09b9\u09be\u09b0\u09cd\u09a1\u0995\u09cb\u09a1 \u0995\u09b0\u09be \u09ac\u09be\u0982\u09b2\u09be \u0996\u09c1\u0981\u099c\u09c7 \u09a0\u09bf\u0995 \u0995\u09b0\u09be \u09b9\u09af\u09bc\u09c7\u099b\u09c7'],en:['How to use page now shows English in English mode','Account, Cloud/Merge and Workout error texts now follow language','Hardcoded Bangla found across the app and fixed']},'3.3.44':{bn:['Schedule \u099c\u09c1\u09ae \u09b2\u09c7\u09ad\u09c7\u09b2 \u098f\u0996\u09a8 \u09a0\u09bf\u0995 \u09a6\u09c7\u0996\u09be\u09ac\u09c7, \u0995\u09cb\u09a1 \u09a8\u09af\u09bc','Schedule \u09ac\u09cd\u09b2\u0995 \u098f\u0996\u09a8 \u09a0\u09bf\u0995 \u09a4\u09be\u09b0 \u09b8\u09ae\u09af\u09bc\u09c7\u09b0 \u09b8\u09ae\u09be\u09a8 \u2014 \u099c\u09c1\u09ae \u0986\u0989\u099f\u09c7\u0993 \u0993\u09ad\u09be\u09b0\u09b2\u09cd\u09af\u09be\u09aa \u09a8\u09af\u09bc','Schedule Prev/\u09a4\u09be\u09b0\u09bf\u0996/Today/Next \u098f\u0996\u09a8 \u098f\u0995 \u09b2\u09be\u0987\u09a8\u09c7'],en:['Schedule zoom level shows correctly, no code text','Schedule blocks now exactly their duration — no overlap at any zoom','Schedule Prev/date/Today/Next now on one line']},'3.3.43':{bn:['\u09b8\u09cd\u099f\u09cd\u09b0\u09bf\u0995 \u0995\u09be\u09b0\u09cd\u09a1\u09c7 \u0986\u0987\u0995\u09a8 \u0989\u09aa\u09b0\u09c7, \u09a8\u09be\u09ae \u09a8\u09bf\u099a\u09c7; \u09b8\u09cd\u099f\u09be\u09b0 \u0997\u09cb\u09b2\u09cd\u09a1\u09c7\u09a8','\u09a6\u09bf\u09a8\u09c7\u09b0 \u09aa\u09c7\u099c\u09c7\u09b0 \u09b8\u09cd\u099f\u09cd\u09b0\u09bf\u09aa\u09c7\u0993 \u0986\u0987\u0995\u09a8 \u0989\u09aa\u09b0\u09c7, \u09a8\u09be\u09ae \u09a8\u09bf\u099a\u09c7','Routine: Backlog/Overdue \u098f\u0996\u09a8 \u099b\u09cb\u099f \u0986\u0987\u0995\u09a8, Create routine \u09b6\u09c1\u09a7\u09c1 \u09b2\u09c7\u0996\u09be','Schedule: \u0997\u09cb\u09b2 \u09ac\u09be\u099f\u09a8 + \u0995\u09ae\u09aa\u09cd\u09af\u09be\u0995\u09cd\u099f \u099c\u09c1\u09ae \u09aa\u09bf\u09b2','Schedule \u0993\u09ad\u09be\u09b0\u09b2\u09cd\u09af\u09be\u09aa \u09a0\u09bf\u0995 \u2014 \u099c\u09c1\u09ae \u0995\u09b0\u09b2\u09c7\u0993 \u09ac\u09cd\u09b2\u0995 \u09ae\u09bf\u09b2\u09ac\u09c7 \u09a8\u09be','Schedule \u0995\u09be\u099c\u09c7 \u099f\u09bf\u0995 \u2014 done \u09b9\u09b2\u09c7 \u09b2\u09c7\u0996\u09be \u0995\u09be\u099f\u09be \u09af\u09be\u09ac\u09c7'],en:['Streak cards: icon above, label below; golden stars','Day strip: icon above, label below too','Routine: Backlog/Overdue as quiet icons, Create routine as plain text','Schedule: round nav buttons + compact zoom pill','Schedule overlap fixed at any zoom','Schedule task tick — done shows strikethrough']},'3.3.42':{bn:['\u09aa\u09cd\u09b0\u09cb\u09ab\u09be\u0987\u09b2 \u099b\u09ac\u09bf\u09a4\u09c7 \u0986\u09b0 \u09b8\u09be\u0987\u099c\u09c7\u09b0 \u09b8\u09c0\u09ae\u09be \u09a8\u09c7\u0987 \u2014 \u09af\u09c7\u0995\u09cb\u09a8\u09cb \u09ac\u09a1\u09bc \u099b\u09ac\u09bf \u09a8\u09c7\u0993\u09af\u09bc\u09be \u09af\u09be\u09ac\u09c7','Settings \u09a5\u09c7\u0995\u09c7 \u099f\u09cd\u09af\u09c1\u09b0 \u0986\u09ac\u09be\u09b0 \u09a6\u09c7\u0996\u09be\u09b0 \u09ac\u09be\u099f\u09a8 \u09b8\u09b0\u09be\u09a8\u09cb \u09b9\u09af\u09bc\u09c7\u099b\u09c7'],en:['No more size limit on profile photos — any large photo works now','The replay-tour button was removed from Settings']},'3.3.41':{bn:['Streak \u0985\u09aa\u09b6\u09a8\u0997\u09c1\u09b2\u09cb \u098f\u0996\u09a8 \u098f\u0995 \u09b2\u09be\u0987\u09a8\u09c7 \u09e9\u099f\u09be \u0995\u09b0\u09c7','Streak \u09aa\u09c7\u099c\u09c7 \u0986\u0997\u09c7\u09b0 \u09ae\u09a4\u09cb \u0995\u09af\u09bc\u09c7\u09a8 \u0986\u09b0 \u09b6\u09c7\u09af\u09bc\u09be\u09b0 \u09aa\u09bf\u09b2 \u09ab\u09bf\u09b0\u09c7\u099b\u09c7','\u09b0\u09c1\u099f\u09bf\u09a8 \u09ac\u09be\u09a8\u09be\u09a8\u09cb: \u09aa\u09cd\u09b0\u09a4\u09bf\u099f\u09be \u0995\u09be\u099c\u09c7\u09b0 \u09a8\u09bf\u099c\u09c7\u09b0 \u09ac\u09bf\u09b7\u09af\u09bc, \u0985\u09a7\u09cd\u09af\u09be\u09af\u09bc \u0986\u09b0 \u09b8\u09ae\u09af\u09bc'],en:['Streak options now show 3 per row','Coins and share pills are back on the Streak page, like before','Create routine: each task has its own subject, chapter and time']},'3.3.40':{bn:['Streak \u0985\u09aa\u09b6\u09a8\u0997\u09c1\u09b2\u09cb \u098f\u0996\u09a8 \u0986\u09b2\u09be\u09a6\u09be \u0986\u09b2\u09be\u09a6\u09be \u09b9\u09be\u09b2\u0995\u09be \u0995\u09be\u09b0\u09cd\u09a1'],en:['Streak options are now separate soft cards']},'3.3.39':{bn:['\u099f\u09cd\u09af\u09c1\u09b0\u09c7\u09b0 \u09b0\u09bf\u0982 \u098f\u0996\u09a8 \u09a0\u09bf\u0995 \u09ac\u09be\u099f\u09a8\u09c7\u09b0 \u0989\u09aa\u09b0 \u09ac\u09b8\u09ac\u09c7','\u099f\u09cd\u09af\u09c1\u09b0 \u0986\u09b0 \u09ac\u09be\u09b0\u09ac\u09be\u09b0 \u0986\u09b8\u09ac\u09c7 \u09a8\u09be','Streak \u0985\u09aa\u09b6\u09a8\u0997\u09c1\u09b2\u09cb\u09a4\u09c7 \u0986\u0987\u0995\u09a8, \u09b8\u09ac \u098f\u0995\u09b8\u09be\u09a5\u09c7 \u09a6\u09c7\u0996\u09be \u09af\u09be\u09ac\u09c7','\u09aa\u09be\u09b8\u0993\u09af\u09bc\u09be\u09b0\u09cd\u09a1\u09c7 \u099a\u09cb\u0996\u09c7\u09b0 \u0986\u0987\u0995\u09a8'],en:['Tour ring now sits exactly on each button','Tour no longer repeats','Streak options now have icons, all visible at once','Password field now has an eye icon']},'3.3.38':{bn:['Schedule \u09a6\u09bf\u09a8\u09c7\u09b0 \u09aa\u09c7\u099c \u09aa\u09b0\u09bf\u09b7\u09cd\u0995\u09be\u09b0 \u2014 \u0995\u09be\u099c \u09b8\u09ac\u09b8\u09ae\u09af\u09bc \u09a6\u09c7\u0996\u09be \u09af\u09be\u09ac\u09c7','Streak \u09aa\u09c7\u099c \u09aa\u09b0\u09bf\u09b7\u09cd\u0995\u09be\u09b0 \u2014 \u09ae\u09c2\u09b2 \u0985\u0982\u09b6 \u09b8\u09be\u09ae\u09a8\u09c7, \u09ac\u09be\u0995\u09bf \u0986\u0987\u0995\u09a8 \u09ae\u09c7\u09a8\u09c1\u09a4\u09c7','Friends \u099f\u09cd\u09af\u09be\u09ac\u09c7 \u098f\u0996\u09a8 \u0997\u09cd\u09b0\u09c1\u09aa \u0986\u0987\u0995\u09a8','\u09aa\u09cd\u09b0\u09a5\u09ae\u09ac\u09be\u09b0 \u0985\u09cd\u09af\u09be\u09aa \u0996\u09c1\u09b2\u09b2\u09c7 \u099b\u09cb\u099f \u099f\u09cd\u09af\u09c1\u09b0 \u09a6\u09c7\u0996\u09be\u09ac\u09c7'],en:['Cleaner Schedule day page \u2014 tasks always visible','Cleaner Streak page \u2014 core first, rest behind icons','Friends tab now shows a group icon','A short tour on first launch']}};var items=(WN[APP_VERSION]&&(WN[APP_VERSION][bn?'bn':'en']))||(bn?['\u098f\u0987 \u0986\u09aa\u09a1\u09c7\u099f\u09c7 \u0995\u09bf\u099b\u09c1 \u0989\u09a8\u09cd\u09a8\u09a4\u09bf \u098f\u09b8\u09c7\u099b\u09c7\u0964']:['Improvements in this update.']);window.__wnItems=items;if(__wnSeen)return'';return '<section class="card"><h2 style="margin:0">'+(bn?'নতুন কী এলো \u2014 '+APP_VERSION:'What\'s new \u2014 '+APP_VERSION)+'</h2><ul style="margin:10px 0">'+items.map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul><button class="sm" data-act="seenew" style="width:100%">'+(bn?'ঠিক আছে':'Got it')+'</button></section>'}
+function whatsNewCard(){var __wnSeen=state.prefs.seenVersion===APP_VERSION;var bn=state.prefs.lang==='bn';var WN={'3.6.0':{bn:['ঘুরে দেখুন — অ্যাকাউন্ট ছাড়াই ডেমো অ্যাপ ঘুরে দেখো: বন্ধু, মেসেজ, স্ট্রিক, রুটিন সব সাজানো আছে','ডেমোতে যা দেখবে সব নমুনা — তোমার আসল ডেটা আলাদা থাকবে','হ্যাবিট ট্র্যাকার — স্ট্রিক স্ক্রিনেই দৈনন্দিন হ্যাবিট: টিক দাও, স্ট্রিক গড়ো, ১০০+ আইকন থেকে বেছে নাও'],en:['Explore the app — tour a demo app without an account: friends, messages, streak and routine all filled in','Everything in the demo is sample — your real data stays separate','Habit Tracker — daily habits inside the Streak screen: tick, build streaks, pick from 100+ icons']},'3.6.1':{bn:['এড়িয়ে যাওয়া এখন সরাসরি ডেমোতে নিয়ে যায় — আর কোনো বাড়তি জিজ্ঞাসা নেই','ডেমোতে উপরে এখন শুধু ছোট্ট "লগ ইন করুন" লেখা','রুটিন যোগ করার পেজটা এখন আরও সুন্দর — প্রতিটি রুটিনে আইকনসহ কার্ড','ওয়ার্কআউট পেজের ট্যাব আর বোতামগুলো এখন ঠিকঠাক বসে'],en:['Skipping now goes straight into the demo — no extra question','In the demo, only a small "Log in" line sits at the top now','The routine page looks nicer now — icon cards for each routine','Workout page tabs and buttons now sit neatly aligned']},'3.7.0':{bn:['ক্লাউড ব্যাকআপ এখন নিজেই জানাবে — ডেটা অনেক বড় হলে বা ব্যাকআপ ব্যর্থ হলে চোখে দেখা সতর্কতা দেখাবে','সময়ের হিসাব এখন বাংলায় — ২ঘ ১৫মি, ৩০মি এরকম দেখাবে; রুটিনের টেমপ্লেট কার্ড, বন্ধু যোগ করার বোতাম, নোটিফিকেশন শিরোনাম আর লিডারবোর্ড এখন বাংলায়','ফন্ট এখন অ্যাপের ভেতরেই আছে — দুর্বল নেটে বা অফলাইনেও বাংলা ঠিক দেখাবে; শেয়ার করা স্ট্রিক ছবির বাংলাও এখন Hind Siliguri ফন্টে আসবে','দিনের নাম, চ্যাটের সময়, মাস ও রঙের নাম এখন বাংলায়; রেকর্ডসের লেবেলও বাংলায়','মুছে ফেলার আগে ব্যাকআপ নেওয়া বাধ্যতামূলক — ভুল ট্যাপে ডেটা গেলে ৩০ সেকেন্ডের মধ্যে ফিরিয়ে আনা যাবে','ম্যানিফেস্টে আসল আইকন (১৯২/৫১২) যোগ হয়েছে — হোম স্ক্রিনে ঠিক আইকন বসবে; হোম ব্যানারে আজকের % এখন একবারই দেখাবে; About পাতার পুরনো নিয়ম আর সংক্ষিপ্ত নাম এখন বাংলায়; প্রথমবার খোলা হালকা হয়েছে — QR আর Workout পরে লোড হয়; ক্লাউড ডেটা এখন কয়েকটি অংশে ভাগ হয়ে যায় — ৫ MB পর্যন্ত ডেটা ক্লাউডে উঠবে'],en:['Cloud backup now tells you itself — a visible warning if data gets too big or a backup fails','Time units are now Bangla in Bangla mode — 2h 15m becomes ২ঘ ১৫মি; routine template cards, the Add-friend button, Notifications title and Leaderboard are now Bangla too','Fonts are now bundled inside the app — Bangla renders correctly on weak Wi-Fi and offline; shared streak posters now render Bangla in Hind Siliguri','Day names, chat times, months and colour names now in Bangla; Records labels in Bangla too','Deleting now backs up first — a wrong tap can be undone within 30 seconds','Real manifest icons (192/512) added — correct home-screen icon; Home banner shows today\'s % only once; About page legacy rules and abbreviations now in Bangla; lighter first load — QR and Workout load later; cloud data now splits into parts — up to 5 MB fits in the cloud']},'3.8.0':{bn:['থিম এখন চাঁদ-সূর্য টগল — লাইট/ডার্ক বদলাতে টগলটা ট্যাপ করো; একরঙা আর অটো ছোট বোতামে নিচে থাকবে','হোমের মেনু এখন দুই সারিতে ডানে-বামে সোয়াইপ করা যায় — হোম আর লম্বা নয়','স্ট্রিকের পুরস্কার এখন প্রতি সপ্তাহে — ৫২ সপ্তাহ পর্যন্ত; সপ্তাহ পূর্ণ হলে উদযাপনের স্ক্রিন আর সাফল্যের শব্দ বাজবে','আজকের কাজ এখন হোমেই উপরে — সব কাজ একসাথে, রুটিনে যেতে হবে না; ব্যানারের বাড়তি বার আর লাইন সরানো হয়েছে','নোটিফিকেশন খুললে শিরোনাম আর নিচে আবার দেখাবে না — শিরোনাম সেখানেই খুলে যাবে, নিচে শুধু ছোট ব্যাখ্যা','হোমের বড় খোঁজার বাক্স সরানো হয়েছে — উপরে ঘণ্টার পাশে ছোট খোঁজার আইকন','লেখার সাইজ এখন একটু ছোট থেকে শুরু — মাঝারি সাইজ আর বড় সাইজটাও আগের চেয়ে কম বড়'],en:['Theme is now a moon/sun toggle — tap to switch light and dark; monochrome and auto stay as small buttons below','Home menu is now two rows you swipe sideways — Home is no longer so long','Streak rewards now come every week, up to 52 weeks — a celebration screen and success sound when a week completes','The task list now sits at the top of Home — every task together, no trip to Routine; the extra banner bar and line are gone','Opening a notification no longer repeats the headline below — the title unwraps where it is, with only a short note below','The big search box is gone from Home — a small search icon sits up top next to the bell','Text size starts a bit smaller — medium and large are less huge than before']},'3.9.0':{bn:['উদযাপনের পপ-আপ আর বারবার আসবে না — এক সপ্তাহের পুরস্কার একবারই দেখাবে','পপ-আপ ঠিক হয়েছে — ✕ বোতামে আর গোল ব্যাকগ্রাউন্ড নেই, লেখা পরিষ্কার, শিরোনাম এখন "৩ সপ্তাহের স্ট্রিক!"','অ্যাকাউন্টে বানান ঠিক — এখন "সিঙ্ক"','হ্যাবিটে এখন রিং দেখাবে — সপ্তাহে কত দিন হয়েছে এক নজরে','স্ট্রিকের সপ্তাহের সারি এখন পুরোটা দেখা যায় — শনি আর বাইরে যাবে না','বন্ধু যোগ করা সহজ — "অ্যাড" বোতাম এখন আইডির পাশেই','রেকর্ডে আর সাবজেক্ট বাছতে হবে না; শুরুর সময়ের ঘরও তুলে দেওয়া হয়েছে','স্পেশাল কাউন্টডাউন তুলে দেওয়া হয়েছে','হোমের মেনু এখন পেজ ধরে সোয়াইপ — হালকা টানেই পুরো পেজ বদলাবে, নিচের ডটে দেখাবে কোন পেজে আছো','রুটিন ও ডেটা পেজ এখন গ্রুপ করা কার্ডে সাজানো — সব খোলা, কিছু লুকানো নেই','একরঙা এখন নিজের টগলে — রঙিন আর একরঙা বদলাতে টগলটা ট্যাপ করো'],en:['The celebration popup no longer repeats — each weekly reward shows once','Popup fixed — plain ✕ button, crisp text, title now "3-Week Streak!"','Account spelling fixed — now "সিঙ্ক"','Habits now show a progress ring — this week at a glance','The streak week row now fits fully — Saturday stays on screen','Adding a friend is easier — the Add button sits next to the ID','Records no longer need a subject pick; the start-time field is gone too','Special countdown removed','Home menu now pages — a light flick flips the whole page, dots show where you are','Routine & Data is now grouped cards — everything open, nothing hidden','Monochrome now has its own toggle — tap to switch colorful and monochrome']},'3.10.5':{bn:['টাস্কের সাবজেক্ট চিপ এখন ঠিক রঙে দেখা যাবে — আগের টাইমার-চিপের স্টাইল আর এতে লাগবে না','ডে-বার আর টাস্ক কার্ডে আর কোনো বদল নেই'],en:['Task subject chips now show in their real colors — the old timer-chip style no longer leaks into them','Day bar and task cards unchanged otherwise']},'3.11.1':{bn:['ফোন ঝাঁকানো এখন ৩ বার জোরে ঝাঁকালে তবেই কাজ করবে — হালকা নাড়ায় আর শিট খুলবে না','সমস্যা জানানোর শিট এখন নিচ থেকে ওঠে (Facebook-এর মতো), ভেতরেই চালু/বন্ধ টগল আছে'],en:['Shaking now needs 3 firm shakes in a row — light movement no longer opens the sheet','The report sheet now slides up from the bottom (like Facebook), with an on/off toggle inside it']},'3.13.0':{bn:['Otto AI চ্যাট এখন Gemini-স্টাইলে — গ্রেডিয়েন্ট "Hi, Abdullah" গ্রিটিং আর পরিষ্কার সাজেশন লিস্ট','AI উত্তরে এখন সূত্র, ভগ্নাংশ, ছক, কোড আর গ্রাফ ঠিকমতো দেখাবে — কাঁচা কোড আর আসবে না','AI এখন কাজও করবে — রুটিন বদলে দেবে, সেটিংস খুলে দেবে; এক চাপে অনুমতি নিয়ে রুটিনে বসিয়ে দেবে','মাইক এখন সেন্ড বাটনের ঠিক পাশে — ভয়েসে লিখে পাঠানো যাবে'],en:['Otto AI chat is now Gemini-style — gradient "Hi, Abdullah" greeting and a clean suggestion list','AI answers now render formulas, fractions, tables, code and graphs properly — no more raw code','The AI now does things too — it can change your routine and open Settings; one tap applies a routine change','The mic now sits right next to the send button — dictate and send']},'3.12.0':{bn:['Otto AI চ্যাট — পড়াশোনার সাহায্য: হোমের মেনু, ভাসমান বোতাম, + বোতাম বা মেসেজ থেকে খোলা যাবে','Otto AI তোমার রুটিন, দুর্বল অধ্যায় আর ভুলের খাতা দেখতে পায় — সেই অনুযায়ী উত্তর দেয়','ফোন ঝাঁকানো এখন ৩ বার জোরে ঝাঁকালে তবেই কাজ করবে — হালকা নাড়ায় আর শিট খুলবে না'],en:['Otto AI chat — study help: open it from the Home menu, the floating button, the + button or Messages','Otto AI can see your routine, weak chapters and error log — and answers accordingly','Shaking now needs 3 firm shakes in a row — light movement no longer opens the sheet']},'3.11.0':{bn:['সাহায্য ও FAQ — ১৮টা সাধারণ প্রশ্ন, ক্যাটাগরি আর সার্চ সহ','সাহায্য চাইলে ইমেইল যাবে, অ্যাপেও নোটিফিকেশন দেখাবে','ফোন ঝাঁকালেই সমস্যা জানানোর শিট খুলবে (Facebook-এর মতো)'],en:['Help & FAQ — 18 common questions with categories and search','Asking for help sends an email, and the app shows a notification too','Shake the phone to open the report sheet (like Facebook)']},'3.10.4':{bn:['টাস্ক লেআউট নতুন — উপরে রঙিন দিনের বার (কোন কাজ কতক্ষণ), নিচে সাবজেক্টের রঙের কার্ড','টিক দিলে কাজের উপর সাবজেক্টের রঙের লাইন পড়বে'],en:['New task layout — a colored day bar on top (how long each task takes), subject-colored cards below','Ticking a task strikes it through in its subject color']},'3.10.3':{bn:['আজকের কাজ আবার ব্যানারের ঠিক নিচে — মেনু তার পরেই, আগের মতো একদম নিচে নয়','ব্যানারের রিং কাটা পড়ার ঠিকটা আছেই'],en:['Today\'s tasks are back right under the banner — the menu sits just below them, not buried at the bottom','The banner ring fix from 3.10.2 is included']},'3.10.2':{bn:['ব্যানারের কাউন্টডাউন রিং আর কাটা পড়বে না — লাইন আর রিং এখন আলাদা লাইনে থাকে','আজকের কাজ আর মেনুর জায়গা নিয়ে কিছু বদলায়নি'],en:['The banner countdown ring no longer gets cut off — the line and the ring now sit on separate lines','Nothing else about the Home order changed']},'3.10.1':{bn:['অফলাইনে এখন অ্যাপ খুলবে — দরকারি ফাইল ফোনে সেভ থাকবে, নেট না থাকলেও চলবে','Firebase-এর ফাইল এখন ফোনে সেভ থাকে, তাই অফলাইনেও অ্যাপ আটকাবে না','নেট দুর্বল হলে আর ভাঙা পেজ আসবে না — সেভ করা কপি দেখাবে','সেটিংস → অ্যাকাউন্টে অফলাইন অবস্থা দেখা যাবে, আর এক চাপে ফাইল আবার সেভ করা যাবে'],en:['The app now opens offline — its files stay saved on the phone','Firebase files are saved on the phone too, so the app no longer stalls offline','On weak net you get the saved copy instead of a broken page','You can see the offline status in Settings → Account and re-save the files with one tap']},'3.10.0':{bn:['টাইমার চালু থাকলে সব পেজে ছোট পিল দেখাবে — চাপলেই টাইমারে যাবে','মিস হওয়া রিমাইন্ডার এখন হোমে কার্ডে দেখাবে','হোমের অগ্রগতি আর মিথ্যা শূন্য দেখাবে না — পরিকল্পনা না থাকলে রিং লুকাবে','স্টপওয়াচ খুললেই আর মডাল আসবে না','ওয়ার্কআউটের নির্দেশনা এখন বাংলায়, ৫টা নতুন ভিডিওসহ','রুটিনে এখন সরাসরি কাজ যোগ, বদল আর মোছা যাবে','রেকর্ডে তারিখ আর নোট যোগ করা যাবে'],en:['A small pill shows on every page while the timer runs — tap it to jump to the Timer','Missed reminders now appear as a card on Home','Home progress no longer shows fake zeros — rings hide when there is no plan','No more popup every time you open the Stopwatch','Workout coaching is now in Bangla, with 5 new videos','You can now add, edit and delete routine tasks right in the app','Records can now carry a date and a note']},'3.9.1':{bn:['হোমের মেনু কার্ড এখন চৌকো — আইকন আর নাম শুধু, বাড়তি লেখা নেই','মেনুর আইকনে আর নীল গোল ব্যাকগ্রাউন্ড নেই — আইকন সরাসরি কার্ডের উপর বসে','পেজের ডট এখন হোম স্ক্রিনের মতো — দ্বিতীয় পেজে গেলে দুই ডট মিলে একটা লম্বা দাগ হবে','রেকর্ড যোগ করার সময় আবার সাবজেক্ট বাছা যাবে'],en:['Home menu cards are square now — icon and name only, no extra text','Menu icons no longer sit on a blue tile — the icon sits straight on the card','Page dots now behave like the phone home screen — on page 2 the two dots merge into one long line','Adding a record lets you pick the subject again']},'3.7.1':{bn:['নোটিফিকেশনে এখন পুরো লেখা দেখা যাবে — কোনো খবরে চাপ দিলে নিচে পুরো বিবরণ খুলে দেখাবে, আর কাটা লেখা থাকবে না'],en:['Notifications now show the full text — tap any notification to expand the complete message below it, no more cut-off text']},'3.6.2':{bn:['ক্লাউড ব্যাকআপ এখন নিজেই জানাবে — ডেটা অনেক বড় হলে বা ব্যাকআপ ব্যর্থ হলে সেটিংসে দেখাবে','সেটিংস → ডেটা-তে এখন ক্লাউড ব্যাকআপের অবস্থা ও শেষ সফল সময় দেখা যায়'],en:['Cloud backup now speaks up — if data gets too big or a backup fails, Settings shows it','Settings → Data now shows cloud backup status and the last successful time']},'3.5.6':{bn:['রিমাইন্ডার এখন সিম্পল — শুধু রিমাইন্ডার যোগ করো, নোটিফিকেশন আসবে','খোঁজার বোতামে এখন "অনুসন্ধান করুন" লেখা থাকবে'],en:['Reminders are simple now — just add a reminder and the notification comes']},'3.5.3':{bn:['স্ট্রিকের আগুন এখন আর কাটা যায় না — ২১ দিনের পরও পুরো আগুন দেখা যাবে'],en:['Streak flame no longer gets cut off — the full flame shows even after 21 days']},'3.5.2':{bn:['মেনুর ১০টা কার্ড এখন আসলেই একরকম — লুকানো রুলটা সারানো হয়েছে','ব্যানারের নিচের বোতামগুলোতে আবার হালকা রঙের পিল ফিরল'],en:['All 10 menu cards now truly look the same — hidden rule fixed','Banner quick-action pills are back with their soft tint']},'3.5.1':{bn:['ব্যানার এখন নরম নিরপেক্ষ — লাইটে হালকা, ডার্কে গাঀ়','স্পেশাল কাউন্টডাউন হোমে সেট করার কার্ডও দেখাবে','মেনুর ১০টা কার্ড এখন সব একরকম'],en:['Banner is now soft and neutral — light in light mode, dark in dark mode','Special countdown setup card now shows on Home too','All 10 menu cards now look the same']},'3.5.0':{bn:['স্পেশাল কাউন্টডাউন এখন হোমেও দেখাবে','মেনুতে টাইমার, স্টপওয়াচ, রুটিন, রেকর্ডস ফিরল','লিডারবোর্ডে নিজের নামে ট্যাপ করলে নিজের Stats','সেটিংসে খোঁজার বোতাম — শুধু সেটিংসেই খুঁজবে','ব্যানারের রং এখন সব থিমে নরম আর পড়া যায়','পুরো অ্যাপে প্রিমিয়াম পলিশ — একরকম লেখা আর কার্ড'],en:['Special countdown now shows on Home too','Menu brings back Timer, Stopwatch, Routine, Records','Tap your own Leaderboard row to see your stats','Settings search — searches only inside Settings','Banner colours are softer and readable in every theme','Premium polish across the app — consistent type and cards']},'3.4.9':{bn:['রুটিন মুছলে বিষয়ও যাবে — আগেই জানাবে','ব্যাকআপে মিউট আর সেটিংস আর হারাবে না','আপডেট বার আর পুশ বোতাম এখন শান্ত','বিষয়ভিত্তিক লক্ষ্য আর সাপ্তাহিক শেয়ার','অটো থিম আর টাইমার কুইক চিপ','সমস্যা জানানোর সারি আর শান্ত বোতাম'],en:['Removing a routine now warns subjects go too','Backup keeps mutes and settings','Update bar and push button are calmer now','Per-subject targets and weekly sharing','Auto theme and timer quick chips','Report-a-problem row and quiet buttons']},'3.4.8':{bn:['রুটিনের আগের/পরের দিনের বোতাম বাংলায়','আগের দিন আর পরের দিন ঠিকভাবে দেখাবে','ক্যালেন্ডার নেভিগেশন আর ইংরেজি থাকবে না','তারিখ জাম্প আগের মতোই কাজ করবে','বাকি সব আগের মতোই থাকবে','কোনো সেটিং বদলাতে হবে না'],en:['Routine previous/next day buttons in Bangla','Previous and next day now read correctly','Calendar navigation no longer stays in English','Date jump works as before','Everything else stays the same','No settings to change']},'3.4.7':{bn:['মোডালের শিরোনাম বাংলায় আসবে','অ্যাকাউন্ট মুছুন, আনফ্রেন্ড — সব বাংলায়','কাজ সরানো আর কপির শিরোনামও বাংলায়','মুছুন, বদলে দিন — বোতামও বাংলায়','রিসেটের সতর্কবার্তাও বাংলায়','বাকি সব আগের মতোই থাকবে'],en:['Modal titles now show in Bangla','Delete account, Unfriend — all in Bangla','Move and Copy titles in Bangla too','Delete and Replace buttons in Bangla','Reset warnings in Bangla as well','Everything else stays the same']},'3.4.6':{bn:['বাংলা মোডে ইংরেজি টোস্টগুলো বাংলায় আসবে','স্টোরেজ, সাইন-ইন আর ডাউনলোডের মেসেজ বাংলায়','নোটিফিকেশনের মেসেজগুলোও বাংলায়','ভুলের মেসেজে আর ইংরেজি থাকবে না','ডায়নামিক মেসেজের শুরুটাও বাংলায়','বাকি সব আগের মতোই থাকবে'],en:['English-only toasts now show in Bangla','Storage, sign-in and download messages in Bangla','Notification messages in Bangla too','Error messages no longer stay in English','Dynamic messages start in Bangla as well','Everything else stays the same']},'3.4.5':{bn:['Freeze কেনায় কনফার্ম চাওয়া হবে','একদিনে দুবার Freeze কেনা যাবে না','ভুল ট্যাপে ৫০ কয়েন আর নষ্ট হবে না','কেনার আগে খরচটা দেখাবে','আজ কেনা থাকলে জানিয়ে দেবে','স্ট্রিক ফ্রিজ আগের মতোই কাজ করবে'],en:['Buying a Freeze now asks first','No second Freeze on the same day','A wrong tap can no longer waste 50 coins','The cost is shown before you buy','It tells you if today is already frozen','Streak Freeze works as before']},'3.4.4':{bn:['স্পেশাল কাউন্টডাউন যোগ হয়েছে','নাম, তারিখ আর দেখানোর ধরন তুমি ঠিক করো','দিন, দিন+ঘণ্টা বা সপ্তাহ+দিন হিসেবে দেখাবে','হোমে দেখাবে কিনা তুমি বাছো','কাউন্টডাউন অংশে সবার ওপরে থাকবে','এডিট আর মুছে ফেলা যাবে'],en:['Special countdown is here','Set its name, date and display style','Shows as days, days+hours or weeks+days','Choose whether it shows on Home','It sits at the top of the Countdown section','Editable and deletable']},'3.4.3':{bn:['স্ক্যান এখন পুরো স্ক্রিন জুড়ে','QR কোড আবার কালো, হালকা গ্রেডিয়েন্ট','ক্যামেরার অনুমতি এখন একবারই','অনুমতি থাকলে ক্যামেরা নিজেই চালু হয়','QR ধরলে অ্যানিমেশনে সোজা হয়ে স্ক্যান হয়','গ্যালারি থেকে স্ক্যানেও একই অ্যানিমেশন'],en:['Scanner is now truly full screen','QR code is black again, with a light gradient','Camera permission is now asked once','Camera starts by itself when permission is granted','Corners fly to the QR and straighten it before scanning','Gallery scans get the same animation']},'3.4.2':{bn:['QR কোড এখন নীল, ছোট লোগো','QR সেভ, শেয়ার আর কপি করা যায়','গ্যালারি থেকে ছবি দিয়ে স্ক্যান','স্ক্যান এখন ফুল-স্ক্রিন ক্যামেরা','QR ধরলে কোণা গিয়ে আটকায়, সোজা হয়','স্ক্যানের লাইন শুধু QR আসলেই চলে'],en:['QR code is now blue with a smaller logo','Save, share and copy the QR code','Scan from a gallery photo','Scanner is now a full-screen camera','Corners fly to the QR and straighten it before scanning','Scan line runs only when a QR code appears']},'3.4.1':{bn:['সব লেখা এখন বাংলায় — অনবোর্ডিং, সেটিংস, ব্যাকআপ','পপ-আপ খোলা থাকলে Back চাপলে পপ-আপ বন্ধ হবে','কনফার্মেশন এখন একবারই (ডিলিট ছাড়া)','Settings থেকে gear আইকন সরানো','QR কোডে নতুন লোগো','অ্যাপ খোলার রং এখন ক্রিম'],en:['Everything now in Bangla — onboarding, settings, backup','Back closes an open popup instead of the page behind it','Confirmation now asks once (except delete)','Settings gear icon removed from Settings','New logo in the QR code','App launch splash is now cream']},'3.4.0':{bn:['টাইমার এখন শেষ সাবজেক্ট আর সময় মনে রাখে','হোম থেকে কাজে টিক, এডিট ছাড়াই কাজ যোগ','সাপ্তাহিক টাইমলাইন, কমপ্যাক্ট মেসেজ আর নোটিফিকেশন','রুটিন ও ডেটা পেজ নতুন করে সাজানো','মুছে ফেলা জিনিস আর ফিরে আসবে না','রিমাইন্ডার যোগ করা যায়, পুশ নোটিফিকেশন তৈরি'],en:['Timer remembers your last subject and duration','Tick tasks from Home, add tasks without Edit mode','Weekly timeline, compact messages and notifications','Routine & Data page redesigned','Deleted items stay deleted after sync','Add reminders; push notifications ready']},'3.3.60':{bn:['নোটিফিকেশন লং-প্রেস এখন ০.৫ সেকেন্ড'],en:['Notification long-press is now 0.5 seconds']},'3.3.59':{bn:['\u09a8\u09cb\u099f\u09bf\u09ab\u09bf\u0995\u09c7\u09b6\u09a8 \u09ac\u09be\u099b\u09be\u0987 \u098f\u0996\u09a8 \u09b2\u0982-\u09aa\u09cd\u09b0\u09c7\u09b8 \u09ac\u09be \u22ee \u09ae\u09c7\u09a8\u09c1 \u09a6\u09bf\u09af\u09bc\u09c7','\u09b0\u09bf\u09ae\u09be\u0987\u09a8\u09cd\u09a1\u09be\u09b0 \u09aa\u09c7\u099c \u098f\u0996\u09a8 \u0996\u09be\u09b2\u09bf \u09a5\u09be\u0995\u09c7 — \u09a8\u09bf\u099c\u09c7\u09b0\u099f\u09be \u09a8\u09bf\u099c\u09c7 \u09af\u09cb\u0997 \u0995\u09b0\u09c1\u09a8'],en:['Notification selection now via long-press or \u22ee menu','Reminders page starts empty \u2014 add your own']},'3.3.58':{bn:['Home-এ Subjects সেকশন ও সাবজেক্ট পিকার','নোটিফিকেশন এখন টাইমলাইন লেআউটে, ডিলিট করা যাবে','ডিলিট করা সাবজেক্ট আর ফিরবে না'],en:['Subjects section on Home and subject picker','Notifications now in timeline layout, deletable','Deleted subjects stay deleted']},'3.3.57':{bn:['স্ট্রিক পোস্টারে এখন নিজের বানানো অরিজিনাল ফ্লেম — বড় সাইজে'],en:['Streak poster now uses an original flame, bigger']},'3.3.56':{bn:['নোটিফিকেশনে এখন অ্যাপের কালো লোগো দেখাবে','A লেখাটা আর থাকবে না'],en:['Notifications now show the app black logo','The A letter is gone']},'3.3.55':{bn:['টাইমার/স্টপওয়াচ চললে নোটিফিকেশনে লাইভ সময় দেখাবে','অ্যাপ বন্ধ থাকলেও নোটিফিকেশন থেকে যাবে, ট্যাপ করলে অ্যাপ খুলবে'],en:['Live timer/stopwatch time now shows in the notification','Notification stays even when the app is closed, tap it to open the app']},'3.3.54':{bn:['পুশ নোটিফিকেশন সেটআপ শেষ','সাবস্ক্রাইব বোতাম চাপলেই নোটিফিকেশন আসবে'],en:['Push notification setup is complete','Tap the subscribe button to receive notifications']},'3.3.53':{bn:['অ্যাপ বন্ধ থাকলেও পুশ নোটিফিকেশন আসবে (সেটআপ শেষ হলে)','নোটিফিকেশন বোতামের পাশে পুশ চালুর বোতাম যোগ হয়েছে'],en:['Push notifications will arrive even when the app is closed (once setup is complete)','A push enable button is added next to the notification test button']},'3.3.52':{bn:['বন্ধুর QR এখন কালো + সাদা-কালো লোগোসহ নতুন রূপে দেখাবে','তিন কোণা কার্ভড, মাঝখানে অ্যাপের লোগো; স্ক্যান আগের মতোই কাজ করবে'],en:['Friend QR now shows a new black design with the app logo in the centre','Curved corners with the logo in the middle, scanning works as before']},'3.3.51':{bn:['স্ট্রিক পেজের শেয়ার বোতামের বানান ঠিক করা হয়েছে','আগুনের নিচের শেয়ার বোতামে এখন সঠিক “স্ট্রিক” দেখাবে'],en:['Fixed the spelling on the Streak page share button','The share button below the flame now shows the correct spelling']},'3.3.50':{bn:['বন্ধুর QR এখন নীল গ্রেডিয়েন্ট + গোল ডটে দেখাবে','স্ক্যান আগের মতোই কাজ করবে, বন্ধু যোগ করায় কিছু বদলায়নি'],en:['Friend QR now shows blue gradient circle dots','Scanning works as before, friend adding unchanged']},'3.3.49':{bn:['ডার্ক থিমে অ্যাভাটার ছবিগুলো এখন হালকা ব্যাকগ্রাউন্ডে দেখাবে','কালো চুল, কালো পোশাক ডার্ক থিমে পরিষ্কার দেখা যাবে; লাইট থিম আগের মতোই থাকবে'],en:['Avatar pictures now have a light background in dark theme','Dark hair and clothes stay visible in dark theme, light theme unchanged']},'3.3.48':{bn:['হোম ব্যানার এখন থিমের রং মানবে','How to use-এ অ্যাপের লিঙ্ক আর About-এ লাইসেন্স ও কৃতজ্ঞতা যোগ হয়েছে','অ্যাভাটার, সেটিংস ও ওয়ার্কআউট এখন ভাষা মানবে','নতুন আপডেটের খবর এখন হোমে নয়, নোটিফিকেশন (ঘণ্টা) আইকনে আসবে'],en:['Home banner now follows the theme color','App link added to How to use, licences and credits added to About','Avatar, Settings and Workout now follow language','Whats New now comes to Notifications (bell) instead of Home']},'3.3.47':{bn:['\u0985\u09cd\u09af\u09be\u09ad\u09be\u099f\u09be\u09b0 \u0985\u09aa\u09b6\u09a8 \u098f\u0996\u09a8 \u099b\u09ac\u09bf \u09a6\u09bf\u09af\u09bc\u09c7 \u09ac\u09be\u099b\u09be \u09af\u09be\u09ac\u09c7 \u2014 \u09a8\u09be\u09ae \u09aa\u09a1\u09bc\u09a4\u09c7 \u09b9\u09ac\u09c7 \u09a8\u09be','\u099a\u09c1\u09b2, \u09a6\u09be\u09a1\u09bc\u09bf, \u099a\u09cb\u0996, \u09ae\u09c1\u0996, \u099a\u09b6\u09ae\u09be, \u09aa\u09cb\u09b6\u09be\u0995 \u2014 \u09b8\u09ac\u0995\u09bf\u099b\u09c1\u09b0 \u099b\u09ac\u09bf \u09a6\u09c7\u0996\u09c7 \u099f\u09cd\u09af\u09be\u09aa \u0995\u09b0\u09b2\u09c7\u0987 \u09b9\u09ac\u09c7'],en:['Avatar options now show pictures - no need to read names','Hair, beard, eyes, mouth, glasses, clothes - tap the picture you like']},'3.3.46':{bn:['\u0985\u09cd\u09af\u09be\u09ad\u09be\u099f\u09be\u09b0 \u098f\u0996\u09a8 Avataaars \u2014 \u09e7\u09e8\u099f\u09be \u099f\u09c7\u09ae\u09aa\u09cd\u09b2\u09c7\u099f \u09b8\u09c7\u099f, \u09b8\u09c7\u0996\u09be\u09a8 \u09a5\u09c7\u0995\u09c7 \u09ac\u09c7\u099b\u09c7 \u09a8\u09bf\u09af\u09bc\u09c7 \u09a8\u09bf\u099c\u09c7\u09b0 \u09ae\u09a4\u09cb \u0995\u09be\u09b8\u09cd\u099f\u09ae\u09be\u0987\u099c \u0995\u09b0\u09be \u09af\u09be\u09ac\u09c7','\u09aa\u09c1\u09b0\u09a8\u09cb \u0985\u09cd\u09af\u09be\u09ad\u09be\u099f\u09be\u09b0 \u0985\u09aa\u09b6\u09a8\u0997\u09c1\u09b2\u09cb \u09ac\u09be\u09a6 \u09a6\u09c7\u0993\u09af\u09bc\u09be \u09b9\u09af\u09bc\u09c7\u099b\u09c7, \u099b\u09ac\u09bf \u0986\u09aa\u09b2\u09cb\u09a1 \u0986\u09b0 \u09a1\u09bf\u09ab\u09b2\u09cd\u099f \u0985\u09cd\u09af\u09be\u09ad\u09be\u099f\u09be\u09b0 \u0986\u0997\u09c7\u09b0 \u09ae\u09a4\u09cb\u0987 \u0986\u099b\u09c7'],en:['Avatar is now Avataaars - 12 template sets, pick one and customise it your way','Old avatar options removed, photo upload and default avatar unchanged']},'3.3.45':{bn:['How to use \u09aa\u09c7\u099c \u098f\u0996\u09a8 \u0987\u0982\u09b0\u09c7\u099c\u09bf\u09a4\u09c7\u0993 \u0987\u0982\u09b0\u09c7\u099c\u09bf \u09a6\u09c7\u0996\u09be\u09ac\u09c7','Account, Cloud/Merge \u0986\u09b0 Workout error \u09b2\u09c7\u0996\u09be\u0993 \u09ad\u09be\u09b7\u09be \u09ae\u09be\u09a8\u09ac\u09c7','\u09b8\u09be\u09b0\u09be \u0985\u09cd\u09af\u09be\u09aa\u09c7 \u09b9\u09be\u09b0\u09cd\u09a1\u0995\u09cb\u09a1 \u0995\u09b0\u09be \u09ac\u09be\u0982\u09b2\u09be \u0996\u09c1\u0981\u099c\u09c7 \u09a0\u09bf\u0995 \u0995\u09b0\u09be \u09b9\u09af\u09bc\u09c7\u099b\u09c7'],en:['How to use page now shows English in English mode','Account, Cloud/Merge and Workout error texts now follow language','Hardcoded Bangla found across the app and fixed']},'3.3.44':{bn:['Schedule \u099c\u09c1\u09ae \u09b2\u09c7\u09ad\u09c7\u09b2 \u098f\u0996\u09a8 \u09a0\u09bf\u0995 \u09a6\u09c7\u0996\u09be\u09ac\u09c7, \u0995\u09cb\u09a1 \u09a8\u09af\u09bc','Schedule \u09ac\u09cd\u09b2\u0995 \u098f\u0996\u09a8 \u09a0\u09bf\u0995 \u09a4\u09be\u09b0 \u09b8\u09ae\u09af\u09bc\u09c7\u09b0 \u09b8\u09ae\u09be\u09a8 \u2014 \u099c\u09c1\u09ae \u0986\u0989\u099f\u09c7\u0993 \u0993\u09ad\u09be\u09b0\u09b2\u09cd\u09af\u09be\u09aa \u09a8\u09af\u09bc','Schedule Prev/\u09a4\u09be\u09b0\u09bf\u0996/Today/Next \u098f\u0996\u09a8 \u098f\u0995 \u09b2\u09be\u0987\u09a8\u09c7'],en:['Schedule zoom level shows correctly, no code text','Schedule blocks now exactly their duration — no overlap at any zoom','Schedule Prev/date/Today/Next now on one line']},'3.3.43':{bn:['\u09b8\u09cd\u099f\u09cd\u09b0\u09bf\u0995 \u0995\u09be\u09b0\u09cd\u09a1\u09c7 \u0986\u0987\u0995\u09a8 \u0989\u09aa\u09b0\u09c7, \u09a8\u09be\u09ae \u09a8\u09bf\u099a\u09c7; \u09b8\u09cd\u099f\u09be\u09b0 \u0997\u09cb\u09b2\u09cd\u09a1\u09c7\u09a8','\u09a6\u09bf\u09a8\u09c7\u09b0 \u09aa\u09c7\u099c\u09c7\u09b0 \u09b8\u09cd\u099f\u09cd\u09b0\u09bf\u09aa\u09c7\u0993 \u0986\u0987\u0995\u09a8 \u0989\u09aa\u09b0\u09c7, \u09a8\u09be\u09ae \u09a8\u09bf\u099a\u09c7','Routine: Backlog/Overdue \u098f\u0996\u09a8 \u099b\u09cb\u099f \u0986\u0987\u0995\u09a8, Create routine \u09b6\u09c1\u09a7\u09c1 \u09b2\u09c7\u0996\u09be','Schedule: \u0997\u09cb\u09b2 \u09ac\u09be\u099f\u09a8 + \u0995\u09ae\u09aa\u09cd\u09af\u09be\u0995\u09cd\u099f \u099c\u09c1\u09ae \u09aa\u09bf\u09b2','Schedule \u0993\u09ad\u09be\u09b0\u09b2\u09cd\u09af\u09be\u09aa \u09a0\u09bf\u0995 \u2014 \u099c\u09c1\u09ae \u0995\u09b0\u09b2\u09c7\u0993 \u09ac\u09cd\u09b2\u0995 \u09ae\u09bf\u09b2\u09ac\u09c7 \u09a8\u09be','Schedule \u0995\u09be\u099c\u09c7 \u099f\u09bf\u0995 \u2014 done \u09b9\u09b2\u09c7 \u09b2\u09c7\u0996\u09be \u0995\u09be\u099f\u09be \u09af\u09be\u09ac\u09c7'],en:['Streak cards: icon above, label below; golden stars','Day strip: icon above, label below too','Routine: Backlog/Overdue as quiet icons, Create routine as plain text','Schedule: round nav buttons + compact zoom pill','Schedule overlap fixed at any zoom','Schedule task tick — done shows strikethrough']},'3.3.42':{bn:['\u09aa\u09cd\u09b0\u09cb\u09ab\u09be\u0987\u09b2 \u099b\u09ac\u09bf\u09a4\u09c7 \u0986\u09b0 \u09b8\u09be\u0987\u099c\u09c7\u09b0 \u09b8\u09c0\u09ae\u09be \u09a8\u09c7\u0987 \u2014 \u09af\u09c7\u0995\u09cb\u09a8\u09cb \u09ac\u09a1\u09bc \u099b\u09ac\u09bf \u09a8\u09c7\u0993\u09af\u09bc\u09be \u09af\u09be\u09ac\u09c7','Settings \u09a5\u09c7\u0995\u09c7 \u099f\u09cd\u09af\u09c1\u09b0 \u0986\u09ac\u09be\u09b0 \u09a6\u09c7\u0996\u09be\u09b0 \u09ac\u09be\u099f\u09a8 \u09b8\u09b0\u09be\u09a8\u09cb \u09b9\u09af\u09bc\u09c7\u099b\u09c7'],en:['No more size limit on profile photos — any large photo works now','The replay-tour button was removed from Settings']},'3.3.41':{bn:['Streak \u0985\u09aa\u09b6\u09a8\u0997\u09c1\u09b2\u09cb \u098f\u0996\u09a8 \u098f\u0995 \u09b2\u09be\u0987\u09a8\u09c7 \u09e9\u099f\u09be \u0995\u09b0\u09c7','Streak \u09aa\u09c7\u099c\u09c7 \u0986\u0997\u09c7\u09b0 \u09ae\u09a4\u09cb \u0995\u09af\u09bc\u09c7\u09a8 \u0986\u09b0 \u09b6\u09c7\u09af\u09bc\u09be\u09b0 \u09aa\u09bf\u09b2 \u09ab\u09bf\u09b0\u09c7\u099b\u09c7','\u09b0\u09c1\u099f\u09bf\u09a8 \u09ac\u09be\u09a8\u09be\u09a8\u09cb: \u09aa\u09cd\u09b0\u09a4\u09bf\u099f\u09be \u0995\u09be\u099c\u09c7\u09b0 \u09a8\u09bf\u099c\u09c7\u09b0 \u09ac\u09bf\u09b7\u09af\u09bc, \u0985\u09a7\u09cd\u09af\u09be\u09af\u09bc \u0986\u09b0 \u09b8\u09ae\u09af\u09bc'],en:['Streak options now show 3 per row','Coins and share pills are back on the Streak page, like before','Create routine: each task has its own subject, chapter and time']},'3.3.40':{bn:['Streak \u0985\u09aa\u09b6\u09a8\u0997\u09c1\u09b2\u09cb \u098f\u0996\u09a8 \u0986\u09b2\u09be\u09a6\u09be \u0986\u09b2\u09be\u09a6\u09be \u09b9\u09be\u09b2\u0995\u09be \u0995\u09be\u09b0\u09cd\u09a1'],en:['Streak options are now separate soft cards']},'3.3.39':{bn:['\u099f\u09cd\u09af\u09c1\u09b0\u09c7\u09b0 \u09b0\u09bf\u0982 \u098f\u0996\u09a8 \u09a0\u09bf\u0995 \u09ac\u09be\u099f\u09a8\u09c7\u09b0 \u0989\u09aa\u09b0 \u09ac\u09b8\u09ac\u09c7','\u099f\u09cd\u09af\u09c1\u09b0 \u0986\u09b0 \u09ac\u09be\u09b0\u09ac\u09be\u09b0 \u0986\u09b8\u09ac\u09c7 \u09a8\u09be','Streak \u0985\u09aa\u09b6\u09a8\u0997\u09c1\u09b2\u09cb\u09a4\u09c7 \u0986\u0987\u0995\u09a8, \u09b8\u09ac \u098f\u0995\u09b8\u09be\u09a5\u09c7 \u09a6\u09c7\u0996\u09be \u09af\u09be\u09ac\u09c7','\u09aa\u09be\u09b8\u0993\u09af\u09bc\u09be\u09b0\u09cd\u09a1\u09c7 \u099a\u09cb\u0996\u09c7\u09b0 \u0986\u0987\u0995\u09a8'],en:['Tour ring now sits exactly on each button','Tour no longer repeats','Streak options now have icons, all visible at once','Password field now has an eye icon']},'3.3.38':{bn:['Schedule \u09a6\u09bf\u09a8\u09c7\u09b0 \u09aa\u09c7\u099c \u09aa\u09b0\u09bf\u09b7\u09cd\u0995\u09be\u09b0 \u2014 \u0995\u09be\u099c \u09b8\u09ac\u09b8\u09ae\u09af\u09bc \u09a6\u09c7\u0996\u09be \u09af\u09be\u09ac\u09c7','Streak \u09aa\u09c7\u099c \u09aa\u09b0\u09bf\u09b7\u09cd\u0995\u09be\u09b0 \u2014 \u09ae\u09c2\u09b2 \u0985\u0982\u09b6 \u09b8\u09be\u09ae\u09a8\u09c7, \u09ac\u09be\u0995\u09bf \u0986\u0987\u0995\u09a8 \u09ae\u09c7\u09a8\u09c1\u09a4\u09c7','Friends \u099f\u09cd\u09af\u09be\u09ac\u09c7 \u098f\u0996\u09a8 \u0997\u09cd\u09b0\u09c1\u09aa \u0986\u0987\u0995\u09a8','\u09aa\u09cd\u09b0\u09a5\u09ae\u09ac\u09be\u09b0 \u0985\u09cd\u09af\u09be\u09aa \u0996\u09c1\u09b2\u09b2\u09c7 \u099b\u09cb\u099f \u099f\u09cd\u09af\u09c1\u09b0 \u09a6\u09c7\u0996\u09be\u09ac\u09c7'],en:['Cleaner Schedule day page \u2014 tasks always visible','Cleaner Streak page \u2014 core first, rest behind icons','Friends tab now shows a group icon','A short tour on first launch']}};var items=(WN[APP_VERSION]&&(WN[APP_VERSION][bn?'bn':'en']))||(bn?['\u098f\u0987 \u0986\u09aa\u09a1\u09c7\u099f\u09c7 \u0995\u09bf\u099b\u09c1 \u0989\u09a8\u09cd\u09a8\u09a4\u09bf \u098f\u09b8\u09c7\u099b\u09c7\u0964']:['Improvements in this update.']);window.__wnItems=items;if(__wnSeen)return'';return '<section class="card"><h2 style="margin:0">'+(bn?'নতুন কী এলো \u2014 '+APP_VERSION:'What\'s new \u2014 '+APP_VERSION)+'</h2><ul style="margin:10px 0">'+items.map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul><button class="sm" data-act="seenew" style="width:100%">'+(bn?'ঠিক আছে':'Got it')+'</button></section>'}
 function smartRevisionCard(){var bn=state.prefs.lang==='bn';var wk=(state.weak||[]).filter(function(w){return !w.done});var ms=state.mistakes||[];if(!wk.length&&!ms.length)return'';var items=wk.slice(0,3).map(function(w){return'<div class="item"><b>'+esc(w.subject+(w.chapter?' · '+w.chapter:''))+'</b>'+(w.note?'<small>'+esc(w.note)+'</small>':'')+'</div>'}).join('');if(wk.length<3)items+=ms.slice(0,3-wk.length).map(function(m){return'<div class="item"><b>'+esc(m.subject+(m.chapter?' · '+m.chapter:''))+'</b><small>'+esc(m.what)+'</small></div>'}).join('');return '<section class="card"><h2 style="margin:0">'+(bn?'স্মার্ট রিভিশন':'Smart revision')+'</h2>'+items+'<button class="sm" data-act="gologs" style="width:100%"><svg class="ic ic18" style="margin-right:8px"><use href="#i-logs"/></svg>'+(bn?'লগ দেখুন':'See logs')+'</button></section>';}
 function analyticsCard(){var bn=state.prefs.lang==='bn';var td=today();var past=(R().tasks||[]).filter(function(t){return t.date&&t.date<=td});if(!past.length)return'';var done=past.filter(isDone).length;var overdue=past.filter(function(t){return !isDone(t)&&t.date<td}).length;var hp2=dayLoad(td),hd2=logged(td);var msg=overdue>0?(bn?overdue+'টি কাজ পিছিয়ে আছে।':overdue+' tasks behind.'):(bn?'সব ঠিক আছে, পিছিয়ে নেই।':'On track, nothing behind.');return '<section class="card"><h2 style="margin:0">'+(bn?'পড়ার হিসাব':'Study analytics')+'</h2><p class="sub">'+msg+'</p><div class="item"><b>'+(bn?'আজ পর্যন্ত কাজ':'Tasks up to today')+'</b><small>'+done+' / '+past.length+' '+(bn?'শেষ':'done')+'</small></div><div class="item"><b>'+(bn?'আজকের পড়া':'Today studied')+'</b><small>'+fmtMin(hd2)+' / '+fmtMin(hp2)+'</small></div><button class="sm" data-act="gorecords" style="width:100%"><svg class="ic ic18" style="margin-right:8px"><use href="#i-records"/></svg>'+(bn?'রেকর্ড দেখুন':'See records')+'</button></section>';}
 function tasksSummaryCard(){
@@ -1420,7 +1496,7 @@ function homeMenuHtml(){
     +'</div><div class="hmpage">'
     +mc('goroutine','i-routine',bn?'রুটিন':'Routine')
     +mc('gorecords','i-records',bn?'রেকর্ডস':'Records')
-    +'<button class="hmcard" data-act="goaichat"><img src="'+OTTO_IMG.head+'" style="width:26px;height:26px;border-radius:50%;object-fit:cover;flex:none" alt=""><b>'+(bn?'AI সহায়ক':'AI Helper')+'</b></button>'
+    +'<button class="hmcard" data-act="goaichat"><img src="'+OTTO_IMG.head+'" style="width:26px;height:26px;border-radius:50%;object-fit:cover;flex:none" alt=""><b>'+'Agradia AI'+'</b></button>'
     +'</div></div><div class="hmdots'+(homeMenuPage===1?' merged':'')+'" style="display:flex;justify-content:center;margin:10px 0 28px"><button class="hmdot'+(homeMenuPage===0?' on':'')+'" data-act="hmenupg" data-v="0" aria-label="1"></button><button class="hmdot'+(homeMenuPage===1?' on':'')+'" data-act="hmenupg" data-v="1" aria-label="2"></button></div>'; } function vCountdowns(){
   var bn=state.prefs.lang==='bn';
   var h='<div style="display:flex;align-items:center;gap:12px;margin-bottom:22px"><button class="ghost" data-act="backhome">‹ '+(bn?'ফিরুন':'Back')+'</button><h1 style="margin:0">'+(bn?'কাউন্টডাউন':'Countdowns')+'</h1></div>';
@@ -1494,7 +1570,7 @@ function chatMuteLabel(cid,bn){var m=(state.chatMuted||{})[cid];if(!isChatMuted(
 function markChatUnreadByLast(uid){var cid=window.__fbChatId?window.__fbChatId(uid):'';var last=cid&&window.__chatLast?window.__chatLast[cid]:null;var myUid=window.__fbMyUid?window.__fbMyUid():'';if(!cid||!last||last.from===myUid)return false;state.chatSeen[cid]=last.ts-1;if(!window.__chatUnreadIds)window.__chatUnreadIds={};window.__chatUnreadIds[cid]=true;save();return true}
 function muteChatDlg(uid){var bn=state.prefs.lang==='bn';var cid=window.__fbChatId?window.__fbChatId(uid):'';if(!cid)return;sheetMenu(bn?'মিউট কতক্ষণের জন্য?':'Mute for how long?','',[{l:bn?'১ ঘণ্টা':'1 hour',v:'3600000'},{l:bn?'২ ঘণ্টা':'2 hours',v:'7200000'},{l:bn?'আনমিউট না করা পর্যন্ত':'Until I unmute',v:'0'},{l:bn?'বাতিল':'Cancel',v:'cancel'}],function(v){if(!v||v==='cancel')return;var ms=+v;if(!state.chatMuted)state.chatMuted={};state.chatMuted[cid]={until:ms===0?0:Date.now()+ms};save();render(true);toast(bn?'মিউট করা হয়েছে':'Muted')})}
 function msgRowMenu(uid){var bn=state.prefs.lang==='bn';var cid=window.__fbChatId?window.__fbChatId(uid):'';var prof=window.__friendProfiles&&window.__friendProfiles[uid];var nm=prof&&prof.name?prof.name:uid;var muted=isChatMuted(cid);sheetMenu(nm,'',[{l:bn?'কনভারসেশন ডিলিট করুন':'Delete conversation',v:'del',danger:true},{l:bn?'আনরিড হিসেবে মার্ক করুন':'Mark as unread',v:'unread'},{l:muted?(bn?'আনমিউট করুন':'Unmute'):(bn?'মিউট করুন':'Mute'),v:'mute'},{l:bn?'বাতিল':'Cancel',v:'cancel'}],function(val){if(val==='del'){sheetConfirm(bn?'কনভারসেশন ডিলিট করবে?':'Delete this conversation?',bn?'এই কনভারসেশনের পুরো পুরনো হিস্ট্রি তোমার ফোন থেকে মুছে যাবে। বন্ধুর কাছে মেসেজ আগের মতোই থাকবে।':'The whole old history of this conversation will be deleted from your phone only. Your friend keeps their messages.',bn?'ডিলিট':'Delete').then(function(ok){if(!ok)return;sheetConfirm(bn?'সত্যিই ডিলিট করবে?':'Are you really sure?',bn?'পরে নতুন মেসেজ এলে শুধু নতুন মেসেজগুলো দেখা যাবে — পুরনো হিস্ট্রি আর ফিরবে না।':'If new messages arrive later, only the new messages will show — the old history will never come back.',bn?'ডিলিট':'Delete').then(function(ok2){if(!ok2)return;if(!state.chatDeletedConvs)state.chatDeletedConvs={};var last=cid&&window.__chatLast?window.__chatLast[cid]:null;state.chatDeletedConvs[cid]=last?last.ts:Date.now();if(state.chatLastCache)delete state.chatLastCache[cid];if(window.__chatUnreadIds)delete window.__chatUnreadIds[cid];save();render(true);toast(bn?'কনভারসেশন ডিলিট করা হয়েছে':'Conversation deleted')})})}else if(val==='unread'){if(markChatUnreadByLast(uid)){render(true);toast(bn?'আনরিড হিসেবে মার্ক করা হয়েছে':'Marked as unread')}else{toast(bn?'এখানে তার কোনো নতুন মেসেজ নেই':'No new message from them')}}else if(val==='mute'){if(muted){if(state.chatMuted)delete state.chatMuted[cid];save();render(true);toast(bn?'আনমিউট করা হয়েছে':'Unmuted')}else{muteChatDlg(uid)}}})}
-function vMessages(){var bn=state.prefs.lang==='bn';refreshFriendProfiles();startChatLastListener();displayFriends().forEach(function(ff){try{startChatMetaListener(ff.uid)}catch(e){}});var fr=displayFriends();var myUid=window.__fbMyUid?window.__fbMyUid():'';var items=fr.map(function(f){var cid=window.__fbChatId?window.__fbChatId(f.uid):'';var last=state.demo&&window.__demoChatLast?window.__demoChatLast[f.uid]||null:(cid&&window.__chatLast?window.__chatLast[cid]:null);var unread=!!(last&&last.from!==myUid&&last.ts>(state.chatSeen[cid]||0)&&!isChatMuted(cid));return{f:f,cid:cid,last:last,ts:last?last.ts||0:0,unread:unread}});items=items.filter(function(it){var del=(state.chatDeletedConvs||{})[it.cid]||0;return !(del&&it.ts<=del)});items.sort(function(a,b){return b.ts-a.ts});var h=subHead(bn?'মেসেজ':'Messages');if(!fr.length||!items.length)h+=ottoRow('excited',bn?'এখনো কোনো মেসেজ নেই! 💬':'No messages yet! 💬');if(!fr.length)h+='<p class="sub">'+(bn?'এখনো কোনো বন্ধু নেই।':'No friends yet.')+'</p><button data-act="addfriend" style="width:100%"><svg class="ic ic18" style="margin-right:8px"><use href="#i-friends"/></svg>'+(bn?'Friend add করুন':'Add a friend')+'</button>';var aiLast=aiLastPreview();h+='<section class="card"><div style="display:flex;align-items:center;gap:12px;padding:11px 0"><button data-act="goaichat" aria-label="AI সহায়ক" style="background:none;border:0;padding:0;flex:none"><img src="'+OTTO_IMG.head+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;display:block" alt=""></button><button data-act="goaichat" style="flex:1;min-width:0;background:none;border:0;padding:0;font:inherit;text-align:left;color:var(--text)"><span style="display:block"><b>AI সহায়ক</b> <span style="font-size:11px;font-weight:700;color:#fff;background:var(--accent);border-radius:6px;padding:2px 6px;vertical-align:2px">AI</span><br><span style="color:var(--muted);font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(aiLast)+'</span></span></button></div></section>';
+function vMessages(){var bn=state.prefs.lang==='bn';refreshFriendProfiles();startChatLastListener();displayFriends().forEach(function(ff){try{startChatMetaListener(ff.uid)}catch(e){}});var fr=displayFriends();var myUid=window.__fbMyUid?window.__fbMyUid():'';var items=fr.map(function(f){var cid=window.__fbChatId?window.__fbChatId(f.uid):'';var last=state.demo&&window.__demoChatLast?window.__demoChatLast[f.uid]||null:(cid&&window.__chatLast?window.__chatLast[cid]:null);var unread=!!(last&&last.from!==myUid&&last.ts>(state.chatSeen[cid]||0)&&!isChatMuted(cid));return{f:f,cid:cid,last:last,ts:last?last.ts||0:0,unread:unread}});items=items.filter(function(it){var del=(state.chatDeletedConvs||{})[it.cid]||0;return !(del&&it.ts<=del)});items.sort(function(a,b){return b.ts-a.ts});var h=subHead(bn?'মেসেজ':'Messages');if(!fr.length||!items.length)h+=ottoRow('excited',bn?'এখনো কোনো মেসেজ নেই! 💬':'No messages yet! 💬');if(!fr.length)h+='<p class="sub">'+(bn?'এখনো কোনো বন্ধু নেই।':'No friends yet.')+'</p><button data-act="addfriend" style="width:100%"><svg class="ic ic18" style="margin-right:8px"><use href="#i-friends"/></svg>'+(bn?'Friend add করুন':'Add a friend')+'</button>';var aiLast=aiLastPreview();h+='<section class="card"><div style="display:flex;align-items:center;gap:12px;padding:11px 0"><button data-act="goaichat" aria-label="Agradia AI" style="background:none;border:0;padding:0;flex:none"><img src="'+OTTO_IMG.head+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;display:block" alt=""></button><button data-act="goaichat" style="flex:1;min-width:0;background:none;border:0;padding:0;font:inherit;text-align:left;color:var(--text)"><span style="display:block"><b>Agradia AI</b> <span style="font-size:11px;font-weight:700;color:#fff;background:var(--accent);border-radius:6px;padding:2px 6px;vertical-align:2px">AI</span><br><span style="color:var(--muted);font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(aiLast)+'</span></span></button></div></section>';
 if(items.length)h+='<section class="card">';items.forEach(function(it,ix){var f=it.f,prof=window.__friendProfiles&&window.__friendProfiles[f.uid],nm=prof&&prof.name?prof.name:f.name||f.id,live=prof&&prof.live;var mmeta=window.__chatMeta&&window.__chatMeta[it.cid]?window.__chatMeta[it.cid]:{};var typingNow=mmeta['typing_'+(it.f.uid||'')]&&mmeta['typing_'+(it.f.uid||'')]>(Date.now()-5000)&&state.prefs.typingIndicator!==false;var prev=typingNow?(bn?'টাইপ করছে…':'Typing…'):(!it.last?(bn?'কোনো message নেই':'No messages yet'):(it.last.kind==='image'?(bn?'ছবি':'Image'):(it.last.kind==='video'?(bn?'ভিডিও':'Video'):(it.last.kind==='voice'?(bn?'ভয়েস মেসেজ':'Voice message'):(it.last.kind==='call'?(bn?'অডিও কল':'Audio call'):it.last.text.slice(0,32)+(it.last.text.length>32?'…':''))))));var tmStr='';if(it.last){var _dd=fmtChatDay(it.last.ts,bn);tmStr=_dd===(bn?'আজ':'Today')?fmtChatTime(it.last.ts):_dd}var sep=ix<items.length-1?';border-bottom:1px solid var(--hair)':'';h+='<div data-msgrow="'+esc(f.uid)+'" style="display:flex;align-items:center;gap:12px;padding:11px 0'+sep+'"><button data-act="msgprofileopen" data-uid="'+esc(f.uid)+'" data-id="'+esc(f.id)+'" style="background:none;border:0;padding:0;flex:none">'+friendAvatarHtml(prof||f)+'</button><button data-act="messageopen" data-uid="'+esc(f.uid)+'" data-id="'+esc(f.id)+'" style="flex:1;min-width:0;background:none;border:0;padding:0;font:inherit;text-align:left;color:var(--text)"><span style="flex:1;min-width:0;display:block"><b>'+esc(nm)+(isChatMuted(it.cid)?' <svg style="width:16px;height:16px;vertical-align:-3px"><use href="#i-mute"/></svg>':'')+'</b>'+(live?'<br><span style="color:var(--live);font-size:13px">● '+(bn?'এখন পড়ছে':'Studying now')+'</span>':'<br><span style="color:var(--muted);font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(prev)+'</span>')+'</span></button>'+(tmStr?'<span class="sub" style="flex:none">'+esc(tmStr)+'</span>':'')+(it.unread?'<span style="width:12px;height:12px;border-radius:50%;background:var(--warn);flex:none"></span>':'')+'</div>'});if(items.length)h+='</section>';return h}
 function vFriends(){var bn=state.prefs.lang==='bn',pend=state.friendPending||[],fr=displayFriends();refreshFriendProfiles();var h='<div class="row" style="margin-bottom:22px"><h1>'+(bn?'বন্ধুরা':'Friends')+'</h1><div class="hdrb">'+headerBtns()+'</div></div>';h+='<section class="card"><button data-act="goleaderboard" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:0;border-bottom:1px solid var(--hair);padding:12px 4px;font:inherit;text-align:left;color:var(--text)"><span style="display:flex;align-items:center;gap:10px"><svg class="ic ic18"><use href="#i-medal"/></svg><b>'+(bn?'লিডারবোর্ড':'Leaderboard')+'</b></span><span style="color:var(--muted)">›</span></button></section>';if(!fr.length&&!pend.length)h+=ottoRow('excited',bn?'এখনো কোনো বন্ধু নেই! 👥':'No friends yet! 👥')+'<p class="sub">'+(bn?'এখনো কোনো বন্ধু নেই।':'No friends yet.')+'</p>';fr.forEach(function(f){var prof=window.__friendProfiles&&window.__friendProfiles[f.uid],nm=prof&&prof.name?prof.name:f.name||f.id,live=prof&&prof.live;h+='<section class="card"><button data-act="friendopen" data-uid="'+esc(f.uid)+'" data-id="'+esc(f.id)+'" style="display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;padding:0;font:inherit;text-align:left;color:var(--text)">'+friendAvatarHtml(prof||f)+'<span><b>'+esc(nm)+'</b>'+(live?'<br><span style="color:var(--live);font-size:13px">● '+(bn?'এখন পড়ছে':'Studying now')+'</span>':'')+'</span></button></section>'});if(pend.length){h+='<p class="sub" style="margin-top:16px">'+(bn?'অপেক্ষায়':'Pending')+'</p>';pend.forEach(function(f){h+='<section class="card"><div style="display:flex;align-items:center;gap:12px;justify-content:space-between"><span style="display:flex;align-items:center;gap:12px"><span style="width:52px;height:52px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-weight:700;flex:none">'+esc(f.id.slice(-2))+'</span><span><b>'+esc(f.id)+'</b><br><span class="sub">'+(bn?'অপেক্ষায়':'Pending')+'</span><br><span class="sub">'+(f.why==='noprofile'?(bn?'ওই ID-র profile পাওয়া যায়নি — ওই ফোনে sign in করে Add Friend খুলতে হবে।':'Profile not found for this ID — sign in on that phone and open Add Friend.'):(f.why==='mutual'?(bn?'দুজনকে একে অপরকে যোগ করতে হবে — বন্ধুও তোমাকে যোগ করুক।':'Both of you need to add each other — your friend must add you too.'):(bn?'নেট বা sign in হয়নি বলে যোগ হয়নি — অনলাইনে এসে আবার চেষ্টা করো।':'Could not add — no network or not signed in. Try again when online.')))+'</span></span></span><button data-act="friendcancel" data-id="'+esc(f.id)+'" aria-label="Cancel" style="background:none;border:0;color:var(--warn);font-size:20px;font-weight:700;padding:6px 10px;min-width:44px;min-height:44px;flex:none">✕</button></div><div style="display:flex;gap:8px;margin-top:10px"><button class="ghost" data-act="friendretry" data-id="'+esc(f.id)+'"><svg class="ic ic18" style="margin-right:8px"><use href="#i-refresh"/></svg>'+(bn?'আবার চেষ্টা':'Retry')+'</button></div></section>'})}return h}
 function vLeaderboard(){var bn=state.prefs.lang==='bn';refreshFriendProfiles();var rows=[{uid:'me',name:state.prefs.name||(bn?'আমি':'Me'),weekMin:weekMinutes(),live:!!((state.timer&&state.timer.run)||(state.sw&&state.sw.run)),me:true}];displayFriends().forEach(function(f){var prof=window.__friendProfiles&&window.__friendProfiles[f.uid];rows.push({uid:f.uid,id:f.id,name:prof&&prof.name?prof.name:f.name||f.id,weekMin:prof?prof.weekMin||0:0,live:prof?!!prof.live:false,me:false})});rows.sort(function(a,b){return b.weekMin-a.weekMin});var h=subHead(bn?'লিডারবোর্ড':'Leaderboard');var myRank=rows.findIndex(function(r){return r.me})+1;var lbLine=rows.length<=1?(bn?'\u09ac\u09a8\u09cd\u09a7\u09c1 \u09af\u09cb\u0997 \u0995\u09b0\u09cb, \u09a4\u09be\u09b0\u09aa\u09b0 \u09b0\u200d\u09cd\u09af\u09be\u0999\u09cd\u0995 \u09a6\u09c7\u0996\u09be \u09af\u09be\u09ac\u09c7! \uD83D\uDC65':'Add friends to see your rank! \uD83D\uDC65'):(myRank===1?(bn?'\u09ac\u09a8\u09cd\u09a7\u09c1\u09a6\u09c7\u09b0 \u09b8\u09c7\u09b0\u09be! \uD83D\uDE0E':'Top of the game! \uD83D\uDE0E'):(myRank===2?(bn?'\u09e8 \u09a8\u09ae\u09cd\u09ac\u09b0\u09c7 \u2014 \u09b8\u09c7\u09b0\u09be\u09b0 \u0996\u09c1\u09ac \u0995\u09be\u099b\u09c7! \uD83D\uDCAA':'2nd place \u2014 so close to the top! \uD83D\uDCAA'):(myRank===rows.length?(bn?'\u09b6\u09c7\u09b7\u09c7 \u0986\u099b\u09cb \u2014 \u098f\u0995\u099f\u09c1 \u09aa\u09a1\u09bc\u09b2\u09c7\u0987 \u098f\u0997\u09bf\u09af\u09bc\u09c7 \u09af\u09be\u09ac\u09c7! \uD83D\uDCDA':'Last for now \u2014 a little study and you will climb! \uD83D\uDCDA'):(bn?myRank+' \u09a8\u09ae\u09cd\u09ac\u09b0\u09c7 \u2014 \u098f\u0997\u09bf\u09af\u09bc\u09c7 \u09af\u09be\u0993! \uD83D\uDE80':'Rank '+myRank+' \u2014 keep climbing! \uD83D\uDE80'))));h+=ottoRow('fixed',lbLine);h+='<section class="card"><button data-act="gofriends" aria-label="'+__L('Friends','বন্ধুরা')+'" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:0;border-bottom:1px solid var(--hair);padding:12px 4px;font:inherit;text-align:left;color:var(--text)"><span style="display:flex;align-items:center;gap:10px"><svg class="ic ic18"><use href="#i-friends"/></svg><b>'+__L('Friends','বন্ধুরা')+'</b></span><span style="color:var(--muted)">›</span></button></section>';rows.forEach(function(r,i){var bg='#F5F5F5',mc='#757575',tc='#1F2937',spark='';if(i===0){bg='linear-gradient(135deg,#FFF8E1,#FFE082)';mc='#FFB300';tc='#1F2937';spark='<span class="breathe"><svg width="16" height="16" viewBox="0 0 24 24" fill="#FFB300"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z"/></svg></span>'}else if(i===1){bg='linear-gradient(135deg,#E3F2FD,#E1BEE7)';mc='#8A8A8A';tc='#1F2937'}else if(i===2){bg='linear-gradient(135deg,#FBE9E7,#FFCCBC)';mc='#CD7F32';tc='#fff'}var inner='<span style="width:36px;height:36px;border-radius:50%;background:'+mc+';color:'+tc+';display:grid;place-items:center;font-weight:700;flex:none">'+(i+1)+'</span><span style="flex:1;color:#1F2937"><b>'+esc(r.name)+'</b>'+(r.live?'<br><span style="color:var(--live);font-size:13px">● '+(bn?'এখন পড়ছে':'Studying now')+'</span>':'')+'</span><span style="color:#1F2937"><b>'+fmtMin(r.weekMin)+'</b></span>'+spark;h+=r.me?'<section class="card" style="background:'+bg+';border-radius:12px;padding:0"><button data-act="gorecords" aria-label="'+(bn?'নিজের Stats':'My stats')+'" style="display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;padding:14px;min-height:64px;font:inherit;text-align:left;color:#1F2937;cursor:pointer">'+inner+'</button></section>':'<section class="card" style="background:'+bg+';border-radius:12px;padding:0"><button data-act="friendopen" data-uid="'+esc(r.uid)+'" data-id="'+esc(r.id||'')+'" style="display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;padding:14px;min-height:64px;font:inherit;text-align:left;color:#1F2937">'+inner+'</button></section>'});return h}
@@ -3672,14 +3748,28 @@ if(state.setup&&!state.prefs.name&&!state.prefs.nameAsked){state.prefs.nameAsked
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().then(function(ok){persisted=ok?'Storage is marked persistent.':'';})}catch(e){}
 
 
-/* ================= AI সহায়ক (v3.12.0 Step 2) ================= */
-/* Worker URL — deploy-এর পরে এখানে বসাও। খালি থাকলে চ্যাট "সার্ভার এখনো বসানো হয়নি" দেখাবে, কোথাও রিকোয়েস্ট যাবে না। API key কখনো অ্যাপের কোডে বসাবে না। */
-var AI_WORKER_URL = "https://agradia-ai.ahabdullah55555555.workers.dev"; // Worker তৈরি হয়েছে (20 Nov) — কিন্তু worker.js কোড + GROQ_API_KEY Secret এখনো বসানো হয়নি, তাই URL বসানো থাকলেও সার্ভার এখনো "বসানো হয়নি" দেখাবে।
+/* ================= AI সহায়ক — Gemini style (preview build, NOT pushed) ================= */
+/* Worker URL — key কখনো অ্যাপের কোডে বসাবে না। */
+var AI_WORKER_URL = "https://agradia-ai.ahabdullah55555555.workers.dev";
 var AI_LS_KEY = 'agradia.aichat.v1';
 var aiChats = null;
 var aiCur = null;
 var aiBusy = false;
 var aiDrawerOpen = false;
+var aiChipsGone = false;
+var aiCtxJustOpened = false;
+
+/* ---------- header logo: "Otto" wordmark (swappable in one place) ----------
+   Pick: 'gradient' (TOM's pick — matches the Gemini greeting gradient).
+   Options: 'plain' | 'gradient' | 'sparkle' | 'pill' */
+var AI_LOGO = 'gradient';
+function aiLogoHtml(){
+  var ai='<span class="ai-logo-ai">AI</span>';
+  if(AI_LOGO==='plain') return '<span class="ai-logo">Otto</span>'+ai;
+  if(AI_LOGO==='sparkle') return '<span class="ai-logo">Otto<span class="ai-logo-spark">✦</span></span>'+ai;
+  if(AI_LOGO==='pill') return '<span class="ai-logo">Otto</span><span class="ai-logo-pill">AI</span>';
+  return '<span class="ai-logo grad">Otto</span>'+ai;
+}
 
 var AI_MODELS = {
   auto: {name: 'Auto', dBn: 'প্রশ্ন অনুযায়ী নিজে ঠিক মডেল বেছে নেয় · ডিফল্ট', dEn: 'Picks the right model per question · Default'},
@@ -3688,9 +3778,8 @@ var AI_MODELS = {
 };
 function aiModelKey(){ var m=state.prefs.aiModel; return AI_MODELS[m]?m:'auto'; }
 function aiBn(){ return state.prefs.aiLang!=='en'; }
-function aiGreet(){ var h=new Date().getHours(); var bn=aiBn();
-  var g = h<12 ? (bn?'শুভ সকাল':'Good morning') : h<15 ? (bn?'শুভ দুপুর':'Good afternoon') : h<17 ? (bn?'শুভ বিকেল':'Good afternoon') : h<20 ? (bn?'শুভ সন্ধ্যা':'Good evening') : (bn?'শুভ রাত্রি':'Good evening');
-  var nm=(state.prefs.name||'').trim(); return nm ? g+', '+nm : g; }
+function aiHiName(){ var nm=(state.prefs.name||'').trim(); return 'Hi'+(nm?', '+nm:''); }
+function aiIsDark(){ try{ var bg=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(); return lum(bg)<.3; }catch(e){ return false; } }
 
 /* ---------- app context (routine/backlog/weak/mistakes) ----------
    AI-কে পাঠানোর জন্য অ্যাপের পড়াশোনার তথ্যের ছোট সারাংশ।
@@ -3763,201 +3852,598 @@ function aiErrText(err){
   if(err && err.code==='http' && err.status===502) return bn?'AI সার্ভার থেকে উত্তর আসেনি — সার্ভার এখনো পুরো বসানো হয়নি হয়তো, একটু পরে আবার চেষ্টা করো।':'The AI server did not answer — it may not be fully set up yet. Please try again in a bit.';
   return bn?'নেট সমস্যা হয়েছে — নেট চেক করে আবার পাঠাও।':'Network problem — check your connection and try again.';
 }
+function aiTranscribeBlob(blob){
+  return new Promise(function(resolve, reject){
+    var rd=new FileReader();
+    rd.onload=function(){
+      var s=String(rd.result||'');
+      var b64=s.indexOf(',')>-1?s.slice(s.indexOf(',')+1):s;
+      fetch(AI_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transcribe:true,audio:b64,mime:blob.type||'audio/webm'})}).then(function(r){
+        if(!r.ok){ reject({code:'notlive'}); return null; }
+        return r.json();
+      }).then(function(d){
+        if(!d) return;
+        if(typeof d.text==='string' && d.text.trim()) resolve(d.text.trim());
+        else reject({code:'badreply'});
+      }).catch(function(){ reject({code:'net'}); });
+    };
+    rd.onerror=function(){ reject({code:'net'}); };
+    rd.readAsDataURL(blob);
+  });
+}
 
-/* ---------- message HTML ---------- */
+/* ---------- reply rendering: markdown + math + code + tables + quotes + charts + actions ----------
+   Raw markup must NEVER reach the student: everything below is converted to real HTML.
+   Math notations supported (both): LaTeX \(...\) / \[...\] with \frac \sqrt ^ _,
+   and plain frac(a,b) / sqrt(x) / x^2 / H_2O. Charts come from a ```chart JSON block.
+   Actions come from a ```action JSON block (routine / record / open). */
+var AI_MATH_SYM={times:'×',div:'÷',cdot:'·',pi:'π',theta:'θ',alpha:'α',beta:'β',gamma:'γ',Delta:'Δ',delta:'δ',le:'≤',ge:'≥',ne:'≠',approx:'≈',infty:'∞',pm:'±',mp:'∓',rightarrow:'→',Rightarrow:'⇒',leftarrow:'←',degree:'°',sum:'∑',prod:'∏',int:'∫',sin:'sin',cos:'cos',tan:'tan',log:'log',ln:'ln',lim:'lim'};
+function aiFracHtml(a,b){ return '<span class="ai-frac"><span class="ai-frac-n">'+a+'</span><span class="ai-frac-d">'+b+'</span></span>'; }
+function aiSqrtHtml(inner,root){ return (root?'<sup>'+esc(root)+'</sup>':'')+'√<span class="ai-sqrt">'+inner+'</span>'; }
+function aiMathGroup(s,i){ if(s[i]==='{'){ var r=aiMathParse(s,i+1); return [r[0],r[1]+1]; } return [esc(s[i]||''),i+1]; }
+function aiMathAtom(s,i){
+  if(s[i]==='{'){ var r=aiMathParse(s,i+1); return [r[0],r[1]+1]; }
+  if(s[i]==='\\'){ var m=/^\\([a-zA-Z]+|.)/.exec(s.slice(i)); if(m){ var cmd=m[1]; if(AI_MATH_SYM[cmd]!==undefined) return [AI_MATH_SYM[cmd],i+m[0].length]; return [cmd,i+m[0].length]; } return ['',i+1]; }
+  return [esc(s[i]||''),i+1];
+}
+function aiMathParse(s,i){
+  var out='';
+  while(i<s.length){
+    var ch=s[i];
+    if(ch==='}'){ return [out,i]; }
+    if(ch==='{'){ var r=aiMathParse(s,i+1); out+=r[0]; i=r[1]+1; continue; }
+    if(ch==='\\'){
+      var m=/^\\([a-zA-Z]+|.)/.exec(s.slice(i));
+      if(!m){ i++; continue; }
+      var cmd=m[1]; i+=m[0].length;
+      if(cmd==='frac'){ var a=aiMathGroup(s,i); var b=aiMathGroup(s,a[1]); out+=aiFracHtml(a[0],b[0]); i=b[1]; continue; }
+      if(cmd==='sqrt'){ var root=''; if(s[i]==='['){ var e=s.indexOf(']',i); if(e>-1){ root=s.slice(i+1,e); i=e+1; } } var g=aiMathGroup(s,i); out+=aiSqrtHtml(g[0],root); i=g[1]; continue; }
+      if(cmd==='text'||cmd==='mathrm'||cmd==='mathbf'||cmd==='mathit'||cmd==='operatorname'){ var g2=aiMathGroup(s,i); out+=g2[0]; i=g2[1]; continue; }
+      if(cmd==='left'||cmd==='right'){ continue; }
+      if(cmd===' '||cmd===','||cmd===';'||cmd===':'||cmd==='\\'){ out+=' '; continue; }
+      if(cmd==='!'){ continue; }
+      if(AI_MATH_SYM[cmd]!==undefined){ out+=AI_MATH_SYM[cmd]; continue; }
+      if(/^[a-zA-Z]+$/.test(cmd)){ out+=cmd; continue; }
+      out+=esc(cmd); continue;
+    }
+    if(ch==='^'){ var g3=aiMathAtom(s,i+1); out+='<sup>'+g3[0]+'</sup>'; i=g3[1]; continue; }
+    if(ch==='_'){ var g4=aiMathAtom(s,i+1); out+='<sub>'+g4[0]+'</sub>'; i=g4[1]; continue; }
+    if(ch==='&'){ i++; continue; }
+    out+=esc(ch); i++;
+  }
+  return [out,i];
+}
+function aiLatexToHtml(inner,display){ var r=aiMathParse(inner,0); return display?'<span class="aimath">'+r[0]+'</span>':'<span class="aimath-in">'+r[0]+'</span>'; }
+function aiBalanced(s,i){ var d=1, j=i; while(j<s.length){ if(s[j]==='(') d++; else if(s[j]===')'){ d--; if(!d) return [s.slice(i,j), j+1]; } j++; } return null; }
+function aiSplitTop(s){ var parts=[], d=0, last=0; for(var i=0;i<s.length;i++){ if(s[i]==='(') d++; else if(s[i]===')') d--; else if(s[i]===','&&d===0){ parts.push(s.slice(last,i)); last=i+1; } } parts.push(s.slice(last)); return parts; }
+function aiPlainMath(s){
+  var out='', i=0;
+  while(i<s.length){
+    if(s.slice(i,i+5)==='frac('){ var r=aiBalanced(s,i+5); if(r){ var parts=aiSplitTop(r[0]); if(parts.length===2){ out+=aiFracHtml(parts[0],parts[1]); i=r[1]; continue; } } }
+    if(s.slice(i,i+5)==='sqrt('){ var r2=aiBalanced(s,i+5); if(r2){ out+=aiSqrtHtml(r2[0],''); i=r2[1]; continue; } }
+    out+=s[i]; i++;
+  }
+  return out;
+}
+function aiInlineFmt(s){
+  var codes=[], maths=[];
+  s=String(s||'');
+  s=s.replace(/`([^`\n]+)`/g,function(m,c){ codes.push('<code>'+esc(c)+'</code>'); return '\u0001C'+(codes.length-1)+'\u0001'; });
+  s=s.replace(/\$\$([\s\S]+?)\$\$/g,function(m,c){ maths.push(aiLatexToHtml(c,true)); return '\u0001M'+(maths.length-1)+'\u0001'; });
+  s=s.replace(/\\\(([\s\S]+?)\\\)/g,function(m,c){ maths.push(aiLatexToHtml(c,false)); return '\u0001M'+(maths.length-1)+'\u0001'; });
+  s=s.replace(/\\\[([\s\S]+?)\\\]/g,function(m,c){ maths.push(aiLatexToHtml(c,true)); return '\u0001M'+(maths.length-1)+'\u0001'; });
+  s=esc(s);
+  s=aiPlainMath(s);
+  s=s.replace(/([A-Za-z0-9\)\]])\^(\{[^}]+\}|[0-9\u09E6-\u09EF]+|[A-Za-z])/g,function(m,b,e){ e=e.replace(/^\{|\}$/g,''); return b+'<sup>'+e+'</sup>'; });
+  s=s.replace(/([A-Za-z0-9\)\]])_(\{[^}]+\}|[A-Za-z0-9\u09E6-\u09EF])/g,function(m,b,e){ e=e.replace(/^\{|\}$/g,''); return b+'<sub>'+e+'</sub>'; });
+  s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  s=s.replace(/(^|[^*])\*([^*]+)\*/g,'$1<em>$2</em>');
+  s=s.replace(/\u0001C(\d+)\u0001/g,function(m,n){ return codes[+n]||''; });
+  s=s.replace(/\u0001M(\d+)\u0001/g,function(m,n){ return maths[+n]||''; });
+  return s;
+}
+function aiChartHtml(o){
+  try{
+    var labels=o.labels||[], values=o.values||[];
+    if(!labels.length && Array.isArray(o.data)){ labels=o.data.map(function(d){ return d.label; }); values=o.data.map(function(d){ return +d.value; }); }
+    if(!labels.length||labels.length!==values.length||labels.length>12) return null;
+    var vals=values.map(function(v){ var n=+v; return isFinite(n)?n:0; });
+    var mx=0; vals.forEach(function(v){ if(v>mx) mx=v; }); if(mx<=0) mx=1;
+    var title=o.title||'';
+    var W=320, H=190, base=160, top=18, bw=Math.min(34, Math.floor(260/labels.length)-6);
+    var step=280/labels.length;
+    var labs=labels.map(function(l,i){ var x=Math.round(20+i*step+step/2); return '<text x="'+x+'" y="178" text-anchor="middle" font-size="10.5" fill="var(--muted)">'+esc(String(l)).slice(0,10)+'</text>'; }).join('');
+    var vls=vals.map(function(v,i){ var x=Math.round(20+i*step+step/2); var y=Math.round(base-((v/mx)*(base-top)))-8; return '<text x="'+x+'" y="'+y+'" text-anchor="middle" font-size="11" font-weight="700" fill="var(--text)">'+v+'</text>'; }).join('');
+    var inner='';
+    if(o.type==='line'){
+      var pts=vals.map(function(v,i){ var x=Math.round(20+i*step+step/2); var y=Math.round(base-((v/mx)*(base-top))); return x+','+y; }).join(' ');
+      var dots=vals.map(function(v,i){ var x=Math.round(20+i*step+step/2); var y=Math.round(base-((v/mx)*(base-top))); return '<circle cx="'+x+'" cy="'+y+'" r="4" fill="var(--accent)"/>'; }).join('');
+      inner='<polyline points="'+pts+'" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'+dots;
+    } else {
+      vals.forEach(function(v,i){
+        var hgt=Math.max(3, Math.round((v/mx)*(base-top)));
+        var x=Math.round(20+i*step+(step-bw)/2);
+        inner+='<rect x="'+x+'" y="'+(base-hgt)+'" width="'+bw+'" height="'+hgt+'" rx="4" fill="var(--accent)"/>';
+      });
+    }
+    return '<div class="aichart">'+(title?'<div class="aichart-title">'+esc(title)+'</div>':'')+'<svg viewBox="0 0 320 190" style="width:100%;height:auto;display:block" role="img" aria-label="'+esc(title)+'"><line x1="14" y1="'+base+'" x2="306" y2="'+base+'" stroke="var(--hair)" stroke-width="1.5"/>'+inner+labs+vls+'</svg></div>';
+  }catch(e){ return null; }
+}
+function aiActionHtml(o,msg,idx){
+  if(!o||typeof o!=='object') return '';
+  var done=msg&&msg.applied;
+  var di=' data-i="'+(idx==null?'':idx)+'"';
+  if(o.type==='routine'&&Array.isArray(o.tasks)&&o.tasks.length){
+    var rows=o.tasks.slice(0,8).map(function(t){
+      var tm='';
+      if(t.start&&t.end) tm=t.start+' – '+t.end;
+      else if(t.mins) tm=t.mins+' মিনিট';
+      var nm=((t.subj&&t.subj.length)?t.subj.join(', ')+' — ':'')+(t.chapter||t.text||'');
+      return '<div class="ai-act-row"><span>'+esc(tm)+'</span><b>'+esc(nm)+'</b></div>';
+    }).join('');
+    var pay=encodeURIComponent(JSON.stringify(o));
+    return '<div class="ai-actcard"><div class="ai-act-title">'+esc(o.title||'নতুন রুটিন')+'</div>'+rows
+      +(done?'<button type="button" class="ai-allow-btn done" disabled>✅ রুটিনে বসে গেছে</button>'
+            :'<button type="button" class="ai-allow-btn" data-ai="allow"'+di+' data-payload="'+pay+'">✓ অনুমতি দিন — রুটিনে বসান</button>')
+      +'</div>';
+  }
+  if(o.type==='record'){
+    var rows2='<div class="ai-act-row"><span>'+esc(o.subject||'')+'</span><b>'+esc((o.mins||'')+' মিনিট')+'</b></div>';
+    if(o.date) rows2+='<div class="ai-act-row"><span>তারিখ</span><b>'+esc(o.date)+'</b></div>';
+    var pay2=encodeURIComponent(JSON.stringify(o));
+    return '<div class="ai-actcard"><div class="ai-act-title">'+esc(o.title||'রেকর্ড যোগ করুন')+'</div>'+rows2
+      +(done?'<button type="button" class="ai-allow-btn done" disabled>✅ রেকর্ড যোগ হয়েছে</button>'
+            :'<button type="button" class="ai-allow-btn" data-ai="allowrec"'+di+' data-payload="'+pay2+'">✓ অনুমতি দিন — রেকর্ড যোগ করুন</button>')
+      +'</div>';
+  }
+  if(o.type==='open'&&o.screen){
+    var steps=Array.isArray(o.steps)&&o.steps.length?'<p class="ai-act-desc">'+esc(o.steps.join(' → '))+'</p>':'';
+    return '<div class="ai-actcard"><div class="ai-act-title">'+esc(o.title||o.label||'খুলুন')+'</div>'+steps
+      +'<button type="button" class="ai-open-btn" data-ai="openact" data-screen="'+esc(o.screen)+'"><svg class="ic ic20"><use href="#i-gear"/></svg>'+esc(o.label||'খুলুন')+'</button></div>';
+  }
+  return '';
+}
+function aiTableHtml(lines){
+  var rows=lines.filter(function(l){ return l.indexOf('|')===0; });
+  var cells=function(l){ return l.replace(/^\||\|$/g,'').split('|').map(function(c){ return c.trim(); }); };
+  var head=cells(rows[0]);
+  var body=rows.slice(2).map(function(l){ return '<tr>'+cells(l).map(function(c){ return '<td>'+aiInlineFmt(c)+'</td>'; }).join('')+'</tr>'; }).join('');
+  return '<div class="aitable-wrap"><table class="aitable"><thead><tr>'+head.map(function(c){ return '<th>'+aiInlineFmt(c)+'</th>'; }).join('')+'</tr></thead><tbody>'+body+'</tbody></table></div>';
+}
+function aiRenderTextBlocks(text, blocks){
+  var paras=String(text||'').split(/\n{2,}/);
+  paras.forEach(function(p){
+    var t=p.replace(/^\n+|\n+$/g,'');
+    if(!t.trim()) return;
+    var lines=t.split('\n');
+    if(lines.length>=2 && lines[0].indexOf('|')===0 && /^\s*\|[\s\-:|]+\|\s*$/.test(lines[1])){ blocks.push(aiTableHtml(lines)); return; }
+    if(lines.every(function(l){ return /^\s*>/.test(l); })){
+      var q=lines.map(function(l){ return l.replace(/^\s*>\s?/,''); }).join('\n');
+      blocks.push('<blockquote class="aiquote">'+aiInlineFmt(q).replace(/\n/g,'<br>')+'</blockquote>'); return;
+    }
+    var isList=lines.every(function(l){ return /^\s*([-*•]|\d+[.)])\s+/.test(l); });
+    if(isList){
+      var ordered=/^\s*\d+[.)]\s+/.test(lines[0]);
+      var items=lines.map(function(l){ return '<li>'+aiInlineFmt(l.replace(/^\s*([-*•]|\d+[.)])\s+/,'') )+'</li>'; }).join('');
+      blocks.push(ordered?'<ol class="ai-list">'+items+'</ol>':'<ul class="ai-list">'+items+'</ul>'); return;
+    }
+    var hm=/^(#{1,3})\s+(.*)$/.exec(t);
+    if(hm){ blocks.push('<h3 class="ai-h">'+aiInlineFmt(hm[2])+'</h3>'); return; }
+    blocks.push('<p class="ai-p">'+aiInlineFmt(t).replace(/\n/g,'<br>')+'</p>');
+  });
+}
+function aiFenceBlock(lang, code, msg, idx){
+  var l=(lang||'').toLowerCase();
+  if(l==='chart'||l==='graph'){
+    var o=null; try{ o=JSON.parse(code); }catch(e){}
+    var ch=o?aiChartHtml(o):null;
+    if(ch) return ch;
+  }
+  if(l==='action'){
+    var a=null; try{ a=JSON.parse(code); }catch(e){}
+    if(a){ var h=aiActionHtml(a, msg, idx); if(h) return h; }
+  }
+  var lbl=l||'code';
+  return '<div class="aicode"><div class="aicode-bar"><span>'+esc(lbl)+'</span><button type="button" data-ai="copycode">কপি</button></div><pre>'+esc(String(code||'').replace(/^\n+|\n+$/g,''))+'</pre></div>';
+}
+function aiRenderReply(text, msg, animate, idx){
+  var blocks=[];
+  var parts=String(text||'').split(/```(\w*)\n?([\s\S]*?)```/g);
+  for(var i=0;i<parts.length;i++){
+    if(i%3===0){ aiRenderTextBlocks(parts[i], blocks); }
+    else if(i%3===2){ blocks.push(aiFenceBlock(parts[i-1]||'', parts[i], msg, idx)); }
+  }
+  if(!animate) return blocks.join('');
+  return blocks.map(function(b,idx){ return '<div class="ai-fade" style="animation-delay:'+(idx*110)+'ms">'+b+'</div>'; }).join('');
+}
 function aiUserHtml(m){
-  return '<div style="display:flex;justify-content:flex-end;margin:12px 0"><div style="max-width:85%;background:var(--soft);color:var(--text);border-radius:16px;padding:10px 14px;font-size:16px;line-height:1.55;white-space:pre-wrap;word-break:break-word">'+esc(m.content)+'</div></div>';
+  return '<div class="ai-msg-user" style="margin:14px 0;display:flex;justify-content:flex-end"><div style="max-width:88%;background:var(--soft);border:1px solid var(--hair);border-radius:18px 18px 5px 18px;padding:10px 14px;font-size:16px;line-height:1.55;word-break:break-word">'+esc(m.content)+'</div></div>';
 }
 function aiMsgHtml(m, idx){
   var likeCls = m.like===1?' on':''; var disCls = m.like===-1?' on':'';
-  return '<div data-aimsg="'+idx+'" style="margin:16px 0">'
-    +'<div style="font-size:16px;line-height:1.65;white-space:pre-wrap;word-break:break-word">'+esc(m.content)+'</div>'
+  return '<div data-aimsg="'+idx+'" class="ai-msg" style="margin:16px 0">'
+    +'<div class="ai-msg-label"><span style="color:var(--accent)">✦</span>Otto</div>'
+    +'<div style="font-size:16px;line-height:1.65;word-break:break-word">'+aiRenderReply(m.content, m, false, idx)+'</div>'
     +'<div style="display:flex;gap:0;margin-top:6px">'
-    +'<button class="aiact" data-ai="copy" data-i="'+idx+'" aria-label="Copy"><svg class="ic ic20"><use href="#i-copy"/></svg></button>'
-    +'<button class="aiact'+likeCls+'" data-ai="like" data-i="'+idx+'" aria-label="Good"><svg class="ic ic20" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg></button>'
-    +'<button class="aiact'+disCls+'" data-ai="dislike" data-i="'+idx+'" aria-label="Bad"><svg class="ic ic20" viewBox="0 0 24 24" fill="currentColor"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg></button>'
-    +'<button class="aiact" data-ai="share" data-i="'+idx+'" aria-label="Share"><svg class="ic ic20"><use href="#i-share"/></svg></button>'
-    +'<button class="aiact" data-ai="regen" data-i="'+idx+'" aria-label="Regenerate"><svg class="ic ic20"><use href="#i-refresh"/></svg></button>'
+    +'<button data-ai="copy" data-i="'+idx+'" aria-label="Copy" style="background:none;border:0;padding:7px 8px;color:var(--muted)"><svg class="ic ic20"><use href="#i-copy"/></svg></button>'
+    +'<button data-ai="like" data-i="'+idx+'" aria-label="Good" class="'+likeCls+'" style="background:none;border:0;padding:7px 8px;color:var(--muted)"><svg class="ic ic20"><use href="#i-check"/></svg></button>'
+    +'<button data-ai="dislike" data-i="'+idx+'" aria-label="Bad" class="'+disCls+'" style="background:none;border:0;padding:7px 8px;color:var(--muted)"><svg class="ic ic20" style="transform:rotate(180deg)"><use href="#i-arrow-r"/></svg></button>'
+    +'<button data-ai="share" data-i="'+idx+'" aria-label="Share" style="background:none;border:0;padding:7px 8px;color:var(--muted)"><svg class="ic ic20"><use href="#i-share"/></svg></button>'
+    +'<button data-ai="regen" data-i="'+idx+'" aria-label="Regenerate" style="background:none;border:0;padding:7px 8px;color:var(--muted)"><svg class="ic ic20"><use href="#i-refresh"/></svg></button>'
     +'</div></div>';
 }
-function aiTypingHtml(){ return '<div id="aiTyping" style="margin:16px 0"><div style="display:inline-flex;gap:5px;padding:10px 14px;background:var(--soft);border-radius:16px"><span style="width:8px;height:8px;border-radius:50%;background:var(--muted);animation:tydot 1.2s infinite"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--muted);animation:tydot 1.2s .2s infinite"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--muted);animation:tydot 1.2s .4s infinite"></span></div></div>'; }
+function aiTypingHtml(){
+  return '<div id="aityping" class="ai-msg" style="margin:16px 0"><div class="ai-msg-label"><span style="color:var(--accent)">✦</span>Otto</div><div class="typing"><span></span><span></span><span></span></div></div>';
+}
+/* ---------- composer (pill: input + mic + send; recording bar swaps in) ---------- */
+var aiRec=null, aiRecChunks=[], aiRecStream=null, aiRecTimer=null, aiRecSec=0, aiRecSendOnStop=false, aiRecDraft='';
+function aiCompHtml(){
+  var bn=aiBn();
+  if(aiRec){
+    return '<div class="ai-recbar"><button data-ai="rec-x" aria-label="Cancel" class="ai-rec-x">✕</button>'
+      +'<div class="ai-rec-mid"><span class="ai-rec-dot"></span><span class="ai-rec-wave"><i></i><i></i><i></i><i></i><i></i><i></i></span><span id="aiRecTxt" class="ai-rec-txt">'+(bn?'শুনছি… বলো':'Listening… speak')+'</span></div>'
+      +'<button data-ai="rec-stop" class="ai-rec-stop">Stop</button>'
+      +'<button data-ai="rec-send" aria-label="Send" class="ai-send-btn ready"><svg class="ic ic22"><use href="#i-up"/></svg></button></div>';
+  }
+  return '<div class="ai-comp"><input id="aiInput" type="text" autocomplete="off" placeholder="'+esc(bn?'Otto-কে জিজ্ঞেস করো…':'Ask Otto…')+'" value="'+esc(aiRecDraft||'')+'">'
+    +'<button id="aiMicBtn" data-ai="mic" aria-label="Voice" class="ai-mic-btn"><svg class="ic ic22"><use href="#i-mic-o"/></svg></button>'
+    +'<button id="aiSendBtn" data-ai="send" aria-label="Send" class="ai-send-btn"><svg class="ic ic22"><use href="#i-up"/></svg></button></div>';
+}
+function aiSwapComposer(){ var w=document.getElementById('aiComp'); if(w) w.innerHTML=aiCompHtml(); }
+function aiSyncSendBtn(){ var btn=document.getElementById('aiSendBtn'); var inp=document.getElementById('aiInput'); if(!btn||!inp) return; btn.classList.toggle('ready', !!inp.value.trim()); }
+function aiHideChips(){ if(aiChipsGone) return; aiChipsGone=true; var c=document.getElementById('aiChips'); if(c) c.hidden=true; }
+function aiScrollBottom(){ try{ window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'}); }catch(e){ try{ window.scrollTo(0, document.body.scrollHeight); }catch(e2){} } }
 
-/* ---------- the chat screen ---------- */
+/* ---------- the chat screen (Gemini-style) ---------- */
 function vAIChat(){
   var bn=aiBn();
   var c=aiCurChat();
   var msgs = c ? c.msgs : [];
-  if(!state.prefs.aiLangAsked && !window.__aiAskOpen){ window.__aiAskOpen=true; setTimeout(function(){ aiLangAsk().then(function(){ window.__aiAskOpen=false; }); }, 400); }
-  var h='<div id="aiview" style="min-height:100vh;padding-bottom:150px">';
+  if(!state.prefs.aiLangAsked && !window.__aiAskOpen){ window.__aiAskOpen=true; setTimeout(function(){ if(tab==='aichat') aiLangAsk(); }, 500); }
+  var dark = aiIsDark();
+  var h='<div id="aiview"'+(dark?' class="ai-dark"':'')+' style="min-height:100vh;padding-bottom:150px">';
   h+='<div style="position:sticky;top:0;z-index:10;background:var(--bg)">'
-    +'<div style="display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 12px 6px">'
-    +'<button data-ai="drawer" aria-label="Menu" style="background:none;border:0;padding:8px;color:var(--text)"><svg class="ic ic22"><use href="#i-bars"/></svg></button>'
-    +'<span style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px"><img src="'+OTTO_IMG.head+'" style="width:30px;height:30px;border-radius:50%;object-fit:cover" alt=""><b style="font-size:17px">Otto AI</b></span>'
-    +'<button data-ai="dots" aria-label="More" style="background:none;border:0;padding:8px;color:var(--text)"><svg class="ic ic22"><use href="#i-more-h"/></svg></button>'
+    +'<div style="display:flex;align-items:center;gap:4px;padding:calc(10px + env(safe-area-inset-top)) 12px 2px">'
+    +'<button data-ai="drawer" aria-label="Menu" style="background:none;border:0;padding:8px;color:var(--text)"><svg class="ic ic22"><use href="#i-menu"/></svg></button>'
+    +'<span style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px">'+aiLogoHtml()+'</span>'
+    +'<button data-ai="newchat" aria-label="New chat" style="background:none;border:0;padding:8px;color:var(--text)"><svg class="ic ic22"><use href="#i-edit"/></svg></button>'
     +'</div>'
-    +'<div style="display:flex;justify-content:center;padding:0 12px 8px"><button data-ai="model" id="aiModelBtn" style="display:flex;align-items:center;gap:6px;background:none;border:0;font:inherit;color:var(--text);padding:6px 10px;border-radius:10px"><span id="aiModelLbl">'+esc(AI_MODELS[aiModelKey()].name)+'</span><svg class="ic ic18" style="color:var(--muted);transform:rotate(90deg)"><use href="#i-arrow-r"/></svg></button></div>'
+    +'<div style="display:flex;justify-content:flex-start;padding:0 14px 8px"><button data-ai="model" id="aiModelBtn" class="ai-model-chip"><span id="aiModelLbl">'+esc(AI_MODELS[aiModelKey()].name)+'</span><svg class="ic" style="width:13px;height:13px;color:var(--muted);transform:rotate(90deg)"><use href="#i-arrow-r"/></svg></button></div>'
     +'</div>';
-  h+='<div id="aidrop"'+(aiDrawerOpen?'':' hidden')+'></div>';
   var cs=aiGetChats();
-  var dl='<div id="aidrawer"'+(aiDrawerOpen?' class="open"':'')+'>';
-  dl+='<div style="display:flex;align-items:center;gap:8px;padding:calc(14px + env(safe-area-inset-top)) 16px 12px"><b style="flex:1;font-size:18px">'+(bn?'চ্যাট হিস্টরি':'Chat history')+'</b><button data-ai="drawerclose" style="background:none;border:0;font-size:22px;color:var(--muted);padding:4px 8px">✕</button></div>';
-  dl+='<div style="padding:0 16px 12px"><button data-ai="new" style="width:100%;border:1px solid var(--hair);background:var(--soft);border-radius:14px;padding:11px;font:inherit;color:var(--text)">+ '+(bn?'নতুন চ্যাট':'New chat')+'</button></div>';
+  var dl='<div id="aidrop"'+(aiDrawerOpen?'':' hidden')+' data-ai="drawerclose"></div>';
+  dl+='<div id="aidrawer"'+(aiDrawerOpen?' class="open"':'')+'>';
+  dl+='<div style="display:flex;align-items:center;gap:8px;padding:calc(14px + env(safe-area-inset-top)) 16px 12px"><span style="flex:1;font-size:18px;font-weight:700">'+aiLogoHtml()+'</span><button data-ai="drawerclose" style="background:none;border:0;font-size:22px;color:var(--muted);padding:4px 8px">✕</button></div>';
+  dl+='<div style="padding:0 16px 12px"><button data-ai="newchat" class="ai-drawer-new"><svg class="ic ic20"><use href="#i-edit"/></svg><span>'+(bn?'নতুন চ্যাট তৈরি করুন':'Create a new chat')+'</span></button></div>';
+  dl+='<div class="ai-drawer-label">'+(bn?'সাম্প্রতিক চ্যাট':'Recent chats')+'</div>';
   dl+='<div style="flex:1;overflow-y:auto;padding:0 8px 16px">';
   if(!cs.length) dl+='<p class="sub" style="padding:8px">'+(bn?'এখনো কোনো চ্যাট নেই।':'No chats yet.')+'</p>';
-  cs.forEach(function(x){ var t=x.title||(bn?'নতুন চ্যাট':'New chat'); dl+='<button data-ai="openchat" data-id="'+x.id+'" style="display:block;width:100%;text-align:left;background:none;border:0;padding:11px 10px;font:inherit;color:var(--text);border-radius:10px"><span style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(t)+'</span><span style="font-size:12px;color:var(--muted)">'+new Date(x.created).toLocaleDateString()+'</span></button>'; });
+  cs.forEach(function(x){ var t=x.title||(bn?'নতুন চ্যাট':'New chat'); dl+='<button data-ai="openchat" data-id="'+x.id+'" class="ai-drawer-row'+(c&&x.id===c.id?' cur':'')+'"><svg class="ic ic20"><use href="#i-chat"/></svg><span>'+esc(t)+'</span></button>'; });
   dl+='</div>';
-  dl+='<div style="padding:12px 16px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--hair)"><button data-ai="gohome" style="background:none;border:0;font:inherit;color:var(--accent);padding:4px 0">‹ '+(bn?'হোমে ফিরুন':'Back to Home')+'</button></div>';
+  dl+='<div class="ai-drawer-foot">'
+    +'<button data-ai="drawer-settings" class="ai-drawer-row"><svg class="ic ic20"><use href="#i-gear"/></svg><span>'+(bn?'সেটিংস':'Settings')+'</span></button>'
+    +'<button data-ai="drawer-lang" class="ai-drawer-row"><svg class="ic ic20"><use href="#i-globe"/></svg><span>'+(bn?'ভাষা: '+(aiBn()?'বাংলা':'English'):'Language: '+(aiBn()?'Bangla':'English'))+'</span></button>'
+    +'<button data-ai="drawer-help" class="ai-drawer-row"><svg class="ic ic20"><use href="#i-bell"/></svg><span>'+(bn?'সাহায্য':'Help')+'</span></button>'
+    +'</div>';
   dl+='</div>';
   h+=dl;
-  h+='<div id="aiMsgs" style="padding:6px 18px">';
+  h+='<div id="aiMsgs" style="padding:0 18px">';
   if(!msgs.length){
-    h+='<div style="text-align:center;padding:44px 20px 6px"><img src="'+OTTO_IMG.head+'" style="width:110px;height:110px;border-radius:50%;object-fit:cover" alt=""><div style="font-size:21px;font-weight:800;margin-top:16px;line-height:1.35">'+esc(aiGreet())+'</div><p class="sub" style="margin-top:8px">'+(bn?'যেকোনো পড়ার প্রশ্ন করো — অধ্যায়, কুইজ, অঙ্ক, সারাংশ।':'Ask any study question — chapters, quizzes, math, summaries.')+'</p></div>';
-    h+='<p class="sub" style="text-align:center;margin-top:2px">'+(bn?'AI তোমার রুটিন ও দুর্বল অধ্যায় দেখতে পায়।':'The AI can see your routine and weak chapters.')+'</p>';
-    var chips = bn?['কুইজ দাও','আজকের রুটিন','অঙ্ক করে দাও','অধ্যায় বোঝাও']:['Give a quiz',"Today's routine",'Solve a math problem','Explain a chapter'];
-    h+='<div style="display:flex;gap:8px;overflow-x:auto;padding:10px 4px 4px;scrollbar-width:none">';
-    chips.forEach(function(q){ h+='<button class="aichip" data-ai="chip" data-q="'+esc(q)+'">'+esc(q)+'</button>'; });
+    h+='<div style="padding:44px 0 6px"><div class="ai-greet">'+esc(aiHiName())+'</div><div class="ai-greet-sub">'+(bn?'আজ কী নিয়ে সাহায্য করবো? 😊':'What can I help with today? 😊')+'</div></div>';
+    h+='<p class="sub" style="margin:10px 0 0">'+(bn?'AI তোমার রুটিন ও দুর্বল অধ্যায় দেখতে পায়।':'The AI can see your routine and weak chapters.')+'</p>';
+    var chips=bn?['আজকের রুটিন','অঙ্ক করে দাও','কুইজ দাও','অধ্যায় বোঝাও']:['Today’s routine','Solve a math problem','Give me a quiz','Explain a chapter'];
+    h+='<div id="aiChips" class="ai-chip-list"'+(aiChipsGone?' hidden':'')+'>';
+    chips.forEach(function(q){ h+='<button class="ai-chip-row" data-ai="chip" data-q="'+esc(q)+'"><span class="ai-chip-dot"></span><span style="flex:1;text-align:left">'+esc(q)+'</span></button>'; });
     h+='</div>';
-    h+='<p class="sub" style="text-align:center;margin-top:22px">'+(bn?'AI মাঝে মাঝে ভুল করতে পারে — বইয়ে মিলিয়ে নিও।':'AI can make mistakes — check important things in your book.')+'</p>';
+    h+='<p class="sub" style="text-align:center;margin:24px 0 0">'+(bn?'AI মাঝে মাঝে ভুল করতে পারে — বইয়ে মিলিয়ে নিও।':'AI can make mistakes — check important things in your book.')+'</p>';
   } else {
-    msgs.forEach(function(m, i){ h+= (m.role==='user') ? aiUserHtml(m) : aiMsgHtml(m, i); });
+    msgs.forEach(function(m,i){ h+= m.role==='user' ? aiUserHtml(m) : aiMsgHtml(m,i); });
   }
   h+='</div>';
-  h+='<div style="position:fixed;left:22px;right:22px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:5"><div style="background:var(--card);border:1px solid var(--hair);border-radius:24px;padding:8px 10px;box-shadow:var(--cardsh);display:flex;align-items:center;gap:8px">'
-    +'<input id="aiInput" type="text" autocomplete="off" placeholder="'+esc(bn?'AI-কে প্রশ্ন করো…':'Ask AI…')+'" style="flex:1;min-width:0;border:0;background:transparent;color:var(--text);font:inherit;font-size:16px;padding:8px;outline:none">'
-    +'<button id="aiSendBtn" data-ai="send" aria-label="Send" style="flex:none;width:42px;height:42px;border:0;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;cursor:pointer"><svg class="ic ic22"><use href="#i-send"/></svg></button>'
-    +'</div></div>';
-  var mm='';
-  Object.keys(AI_MODELS).forEach(function(k){ var mo=AI_MODELS[k]; mm+='<button data-ai="modelpick" data-v="'+k+'"><span style="flex:1"><b>'+esc(mo.name)+'</b><small>'+esc(bn?mo.dBn:mo.dEn)+'</small></span>'+(aiModelKey()===k?'<svg class="ic ic20" style="color:var(--accent)"><use href="#i-check"/></svg>':'')+'</button>'; });
-  h+='<div id="aiModelMenu" class="aimenu" style="left:22px;right:22px;top:calc(102px + env(safe-area-inset-top))" hidden>'+mm+'</div>';
-  var dm='<button data-ai="new"><svg class="ic ic20"><use href="#i-plus"/></svg>'+(bn?'নতুন চ্যাট':'New chat')+'</button>'
-    +'<button data-ai="history"><svg class="ic ic20"><use href="#i-clock"/></svg>'+(bn?'চ্যাট হিস্টরি':'Chat history')+'</button>'
-    +'<button data-ai="clear"><svg class="ic ic20"><use href="#i-trash"/></svg>'+(bn?'হিস্টরি মুছুন':'Clear history')+'</button>'
-    +'<button data-ai="lang"><svg class="ic ic20"><use href="#i-chat"/></svg>'+(bn?'ভাষা বদলান':'Change language')+'</button>'
-    +'<button data-ai="help"><svg class="ic ic20"><use href="#i-bell"/></svg>'+(bn?'সাহায্য':'Help')+'</button>';
-  h+='<div id="aiDotsMenu" class="aimenu" style="right:18px;top:calc(102px + env(safe-area-inset-top))" hidden>'+dm+'</div>';
+  h+='<div id="aiComp" style="position:fixed;left:22px;right:22px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:5">'+aiCompHtml()+'</div>';
+  var mk=aiModelKey();
+  h+='<div id="aiModelMenu" class="aimenu" style="left:14px;right:auto;top:calc(96px + env(safe-area-inset-top));bottom:auto">';
+  Object.keys(AI_MODELS).forEach(function(k){ var M=AI_MODELS[k]; h+='<button data-ai="modelpick" data-k="'+k+'" class="'+(k===mk?'on':'')+'"><b>'+esc(M.name)+'</b>'+(k===mk?' ✓':'')+'<span>'+esc(bn?M.dBn:M.dEn)+'</span></button>'; });
+  h+='</div>';
   h+='</div>';
   return h;
 }
 
 /* ---------- send / receive ---------- */
-function aiSyncSendBtn(){ var btn=document.getElementById('aiSendBtn'); if(!btn) return; btn.innerHTML='<svg class="ic ic22"><use href="#i-send"/></svg>'; }
-function aiScrollBottom(){ try{ window.scrollTo(0, document.body.scrollHeight); }catch(e){} }
-function aiAppendHtml(html){ var box=document.getElementById('aiMsgs'); if(!box) return; var d=document.createElement('div'); d.innerHTML=html; box.appendChild(d.firstChild); aiScrollBottom(); }
-function aiAskAndAppend(chat){
-  aiAppendHtml(aiTypingHtml()); aiBusy=true;
-  aiAsk(chat).then(function(reply){
-    aiBusy=false; var t=document.getElementById('aiTyping'); if(t) t.remove();
-    chat.msgs.push({role:'assistant', content:reply, ts:Date.now(), like:0});
-    aiSaveChats(); aiAppendHtml(aiMsgHtml(chat.msgs[chat.msgs.length-1], chat.msgs.length-1));
-  }).catch(function(err){
-    aiBusy=false; var t=document.getElementById('aiTyping'); if(t) t.remove();
-    var txt=aiErrText(err);
-    chat.msgs.push({role:'assistant', content:txt, ts:Date.now(), like:0, err:true});
-    aiSaveChats(); aiAppendHtml(aiMsgHtml(chat.msgs[chat.msgs.length-1], chat.msgs.length-1));
-  });
+function aiAppendHtml(html){
+  var w=document.getElementById('aiMsgs');
+  if(!w){ render(true); return; }
+  var d=document.createElement('div');
+  d.innerHTML=html;
+  while(d.firstChild) w.appendChild(d.firstChild);
+  aiScrollBottom();
 }
 function aiSend(){
   var inp=document.getElementById('aiInput'); if(!inp) return;
-  var text=inp.value.trim(); if(!text||aiBusy) return;
-  inp.value=''; aiSyncSendBtn();
+  var q=inp.value.trim(); if(!q||aiBusy) return;
+  aiHideChips();
   var c=aiCurChat(); if(!c) c=aiNewChat();
-  c.msgs.push({role:'user', content:text, ts:Date.now()});
-  if(!c.title) c.title=text.length>40?text.slice(0,40)+'…':text;
+  var first=c.msgs.length===0;
+  c.msgs.push({role:'user', content:q});
+  if(!c.title) c.title=q.slice(0,40);
   aiSaveChats();
-  aiAppendHtml(aiUserHtml(c.msgs[c.msgs.length-1]));
+  if(first){ render(true); }
+  else { aiAppendHtml(aiUserHtml({content:q})); }
   aiAskAndAppend(c);
+}
+function aiAskAndAppend(chat){
+  if(aiBusy) return;
+  aiBusy=true;
+  var w=document.getElementById('aiMsgs');
+  if(w) w.insertAdjacentHTML('beforeend', aiTypingHtml());
+  aiScrollBottom();
+  aiAsk(chat).then(function(reply){
+    aiBusy=false;
+    var t=document.getElementById('aityping'); if(t) t.remove();
+    var idx=chat.msgs.length;
+    chat.msgs.push({role:'assistant', content:reply});
+    aiSaveChats();
+    aiAppendHtml(aiMsgHtml(chat.msgs[idx], idx));
+  }).catch(function(err){
+    aiBusy=false;
+    var t2=document.getElementById('aityping'); if(t2) t2.remove();
+    var idx2=chat.msgs.length;
+    chat.msgs.push({role:'assistant', content:aiErrText(err), err:true});
+    aiSaveChats();
+    aiAppendHtml(aiMsgHtml(chat.msgs[idx2], idx2));
+  });
 }
 function aiRegen(idx){
   var c=aiCurChat(); if(!c||aiBusy) return;
   var m=c.msgs[idx]; if(!m||m.role!=='assistant') return;
-  var hasUser=false; for(var j=idx-1;j>=0;j--){ if(c.msgs[j].role==='user'){ hasUser=true; break; } }
-  if(!hasUser) return;
-  c.msgs.splice(idx,1); aiSaveChats();
+  c.msgs.splice(idx,1);
+  aiSaveChats();
   render(true);
   aiAskAndAppend(c);
 }
-function aiRate(idx, val){
-  var c=aiCurChat(); if(!c) return;
-  var m=c.msgs[idx]; if(!m||m.role!=='assistant') return;
-  m.like = (m.like===val)?0:val; aiSaveChats();
-  var node=document.querySelector('[data-aimsg="'+idx+'"]'); if(!node) return;
-  var lb=node.querySelector('[data-ai="like"]'), db=node.querySelector('[data-ai="dislike"]');
-  if(lb) lb.classList.toggle('on', m.like===1);
-  if(db) db.classList.toggle('on', m.like===-1);
-}
-function aiCopyText(txt){
+function aiCopyText(s){
   var done=function(){ toast(aiBn()?'কপি হয়েছে':'Copied'); };
-  try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, function(){ aiCopyFallback(txt); done(); }); return; } }catch(e){}
-  aiCopyFallback(txt); done();
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(s).then(done, function(){ aiCopyFallback(s); done(); }); return; }
+  }catch(e){}
+  aiCopyFallback(s); done();
 }
-function aiCopyFallback(txt){ try{ var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }catch(e){} }
-function aiShareText(txt){
-  try{ if(navigator.share){ navigator.share({text:txt}).catch(function(){}); return; } }catch(e){}
-  aiCopyText(txt);
+function aiCopyFallback(s){
+  try{ var ta=document.createElement('textarea'); ta.value=s; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }catch(e){}
 }
+function aiShareText(s){
+  if(navigator.share){ navigator.share({text:s}).catch(function(){}); return; }
+  aiCopyText(s);
+}
+function aiRate(i, v){
+  var c=aiCurChat(); if(!c||!c.msgs[i]) return;
+  c.msgs[i].like=(c.msgs[i].like===v)?0:v; aiSaveChats(); render(true);
+}
+
+/* ---------- voice-to-text (dictation only — NOT voice mode) ----------
+   Tap mic → record. Stop → transcribe into the input box (not sent).
+   Send → transcribe + send. X → cancel. Groq Whisper large-v3 via the Worker.
+   Until the Worker is redeployed with the /transcribe branch, this toasts "not live yet". */
+function aiStartRec(){
+  var bn=aiBn();
+  if(aiRec) return;
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ toast(bn?'এই ফোনে ভয়েস রেকর্ডিং চালু হয়নি।':'Voice recording is not available here.'); return; }
+  var inp=document.getElementById('aiInput'); aiRecDraft=inp?inp.value:aiRecDraft;
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+    var chunks=[]; aiRecChunks=chunks; aiRecStream=stream;
+    var rec=null; var opts={};
+    try{ if(window.MediaRecorder&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) opts.mimeType='audio/webm;codecs=opus'; rec=new MediaRecorder(stream,opts); }catch(e){ try{ rec=new MediaRecorder(stream); }catch(e2){ toast(bn?'ভয়েস রেকর্ডিং চালু হয়নি।':'Voice recording did not start.'); return; } }
+    aiRec=rec; aiRecSec=0; aiRecSendOnStop=false;
+    rec.ondataavailable=function(e){ if(e.data&&e.data.size) chunks.push(e.data); };
+    rec.onstop=function(){
+      var sendIt=aiRecSendOnStop; var ck=aiRecChunks||chunks; var mt=rec.mimeType||'audio/webm';
+      aiRec=null; aiRecSendOnStop=false;
+      try{ stream.getTracks().forEach(function(tr){ tr.stop(); }); }catch(e){}
+      clearInterval(aiRecTimer); aiRecTimer=null;
+      aiSwapComposer();
+      var blob=null; try{ blob=new Blob(ck,{type:mt}); }catch(e){}
+      if(!blob||!blob.size){ if(sendIt) toast(bn?'কিছু শোনা যায়নি — আবার বলো।':'Nothing was heard — please try again.'); return; }
+      toast(bn?'শুনছি… লিখে দিচ্ছি':'Transcribing…');
+      aiTranscribeBlob(blob).then(function(txt){
+        var inp2=document.getElementById('aiInput'); if(inp2){ inp2.value=txt; aiSyncSendBtn(); aiHideChips(); inp2.focus(); }
+        if(sendIt) aiSend();
+      }).catch(function(err){
+        toast(err&&err.code==='notlive'?(bn?'ভয়েস টাইপ এখনো চালু হয়নি — Worker আপডেটের পরে চলবে।':'Voice typing is not live yet — it will work after the Worker update.'):(bn?'ভয়েসটা বোঝা যায়নি — আবার বলো।':'Could not understand the voice — please try again.'));
+      });
+    };
+    rec.start(); aiSwapComposer();
+    aiRecTimer=setInterval(function(){ aiRecSec++; var t=document.getElementById('aiRecTxt'); if(t) t.textContent=(bn?'শুনছি… ':'Listening… ')+Math.floor(aiRecSec/60)+':'+('0'+(aiRecSec%60)).slice(-2); if(aiRecSec>=60){ try{ aiRecSendOnStop=false; rec.stop(); }catch(e){} } },1000);
+  }).catch(function(){ toast(bn?'মাইক্রোফোনের অনুমতি দাও।':'Allow microphone permission.'); });
+}
+function aiStopRec(sendIt){ if(!aiRec) return; aiRecSendOnStop=!!sendIt; try{ aiRec.stop(); }catch(e){} }
+function aiCancelRec(){ if(!aiRec) return; aiRecSendOnStop=false; aiRecChunks=[]; try{ aiRec.stop(); }catch(e){} }
+
+/* ---------- direct actions (routine / record / open screen) ----------
+   Apply = take an undo snapshot first (mutate()/snap()), then write. */
+function aiTimeToMin(s){ var m=/^(\d{1,2}):(\d{2})/.exec(String(s||'')); if(!m) return NaN; return (+m[1])*60+(+m[2]); }
+function aiApplyRoutine(idx, payloadStr){
+  var c=aiCurChat(); if(!c) return;
+  var m=c.msgs[idx]; if(!m) return;
+  var o=null; try{ o=JSON.parse(decodeURIComponent(payloadStr||'')); }catch(e){ toast(aiBn()?'এই কার্ডটা পড়া যায়নি।':'Could not read this card.'); return; }
+  if(!o||o.type!=='routine'||!Array.isArray(o.tasks)||!o.tasks.length){ toast(aiBn()?'এই কার্ডে কোনো কাজ নেই।':'No tasks in this card.'); return; }
+  var td=today();
+  var tasks=[];
+  for(var i=0;i<o.tasks.length;i++){
+    var t=o.tasks[i]; if(!t||!t.text) continue;
+    var mins=parseInt(t.mins,10);
+    if(!isFinite(mins)||mins<=0){
+      if(t.start&&t.end){ var sm=aiTimeToMin(t.start), em=aiTimeToMin(t.end); if(isFinite(sm)&&isFinite(em)&&em>sm) mins=em-sm; }
+      if(!isFinite(mins)||mins<=0) mins=60;
+    }
+    var dt=(typeof t.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(t.date))?t.date:td;
+    tasks.push({text:String(t.text).slice(0,200), subj:Array.isArray(t.subj)?t.subj.slice(0,3):[], chapter:String(t.chapter||'').slice(0,100), mins:mins, date:dt});
+  }
+  if(!tasks.length){ toast(aiBn()?'এই কার্ডে কোনো কাজ নেই।':'No tasks in this card.'); return; }
+  m.applied=true; aiSaveChats();
+  mutate(function(){
+    tasks.forEach(function(t){ ensureDay(t.date); R().tasks.push({id:uid(),date:t.date,subj:t.subj,chapter:t.chapter,text:t.text,mins:t.mins}); });
+  }, aiBn()?'রুটিনে বসে গেছে — টাইম গ্রাফেও দেখা যাবে':'Added to routine — it will show in the time graph too');
+}
+function aiApplyRecord(idx, payloadStr){
+  var c=aiCurChat(); if(!c) return;
+  var m=c.msgs[idx]; if(!m) return;
+  var o=null; try{ o=JSON.parse(decodeURIComponent(payloadStr||'')); }catch(e){ toast(aiBn()?'এই কার্ডটা পড়া যায়নি।':'Could not read this card.'); return; }
+  if(!o||o.type!=='record'||!o.subject||!(parseInt(o.mins,10)>0)){ toast(aiBn()?'এই কার্ডে রেকর্ডের তথ্য নেই।':'No record info in this card.'); return; }
+  var dt=(typeof o.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(o.date))?o.date:today();
+  m.applied=true; aiSaveChats();
+  snap();
+  addSession(dt, String(o.subject).slice(0,30), parseInt(o.mins,10), '', '', String(o.note||'').slice(0,200));
+  toast(aiBn()?'রেকর্ড যোগ হয়েছে':'Record added');
+}
+var AI_OPEN_SCREENS=['home','routine','records','schedule','friends','settings','timer','stopwatch','faq','s_appearance','s_language','s_profile','s_data','s_about','leaderboard','notifications','workout'];
+function aiOpenScreen(screen){
+  if(AI_OPEN_SCREENS.indexOf(screen)<0){ toast(aiBn()?'ওই পেজটা খোলা যায়নি।':'Could not open that page.'); return; }
+  go(screen);
+}
+
+/* ---------- drawer: long-press a chat name → Rename / Delete ---------- */
+function aiCloseCtx(){ var d=document.getElementById('aiCtx'); if(d) d.remove(); }
+function aiFindChat(id){ var f=null; aiGetChats().forEach(function(x){ if(x.id===id) f=x; }); return f; }
+function aiDrawerCtx(id, x, y){
+  aiCloseCtx();
+  var chat=aiFindChat(id);
+  if(!chat) return;
+  aiCtxJustOpened=true;
+  setTimeout(function(){ aiCtxJustOpened=false; }, 600);
+  var bn=aiBn();
+  var d=document.createElement('div');
+  d.id='aiCtx'; d.className='ai-ctx';
+  var vw=window.innerWidth, vh=window.innerHeight;
+  d.style.left=Math.max(8, Math.min(x, vw-200))+'px';
+  d.style.top=Math.max(8, Math.min(y, vh-120))+'px';
+  d.innerHTML='<button data-ctx="rename" data-id="'+id+'"><svg class="ic ic20"><use href="#i-edit"/></svg>'+(bn?'নাম বদলাও':'Rename')+'</button>'
+    +'<button data-ctx="del" data-id="'+id+'" class="danger"><svg class="ic ic20"><use href="#i-trash"/></svg>'+(bn?'মুছে ফেলো':'Delete')+'</button>';
+  document.body.appendChild(d);
+  d.addEventListener('click', function(e){
+    var b=e.target.closest?e.target.closest('[data-ctx]'):null;
+    if(!b) return;
+    var act=b.getAttribute('data-ctx'), cid=b.getAttribute('data-id');
+    aiCloseCtx();
+    if(act==='rename') aiRenameChat(cid);
+    else if(act==='del') aiDeleteChat(cid);
+  });
+}
+function aiRenameChat(id){
+  var chat=aiFindChat(id);
+  if(!chat) return;
+  var bn=aiBn();
+  modal(bn?'নাম বদলাও':'Rename chat', '<label class="f"><span>'+(bn?'নাম':'Name')+'</span><input id="rnm" maxlength="60" value="'+esc(chat.title||'')+'" placeholder="'+(bn?'চ্যাটের নাম':'Chat name')+'"></label>', [{label:bn?'বাতিল':'Cancel', cls:'ghost', val:0},{label:bn?'সেভ করুন':'Save', val:1, v:true}]).then(function(r){
+    if(!r||r.val!==1) return;
+    var v=r.q('#rnm').value.trim().slice(0,60);
+    if(v){ chat.title=v; aiSaveChats(); render(true); }
+  });
+}
+function aiDeleteChat(id){
+  var chat=aiFindChat(id);
+  if(!chat) return;
+  var bn=aiBn();
+  confirmBox(bn?'এই চ্যাটটা মুছে ফেলবো?':'Delete this chat?', bn?'মুছে ফেললে আর ফিরে পাবে না।':'Once deleted, it cannot be recovered.', bn?'মুছে ফেলো':'Delete', bn?'বাতিল':'Cancel').then(function(ok){
+    if(!ok) return;
+    var cs=aiGetChats();
+    var i=-1; cs.forEach(function(x,k){ if(x.id===id) i=k; });
+    if(i>-1) cs.splice(i,1);
+    if(aiCur===id) aiCur=null;
+    aiSaveChats();
+    render(true);
+  });
+}
+
+/* ---------- drawer / menus ---------- */
 function aiSetDrawer(open){
   aiDrawerOpen=!!open;
   var d=document.getElementById('aidrawer'), b=document.getElementById('aidrop');
   if(d) d.classList.toggle('open', aiDrawerOpen);
   if(b) b.hidden=!aiDrawerOpen;
+  if(!aiDrawerOpen) aiCloseCtx();
 }
-function aiCloseMenus(){ ['aiModelMenu','aiDotsMenu'].forEach(function(id){ var el=document.getElementById(id); if(el) el.hidden=true; }); }
+function aiCloseMenus(){ var m=document.getElementById('aiModelMenu'); if(m) m.classList.remove('open'); }
 function aiLangAsk(){
-  if(tab!=='aichat') return Promise.resolve({val:null});
   var bn=aiBn();
-  return modal(bn?'AI চ্যাটের ভাষা':'AI chat language',
-    '<p>'+(bn?'কোন ভাষায় উত্তর চাও? পরে সেটিংস থেকেও বদলাতে পারবে।':'Which language should answers be in? You can change it later in Settings.')+'</p>',
-    [{label:'বাংলা', cls:'', val:'bn'}, {label:'English', cls:'', val:'en'}, {label:bn?'পরে':'Later', cls:'ghost', val:null}]
-  ).then(function(r){
-    if(r && (r.val==='bn'||r.val==='en')){ state.prefs.aiLang=r.val; state.prefs.aiLangAsked=true; save(); render(true); }
-    return r;
+  window.__aiAskOpen=false;
+  modal(bn?'কোন ভাষায় উত্তর চাও?':'Which language should Otto answer in?', '<p>'+(bn?'প্রতিবার প্রশ্নের ভাষায় উত্তর দেবে। ডিফল্ট: বাংলা।':'Otto answers in the language of your question. Default: Bengali.')+'</p>', [{label:'বাংলা', val:'bn'},{label:'English', val:'en'}]).then(function(r){
+    if(!r||!r.val) return;
+    state.prefs.aiLang=r.val; state.prefs.aiLangAsked=true; save();
+    if(tab==='aichat') render(true);
   });
 }
 function aiHelp(){
   var bn=aiBn();
-  modal(bn?'সাহায্য':'Help', '<p>'+(bn?'AI সহায়ক দিয়ে পড়ার প্রশ্ন করতে পারো — অধ্যায় বোঝানো, কুইজ, অঙ্ক, সারাংশ।<br><br>AI মাঝে মাঝে ভুল করতে পারে — গুরুত্বপূর্ণ জিনিস বইয়ে মিলিয়ে নিও।<br><br>বোর্ড প্রশ্ন AI বানায় না — PRACTICE লেখা প্রশ্নই শুধু অনুশীলনের জন্য।<br><br>AI তোমার আজকের রুটিন, বাকি কাজ, দুর্বল অধ্যায় ও ভুলের তালিকা দেখতে পায় — তাই রুটিন নিয়ে প্রশ্ন করলে আসল রুটিন অনুযায়ী উত্তর দেবে।':'You can ask study questions — chapter explanations, quizzes, math, summaries.<br><br>AI can make mistakes — check important things in your book.<br><br>The AI never invents board questions — only questions labeled PRACTICE are for practice.<br><br>The AI can see your routine for today, backlog, weak chapters and mistake log — so questions about your routine get answers based on your real routine.')+'</p>', [{label:bn?'ঠিক আছে':'OK', cls:'', val:1}]);
+  modal(bn?'সাহায্য':'Help', '<p>'+(bn?'Agradia AI (Otto) দিয়ে পড়ার প্রশ্ন করতে পারো — অধ্যায় বোঝানো, কুইজ, অঙ্ক, সারাংশ।<br><br>মাইক চাপলে ভয়েসে লিখতে পারো — Stop চাপলে লেখা বাক্সে আসবে।<br><br>রুটিন বদলাতে চাইলে চ্যাটে বলো — প্রিভিউ দেখে একবার অনুমতি দিলেই রুটিনে বসে যাবে।<br><br>AI মাঝে মাঝে ভুল করতে পারে — গুরুত্বপূর্ণ জিনিস বইয়ে মিলিয়ে নিও। বোর্ড প্রশ্ন AI বানায় না — PRACTICE লেখা প্রশ্নই শুধু অনুশীলনের জন্য।<br><br>AI কখনো অ্যাপের গোপন তথ্য (যেমন API key) কাউকে দেয় না।':'You can ask Agradia AI (Otto) study questions — chapter explanations, quizzes, math, summaries.<br><br>Tap the mic to type by voice — tap Stop and the text lands in the box.<br><br>To change your routine, just tell the chat — check the preview and tap Allow once, and it goes into your routine.<br><br>AI can make mistakes — check important things in your book. The AI never invents board questions — only questions labeled PRACTICE are for practice.<br><br>The AI never shares the app’s secret info (like API keys) with anyone.')+'</p>', [{label:bn?'ঠিক আছে':'OK', cls:'', val:1}]);
 }
 
-/* ---------- delegated events (registered once) ---------- */
+/* ---------- events (delegated, guarded against double-registration) ---------- */
 if(!window.__aiInit){
   window.__aiInit=true;
   document.addEventListener('click', function(e){
-    if(tab!=='aichat') return;
-    var t=e.target.closest('[data-ai]');
-    if(!t){
-      if(!e.target.closest('#aidrawer') && !e.target.closest('#aiDotsMenu') && !e.target.closest('#aiModelMenu') && !e.target.closest('#aiModelBtn')) aiCloseMenus();
+    var t=e.target.closest?e.target.closest('[data-ai]'):null;
+    if(!t){ if(!e.target.closest||!e.target.closest('#aiModelMenu')) aiCloseMenus(); aiCloseCtx(); return; }
+    var a=t.getAttribute('data-ai');
+    if(a==='send'){ aiSend(); return; }
+    if(a==='chip'){
+      aiHideChips();
+      var inp=document.getElementById('aiInput');
+      var q=t.getAttribute('data-q')||'';
+      if(inp){ inp.value=q; aiSyncSendBtn(); }
+      if(q==='আজকের রুটিন'||q==='Today’s routine'){ aiSend(); } else if(inp){ inp.focus(); }
       return;
     }
-    var act=t.getAttribute('data-ai');
-    if(act==='send'){ aiSend(); }
-    else if(act==='chip'){ var inp=document.getElementById('aiInput'); if(inp){ var cq=t.getAttribute('data-q')||''; inp.value=cq; inp.focus(); aiSyncSendBtn(); if(cq==='আজকের রুটিন'||cq==="Today's routine") aiSend(); } }
-    else if(act==='model'){ var mm=document.getElementById('aiModelMenu'); var dm=document.getElementById('aiDotsMenu'); if(dm) dm.hidden=true; if(mm) mm.hidden=!mm.hidden; }
-    else if(act==='modelpick'){ state.prefs.aiModel=t.getAttribute('data-v'); save(); var lbl=document.getElementById('aiModelLbl'); if(lbl) lbl.textContent=AI_MODELS[aiModelKey()].name; aiCloseMenus(); }
-    else if(act==='dots'){ var d=document.getElementById('aiDotsMenu'); var m2=document.getElementById('aiModelMenu'); if(m2) m2.hidden=true; if(d) d.hidden=!d.hidden; }
-    else if(act==='drawer'){ aiSetDrawer(true); }
-    else if(act==='drawerclose'){ aiSetDrawer(false); }
-    else if(act==='gohome'){ aiSetDrawer(false); go('home'); }
-    else if(act==='new'){ aiNewChat(); aiSetDrawer(false); aiCloseMenus(); render(true); setTimeout(function(){ var i2=document.getElementById('aiInput'); if(i2) i2.focus(); }, 300); }
-    else if(act==='history'){ aiCloseMenus(); aiSetDrawer(true); }
-    else if(act==='clear'){ aiCloseMenus(); confirmBox(bn0(), bn1(), bn2(), true).then(function(ok){ if(!ok) return; aiChats=[]; aiCur=null; aiSaveChats(); render(true); toast(aiBn()?'হিস্টরি মুছে ফেলা হয়েছে':'History cleared'); }); }
-    else if(act==='lang'){ aiCloseMenus(); aiLangAsk(); }
-    else if(act==='help'){ aiCloseMenus(); aiHelp(); }
-    else if(act==='openchat'){ var id=t.getAttribute('data-id'); if(id){ aiCur=id; aiSetDrawer(false); render(true); } }
-    else if(act==='copy'){ var c=aiCurChat(); if(c&&c.msgs[+t.getAttribute('data-i')]) aiCopyText(c.msgs[+t.getAttribute('data-i')].content); }
-    else if(act==='like'){ aiRate(+t.getAttribute('data-i'), 1); }
-    else if(act==='dislike'){ aiRate(+t.getAttribute('data-i'), -1); }
-    else if(act==='share'){ var c2=aiCurChat(); if(c2&&c2.msgs[+t.getAttribute('data-i')]) aiShareText(c2.msgs[+t.getAttribute('data-i')].content); }
-    else if(act==='regen'){ aiRegen(+t.getAttribute('data-i')); }
-    function bn0(){ return aiBn()?'হিস্টরি মুছুন':'Clear history'; }
-    function bn1(){ return aiBn()?'সব চ্যাট মুছে যাবে। নিশ্চিত?':'All chats will be deleted. Are you sure?'; }
-    function bn2(){ return aiBn()?'মুছে ফেলো':'Delete'; }
+    if(a==='model'){ var mm=document.getElementById('aiModelMenu'); if(mm) mm.classList.toggle('open'); return; }
+    if(a==='modelpick'){
+      var k=t.getAttribute('data-k'); if(AI_MODELS[k]){ state.prefs.aiModel=k; save(); var l=document.getElementById('aiModelLbl'); if(l) l.textContent=AI_MODELS[k].name; }
+      aiCloseMenus(); return;
+    }
+    if(a==='newchat'){ aiSetDrawer(false); aiChipsGone=false; aiNewChat(); render(true); setTimeout(function(){ var i=document.getElementById('aiInput'); if(i) i.focus(); }, 60); return; }
+    if(a==='drawer'){ aiSetDrawer(true); return; }
+    if(a==='drawerclose'){ aiSetDrawer(false); return; }
+    if(a==='gohome'){ aiSetDrawer(false); go('home'); return; }
+    if(a==='openchat'){
+      if(aiCtxJustOpened) return;
+      aiCur=t.getAttribute('data-id'); aiSetDrawer(false); aiChipsGone=false; render(true);
+      return;
+    }
+    if(a==='drawer-settings'){ aiSetDrawer(false); go('settings'); return; }
+    if(a==='drawer-lang'){ aiSetDrawer(false); aiLangAsk(); return; }
+    if(a==='drawer-help'){ aiSetDrawer(false); aiHelp(); return; }
+    if(a==='copy'){ var ci=+t.getAttribute('data-i'); var cm=aiCurChat(); if(cm&&cm.msgs[ci]) aiCopyText(cm.msgs[ci].content); return; }
+    if(a==='copycode'){ var pre=t.closest?t.closest('.aicode'):null; var pr=pre?pre.querySelector('pre'):null; if(pr) aiCopyText(pr.textContent); return; }
+    if(a==='like'){ aiRate(+t.getAttribute('data-i'), 1); return; }
+    if(a==='dislike'){ aiRate(+t.getAttribute('data-i'), -1); return; }
+    if(a==='share'){ var si=+t.getAttribute('data-i'); var sm=aiCurChat(); if(sm&&sm.msgs[si]) aiShareText(sm.msgs[si].content); return; }
+    if(a==='regen'){ aiRegen(+t.getAttribute('data-i')); return; }
+    if(a==='mic'){ aiStartRec(); return; }
+    if(a==='rec-x'){ aiCancelRec(); return; }
+    if(a==='rec-stop'){ aiStopRec(false); return; }
+    if(a==='rec-send'){ aiStopRec(true); return; }
+    if(a==='allow'){ aiApplyRoutine(+t.getAttribute('data-i'), t.getAttribute('data-payload')||''); return; }
+    if(a==='allowrec'){ aiApplyRecord(+t.getAttribute('data-i'), t.getAttribute('data-payload')||''); return; }
+    if(a==='openact'){ aiOpenScreen(t.getAttribute('data-screen')||''); return; }
   });
-  document.addEventListener('input', function(e){ if(tab==='aichat' && e.target && e.target.id==='aiInput') aiSyncSendBtn(); });
-  document.addEventListener('keydown', function(e){ if(tab==='aichat' && e.target && e.target.id==='aiInput' && e.key==='Enter'){ e.preventDefault(); aiSend(); } });
-  document.addEventListener('click', function(e){ if(tab==='aichat' && e.target && e.target.id==='aidrop') aiSetDrawer(false); });
-  var aiTouchStart=null;
-  document.addEventListener('touchstart', function(e){ if(tab==='aichat' && e.touches && e.touches.length===1){ aiTouchStart={x:e.touches[0].clientX, y:e.touches[0].clientY}; } }, {passive:true});
-  document.addEventListener('touchend', function(e){ if(!aiTouchStart||tab!=='aichat') return; var sx=aiTouchStart.x; var dx=(e.changedTouches[0].clientX-sx); var dy=Math.abs(e.changedTouches[0].clientY-aiTouchStart.y); aiTouchStart=null; if(dy>40) return; if(!aiDrawerOpen && sx<40 && dx>60){ aiSetDrawer(true); } else if(aiDrawerOpen && dx<-60){ aiSetDrawer(false); } }, {passive:true});
+  document.addEventListener('input', function(e){ if(e.target&&e.target.id==='aiInput'){ aiSyncSendBtn(); aiHideChips(); } });
+  document.addEventListener('keydown', function(e){ if(e.target&&e.target.id==='aiInput'&&e.key==='Enter'){ e.preventDefault(); aiSend(); } });
+  document.addEventListener('focusin', function(e){ if(e.target&&e.target.id==='aiInput'){ setTimeout(aiScrollBottom, 250); } });
+  if(window.visualViewport){ window.visualViewport.addEventListener('resize', function(){ if(tab!=='aichat') return; var vv=window.visualViewport; var kb=Math.max(0, window.innerHeight - vv.height - (vv.offsetTop||0)); var c=document.getElementById('aiComp'); if(c) c.style.bottom='calc('+(14+kb)+'px + env(safe-area-inset-bottom))'; if(kb>0) aiScrollBottom(); }); }
+  /* long-press a chat name → Rename / Delete (mouse right-click too) */
+  var aiLpTimer=null;
+  document.addEventListener('touchstart', function(e){ if(tab!=='aichat') return; var b=e.target.closest?e.target.closest('[data-ai="openchat"]'):null; if(!b) return; var id=b.getAttribute('data-id'); var tt=e.touches&&e.touches[0]?e.touches[0]:null; clearTimeout(aiLpTimer); aiLpTimer=setTimeout(function(){ aiLpTimer=null; aiDrawerCtx(id, tt?tt.clientX:100, tt?tt.clientY:100); }, 550); }, {passive:true});
+  document.addEventListener('touchend', function(){ clearTimeout(aiLpTimer); });
+  document.addEventListener('touchmove', function(){ clearTimeout(aiLpTimer); }, {passive:true});
+  document.addEventListener('contextmenu', function(e){ if(tab!=='aichat') return; var b=e.target.closest?e.target.closest('[data-ai="openchat"]'):null; if(b){ e.preventDefault(); aiDrawerCtx(b.getAttribute('data-id'), e.clientX, e.clientY); } });
+  /* swipe gestures for the drawer (from v3.12.0) */
+  var aiSx=0, aiSy=0, aiSt=0;
+  document.addEventListener('touchstart', function(e){ if(tab!=='aichat') return; if(!e.touches.length) return; aiSx=e.touches[0].clientX; aiSy=e.touches[0].clientY; aiSt=Date.now(); }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(tab!=='aichat') return;
+    var dt=Date.now()-aiSt; if(dt>450) return;
+    var dx=e.changedTouches[0].clientX-aiSx, dy=e.changedTouches[0].clientY-aiSy;
+    if(Math.abs(dy)>30||Math.abs(dx)<60) return;
+    if(!aiDrawerOpen && aiSx<40 && dx>60){ aiSetDrawer(true); }
+    else if(aiDrawerOpen && dx<-60){ aiSetDrawer(false); }
+  }, {passive:true});
 }
 </script>
 <script src="workout.js" defer></script>
