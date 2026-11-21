@@ -458,7 +458,7 @@ button[data-act="friendchat"],button[data-act="addfriend"]:not(.dotb),button[dat
 .cel-btns{display:flex;gap:10px;justify-content:center;margin-top:18px}
 .cel-ok{border:0;border-radius:24px;padding:12px 28px;font:inherit;font-size:16px;font-weight:700;background:#2b6fe0;color:#fff;cursor:pointer}
 /* ---------- AI সহায়ক ---------- */
-.aifab{position:fixed;right:20px;bottom:calc(164px + env(safe-area-inset-bottom));width:60px;height:60px;min-height:0;padding:0;border-radius:50%;background:var(--bg);border:2px solid var(--accent);z-index:6;box-shadow:0 10px 26px rgba(0,0,0,.24);display:grid;place-items:center;overflow:hidden}
+.aifab{position:fixed;right:20px;bottom:calc(164px + env(safe-area-inset-bottom));width:54px;height:54px;min-height:0;padding:0;border-radius:50%;background:linear-gradient(140deg,#2f7bff,#38bdf8);border:0;z-index:6;box-shadow:0 8px 18px rgba(31,107,255,.4);display:grid;place-items:center;overflow:hidden}
 
 #aidrawer{position:fixed;top:0;left:0;bottom:0;width:min(320px,84vw);background:var(--bg);z-index:70;transform:translateX(-102%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.25);display:flex;flex-direction:column}
 #aidrawer.open{transform:translateX(0)}
@@ -541,6 +541,7 @@ button[data-act="friendchat"],button[data-act="addfriend"]:not(.dotb),button[dat
 .ai-act-row:first-of-type{border-top:0}
 .ai-allow-btn,.ai-open-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:11px;padding:11px;margin-top:9px;font-size:14.5px;font-weight:700;background:var(--accent);color:#fff}
 .ai-allow-btn.done{opacity:.75}
+.ai-act-ghost{flex:1;border:1px solid var(--hair);border-radius:11px;padding:10px;background:var(--bg);color:var(--text);font-size:14px;font-weight:700}
 .ai-drawer-new{display:flex;align-items:center;gap:9px;width:100%;border:0;background:transparent;color:var(--text);font-size:15px;font-weight:600;padding:10px 8px;border-radius:10px;text-align:left}
 .ai-drawer-label{font-size:12px;color:var(--muted);font-weight:600;padding:12px 16px 5px;letter-spacing:.04em}
 .ai-drawer-row{display:flex;align-items:center;gap:9px;width:100%;border:0;background:transparent;color:var(--text);text-align:left;font-size:15px;padding:11px 10px;border-radius:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -549,7 +550,7 @@ button[data-act="friendchat"],button[data-act="addfriend"]:not(.dotb),button[dat
 .ai-drawer-row.cur{background:var(--soft)}
 .ai-drawer-foot{border-top:1px solid var(--hair);padding:8px}
 .ai-nav-otto{flex:1;background:none;border:0;min-height:48px;padding:0;border-radius:20px;display:grid;place-items:center;position:relative}
-.ai-nav-otto-circ{width:68px;height:68px;border-radius:50%;background:var(--accent);display:grid;place-items:center;margin-top:-24px;flex:none}
+.ai-nav-otto-circ{width:68px;height:68px;border-radius:50%;background:linear-gradient(140deg,#2f7bff,#38bdf8);display:grid;place-items:center;margin-top:-24px;flex:none}
 .aimark{display:inline-block;flex:none;line-height:0}
 .aimark svg{display:block}
 .ai-ctx{position:fixed;z-index:72;background:var(--bg);border:1px solid var(--hair);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.25);padding:6px;min-width:190px}
@@ -988,7 +989,7 @@ window.I18N_PAT.push(
 <script src="./qrcode-generator.js" defer></script>
 <script>
 "use strict";
-var APP_VERSION='3.14.5',AI_HIDDEN=false,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.14.6',AI_HIDDEN=false,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.88,'Small'],ls:[0.92,'Lower medium'],m:[0.95,'Medium'],um:[1.05,'Upper medium'],l:[1.15,'Large'],xl:[1.3,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -1211,19 +1212,28 @@ function logged(d){var t=state.time[d];return t?t.h*60+t.m:0}
 function selIds(){return Object.keys(sel).filter(function(k){return sel[k]})}
 /* ---------- views ---------- */
 var ICONS={home:'<path d="M3 11l9-8 9 8v10H3z"/>',routine:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/>',subjects:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',logs:'<path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h4"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',records:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',schedule:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/><circle cx="12" cy="16" r="3"/><path d="M12 14.5V16l1.2 1.2"/>',friends:'<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3 2.5-5 6-5s6 2 6 5"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M16 14.5c2.7.4 4.5 2.1 4.5 5.5"/>'};
-/* ---------- AI mark: Spark (option 1 — 4-point star, blue->violet gradient) ----------
+/* ---------- AI mark: Spark (option 1 — 4-point curved sparkle, #2f7bff->#38bdf8) ----------
+   Preview-exact copy (ai-logo-options artifact): spark() bezier path, viewBox 48.
    One helper for EVERY logo spot — change the variant here to change it everywhere.
-   onblue=true: white star (for the blue nav circle). Default: gradient star. */
+   onblue=true: white star (on gradient buttons/circle). Default: gradient star. */
+// Four-point sparkle path centred on (cx, cy), outer radius R, inner pinch r. (preview artifact, verbatim)
+function spark(cx, cy, R, r) {
+  return "M " + cx + " " + (cy - R) +
+    " C " + (cx + r) + " " + (cy - r) + " " + (cx + r) + " " + (cy - r) + " " + (cx + R) + " " + cy +
+    " C " + (cx + r) + " " + (cy + r) + " " + (cx + r) + " " + (cy + r) + " " + cx + " " + (cy + R) +
+    " C " + (cx - r) + " " + (cy + r) + " " + (cx - r) + " " + (cy + r) + " " + (cx - R) + " " + cy +
+    " C " + (cx - r) + " " + (cy - r) + " " + (cx - r) + " " + (cy - r) + " " + cx + " " + (cy - R) + " Z";
+}
 function aiMarkHtml(sz,onblue){
   var s=sz||44;
   var fill=onblue?'#ffffff':'url(#aiSparkGrad)';
-  return '<span class="aimark" style="width:'+s+'px;height:'+s+'px"><svg viewBox="0 0 100 100" width="'+s+'" height="'+s+'" aria-hidden="true"><defs><linearGradient id="aiSparkGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1976d2"/><stop offset="1" stop-color="#7b1fa2"/></linearGradient></defs><path d="M50 4 L62 38 L96 50 L62 62 L50 96 L38 62 L4 50 L38 38 Z" fill="'+fill+'"/></svg></span>';
+  return '<span class="aimark" style="width:'+s+'px;height:'+s+'px"><svg viewBox="0 0 48 48" width="'+s+'" height="'+s+'" aria-hidden="true"><defs><linearGradient id="aiSparkGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f7bff"/><stop offset="1" stop-color="#38bdf8"/></linearGradient></defs><path d="'+spark(24,24,21,4.6)+'" fill="'+fill+'"/></svg></span>';
 }
 function aiMarkFrag(){
-  return '<defs><linearGradient id="aiSparkGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1976d2"/><stop offset="1" stop-color="#7b1fa2"/></linearGradient></defs><path d="M12 1 L14.9 9.1 L23 12 L14.9 14.9 L12 23 L9.1 14.9 L1 12 L9.1 9.1 Z" fill="url(#aiSparkGrad)"/>';
+  return '<defs><linearGradient id="aiSparkGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f7bff"/><stop offset="1" stop-color="#38bdf8"/></linearGradient></defs><path d="'+spark(12,12,10.5,2.3)+'" fill="url(#aiSparkGrad)"/>';
 }
 var TABS=[['home','Home'],['routine','Routine'],['records','Records'],['schedule','Schedule'],['friends','Friends']];
-function renderTabs(){var list=TABS;try{if(state&&state.prefs&&Array.isArray(state.prefs.nav))list=list.filter(function(t){return state.prefs.nav.indexOf(t[0])>-1})}catch(e){}try{if(typeof wkLoad==='function'&&wkLoad().showNav===false)list=list.filter(function(t){return t[0]!=='workout'})}catch(e){}var btns=list.map(function(t){var unreadDot=((t[0]==='home'||t[0]==='friends')&&window.__chatUnreadIds&&hasUnmutedUnread())?'<span style="position:absolute;top:6px;right:8px;width:10px;height:10px;border-radius:50%;background:var(--warn)"></span>':'';return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on'+(navAnim?' pop':''):'')+'" aria-label="'+(t[0]==='friends'?__L('Friends','বন্ধুরা'):t[0]==='schedule'?__L('Schedule','সময়সূচি'):t[1])+'"'+(tab===t[0]?' aria-current="page"':'')+' style="position:relative"><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+unreadDot+'</button>'});var mid=Math.floor(btns.length/2);var showOtto=!AI_HIDDEN&&!(state&&state.prefs&&state.prefs.navOtto===false);if(showOtto){var otto='<button data-tab="aichat" class="ai-nav-otto" aria-label="Agradia AI"><span class="ai-nav-otto-circ">'+aiMarkHtml(44,true)+'</span></button>';if(btns.length>=3){btns[mid]=otto;}else{btns.splice(mid,0,otto);}}document.getElementById('tabs').innerHTML=btns.join('');}
+function renderTabs(){var list=TABS;try{if(state&&state.prefs&&Array.isArray(state.prefs.nav))list=list.filter(function(t){return state.prefs.nav.indexOf(t[0])>-1})}catch(e){}try{if(typeof wkLoad==='function'&&wkLoad().showNav===false)list=list.filter(function(t){return t[0]!=='workout'})}catch(e){}var btns=list.map(function(t){var unreadDot=((t[0]==='home'||t[0]==='friends')&&window.__chatUnreadIds&&hasUnmutedUnread())?'<span style="position:absolute;top:6px;right:8px;width:10px;height:10px;border-radius:50%;background:var(--warn)"></span>':'';return'<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on'+(navAnim?' pop':''):'')+'" aria-label="'+(t[0]==='friends'?__L('Friends','বন্ধুরা'):t[0]==='schedule'?__L('Schedule','সময়সূচি'):t[1])+'"'+(tab===t[0]?' aria-current="page"':'')+' style="position:relative"><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+unreadDot+'</button>'});var mid=Math.floor(btns.length/2);var showOtto=!AI_HIDDEN&&!(state&&state.prefs&&state.prefs.navOtto===false);if(showOtto){var otto='<button data-tab="aichat" class="ai-nav-otto" aria-label="Agradia AI"><span class="ai-nav-otto-circ">'+aiMarkHtml(25,true)+'</span></button>';if(btns.length>=3){btns[mid]=otto;}else{btns.splice(mid,0,otto);}}document.getElementById('tabs').innerHTML=btns.join('');}
 function ring(p,lbl){var r=50,c=2*Math.PI*r;return'<div class="ring"><svg width="118" height="118" viewBox="0 0 118 118"><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--track)" stroke-width="12"/><circle cx="59" cy="59" r="'+r+'" fill="none" style="stroke:var(--neon)" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+(c*p/100)+' '+c+'"/></svg><b>'+(lbl||p+'%')+'</b></div>'}
 function bar(p,w){return'<div class="bar'+(w?' warn':'')+'" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'"><i style="width:'+p+'%"></i></div>'}
 function taskRow(t,k,i,n){
@@ -1872,7 +1882,7 @@ function render(keep){
   try{viewHtml=vf()}catch(err){try{toast(__L('This section could not open. Please try again.','এই অংশটি খোলা যায়নি। আবার চেষ্টা করুন।'))}catch(e2){}if(tab==='workout'){tab='home';return render(keep)}return}
   var noTabs=!state.setup||tab==='timer'||tab==='stopwatch'||tab==='search'||tab==='settings'||tab==='workout'||tab==='leaderboard'||tab==='notifications'||tab==='scan'||tab==='addfriend'||tab==='friendprofile'||tab==='chat'||tab==='aichat'||tab==='messages'||tab==='chatmedia'||tab==='chatprofile'||/^s_/.test(tab);document.getElementById('tabs').hidden=noTabs;if(!noTabs){document.getElementById('tabs').classList.remove('navhide');var fb0=document.getElementById('fab');if(fb0)fb0.classList.remove('navhide');navLastY=window.scrollY||0;navHidden=false;navDir=0;navAcc=0;}wkLastY=window.scrollY||0;wkDir=0;wkAcc=0;wkHidden=false;
   var fb=document.getElementById('fab');if(fb)fb.hidden=noTabs||!/^(home|routine|records|schedule)$/.test(tab);
-  var afb=document.getElementById('aifab');if(afb){afb.hidden=AI_HIDDEN||noTabs||!/^(home|routine|records|schedule)$/.test(tab);afb.classList.remove('navhide');if(!afb.querySelector('.aimark'))afb.innerHTML=aiMarkHtml(54);}
+  var afb=document.getElementById('aifab');if(afb){afb.hidden=AI_HIDDEN||noTabs||!/^(home|routine|records|schedule)$/.test(tab);afb.classList.remove('navhide');if(!afb.querySelector('.aimark'))afb.innerHTML=aiMarkHtml(30,true);}
   document.getElementById('view').innerHTML=sampleBannerHtml()+viewHtml;if(tab==='home'&&homeMenuPage===1){var _hs2=document.getElementById('hmscroll');if(_hs2)_hs2.scrollLeft=_hs2.clientWidth;}document.body.classList.toggle('scanmode',tab==='scan');if(tab==='scan'&&state.prefs&&state.prefs.camOk&&!window.__scanStream){try{startScan()}catch(e){}}if(tab==='chat'){var cm=document.getElementById('chatmsgs');if(cm)cm.scrollTop=cm.scrollHeight}if(tab==='timer'&&!state.timer)initDrums();renderTabs();try{maybeStartTour()}catch(e){}if(keep)window.scrollTo(0,y);
   var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
   if(tab==='settings'&&updWorker)showUpdate(updWorker);
@@ -3923,16 +3933,34 @@ function aiCtxText(t){
   if(t.mins) s+=' ('+t.mins+'মি)';
   return s.slice(0,60);
 }
+function aiFreeGaps(d){
+  var blocks=[];
+  try{ (state.schedule[d]||[]).forEach(function(b){ var s=toMin(b.start), e=toMin(b.end); if(isFinite(s)&&isFinite(e)&&e>s) blocks.push([s,e]); }); }catch(e){}
+  blocks.sort(function(a,b){ return a[0]-b[0]; });
+  var gaps=[], cur=360;
+  blocks.forEach(function(bl){ if(bl[0]-cur>=30) gaps.push([cur,bl[0]]); if(bl[1]>cur) cur=bl[1]; });
+  if(1320-cur>=30) gaps.push([cur,1320]);
+  return gaps.slice(0,4).map(function(g){ return fromMin(g[0])+'–'+fromMin(g[1]); });
+}
 function aiBuildContext(){
   var parts=[];
   try{
     var td=today();
+    parts.push('আজ '+td);
     var todays=tasksOn(td);
     if(todays.length){
       var doneN=0; todays.forEach(function(t){ if(state.done && state.done[t.id]) doneN++; });
       var items=todays.slice(0,6).map(function(t){ return (state.done && state.done[t.id]?'✓ ':'')+aiCtxText(t); });
-      parts.push('আজ '+td+' — রুটিন ('+doneN+'/'+todays.length+' শেষ): '+items.join(' | '));
+      parts.push('রুটিন আজ ('+doneN+'/'+todays.length+' শেষ): '+items.join(' | '));
     }
+    var tm=isoOf(new Date(Date.now()+864e5));
+    var schTxt=function(d){ var arr=[]; try{ arr=(state.schedule[d]||[]); }catch(e){} if(!arr.length) return ''; return arr.slice(0,6).map(function(b){ return b.title+' '+b.start+'–'+b.end; }).join(' | '); };
+    var s0=schTxt(td), s1=schTxt(tm);
+    if(s0) parts.push('শিডিউল আজ: '+s0);
+    if(s1) parts.push('শিডিউল কাল: '+s1);
+    var g0=aiFreeGaps(td), g1=aiFreeGaps(tm);
+    if(g0.length) parts.push('ফাঁকা আজ: '+g0.join(', '));
+    if(g1.length) parts.push('ফাঁকা কাল: '+g1.join(', '));
     var bl=R().tasks.filter(function(t){ return !t.date; }).slice(0,5);
     if(bl.length) parts.push('বাকি কাজ: '+bl.map(aiCtxText).join(' | '));
     var wk=(state.weak||[]).filter(function(w){ return !w.done; }).slice(0,5);
@@ -3942,7 +3970,7 @@ function aiBuildContext(){
     try{ var S=studyStats(); if(S && S.streak>0) parts.push('স্ট্রিক: '+S.streak+' দিন'); }catch(e){}
   }catch(e){}
   var out=parts.join('\n');
-  return out.length>500 ? out.slice(0,500) : out;
+  return out.length>700 ? out.slice(0,700) : out;
 }
 
 /* ---------- storage (phone only, never synced to cloud) ---------- */
@@ -3960,7 +3988,7 @@ function aiAsk(chat){
     var msgs=chat.msgs.filter(function(m){ return m.role==='user'||m.role==='assistant'; }).slice(-20).map(function(m){ return {role:m.role, content:m.content}; });
     var ctrl=null;
     try{ ctrl=new AbortController(); setTimeout(function(){ try{ ctrl.abort(); }catch(e){} }, 45000); }catch(e){}
-    var opts={method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({messages:msgs, model:aiModelKey(), language:'auto', context:aiBuildContext()})};
+    var opts={method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({messages:msgs, model:aiModelKey(), language:'auto', context:aiBuildContext(), today:today()})};
     if(ctrl) opts.signal=ctrl.signal;
     fetch(AI_WORKER_URL, opts).then(function(r){
       if(!r.ok){ reject({code:'http', status:r.status}); return null; }
@@ -4100,7 +4128,25 @@ function aiChartHtml(o){
 function aiActionHtml(o,msg,idx){
   if(!o||typeof o!=='object') return '';
   var done=msg&&msg.applied;
+  var cancelled=msg&&msg.actionCancelled;
   var di=' data-i="'+(idx==null?'':idx)+'"';
+  if(cancelled) return '<div class="ai-actcard" style="opacity:.65"><div class="ai-act-desc">বাতিল করা হয়েছে।</div></div>';
+  var aiActBtns=function(pay,allowAi,allowLbl){
+    return '<button type="button" class="ai-allow-btn" data-ai="'+allowAi+'"'+di+' data-payload="'+pay+'">'+allowLbl+'</button>'
+      +'<div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="ai-act-ghost" data-ai="aiedit"'+di+'>বদলাও</button><button type="button" class="ai-act-ghost" data-ai="aicancel"'+di+'>বাতিল</button></div>';
+  };
+  if(o.type==='schedule'&&Array.isArray(o.blocks)&&o.blocks.length){
+    var rowsS=o.blocks.slice(0,8).map(function(b){
+      var tmS=(b.start&&b.end)?b.start+' – '+b.end:'';
+      var dtS=(typeof b.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(b.date))?' · '+b.date:'';
+      return '<div class="ai-act-row"><span>'+esc(tmS)+'</span><b>'+esc((b.title||'')+dtS)+'</b></div>';
+    }).join('');
+    var payS=encodeURIComponent(JSON.stringify(o));
+    return '<div class="ai-actcard"><div class="ai-act-title">'+esc(o.title||'শিডিউলে বসান')+'</div>'+rowsS
+      +(done?'<button type="button" class="ai-allow-btn done" disabled>✅ শিডিউলে বসে গেছে</button>'
+            :aiActBtns(payS,'allowsch','✓ অনুমতি দিন — শিডিউলে বসান'))
+      +'</div>';
+  }
   if(o.type==='routine'&&Array.isArray(o.tasks)&&o.tasks.length){
     var rows=o.tasks.slice(0,8).map(function(t){
       var tm='';
@@ -4112,7 +4158,7 @@ function aiActionHtml(o,msg,idx){
     var pay=encodeURIComponent(JSON.stringify(o));
     return '<div class="ai-actcard"><div class="ai-act-title">'+esc(o.title||'নতুন রুটিন')+'</div>'+rows
       +(done?'<button type="button" class="ai-allow-btn done" disabled>✅ রুটিনে বসে গেছে</button>'
-            :'<button type="button" class="ai-allow-btn" data-ai="allow"'+di+' data-payload="'+pay+'">✓ অনুমতি দিন — রুটিনে বসান</button>')
+            :aiActBtns(pay,'allow','✓ অনুমতি দিন — রুটিনে বসান'))
       +'</div>';
   }
   if(o.type==='record'){
@@ -4121,7 +4167,7 @@ function aiActionHtml(o,msg,idx){
     var pay2=encodeURIComponent(JSON.stringify(o));
     return '<div class="ai-actcard"><div class="ai-act-title">'+esc(o.title||'রেকর্ড যোগ করুন')+'</div>'+rows2
       +(done?'<button type="button" class="ai-allow-btn done" disabled>✅ রেকর্ড যোগ হয়েছে</button>'
-            :'<button type="button" class="ai-allow-btn" data-ai="allowrec"'+di+' data-payload="'+pay2+'">✓ অনুমতি দিন — রেকর্ড যোগ করুন</button>')
+            :aiActBtns(pay2,'allowrec','✓ অনুমতি দিন — রেকর্ড যোগ করুন'))
       +'</div>';
   }
   if(o.type==='open'&&o.screen){
@@ -4531,7 +4577,7 @@ function aiCancelRec(){
 function aiTimeToMin(s){ var m=/^(\d{1,2}):(\d{2})/.exec(String(s||'')); if(!m) return NaN; return (+m[1])*60+(+m[2]); }
 function aiApplyRoutine(idx, payloadStr){
   var c=aiCurChat(); if(!c) return;
-  var m=c.msgs[idx]; if(!m) return;
+  var m=c.msgs[idx]; if(!m||m.applied) return;
   var o=null; try{ o=JSON.parse(decodeURIComponent(payloadStr||'')); }catch(e){ toast(aiBn()?'এই কার্ডটা পড়া যায়নি।':'Could not read this card.'); return; }
   if(!o||o.type!=='routine'||!Array.isArray(o.tasks)||!o.tasks.length){ toast(aiBn()?'এই কার্ডে কোনো কাজ নেই।':'No tasks in this card.'); return; }
   var td=today();
@@ -4554,7 +4600,7 @@ function aiApplyRoutine(idx, payloadStr){
 }
 function aiApplyRecord(idx, payloadStr){
   var c=aiCurChat(); if(!c) return;
-  var m=c.msgs[idx]; if(!m) return;
+  var m=c.msgs[idx]; if(!m||m.applied) return;
   var o=null; try{ o=JSON.parse(decodeURIComponent(payloadStr||'')); }catch(e){ toast(aiBn()?'এই কার্ডটা পড়া যায়নি।':'Could not read this card.'); return; }
   if(!o||o.type!=='record'||!o.subject||!(parseInt(o.mins,10)>0)){ toast(aiBn()?'এই কার্ডে রেকর্ডের তথ্য নেই।':'No record info in this card.'); return; }
   var dt=(typeof o.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(o.date))?o.date:today();
@@ -4562,6 +4608,116 @@ function aiApplyRecord(idx, payloadStr){
   snap();
   addSession(dt, String(o.subject).slice(0,30), parseInt(o.mins,10), '', '', String(o.note||'').slice(0,200));
   toast(aiBn()?'রেকর্ড যোগ হয়েছে':'Record added');
+}
+function aiParseAction(m){
+  if(!m||typeof m.content!=='string') return null;
+  var mm=/```action\s*\n?([\s\S]*?)```/.exec(m.content);
+  if(!mm) return null;
+  try{ var o=JSON.parse(mm[1]); return (o&&typeof o==='object')?o:null; }catch(e){ return null; }
+}
+function aiRewriteActionBlock(content, obj){
+  return String(content||'').replace(/```action\s*\n?[\s\S]*?```/, '```action\n'+JSON.stringify(obj,null,1)+'\n```');
+}
+function aiApplySchedule(idx, payloadStr){
+  var c=aiCurChat(); if(!c) return;
+  var m=c.msgs[idx]; if(!m||m.applied) return;
+  var o=null; try{ o=JSON.parse(decodeURIComponent(payloadStr||'')); }catch(e){ toast(aiBn()?'এই কার্ডটা পড়া যায়নি।':'Could not read this card.'); return; }
+  if(!o||o.type!=='schedule'||!Array.isArray(o.blocks)||!o.blocks.length){ toast(aiBn()?'এই কার্ডে কোনো কাজ নেই।':'No tasks in this card.'); return; }
+  var td=today();
+  var blocks=[];
+  for(var i=0;i<o.blocks.length;i++){
+    var b=o.blocks[i]; if(!b||!String(b.title||'').trim()) continue;
+    var dt=(typeof b.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(b.date))?b.date:td;
+    var s=aiTimeToMin(b.start), e=aiTimeToMin(b.end);
+    if(!isFinite(s)||!isFinite(e)||e<=s) continue;
+    blocks.push({title:String(b.title).trim().slice(0,100), date:dt, start:String(b.start).slice(0,5), end:String(b.end).slice(0,5)});
+  }
+  if(!blocks.length){ toast(aiBn()?'এই কার্ডে সঠিক সময়সহ কোনো কাজ নেই।':'No valid timed tasks in this card.'); return; }
+  m.applied=true; aiSaveChats();
+  mutate(function(){
+    if(!state.schedule) state.schedule={};
+    blocks.forEach(function(b){ if(!state.schedule[b.date]) state.schedule[b.date]=[]; state.schedule[b.date].push({id:uid(),title:b.title,start:b.start,end:b.end,color:''}); });
+  }, aiBn()?'শিডিউলে বসে গেছে':'Added to schedule');
+}
+function aiCancelAction(idx){
+  var c=aiCurChat(); if(!c) return;
+  var m=c.msgs[idx]; if(!m||m.applied) return;
+  m.actionCancelled=true; aiSaveChats(); render(true);
+}
+function aiEditAction(idx){
+  var c=aiCurChat(); if(!c) return;
+  var m=c.msgs[idx]; if(!m||m.applied) return;
+  var o=aiParseAction(m); if(!o){ toast(aiBn()?'এই কার্ডটা পড়া যায়নি।':'Could not read this card.'); return; }
+  var bn=aiBn();
+  var items=[], kind='';
+  if(o.type==='schedule'&&Array.isArray(o.blocks)){ kind='schedule'; items=o.blocks.slice(0,8); }
+  else if(o.type==='routine'&&Array.isArray(o.tasks)){ kind='routine'; items=o.tasks.slice(0,8); }
+  else if(o.type==='record'){ kind='record'; items=[o]; }
+  else { toast(aiBn()?'এই কার্ডটা এডিট করা যায় না।':'This card cannot be edited.'); return; }
+  var h='';
+  items.forEach(function(it,i){
+    if(kind==='schedule'){
+      h+='<div style="border:1px solid var(--hair);border-radius:12px;padding:10px;margin-bottom:10px">'
+        +'<label class="f" for="ae-t'+i+'">'+(bn?'কাজের নাম':'Task')+'</label><input id="ae-t'+i+'" maxlength="100" value="'+esc(it.title||'')+'">'
+        +'<label class="f" for="ae-d'+i+'">'+(bn?'তারিখ':'Date')+'</label><input id="ae-d'+i+'" type="date" value="'+esc(it.date||today())+'">'
+        +'<div style="display:flex;gap:10px"><div style="flex:1"><label class="f" for="ae-s'+i+'">'+(bn?'শুরু':'Start')+'</label><input id="ae-s'+i+'" type="time" value="'+esc(it.start||'')+'"></div>'
+        +'<div style="flex:1"><label class="f" for="ae-e'+i+'">'+(bn?'শেষ':'End')+'</label><input id="ae-e'+i+'" type="time" value="'+esc(it.end||'')+'"></div></div></div>';
+    } else if(kind==='routine'){
+      var mm0=it.mins;
+      if(!mm0&&it.start&&it.end){ var sm0=aiTimeToMin(it.start), em0=aiTimeToMin(it.end); if(isFinite(sm0)&&isFinite(em0)&&em0>sm0) mm0=em0-sm0; }
+      h+='<div style="border:1px solid var(--hair);border-radius:12px;padding:10px;margin-bottom:10px">'
+        +'<label class="f" for="ae-t'+i+'">'+(bn?'কাজ':'Task')+'</label><input id="ae-t'+i+'" maxlength="200" value="'+esc(it.text||'')+'">'
+        +'<label class="f" for="ae-c'+i+'">'+(bn?'অধ্যায়':'Chapter')+'</label><input id="ae-c'+i+'" maxlength="100" value="'+esc(it.chapter||'')+'">'
+        +'<div style="display:flex;gap:10px"><div style="flex:1"><label class="f" for="ae-m'+i+'">'+(bn?'মিনিট':'Minutes')+'</label><input id="ae-m'+i+'" type="number" min="1" max="1440" value="'+esc(String(mm0||''))+'"></div>'
+        +'<div style="flex:1"><label class="f" for="ae-d'+i+'">'+(bn?'তারিখ':'Date')+'</label><input id="ae-d'+i+'" type="date" value="'+esc(it.date||today())+'"></div></div></div>';
+    } else {
+      h+='<label class="f" for="ae-t0">'+(bn?'বিষয়':'Subject')+'</label><input id="ae-t0" maxlength="30" value="'+esc(o.subject||'')+'">'
+        +'<label class="f" for="ae-m0">'+(bn?'মিনিট':'Minutes')+'</label><input id="ae-m0" type="number" min="1" max="1440" value="'+esc(String(o.mins||''))+'">'
+        +'<label class="f" for="ae-d0">'+(bn?'তারিখ':'Date')+'</label><input id="ae-d0" type="date" value="'+esc(o.date||today())+'">';
+    }
+  });
+  modal(bn?'কার্ড বদলাও':'Edit card', h, [{label:bn?'বাতিল':'Cancel',cls:'ghost',val:0},{label:bn?'সেভ':'Save',val:1,v:true}], function(q){
+    for(var i=0;i<items.length;i++){
+      var t=(q('#ae-t'+i)||{value:''}).value.trim();
+      if(!t) return bn?'সব কাজের নাম দিন।':'Enter every task name.';
+      if(kind==='schedule'){
+        var s=q('#ae-s'+i).value, e=q('#ae-e'+i).value;
+        if(!s||!e) return bn?'শুরু ও শেষ সময় দিন।':'Enter start and end times.';
+        if(aiTimeToMin(e)<=aiTimeToMin(s)) return bn?'শেষ সময় শুরুর পরে হতে হবে।':'End must be after start.';
+      }
+      if(kind==='routine'){
+        var mn=parseInt(q('#ae-m'+i).value,10);
+        if(!(mn>0)) return bn?'মিনিট দিন।':'Enter minutes.';
+      }
+      if(kind==='record'){
+        var mn2=parseInt(q('#ae-m0').value,10);
+        if(!(mn2>0)) return bn?'মিনিট দিন।':'Enter minutes.';
+      }
+    }
+    return '';
+  }).then(function(r){
+    if(!r||r.val!==1) return;
+    var no=JSON.parse(JSON.stringify(o));
+    if(kind==='schedule'){
+      no.blocks=items.map(function(it,i){
+        return {title:r.q('#ae-t'+i).value.trim().slice(0,100), date:r.q('#ae-d'+i).value||today(), start:r.q('#ae-s'+i).value, end:r.q('#ae-e'+i).value};
+      });
+    } else if(kind==='routine'){
+      no.tasks=items.map(function(it,i){
+        var t={text:r.q('#ae-t'+i).value.trim().slice(0,200), chapter:r.q('#ae-c'+i).value.trim().slice(0,100), mins:parseInt(r.q('#ae-m'+i).value,10)||60, date:r.q('#ae-d'+i).value||today()};
+        if(Array.isArray(it.subj)&&it.subj.length) t.subj=it.subj.slice(0,3);
+        if(it.start) t.start=it.start; if(it.end) t.end=it.end;
+        return t;
+      });
+    } else {
+      no.subject=r.q('#ae-t0').value.trim().slice(0,30);
+      no.mins=parseInt(r.q('#ae-m0').value,10)||0;
+      no.date=r.q('#ae-d0').value||today();
+    }
+    m.content=aiRewriteActionBlock(m.content, no);
+    m.actionCancelled=false;
+    aiSaveChats(); render(true);
+  });
 }
 var AI_OPEN_SCREENS=['home','routine','records','schedule','friends','settings','timer','stopwatch','faq','s_appearance','s_language','s_profile','s_data','s_about','leaderboard','notifications','workout'];
 function aiOpenScreen(screen){
@@ -4641,7 +4797,7 @@ function aiLangAsk(){
 }
 function aiHelp(){
   var bn=aiBn();
-  modal(bn?'সাহায্য':'Help', '<p>'+(bn?'Agradia AI (Otto) দিয়ে পড়ার প্রশ্ন করতে পারো — অধ্যায় বোঝানো, কুইজ, অঙ্ক, সারাংশ।<br><br>মাইক চাপলে ভয়েসে লিখতে পারো — Stop চাপলে লেখা বাক্সে আসবে।<br><br>রুটিন বদলাতে চাইলে চ্যাটে বলো — প্রিভিউ দেখে একবার অনুমতি দিলেই রুটিনে বসে যাবে।<br><br>AI মাঝে মাঝে ভুল করতে পারে — গুরুত্বপূর্ণ জিনিস বইয়ে মিলিয়ে নিও। বোর্ড প্রশ্ন AI বানায় না — PRACTICE লেখা প্রশ্নই শুধু অনুশীলনের জন্য।<br><br>AI কখনো অ্যাপের গোপন তথ্য (যেমন API key) কাউকে দেয় না।':'You can ask Agradia AI (Otto) study questions — chapter explanations, quizzes, math, summaries.<br><br>Tap the mic to type by voice — tap Stop and the text lands in the box.<br><br>To change your routine, just tell the chat — check the preview and tap Allow once, and it goes into your routine.<br><br>AI can make mistakes — check important things in your book. The AI never invents board questions — only questions labeled PRACTICE are for practice.<br><br>The AI never shares the app’s secret info (like API keys) with anyone.')+'</p>', [{label:bn?'ঠিক আছে':'OK', cls:'', val:1}]);
+  modal(bn?'সাহায্য':'Help', '<p>'+(bn?'Agradia AI (Otto) দিয়ে পড়ার প্রশ্ন করতে পারো — অধ্যায় বোঝানো, কুইজ, অঙ্ক, সারাংশ।<br><br>মাইক চাপলে ভয়েসে লিখতে পারো — Stop চাপলে লেখা বাক্সে আসবে।<br><br>রুটিন বা শিডিউলে কাজ যোগ করতে চাইলে চ্যাটে বলো — প্রিভিউ দেখে একবার অনুমতি দিলেই বসে যাবে।<br><br>AI মাঝে মাঝে ভুল করতে পারে — গুরুত্বপূর্ণ জিনিস বইয়ে মিলিয়ে নিও। বোর্ড প্রশ্ন AI বানায় না — PRACTICE লেখা প্রশ্নই শুধু অনুশীলনের জন্য।<br><br>AI কখনো অ্যাপের গোপন তথ্য (যেমন API key) কাউকে দেয় না।':'You can ask Agradia AI (Otto) study questions — chapter explanations, quizzes, math, summaries.<br><br>Tap the mic to type by voice — tap Stop and the text lands in the box.<br><br>To add tasks to your routine or schedule, just tell the chat — check the preview and tap Allow once.<br><br>AI can make mistakes — check important things in your book. The AI never invents board questions — only questions labeled PRACTICE are for practice.<br><br>The AI never shares the app’s secret info (like API keys) with anyone.')+'</p>', [{label:bn?'ঠিক আছে':'OK', cls:'', val:1}]);
 }
 
 /* ---------- events (delegated, guarded against double-registration) ---------- */
@@ -4690,6 +4846,9 @@ if(!window.__aiInit){
     if(a==='reclang'){ var lg=t.getAttribute('data-lang'); if(lg) aiSetSRLang(lg); return; }
     if(a==='allow'){ aiApplyRoutine(+t.getAttribute('data-i'), t.getAttribute('data-payload')||''); return; }
     if(a==='allowrec'){ aiApplyRecord(+t.getAttribute('data-i'), t.getAttribute('data-payload')||''); return; }
+    if(a==='allowsch'){ aiApplySchedule(+t.getAttribute('data-i'), t.getAttribute('data-payload')||''); return; }
+    if(a==='aicancel'){ aiCancelAction(+t.getAttribute('data-i')); return; }
+    if(a==='aiedit'){ aiEditAction(+t.getAttribute('data-i')); return; }
     if(a==='openact'){ aiOpenScreen(t.getAttribute('data-screen')||''); return; }
   });
   document.addEventListener('input', function(e){ if(e.target&&e.target.id==='aiInput'){ aiSyncSendBtn(); aiHideChips(); } });
