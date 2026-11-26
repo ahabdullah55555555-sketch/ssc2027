@@ -117,7 +117,6 @@ document.addEventListener('click',function(e){var b=e.target.closest?e.target.cl
 document.addEventListener('change',function(e){var t=e.target,D=t.dataset||{};if(t.id==='wknav'){var W=wkLoad();W.showNav=t.checked;wkSave();render(true);return}if(D.wktick!==undefined){var W=wkLoad(),key=D.r+':'+D.d;W.ticks[key]=W.ticks[key]||{};if(t.checked){wkSound('tick');W.ticks[key][D.wktick]=true;var fx=wkFind(D.r,D.d,D.wktick);if(fx.x&&fx.x.rest>0)wkRestStart(fx.x.rest)}else delete W.ticks[key][D.wktick];wkSave();render(true)}else if(D.pref==='anim'){state.prefs.animations=t.checked;save();render(true)}});
 /* ---------- hook into the main app (no study behaviour changed) ---------- */
 try{ICONS.workout='<path d="M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10"/>'}catch(e){}
-try{TABS.push(['workout','Workout'])}catch(e){}
 var wkOrigGo=window.go;window.go=function(t){if(t==='workout'&&typeof tab!=='undefined'&&tab!=='workout'&&tab!=='settings'&&!/^s_/.test(tab)&&tab!=='logs')wkPrev=tab;return wkOrigGo(t)};
 var wkOrigRender=window.render;window.render=function(k){try{document.body.classList.toggle('anim-off',!!(state&&state.prefs&&state.prefs.animations===false))}catch(e){}return wkOrigRender(k)};
 try{renderTabs();render()}catch(e){}
