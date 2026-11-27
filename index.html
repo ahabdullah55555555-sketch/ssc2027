@@ -237,6 +237,8 @@ img.av{object-fit:cover;display:block}
 .head{display:flex;align-items:center;gap:6px;margin-bottom:24px}.head h1{flex:1;font-size:30px}
 .back{width:44px;min-height:44px;padding:0;border-radius:50%;background:var(--soft);color:var(--text);flex:none}
 .back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.qpbtn{width:44px;min-height:44px;padding:0;border-radius:50%;background:none;color:var(--text);flex:none}
+.qpbtn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .slide{animation:slidein .26s ease}
 @keyframes slidein{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
 .opt{display:flex;align-items:center;gap:14px;width:100%;min-height:64px;background:var(--soft);color:var(--text);border-radius:16px;padding:0 18px;margin:0 0 10px;text-align:left;justify-content:flex-start;font-weight:500}
@@ -475,8 +477,8 @@ button[data-act="friendchat"],button[data-act="addfriend"]:not(.dotb),button[dat
 .tg-check:checked+.tg-mono .tg-knob{left:6em}
 .tg-check:checked+.tg-mono .tg-mdot{background:#9AA0A6}
 .ptg-check{position:absolute;opacity:0;width:0;height:0}
-.ptg{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:var(--track);cursor:pointer;flex:none;transition:background .25s}
-.ptg-knob{position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--soft);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .25s}
+.ptg{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:var(--muted);cursor:pointer;flex:none;transition:background .25s}
+.ptg-knob{position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--onacc);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .25s}
 .ptg-check:checked+.ptg{background:var(--accent)}
 .ptg-check:checked+.ptg .ptg-knob{left:21px}
 /* ===== 3.8.0: rewards strip (52 badges, horizontal scroll) ===== */
@@ -497,7 +499,7 @@ button[data-act="friendchat"],button[data-act="addfriend"]:not(.dotb),button[dat
 .cel-btns{display:flex;gap:10px;justify-content:center;margin-top:18px}
 .cel-ok{border:0;border-radius:24px;padding:12px 28px;font:inherit;font-size:16px;font-weight:700;background:#2b6fe0;color:#fff;cursor:pointer}
 /* ---------- AI সহায়ক ---------- */
-.aifab{position:fixed;right:23px;bottom:calc(164px + env(safe-area-inset-bottom));width:54px;height:54px;min-height:0;padding:0;border-radius:50%;background:var(--accent);border:0;z-index:6;box-shadow:0 8px 18px rgba(var(--rgb),.35);display:grid;place-items:center;overflow:hidden}html[data-mono="1"] .ottorow img,html[data-mono="1"] #ottotoast img,html[data-mono="1"] .empty img{filter:grayscale(1)}
+.aifab{position:fixed;right:23px;bottom:calc(164px + env(safe-area-inset-bottom));width:54px;height:54px;min-height:0;padding:0;border-radius:50%;background:var(--accent);color:var(--onacc);border:0;z-index:6;box-shadow:0 8px 18px rgba(var(--rgb),.35);display:grid;place-items:center;overflow:hidden}html[data-mono="1"] .ottorow img,html[data-mono="1"] #ottotoast img,html[data-mono="1"] .empty img{filter:grayscale(1)}
 
 #aidrawer{position:fixed;top:0;left:0;bottom:0;width:min(320px,84vw);background:var(--bg);z-index:70;transform:translateX(-102%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.25);display:flex;flex-direction:column}
 #aidrawer.open{transform:translateX(0)}
@@ -1030,7 +1032,7 @@ window.I18N_PAT.push(
 <script src="./qrcode-generator.js" defer></script>
 <script>
 "use strict";
-var APP_VERSION='3.15.28',AI_HIDDEN=false,ACCENT_HIDDEN=true,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.15.29',AI_HIDDEN=false,ACCENT_HIDDEN=true,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.88,'Small'],ls:[0.92,'Lower medium'],m:[0.95,'Medium'],um:[1.05,'Upper medium'],l:[1.15,'Large'],xl:[1.3,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -1965,7 +1967,7 @@ function render(keep){
   try{viewHtml=vf()}catch(err){try{toast(__L('This section could not open. Please try again.','এই অংশটি খোলা যায়নি। আবার চেষ্টা করুন।'))}catch(e2){}if(tab==='workout'){tab='home';return render(keep)}return}
   var noTabs=!state.setup||tab==='timer'||tab==='stopwatch'||tab==='search'||tab==='settings'||tab==='workout'||tab==='leaderboard'||tab==='notifications'||tab==='scan'||tab==='addfriend'||tab==='friendprofile'||tab==='chat'||tab==='aichat'||tab==='messages'||tab==='chatmedia'||tab==='chatprofile'||/^s_/.test(tab);document.getElementById('tabs').hidden=noTabs;if(!noTabs){document.getElementById('tabs').classList.remove('navhide');var fb0=document.getElementById('fab');if(fb0)fb0.classList.remove('navhide');navLastY=window.scrollY||0;navHidden=false;navDir=0;navAcc=0;}wkLastY=window.scrollY||0;wkDir=0;wkAcc=0;wkHidden=false;
   var fb=document.getElementById('fab');if(fb)fb.hidden=noTabs||!/^(home|routine|records|schedule)$/.test(tab);
-  var afb=document.getElementById('aifab');if(afb){afb.hidden=AI_HIDDEN||noTabs||!/^(home|routine|records|schedule)$/.test(tab);afb.classList.remove('navhide');if(!afb.querySelector('.aimark'))afb.innerHTML=aiMarkHtml(30,true);}
+  var afb=document.getElementById('aifab');if(afb){afb.hidden=AI_HIDDEN||noTabs||!/^(home|routine|records|schedule)$/.test(tab);afb.classList.remove('navhide');if(!afb.querySelector('.aimark'))afb.innerHTML=aiMarkHtml(30,false);}
   document.getElementById('view').innerHTML=sampleBannerHtml()+viewHtml;if(tab==='home'){var _bpv=document.getElementById('bcarvp');if(_bpv){try{bcarPlaceVals(_bpv)}catch(e){}try{bcarUpdate(_bpv)}catch(e){}try{bcarArmAuto()}catch(e){}}}if(tab==='home'&&homeMenuPage===1){var _hs2=document.getElementById('hmscroll');if(_hs2)_hs2.scrollLeft=_hs2.clientWidth;}if(tab==='home'&&bcarIdx>0){var _bv=document.getElementById('bcarvp');if(_bv){var _bc=_bv.querySelector('.bcar-card');if(_bc)_bv.scrollLeft=bcarIdx*(_bc.offsetWidth+12);}}document.body.classList.toggle('scanmode',tab==='scan');if(tab==='scan'&&state.prefs&&state.prefs.camOk&&!window.__scanStream){try{startScan()}catch(e){}}if(tab==='chat'){var cm=document.getElementById('chatmsgs');if(cm)cm.scrollTop=cm.scrollHeight}if(tab==='timer'&&!state.timer)initTdial();renderTabs();try{maybeStartTour()}catch(e){}if(keep)window.scrollTo(0,y);
   var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
   if(tab==='settings'&&updWorker)showUpdate(updWorker);
@@ -3413,7 +3415,7 @@ function illAplus(){return'<svg class="ill" viewBox="0 0 140 120" aria-hidden="t
 /* ---------- headers, rows ---------- */
 function sbtn(){return'<button class="dotb ln" data-act="search" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>'}
 function backBtn(){return'<button class="back" data-act="back" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>'}
-function themeQp(){var _qm=(state&&state.prefs&&state.prefs.theme&&state.prefs.theme.mode)||'light',_ql=(_qm==='light'||_qm==='mono-light'||_qm==='mono')||(_qm==='auto'&&(function(){var _hh=new Date().getHours();return _hh>=6&&_hh<19})());return'<button class="back" data-act="themeqp" aria-label="Theme"><svg viewBox="0 0 24 24">'+(_ql?'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>')+'</svg></button>'}
+function themeQp(){var _qm=(state&&state.prefs&&state.prefs.theme&&state.prefs.theme.mode)||'light',_ql=(_qm==='light'||_qm==='mono-light'||_qm==='mono')||(_qm==='auto'&&(function(){var _hh=new Date().getHours();return _hh>=6&&_hh<19})());return'<button class="qpbtn" data-act="themeqp" aria-label="Theme"><svg viewBox="0 0 24 24">'+(_ql?'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>')+'</svg></button>'}
 function head(title){var isSub=(typeof tab!=='undefined'&&(tab.indexOf('s_')===0||tab==='logs'||tab==='schsettings'||tab==='avatar'));return'<div class="head slide">'+backBtn()+'<h1>'+title+'</h1>'+((title==='Settings'||tab==='settings')?themeQp():(isSub?'':gear()))+'</div>'}
 function srow(page,icon,title,desc){return'<button class="srow" data-act="sp" data-v="'+page+'"><span class="ic"><svg viewBox="0 0 24 24">'+icon+'</svg></span><span class="st"><b>'+title+'</b><small>'+desc+'</small></span><i class="ch"></i></button>'}
 function daypart(){var h=new Date().getHours();return h>=4&&h<12?'Good morning':h>=12&&h<17?'Good afternoon':h>=17&&h<21?'Good evening':'Good night'}
