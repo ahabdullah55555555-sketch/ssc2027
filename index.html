@@ -324,6 +324,9 @@ html[data-mono="1"] .bcar-cta{background:#FFFFFF;color:#1C1C1C}
 .dcol div.on{font-size:30px;font-weight:600;color:var(--text)}
 .dsep{font-size:30px;color:var(--muted);padding-top:48px;font-weight:600}
 .dlab{font-size:15px;color:var(--muted);text-align:center;margin:0 0 4px}
+.tdial{position:relative;height:380px;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;margin-top:6px}
+.tdialNums{position:absolute;left:0;top:0;width:100%;height:100%}
+.tsubjmin{border:0;background:transparent;font-size:17px;font-weight:700;color:var(--text);text-align:center;outline:none;cursor:pointer;max-width:100%}
 /* ---- floating quick-launch ---- */
 .fab{position:fixed;right:20px;bottom:calc(88px + env(safe-area-inset-bottom));width:60px;height:60px;min-height:0;padding:0;border-radius:50%;background:var(--accent);color:var(--onacc);font-size:30px;font-weight:400;line-height:1;z-index:6;box-shadow:0 10px 26px rgba(0,0,0,.24);display:grid;place-items:center;transition:transform .22s ease}
 .tpill-float{position:fixed;z-index:8;display:flex;align-items:center;gap:9px;width:max-content;max-width:calc(100vw - 16px);min-height:46px;padding:8px 18px;border-radius:999px;border:1px solid var(--hair);background:var(--bg);color:var(--accent);font-family:inherit;font-size:17px;font-weight:700;cursor:grab;margin:0;box-shadow:0 6px 18px rgba(0,0,0,.14);touch-action:none;user-select:none;-webkit-user-select:none}
@@ -1020,7 +1023,7 @@ window.I18N_PAT.push(
 <script src="./qrcode-generator.js" defer></script>
 <script>
 "use strict";
-var APP_VERSION='3.15.18',AI_HIDDEN=false,ACCENT_HIDDEN=true,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.15.19',AI_HIDDEN=false,ACCENT_HIDDEN=true,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.88,'Small'],ls:[0.92,'Lower medium'],m:[0.95,'Medium'],um:[1.05,'Upper medium'],l:[1.15,'Large'],xl:[1.3,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -1697,6 +1700,10 @@ document.addEventListener('touchmove',notifLpMove);
 document.addEventListener('mousedown',function(e){if(e.button===0)notifLpStart(e)});
 document.addEventListener('mouseup',notifLpClear);
 document.addEventListener('contextmenu',function(e){if(e.target&&e.target.closest&&e.target.closest('[data-nrow]'))e.preventDefault()});
+document.addEventListener('pointerdown',function(e){if(!e.target||!e.target.closest)return;if(!e.target.closest('#tdial'))return;try{e.preventDefault()}catch(err){}tdialStartDrag(e)});
+window.addEventListener('pointermove',function(e){tdialMove(e)});
+window.addEventListener('pointerup',function(e){tdialEndDrag()});
+window.addEventListener('pointercancel',function(e){tdialEndDrag()});
 function vNotifications(){
   var bn=state.prefs.lang==='bn';
   var h=subHead(bn?'নোটিফিকেশন':'Notifications');
@@ -1952,7 +1959,7 @@ function render(keep){
   var noTabs=!state.setup||tab==='timer'||tab==='stopwatch'||tab==='search'||tab==='settings'||tab==='workout'||tab==='leaderboard'||tab==='notifications'||tab==='scan'||tab==='addfriend'||tab==='friendprofile'||tab==='chat'||tab==='aichat'||tab==='messages'||tab==='chatmedia'||tab==='chatprofile'||/^s_/.test(tab);document.getElementById('tabs').hidden=noTabs;if(!noTabs){document.getElementById('tabs').classList.remove('navhide');var fb0=document.getElementById('fab');if(fb0)fb0.classList.remove('navhide');navLastY=window.scrollY||0;navHidden=false;navDir=0;navAcc=0;}wkLastY=window.scrollY||0;wkDir=0;wkAcc=0;wkHidden=false;
   var fb=document.getElementById('fab');if(fb)fb.hidden=noTabs||!/^(home|routine|records|schedule)$/.test(tab);
   var afb=document.getElementById('aifab');if(afb){afb.hidden=AI_HIDDEN||noTabs||!/^(home|routine|records|schedule)$/.test(tab);afb.classList.remove('navhide');if(!afb.querySelector('.aimark'))afb.innerHTML=aiMarkHtml(30,true);}
-  document.getElementById('view').innerHTML=sampleBannerHtml()+viewHtml;if(tab==='home'){var _bpv=document.getElementById('bcarvp');if(_bpv){try{bcarPlaceVals(_bpv)}catch(e){}try{bcarArmAuto()}catch(e){}}}if(tab==='home'&&homeMenuPage===1){var _hs2=document.getElementById('hmscroll');if(_hs2)_hs2.scrollLeft=_hs2.clientWidth;}if(tab==='home'&&bcarIdx>0){var _bv=document.getElementById('bcarvp');if(_bv){var _bc=_bv.querySelector('.bcar-card');if(_bc)_bv.scrollLeft=bcarIdx*(_bc.offsetWidth+12);}}document.body.classList.toggle('scanmode',tab==='scan');if(tab==='scan'&&state.prefs&&state.prefs.camOk&&!window.__scanStream){try{startScan()}catch(e){}}if(tab==='chat'){var cm=document.getElementById('chatmsgs');if(cm)cm.scrollTop=cm.scrollHeight}if(tab==='timer'&&!state.timer)initDrums();renderTabs();try{maybeStartTour()}catch(e){}if(keep)window.scrollTo(0,y);
+  document.getElementById('view').innerHTML=sampleBannerHtml()+viewHtml;if(tab==='home'){var _bpv=document.getElementById('bcarvp');if(_bpv){try{bcarPlaceVals(_bpv)}catch(e){}try{bcarArmAuto()}catch(e){}}}if(tab==='home'&&homeMenuPage===1){var _hs2=document.getElementById('hmscroll');if(_hs2)_hs2.scrollLeft=_hs2.clientWidth;}if(tab==='home'&&bcarIdx>0){var _bv=document.getElementById('bcarvp');if(_bv){var _bc=_bv.querySelector('.bcar-card');if(_bc)_bv.scrollLeft=bcarIdx*(_bc.offsetWidth+12);}}document.body.classList.toggle('scanmode',tab==='scan');if(tab==='scan'&&state.prefs&&state.prefs.camOk&&!window.__scanStream){try{startScan()}catch(e){}}if(tab==='chat'){var cm=document.getElementById('chatmsgs');if(cm)cm.scrollTop=cm.scrollHeight}if(tab==='timer'&&!state.timer)initTdial();renderTabs();try{maybeStartTour()}catch(e){}if(keep)window.scrollTo(0,y);
   var c=document.getElementById('chips'),s=c&&c.querySelector('.sel');if(s)c.scrollLeft=s.offsetLeft-c.clientWidth/2+s.clientWidth/2;
   if(tab==='settings'&&updWorker)showUpdate(updWorker);
   trTree(document.getElementById('view'));trTree(document.getElementById('tabs'));try{maybeCelebrate()}catch(e){}try{syncTimerPill()}catch(e){}try{syncFabHint()}catch(e){}try{syncOffStatus()}catch(e){}}
@@ -2665,6 +2672,16 @@ var drumSel={h:0,m:25};
 function drumOpts(n){var h='<div></div>';for(var i=0;i<n;i++)h+='<div data-v="'+i+'">'+pad(i)+'</div>';return h+'<div></div>'}
 function markDrum(c){var k=c.dataset.drum,i=Math.round(c.scrollTop/50);drumSel[k]=Math.max(0,Math.min(k==='h'?23:59,i));c.scrollTop=drumSel[k]*50;var ds=c.querySelectorAll('div[data-v]');for(var j=0;j<ds.length;j++)ds[j].classList.toggle('on',+ds[j].dataset.v===drumSel[k])}
 function initDrums(){var _dm=defTimerMins();drumSel={h:Math.floor(_dm/60),m:_dm%60};var cs=document.querySelectorAll('.dcol');for(var j=0;j<cs.length;j++)(function(c){var k=c.dataset.drum;c.scrollTop=(k==='h'?drumSel.h:drumSel.m)*50;markDrum(c);var to;c.addEventListener('scroll',function(){clearTimeout(to);to=setTimeout(function(){markDrum(c)},130)})})(cs[j])}
+var tdialV=25,tdialVel=0,tdialDragging=false,tdialLastY=0,tdialLastT=0,tdialTarget=null,tdialHadMom=false,tdialNeedsSnap=false,tdialInit=false,tdialRaf=0;
+function tdialClamp(x){return Math.max(1,Math.min(180,x));}
+function tdialGeom(){var d=document.getElementById('tdial');var W=d?d.clientWidth||390:390;var R=Math.round(W*0.85),ax=Math.round(W*0.26);return{W:W,R:R,ax:ax,cx:ax-R,cy:190};}
+function tdialRender(){var nums=document.getElementById('tdialNums');if(!nums)return;var g=tdialGeom(),v=tdialV,h='';h+='<svg style="position:absolute;left:0;top:0" width="'+g.W+'" height="380"><circle cx="'+g.cx+'" cy="'+g.cy+'" r="'+g.R+'" fill="none" stroke="#DCDCDC" stroke-width="1.5"/></svg>';for(var m=Math.floor(v)-3;m<=Math.ceil(v)+3;m++){if(m<1||m>180)continue;var dd=m-v,ad=Math.abs(dd),t=Math.max(0,1-ad);var size=30+26*t,gr=Math.round(185+(58-185)*t),op=1-ad/3;if(op<0)op=0;if(op>1)op=1;var a=dd*16*Math.PI/180,x=g.cx+g.R*Math.cos(a),y=g.cy+g.R*Math.sin(a);h+='<div style="position:absolute;left:'+x.toFixed(1)+'px;top:'+y.toFixed(1)+'px;transform:translate(-50%,-50%) rotate('+(dd*16).toFixed(1)+'deg);font-size:'+size.toFixed(0)+'px;font-weight:800;color:rgb('+gr+','+gr+','+gr+');opacity:'+op.toFixed(2)+'">'+(m<10?'0':'')+m+'</div>';}h+='<div style="position:absolute;left:'+g.ax+'px;top:240px;transform:translateX(-50%);font-size:13px;font-weight:600;color:var(--muted)">min</div>';nums.innerHTML=h;var n=Math.round(v),cs=document.querySelectorAll('#tchips .tchip');for(var i=0;i<cs.length;i++){var cv=parseInt(cs[i].getAttribute('data-m'),10);cs[i].classList.toggle('on',n===cv);}}
+function initTdial(){if(!tdialInit){tdialV=tdialClamp(defTimerMins()||25);tdialInit=true;}tdialRender();}
+function tdialArmLoop(){if(tdialRaf)return;tdialRaf=requestAnimationFrame(tdialLoop);}
+function tdialLoop(now){tdialRaf=0;if(!document.getElementById('tdial'))return;if(!tdialDragging){if(tdialTarget!==null){tdialV+=(tdialTarget-tdialV)*0.18;if(Math.abs(tdialTarget-tdialV)<0.06){tdialV=tdialTarget;tdialTarget=null;}tdialRender();}else if(Math.abs(tdialVel)>0.02){tdialV+=tdialVel*16;tdialVel*=0.92;if(tdialV<=1){tdialV=1;tdialVel=0;}if(tdialV>=180){tdialV=180;tdialVel=0;}tdialRender();}else if(tdialNeedsSnap){var nat=tdialHadMom?tdialClamp(tdialV+tdialVel*200):tdialV;if(tdialHadMom){var m5=Math.round(nat/5)*5;tdialTarget=(Math.abs(nat-m5)<=2)?tdialClamp(m5):Math.round(nat);}else{tdialTarget=Math.round(nat);}tdialVel=0;tdialNeedsSnap=false;tdialRender();}else{return;}}tdialArmLoop();}
+function tdialStartDrag(e){var d=document.getElementById('tdial');if(!d)return;tdialDragging=true;tdialTarget=null;tdialVel=0;tdialHadMom=false;tdialNeedsSnap=false;tdialLastY=e.clientY;tdialLastT=performance.now();tdialArmLoop();}
+function tdialMove(e){if(!tdialDragging)return;var now=performance.now(),dy=e.clientY-tdialLastY,dt=Math.max(1,now-tdialLastT);tdialV=tdialClamp(tdialV-dy/18);var inst=-(dy/dt)/18;tdialVel=tdialVel*0.7+inst*0.3;if(tdialVel>0.22)tdialVel=0.22;if(tdialVel<-0.22)tdialVel=-0.22;tdialLastY=e.clientY;tdialLastT=now;tdialRender();}
+function tdialEndDrag(){if(!tdialDragging)return;tdialDragging=false;tdialHadMom=Math.abs(tdialVel)>0.02;tdialNeedsSnap=true;tdialArmLoop();}
 function drumMs(){return(drumSel.h*60+drumSel.m)*60000}
 function swMaxH(){var v=parseInt(state.prefs.swMaxH,10);return v>=1&&v<=12?v:3}
 function swFrac(){var S=state.sw;if(!S)return 0;return Math.min(1,sela()/(swMaxH()*3600000))}
@@ -2683,10 +2700,9 @@ function startTimerNow(subj,mins){var s=subj||defTimerSubj()||(SUBJ[0]||'');var 
 function schTimerSubj(title){var t=String(title||'').trim().toLowerCase();if(!t)return'';for(var i=0;i<SUBJ.length;i++){if(SUBJ[i]&&SUBJ[i].toLowerCase()===t)return SUBJ[i]}try{for(var k in SUBJMAP){var e=SUBJMAP[k];if(e&&((e[0]||'').toLowerCase()===t||(e[1]||'').toLowerCase()===t))return k}}catch(err){}return''}
 function vTimer(){var T=state.timer,h='<div class="head slide">'+backBtn()+'<h1>Timer</h1>'+dotsBtn('tdots')+'</div>';
   if(!T){
-    h+='<p class="sub" style="text-align:center;margin:4px 0 0">Slide to pick a duration</p><div style="display:flex;gap:8px;justify-content:center;margin:8px 0 2px"><button class="tchip" data-act="tchip" data-m="25">'+__L('25m','২৫মি')+'</button><button class="tchip" data-act="tchip" data-m="50">'+__L('50m','৫০মি')+'</button><button class="tchip" data-act="tchip" data-m="90">'+__L('90m','৯০মি')+'</button></div><div class="drum"><div><div class="dcol" data-drum="h" aria-label="Hours">'+drumOpts(24)+'</div><p class="dlab">Hours</p></div><div class="dsep">:</div><div><div class="dcol" data-drum="m" aria-label="Minutes">'+drumOpts(60)+'</div><p class="dlab">Minutes</p></div></div>';
-    h+='<label class="f" for="tsub">'+__L('Subject','বিষয়')+'</label><select id="tsub">'+recSubjOpts(defTimerSubj())+'</select>';
-    h+='<button data-act="tstart" style="width:100%"><svg class="ic ic18" style="margin-right:8px"><use href="#i-timer"/></svg>Start timer</button><button class="ghost" data-act="pstart" style="width:100%;margin-top:10px"><svg class="ic ic18" style="margin-right:8px"><use href="#i-timer"/></svg>'+__L('Start Pomodoro','পোমোডোরো শুরু করুন')+'</button><p class="sub" style="text-align:center">When it ends, the time is saved as a record.</p>';
-    var _nx=nextTask();if(_nx)h+='<button data-act="tstartnext" style="background:none;border:0;color:var(--accent);font-weight:700;width:100%;padding:12px;font-size:16px">▶ '+__L('Start next task: ','পরের কাজ শুরু করুন: ')+esc(_nx.text)+(_nx.mins?' · '+fmtMin(_nx.mins):'')+'</button>';
+    h+='<div style="text-align:center;margin:14px 0 0"><div style="font-size:12px;color:var(--muted)">'+__L('Subject','বিষয়')+'</div><select id="tsub" class="tsubjmin">'+recSubjOpts(defTimerSubj())+'</select></div><div id="tdial" class="tdial"><div id="tdialNums" class="tdialNums"></div></div>';
+    h+='<button data-act="tstart" style="width:100%"><svg class="ic ic18" style="margin-right:8px"><use href="#i-timer"/></svg>Start timer</button>';
+    h+='<div id="tchips" style="display:flex;gap:8px;justify-content:center;margin-top:12px"><button class="tchip" data-act="tchip" data-m="25">'+__L('25m','২৫মি')+'</button><button class="tchip" data-act="tchip" data-m="50">'+__L('50m','৫০মি')+'</button><button class="tchip" data-act="tchip" data-m="90">'+__L('90m','৯০মি')+'</button></div>';
   }else{
     var dur=T.dur||Math.max(1,trem()),remF=dur?Math.max(0,Math.min(1,trem()/dur)):0;
     h+='<div class="subjtop">'+esc(T.subj?subjDisp(T.subj):'Other')+'</div>';
@@ -3941,7 +3957,7 @@ document.addEventListener('click',function(e){
       if(recP==='daily')recAnchor=addDays(ra,rn);else if(recP==='weekly')recAnchor=addDays(ra,7*rn);else if(recP==='monthly')recAnchor=isoOf(new Date(rp.getFullYear(),rp.getMonth()+rn,1));else recAnchor=isoOf(new Date(rp.getFullYear()+rn,0,1));
       recSel=-1;tlSel=null;render(true);break;
     case'calnav':var cy=+calM.slice(0,4),cmn=+calM.slice(5,7)-1+(+D.n),cd2=new Date(cy,cmn,1);calM=isoOf(cd2).slice(0,7);render(true);break;
-    case'tstart':var tse=document.getElementById('tsub'),td=drumMs();if(td<60000)td=25*60000;var tSubj=tse?tse.value:'';if(!tSubj)tSubj=nextTaskSubj()||(SUBJ[0]||'');state.prefs.lastTimerSubj=tSubj;state.prefs.lastTimerMins=Math.round(td/60000);state.timer={run:true,dur:td,rem:td,endAt:Date.now()+td,subj:tSubj,date:today()};save();render(true);break;case'tchip':var ce=document.getElementById('tsub');startTimerNow(ce?ce.value:'',+D.m);break;
+    case'tstart':var tse=document.getElementById('tsub'),td=Math.max(1,Math.min(180,tdialV||25))*60000;var tSubj=tse?tse.value:'';if(!tSubj)tSubj=nextTaskSubj()||(SUBJ[0]||'');state.prefs.lastTimerSubj=tSubj;state.prefs.lastTimerMins=Math.round(td/60000);state.timer={run:true,dur:td,rem:td,endAt:Date.now()+td,subj:tSubj,date:today()};tdialInit=false;save();render(true);break;case'tchip':tdialTarget=Math.max(1,Math.min(180,+D.m||25));tdialVel=0;tdialNeedsSnap=false;tdialArmLoop();tdialRender();break;
     case'tstartnext':var _nt=nextTask();if(!_nt)break;startTimerNow((_nt.subj&&_nt.subj[0])?_nt.subj[0]:'',(_nt.mins&&_nt.mins>=1)?_nt.mins:0);break;
     case'pstart':var pse=document.getElementById('tsub');var pSubj=pse?pse.value:'';if(!pSubj)pSubj=nextTaskSubj()||(SUBJ[0]||'');state.prefs.lastTimerSubj=pSubj;state.timer={run:true,dur:25*60000,rem:25*60000,endAt:Date.now()+25*60000,subj:pSubj,date:today(),pom:true,phase:'focus',cycle:1};save();render(true);break;
     case'tpause':var T0=state.timer;if(T0){if(T0.run){T0.rem=Math.max(0,T0.endAt-Date.now());T0.run=false}else{T0.run=true;T0.endAt=Date.now()+T0.rem}save();render(true)}break;
