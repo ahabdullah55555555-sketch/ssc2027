@@ -5895,4 +5895,5 @@ import {Avatar as DiceAvatar, Style as DiceStyle} from './dicebear-core.mjs';
 (async function(){try{var r=await fetch('./avataaars.json');if(!r.ok)return;var def=await r.json();var style=new DiceStyle(def);window.__dicebear={ready:true,create:function(opts){try{return new DiceAvatar(style,opts).toString()}catch(e){return ''}}};try{if(typeof render==='function')render(true)}catch(e){}}catch(e){}})();
 </script>
 </body>
+<!-- v3.15.37 pages-retrigger -->
 </html>
