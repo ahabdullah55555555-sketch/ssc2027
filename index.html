@@ -188,8 +188,9 @@ button:disabled{opacity:.4}
 input[type=color]{padding:4px;min-height:54px}
 .pbox{background:var(--soft);border-radius:16px;padding:16px;position:relative;max-height:132px;overflow:hidden}
 .pbox.open{max-height:none;overflow:visible}
-.pbox:not(.open):after{content:"";position:absolute;left:0;right:0;bottom:0;height:64px;background:linear-gradient(to bottom,transparent,var(--soft));pointer-events:none;border-radius:0 0 18px 18px}
 .ptxt{white-space:pre-wrap;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--text)}
+.pmorelink{background:none;color:var(--muted);min-height:0;padding:0;display:inline;font-weight:600;cursor:pointer}
+.pcopylink{background:none;color:var(--muted);min-height:0;padding:0 4px;display:inline-flex;align-items:center;gap:6px;font-weight:600}
 textarea#rt,textarea#ru{min-height:150px}
 .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:8px;vertical-align:middle}
 .hdrb{display:flex;gap:2px;align-items:center}
@@ -1040,7 +1041,7 @@ window.I18N_PAT.push(
 <script src="./qrcode-generator.js" defer></script>
 <script>
 "use strict";
-var APP_VERSION='3.15.44',AI_HIDDEN=false,ACCENT_HIDDEN=true,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.15.45',AI_HIDDEN=false,ACCENT_HIDDEN=true,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.88,'Small'],ls:[0.92,'Lower medium'],m:[0.95,'Medium'],um:[1.05,'Upper medium'],l:[1.15,'Large'],xl:[1.3,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -2296,7 +2297,8 @@ function buildPrompt(){return[
 '',
 'MY ROUTINE:',
 ''].join('\n')}
-function promptBlock(){return'<div class="pbox'+(promptOpen?' open':'')+'" id="pbox"><div class="tt ptxt">'+esc(buildPrompt())+'</div></div><div class="btns" style="margin:10px 0 14px"><button class="ghost sm" data-act="pmore">'+(promptOpen?'See less':'See more')+'</button><button class="sm" data-act="pcopy">Copy prompt</button></div>'}
+function promptShort(){var p=buildPrompt();if(p.length<=90)return p;var s=p.slice(0,90),i=s.lastIndexOf(' ');if(i>60)s=s.slice(0,i);return s+'…'}
+function promptBlock(){var full=buildPrompt(),cut=promptShort(),trunc=cut.length<full.length;var tog=trunc?'<button class="pmorelink" data-act="pmore">'+(promptOpen?esc(__L('Show less','কম দেখুন')):'... '+esc(__L('See more','আরও দেখুন')))+'</button>':'';return'<div class="pbox'+(promptOpen?' open':'')+'" id="pbox"><div class="tt ptxt">'+esc(promptOpen||!trunc?full:cut)+(tog?' '+tog:'')+'</div></div><div style="margin:10px 0 14px"><button class="pcopylink" data-act="pcopy"><svg class="ic ic18"><use href="#i-copy"/></svg>'+esc(__L('Copy prompt','প্রম্পট কপি করুন'))+'</button></div>'}
 function copyText(t){return new Promise(function(res){
   function fb(){try{var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(a);a.select();a.setSelectionRange(0,t.length);var ok=document.execCommand('copy');a.remove();res(!!ok)}catch(e){res(false)}}
   if(navigator.clipboard&&navigator.clipboard.writeText&&window.isSecureContext)navigator.clipboard.writeText(t).then(function(){res(true)},fb);else fb()})}
@@ -3445,11 +3447,13 @@ function todayCard(k){
   }
   return h+'</section>';
 }
+function updDlgHtml(){return'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2 style="margin:0">'+esc(__L('Update your routine','রুটিন পরিবর্তন করুন'))+'</h2><button class="dotb" data-updclose="1" aria-label="'+esc(__L('Close','বন্ধ করুন'))+'"><svg class="ic ic26"><use href="#i-x"/></svg></button></div>'+updBodyHtml()}
+function refreshUpdModal(){var um=document.getElementById('updmodal');if(um)um.innerHTML='<div class="card glow dlg" role="dialog" aria-modal="true">'+updDlgHtml()+'</div>'}
 function updRoutineDlg(){
   closeMenu();
   var old=document.getElementById('updmodal');if(old)old.remove();
   var m=document.createElement('div');m.className='modal';m.id='updmodal';
-  m.innerHTML='<div class="card glow dlg" role="dialog" aria-modal="true"><h2>'+esc(__L('Update your routine','রুটিন পরিবর্তন করুন'))+'</h2>'+updBodyHtml()+'<div class="btns" style="margin-top:12px"><button class="ghost" data-updclose="1">'+esc(__L('Close','বন্ধ করুন'))+'</button></div></div>';
+  m.innerHTML='<div class="card glow dlg" role="dialog" aria-modal="true">'+updDlgHtml()+'</div>';
   m.addEventListener('click',function(e){var c=e.target.closest?e.target.closest('[data-updclose]'):null;if(e.target===m||c)m.remove()});
   document.body.appendChild(m);
   var f=m.querySelector('textarea');if(f)f.focus();
@@ -3503,8 +3507,8 @@ function humanReport(){
   if(state.mistakes.length){o.push('');o.push(L('MISTAKE LOG','ভুলের খাতা'));state.mistakes.forEach(function(m){o.push('  - '+m.date+' | '+m.subject+(m.chapter?': '+m.chapter:'')+' — '+m.what+(m.fix?' -> '+L('Fix: ','সমাধান: ')+m.fix:''))})}
   return o.join('\n')}
 function updOptRow(v,label){return '<button class="updopt'+(updMode===v?' on':'')+'" data-act="updmode" data-v="'+v+'">'+esc(label)+'</button>'}
-function updBodyHtml(){var h='<p class="sub">Copy the prompt, give it to any AI tool together with your new routine, then paste the reply below. You will choose how it joins your current routine.</p>'+promptBlock()+'<textarea id="ru" rows="7" placeholder="Paste your new routine here">'+esc(rtDraft)+'</textarea><div class="err" id="rerr" role="alert"></div><div class="btns"><button data-act="upd"><svg class="ic ic18" style="margin-right:8px"><use href="#i-refresh"/></svg>Update routine</button><button class="ghost" data-act="pickfile"><svg class="ic ic18" style="margin-right:8px"><use href="#i-folder"/></svg>Choose a text file</button></div><input type="file" id="rfile" accept=".txt,text/plain" hidden>';
-if(updP){h+='<div id="updchoice" style="margin-top:16px">'+sumHtml(updP)+'<button data-act="updapply" style="width:100%">'+esc(__L('Update routine','রুটিন পরিবর্তন করুন'))+'</button><button data-act="updopts" style="background:none;color:var(--muted);font-size:13px;padding:12px 0;width:100%;text-align:center;min-height:0">'+esc(__L('Choose other options','অন্যান্য অপশন বেছে নিন'))+'</button>';
+function updBodyHtml(){var h='<p class="sub">Copy the prompt, give it to any AI tool together with your new routine, then paste the reply below. You will choose how it joins your current routine.</p>'+promptBlock()+'<textarea id="ru" rows="7" placeholder="Paste your new routine here">'+esc(rtDraft)+'</textarea><div class="err" id="rerr" role="alert"></div><div style="margin-top:12px"><button data-act="upd" style="width:100%">'+esc(__L('Update routine','রুটিন পরিবর্তন করুন'))+'</button></div>';
+if(updP){h+='<div id="updchoice" style="margin-top:16px">'+sumHtml(updP)+'<button data-act="updopts" style="background:none;color:var(--muted);font-size:13px;padding:12px 0;width:100%;text-align:center;min-height:0">'+esc(__L('Choose other options','অন্যান্য অপশন বেছে নিন'))+'</button>';
 if(updOptsOpen){h+='<div>'+updOptRow('today',__L('Change from today — earlier days unchanged','আজ থেকে বদলান — আগের দিন অপরিবর্তিত'))+updOptRow('merge',__L('Add to current routine','বর্তমান রুটিনে যোগ করুন'))+updOptRow('dates',__L('Change all dates — including earlier days','সব তারিখ বদলান — আগের দিনগুলোসহ'))+'</div>'}
 h+='</div>'}
 return h}
@@ -3959,10 +3963,9 @@ document.addEventListener('click',function(e){
     case'obstarter':var sP=parseRoutineText(starterRoutineText(D.n)||'',state.subjects);if(!showParseErrs(sP))firstDlg(sP);break;
     case'build':var bta=document.getElementById('rt'),bP=parseRoutineText(bta?bta.value:'',state.subjects);if(!showParseErrs(bP))firstDlg(bP);break;
     case'updroutine':updRoutineDlg();break;
-    case'upd':var uta=document.getElementById('ru'),uP=parseRoutineText(uta?uta.value:'',state.subjects);if(!showParseErrs(uP)){updP=uP;updMode='today';updOptsOpen=false;render(true);var uc=document.getElementById('updchoice');if(uc){try{uc.scrollIntoView({block:'center'})}catch(e){}}}break;
-    case'updopts':updOptsOpen=!updOptsOpen;render(true);break;
-    case'updmode':updMode=D.v||'today';render(true);break;
-    case'updapply':var ua=document.getElementById('ru'),fP=parseRoutineText(ua?ua.value:'',state.subjects);if(showParseErrs(fP))break;var am=updMode;updP=null;updOptsOpen=false;mutate(function(){applyParsed(fP,am)},am==='merge'?'Routine added.':'Matching dates replaced.');var ub=document.getElementById('ru');if(ub)ub.value='';rtDraft='';break;
+    case'upd':var ua=document.getElementById('ru'),fP=parseRoutineText(ua?ua.value:'',state.subjects);if(showParseErrs(fP))break;if(!updP){updP=fP;updMode='today';updOptsOpen=false;render(true);refreshUpdModal();var uc=document.getElementById('updchoice');if(uc){try{uc.scrollIntoView({block:'center'})}catch(e){}}}else{var am=updMode;updP=null;updOptsOpen=false;mutate(function(){applyParsed(fP,am)},am==='merge'?'Routine added.':'Matching dates replaced.');var ub=document.getElementById('ru');if(ub)ub.value='';rtDraft='';render(true);refreshUpdModal();}break;
+    case'updopts':updOptsOpen=!updOptsOpen;render(true);refreshUpdModal();break;
+    case'updmode':updMode=D.v||'today';render(true);refreshUpdModal();break;
     
     case'obcontinue':obStep='account';render(true);break;
     case'oblangpick':state.prefs.lang=D.lang;save();render(true);break;
@@ -3985,8 +3988,8 @@ document.addEventListener('click',function(e){
     case'rensubj':var rn=D.n;if(!rn)break;var cur=state.subjects.filter(function(s){return s===rn})[0];if(!cur)break;modal('Rename subject','<label class="f" for="rns">New name</label><input id="rns" maxlength="30" value="'+esc(cur)+'">',[{label:'Cancel',cls:'ghost',val:0},{label:'Rename',val:1,v:true}],function(q){var v=q('#rns').value.trim().slice(0,30);if(!v)return'Enter a name.';if(v!==cur&&state.subjects.some(function(s){return s.toLowerCase()===v.toLowerCase()}))return'That subject already exists.';return''}).then(function(r){if(r.val!==1)return;var nv=r.q('#rns').value.trim().slice(0,30);var ix=state.subjects.indexOf(cur);if(ix>-1)state.subjects[ix]=nv;R().tasks.forEach(function(t){if(t.subj)t.subj=t.subj.map(function(s){return s===cur?nv:s})});state.sessions.forEach(function(s){if(s.subj===cur)s.subj=nv});state.weak.forEach(function(w){if(w.subject===cur)w.subject=nv});state.mistakes.forEach(function(m){if(m.subject===cur)m.subject=nv});if(state.prefs.subjColors[cur]){state.prefs.subjColors[nv]=state.prefs.subjColors[cur];delete state.prefs.subjColors[cur]}save();render(true);toast('Subject renamed.')});break;
     case'setsubjtarget':subjTargetDlg(D.n);break;case'delsubj':var dn=D.n;if(!dn)break;if(state.subjects.indexOf(dn)<0)break;confirmBox('Remove subject?','Removing a subject only removes it from the list. Your past records keep the name.','Remove',true).then(function(ok){if(!ok)return;state.subjects=state.subjects.filter(function(s){return s!==dn});save();render(true);toast('Subject removed.')});break;
     case'pickfile':var pf=document.getElementById('rfile');if(pf)pf.click();break;
-    case'pmore':promptOpen=!promptOpen;var pb=document.getElementById('pbox');if(pb)pb.classList.toggle('open',promptOpen);b.textContent=promptOpen?'See less':'See more';break;
-    case'pcopy':copyText(buildPrompt()).then(function(ok){if(ok)toast('Prompt copied. Paste it into your AI tool.');else{promptOpen=true;render(true);toast('Could not copy automatically. Tap See more and copy the text by hand.')}});break;
+    case'pmore':promptOpen=!promptOpen;render(true);refreshUpdModal();break;
+    case'pcopy':copyText(buildPrompt()).then(function(ok){if(ok)toast('Prompt copied. Paste it into your AI tool.');else{promptOpen=true;render(true);refreshUpdModal();toast('Could not copy automatically. Tap See more and copy the text by hand.')}});break;
     case'tlpick':tlSel=D.id;render(true);break;
     case'tlclose':tlSel=null;render(true);break;
     case'menu':openMenu();break;
