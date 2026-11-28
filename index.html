@@ -162,6 +162,13 @@ button:disabled{opacity:.4}
 .nav{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;margin-bottom:16px}
 .nav input.jump{margin:0;padding:0 8px}.nav button{padding:0 6px;white-space:nowrap}
 .selhead{position:sticky;top:0;z-index:6;background:var(--soft2);border-radius:20px;padding:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;box-shadow:0 8px 28px rgba(0,0,0,.12);margin:0 0 12px}
+.task.tcard.sel input:checked~.tx{text-decoration:none;color:var(--text)}
+.task.tcard.sel input:checked+.box{background:var(--accent);border-color:var(--accent)}
+.task.tcard.sel input:checked+.box:after{border-color:var(--onacc)}
+.filebar{display:flex;align-items:center;gap:2px;margin-bottom:22px;position:sticky;top:0;background:var(--bg);z-index:6}
+.filebar .fb-t{flex:1;min-width:0;padding:0 6px}
+.filebar .fb-t b{display:block;font-size:17px}
+.filebar .fb-t span{font-size:13px;color:var(--muted)}
 .selhead b{flex:1;font-size:16px}
 .selhead .sm{min-height:44px;padding:0 14px;display:inline-flex;align-items:center;gap:6px}
 .dlg{margin:0 0 40px}
@@ -1030,7 +1037,7 @@ window.I18N_PAT.push(
 <script src="./qrcode-generator.js" defer></script>
 <script>
 "use strict";
-var APP_VERSION='3.15.38',AI_HIDDEN=false,ACCENT_HIDDEN=true,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
+var APP_VERSION='3.15.40',AI_HIDDEN=false,ACCENT_HIDDEN=true,PUSH_VAPID='BFnJLjpn2JkaVAec4Bv_7KoKeKSklAEOcSNM1j955Tt6M5PTuAaK7d2B2ZL1ogvZ8roWxXLGBKFCTQIdhRw1q_A',CALL_HIDDEN=true,SCHEMA=2,KEY='ssc2027.data.v2',OLDKEY='ssc2027.tracker.v1';
 var SUBJ=[];
 var FS={xs:[0.8,'Very small'],s:[0.88,'Small'],ls:[0.92,'Lower medium'],m:[0.95,'Medium'],um:[1.05,'Upper medium'],l:[1.15,'Large'],xl:[1.3,'Very large']};
 var DRE=/^\d{4}-\d{2}-\d{2}$/;
@@ -1305,10 +1312,10 @@ function dayCard(k,home){
   if(load>lim)h+='<div class="flag">Planned load '+fmtMin(load)+' is '+fmtMin(load-lim)+' above your daily limit of '+fmtMin(lim)+'.</div>';
   if(!d&&!T.length)h+='<div class="empty">'+'<p style="font-weight:700;margin:0">'+(state.prefs.lang==='bn'?'আজকের প্ল্যান বানাও!':'Plan your day!')+'</p>'+'<p class="sub">No routine for this date.'+(home?' Open Routine to add tasks.':'')+'</p></div>';
   T.forEach(function(t,i){h+=taskRow(t,k,i,T.length)});
-  if(T.length)h+='<div class="row" style="margin-top:10px"><span class="sub">'+n+' of '+T.length+' done</span><b>'+p+'%</b></div>'+bar(p);
+  if(T.length)h+='<div style="margin-top:10px"><span class="sub">'+n+' of '+T.length+' done · '+p+'%</span></div>';
   if(!edit)h+=addOpen===k?addInlineForm(k):'<button data-act="addinline" data-k="'+k+'" class="addfield"><span class="plus">＋</span>'+__L('New task…','নতুন কাজ…')+'</button>';
-  if(d||T.length){h+=dayStripHtml(k)}
-  if(edit&&!home)h+='<div class="btns" style="margin-top:14px"><button class="ghost sm" data-act="dayinfo">'+(d?'Day info':'Add date entry')+'</button><button class="ghost sm" data-act="copyday"><svg class="ic ic18" style="margin-right:8px"><use href="#i-copy"/></svg>Copy day to…</button>'+(d?'<button class="ghost sm" data-act="delday"><svg class="ic ic18" style="margin-right:8px"><use href="#i-trash"/></svg>Delete date</button>':'')+'</div>';
+  
+
   return h+'</section>'}
 function totals(){var T=R().tasks,done=T.filter(isDone).length,lg=0,pl=0;R().days.forEach(function(d){lg+=logged(d.date);pl+=dayLoad(d.date)});Object.keys(state.time).forEach(function(k){if(!dayOf(k))lg+=logged(k)});var bl=viewTasks('backlog'),bm=0;bl.forEach(function(t){bm+=t.mins||0});return{done:done,total:T.length,pct:T.length?Math.round(done/T.length*100):0,lg:lg,pl:pl,bl:bl.length,bm:bm}}
 
@@ -1901,13 +1908,14 @@ var dayViewKey='';
 function vRoutine(){
   if(!selKey)selKey=today();
   var td=today(),cal=state.prefs.routineView==='cal',isDate=DRE.test(selKey),n=selIds().length;
-  var boIcons='<button data-act="pick" data-k="backlog" aria-label="Backlog" style="background:none;border:0;color:'+(selKey==='backlog'?'var(--accent)':'var(--muted)')+';padding:6px;min-height:0;cursor:pointer"><svg viewBox="0 0 24 24" style="width:20px;height:20px;display:block"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 3"/></svg></button><button data-act="pick" data-k="overdue" aria-label="Overdue" style="background:none;border:0;color:'+(selKey==='overdue'?'var(--accent)':'var(--muted)')+';padding:6px;min-height:0;cursor:pointer"><svg viewBox="0 0 24 24" style="width:20px;height:20px;display:block"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7 V12 L15.5 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>';var dateChip='<button class="chip" data-act="adddate"><b>+</b>Date</button>';var extra=boIcons+(isDate?'':dateChip);   var h='<div class="row" style="margin-bottom:22px"><h1>Routine</h1><div class="hdrb">'+(undoStack.length?'<button class="ghost sm" data-act="undo">Undo</button>':'')+(edit?'<button class="sm" data-act="toggleedit"><svg class="ic ic18" style="margin-right:8px"><use href="#i-check"/></svg>Done editing</button>':'')+sbtn()+bellBtn()+gear()+dots()+'</div></div>';
-  if(cal)h+='<div style="display:flex;justify-content:flex-end;gap:2px;margin-bottom:4px">'+boIcons+'</div>'+calHtml()+(isDate?'':'<div class="chips">'+dateChip+'</div>');   else{var chips=R().days.map(function(d){var T=tasksOn(d.date),all=T.length&&T.every(isDone);return chip(d.date,String(+d.date.slice(8)),pd(d.date).toLocaleDateString(LOC(),{month:'short'}),(d.date===td?' today':'')+(all?' full':'')+(d.red?' red':''))}).join('');
-    h+='<div class="stripwrap"><button class="striparw" data-act="shift" data-n="-1" aria-label="Previous day">‹</button><div class="chips" id="chips">'+chips+extra+'</div><button class="striparw" data-act="shift" data-n="1" aria-label="Next day">›</button></div>'}
+var dateChip='<button class="chip" data-act="adddate"><b>+</b>Date</button>';var extra=(isDate?'':dateChip);     var selTot=0;R().tasks.forEach(function(t){if(sel[t.id])selTot+=t.mins||0});
+  var h=edit?'<div class="filebar"><button class="dotb" data-act="toggleedit" aria-label="Done"><svg class="ic ic22"><use href="#i-x"/></svg></button><div class="fb-t"><b>'+n+' selected</b><span>'+fmtMin(selTot)+'</span></div><button class="dotb" data-act="delsel"'+(n?'':' disabled style="opacity:.4"')+' aria-label="Delete"><svg class="ic ic22"><use href="#i-trash"/></svg></button><button class="dotb" data-act="nedit"'+(n===1?'':' disabled style="opacity:.4"')+' aria-label="Edit"><svg class="ic ic22"><use href="#i-edit"/></svg></button>'+dots()+'</div>':'<div class="row" style="margin-bottom:22px"><h1>Routine</h1><div class="hdrb">'+(undoStack.length?'<button class="ghost sm" data-act="undo">Undo</button>':'')+bellBtn()+dots()+'</div></div>';
+  if(cal)h+=calHtml()+(isDate?'':'<div class="chips">'+dateChip+'</div>');   else{var chips=R().days.map(function(d){var T=tasksOn(d.date),all=T.length&&T.every(isDone);return chip(d.date,String(+d.date.slice(8)),pd(d.date).toLocaleDateString(LOC(),{month:'short'}),(d.date===td?' today':'')+(all?' full':'')+(d.red?' red':''))}).join('');
+    h+='<div class="chips" id="chips">'+chips+extra+'</div>'}
   if(isDate)h+=todayCard(selKey);
   h+=dayCard(selKey,false);
   h+='<div style="text-align:center;margin:2px 0 14px"><button data-act="createday" style="background:none;border:0;color:var(--accent);font-weight:700;font-size:16px;padding:12px">'+(state.prefs.lang==='bn'?'+ দিন যোগ করুন':'+ Add day')+'</button></div>';
-  if(edit)h+='<div class="selhead"><b>'+n+' selected</b><button class="danger sm" data-act="delsel"'+(n?'':' disabled')+' aria-label="Delete"><svg class="ic ic18"><use href="#i-trash"/></svg>Delete</button><button class="ghost sm" data-act="nedit"'+(n!==1?' disabled':'')+' aria-label="Edit"><svg class="ic ic18"><use href="#i-edit"/></svg>Edit</button><button class="sm" data-act="saveedit">Save</button><button class="ghost sm" data-act="discardedit">Discard</button></div>';
+
   return h}
 function subjCards(){
   var h='';
@@ -2685,7 +2693,7 @@ function searchBtn(){return'<button class="dotb ln" data-act="search" aria-label
 function closeMenu(){var m=document.getElementById('menu');if(m)m.remove();closeFabMenu()}
 function menuHtml(sub){var h='',v=state.prefs.routineView,bn=state.prefs.lang==='bn';
   if(sub==='view')h='<button data-act="mi" data-v="back">‹ Back</button><button data-act="mi" data-v="vlist" class="'+(v==='list'?'on':'')+'"><svg class="ic ic18" style="margin-right:8px"><use href="#i-bars"/></svg>List view</button><button data-act="mi" data-v="vcal" class="'+(v==='cal'?'on':'')+'"><svg class="ic ic18" style="margin-right:8px"><use href="#i-schedule"/></svg>Calendar view</button>';
-  else{if(tab==='routine')h+='<button data-act="mi" data-v="edit"><svg class="ic ic18" style="margin-right:8px"><use href="#i-edit"/></svg>'+(edit?'Done editing':'Edit routine')+'</button><button data-act="mi" data-v="updroutine"><svg class="ic ic18" style="margin-right:8px"><use href="#i-refresh"/></svg>'+__L('Update routine','রুটিন পরিবর্তন করুন')+'</button><button data-act="mi" data-v="view">View</button>';}
+  else{if(tab==='routine')h+=(edit?'<button data-act="mi" data-v="discard" style="color:var(--warn)">Discard changes</button>':'')+'<button data-act="mi" data-v="edit"><svg class="ic ic18" style="margin-right:8px"><use href="#i-edit"/></svg>'+(edit?'Done editing':'Edit routine')+'</button><button data-act="mi" data-v="updroutine"><svg class="ic ic18" style="margin-right:8px"><use href="#i-refresh"/></svg>'+__L('Update routine','রুটিন পরিবর্তন করুন')+'</button><button data-act="mi" data-v="view">View</button><button data-act="mi" data-v="search"><svg class="ic ic18" style="margin-right:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search</button><button data-act="mi" data-v="settings"><svg class="ic ic18" style="margin-right:8px"><use href="#i-gear"/></svg>Settings</button><button data-act="mi" data-v="backlog"><svg class="ic ic18" style="margin-right:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 3"><circle cx="12" cy="12" r="9"/></svg>Backlog</button><button data-act="mi" data-v="overdue"><svg class="ic ic18" style="margin-right:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15.5 14"/></svg>Overdue</button><button data-act="mi" data-v="dayinfo">Day info</button><button data-act="mi" data-v="notes"><svg class="ic ic18" style="margin-right:8px"><use href="#i-checklist"/></svg>Notes</button><button data-act="mi" data-v="copyday"><svg class="ic ic18" style="margin-right:8px"><use href="#i-copy"/></svg>Copy day to…</button><button data-act="mi" data-v="delday"><svg class="ic ic18" style="margin-right:8px"><use href="#i-trash"/></svg>Delete date</button>';}
   return'<div class="menu" role="menu">'+h+'</div>'}
 function openMenu(sub){closeFabMenu();var m=document.getElementById('menu');if(!m){m=document.createElement('div');m.id='menu';m.className='menuwrap';m.addEventListener('click',function(e){if(e.target===m)closeMenu()});document.body.appendChild(m)}m.innerHTML=menuHtml(sub)}
 /* ---------- study records, timer ---------- */
@@ -3340,7 +3348,7 @@ function vRecords(){
   h+='<section class="card">'+recChart(B);
   var legend='',seen={},tot={},un=false,unTot=0;B.forEach(function(b){var sum=0;Object.keys(b.subj).forEach(function(n){sum+=b.subj[n];tot[n]=(tot[n]||0)+b.subj[n];if(!seen[n])seen[n]=1});if(b.s>sum){un=true;unTot+=b.s-sum}});Object.keys(seen).forEach(function(n){legend+='<span><i class="dot" style="background:'+subjColor(n)+'"></i>'+esc(n?subjDisp(n):'Other')+' <b style="color:var(--text)">'+fmtMin(tot[n]||0)+'</b></span>'});
   if(legend)h+='<div class="leg2">'+legend+(un?'<span><i class="dot" style="background:var(--neon)"></i>Not assigned <b style="color:var(--text)">'+fmtMin(unTot)+'</b></span>':'')+'</div>';
-  var pieNames=Object.keys(tot).sort(function(a,b){return tot[b]-tot[a]}),pieTot=0;pieNames.forEach(function(n){pieTot+=tot[n]});if(unTot>0)pieTot+=unTot;if(pieTot>0){var pieCx=110,pieCy=110,pieR=90,pieA=-90,piePaths='';pieNames.forEach(function(n,pi){var frac=tot[n]/pieTot,ang=frac*360,large=ang>180?1:0,x1=pieCx+pieR*Math.cos(pieA*Math.PI/180),y1=pieCy+pieR*Math.sin(pieA*Math.PI/180),pieA2=pieA+ang,x2=pieCx+pieR*Math.cos(pieA2*Math.PI/180),y2=pieCy+pieR*Math.sin(pieA2*Math.PI/180);if(frac>=1)piePaths+='<circle data-pie="'+pi+'" style="cursor:pointer'+(pieSel===pi?';stroke:#fff;stroke-width:3':'')+'" cx="'+pieCx+'" cy="'+pieCy+'" r="'+pieR+'" fill="'+subjColor(n)+'"/>';else piePaths+='<path data-pie="'+pi+'" style="cursor:pointer'+(pieSel===pi?';stroke:#fff;stroke-width:3':'')+'" d="M'+pieCx+','+pieCy+' L'+x1.toFixed(1)+','+y1.toFixed(1)+' A'+pieR+','+pieR+' 0 '+large+',1 '+x2.toFixed(1)+','+y2.toFixed(1)+' Z" fill="'+subjColor(n)+'"/>';pieA=pieA2});if(unTot>0){var fracU=unTot/pieTot,angU=fracU*360,largeU=angU>180?1:0,x1u=pieCx+pieR*Math.cos(pieA*Math.PI/180),y1u=pieCy+pieR*Math.sin(pieA*Math.PI/180),pieA3=pieA+angU,x2u=pieCx+pieR*Math.cos(pieA3*Math.PI/180),y2u=pieCy+pieR*Math.sin(pieA3*Math.PI/180);if(fracU>=1)piePaths+='<circle data-pie="'+pieNames.length+'" style="cursor:pointer'+(pieSel===pieNames.length?';stroke:#fff;stroke-width:3':'')+'" cx="'+pieCx+'" cy="'+pieCy+'" r="'+pieR+'" fill="var(--neon)"/>';else piePaths+='<path data-pie="'+pieNames.length+'" style="cursor:pointer'+(pieSel===pieNames.length?';stroke:#fff;stroke-width:3':'')+'" d="M'+pieCx+','+pieCy+' L'+x1u.toFixed(1)+','+y1u.toFixed(1)+' A'+pieR+','+pieR+' 0 '+largeU+',1 '+x2u.toFixed(1)+','+y2u.toFixed(1)+' Z" fill="var(--neon)"/>'}h+='<div style="margin-top:14px"><h3>Subject share</h3><svg viewBox="0 0 220 220" width="220" height="220" style="display:block;margin:0 auto" role="img" aria-label="'+__L('Subject share pie chart','বিষয়ের ভাগের পাই চার্ট')+'">'+piePaths+'</svg>';if(pieSel>=0&&pieSel<=pieNames.length){var pIsUn=pieSel===pieNames.length,pName=pIsUn?'Not assigned':pieNames[pieSel],pTime=pIsUn?unTot:(tot[pName]||0),pPct=pieTot?Math.round(pTime/pieTot*100):0;h+='<div class="pie-detail" style="margin-top:10px;padding:12px 14px;background:var(--soft);border-radius:14px"><b>'+esc(pName)+'</b><p class="sub" style="margin-top:4px">'+fmtMin(pTime)+' - '+pPct+'%</p></div>'}h+='</div>'}
+  var pieNames=Object.keys(tot).sort(function(a,b){return tot[b]-tot[a]}),pieTot=0;pieNames.forEach(function(n){pieTot+=tot[n]});if(unTot>0)pieTot+=unTot;if(pieTot>0){var pieCx=110,pieCy=110,pieR=90,pieA=-90,piePaths='';pieNames.forEach(function(n,pi){var frac=tot[n]/pieTot,ang=frac*360,large=ang>180?1:0,x1=pieCx+pieR*Math.cos(pieA*Math.PI/180),y1=pieCy+pieR*Math.sin(pieA*Math.PI/180),pieA2=pieA+ang,x2=pieCx+pieR*Math.cos(pieA2*Math.PI/180),y2=pieCy+pieR*Math.sin(pieA2*Math.PI/180);if(frac>=1)piePaths+='<circle data-pie="'+pi+'" style="cursor:pointer'+(pieSel===pi?';stroke:#fff;stroke-width:3':'')+'" cx="'+pieCx+'" cy="'+pieCy+'" r="'+pieR+'" fill="'+subjColor(n)+'"/>';else piePaths+='<path data-pie="'+pi+'" style="cursor:pointer'+(pieSel===pi?';stroke:#fff;stroke-width:3':'')+'" d="M'+pieCx+','+pieCy+' L'+x1.toFixed(1)+','+y1.toFixed(1)+' A'+pieR+','+pieR+' 0 '+large+',1 '+x2.toFixed(1)+','+y2.toFixed(1)+' Z" fill="'+subjColor(n)+'"/>';pieA=pieA2});if(unTot>0){var fracU=unTot/pieTot,angU=fracU*360,largeU=angU>180?1:0,x1u=pieCx+pieR*Math.cos(pieA*Math.PI/180),y1u=pieCy+pieR*Math.sin(pieA*Math.PI/180),pieA3=pieA+angU,x2u=pieCx+pieR*Math.cos(pieA3*Math.PI/180),y2u=pieCy+pieR*Math.sin(pieA3*Math.PI/180);if(fracU>=1)piePaths+='<circle data-pie="'+pieNames.length+'" style="cursor:pointer'+(pieSel===pieNames.length?';stroke:#fff;stroke-width:3':'')+'" cx="'+pieCx+'" cy="'+pieCy+'" r="'+pieR+'" fill="var(--neon)"/>';else piePaths+='<path data-pie="'+pieNames.length+'" style="cursor:pointer'+(pieSel===pieNames.length?';stroke:#fff;stroke-width:3':'')+'" d="M'+pieCx+','+pieCy+' L'+x1u.toFixed(1)+','+y1u.toFixed(1)+' A'+pieR+','+pieR+' 0 '+largeU+',1 '+x2u.toFixed(1)+','+y2u.toFixed(1)+' Z" fill="var(--neon)"/>'}h+='<div style="margin-top:14px"><div class="row"><h3 style="margin:0;flex:1">Subject share</h3>'+(recP==='daily'?'<button class="dotb" data-act="dayrecords" data-k="'+B[0].from+'" aria-label="Records"><svg class="ic ic22"><use href="#i-edit"/></svg></button>':'')+'</div><svg viewBox="0 0 220 220" width="220" height="220" style="display:block;margin:0 auto" role="img" aria-label="'+__L('Subject share pie chart','বিষয়ের ভাগের পাই চার্ট')+'">'+piePaths+'</svg>';if(pieSel>=0&&pieSel<=pieNames.length){var pIsUn=pieSel===pieNames.length,pName=pIsUn?'Not assigned':pieNames[pieSel],pTime=pIsUn?unTot:(tot[pName]||0),pPct=pieTot?Math.round(pTime/pieTot*100):0;h+='<div class="pie-detail" style="margin-top:10px;padding:12px 14px;background:var(--soft);border-radius:14px"><b>'+esc(pName)+'</b><p class="sub" style="margin-top:4px">'+fmtMin(pTime)+' - '+pPct+'%</p></div>'}h+='</div>'}
   if(recSel>=0&&recSel<B.length){var sb=B[recSel];
     if(recP==='daily'){h+='<section class="card rec-detail">'+dayDetailHtml(sb.from)+'</section>'}
     else{var sNames2=Object.keys(sb.subj).sort(),sSum2=0;sNames2.forEach(function(n){sSum2+=sb.subj[n]});var sUn2=Math.max(0,sb.s-sSum2);h+='<section class="card rec-detail"><h2>'+esc(sb.full)+'</h2><p class="sub">'+fmtMin(sb.s)+(sb.t?' / '+fmtMin(sb.t):'')+'</p>';sNames2.forEach(function(n){h+='<div class="row" style="margin-top:8px"><span><i class="dot" style="background:'+subjColor(n)+'"></i>'+esc(n||'Other')+'</span><b>'+fmtMin(sb.subj[n])+'</b></div>'});if(sUn2>0)h+='<div class="row" style="margin-top:8px"><span><i class="dot" style="background:var(--neon)"></i>Not assigned</span><b>'+fmtMin(sUn2)+'</b></div>';if(!sNames2.length&&!sUn2)h+='<p class="sub">No study records in this period yet.</p>';var sessBy={};state.sessions.forEach(function(x){(sessBy[x.date]=sessBy[x.date]||[]).push(x)});var notesBy=state.dayNotes||{};for(var dd=sb.from;dd<=sb.to;dd=addDays(dd,1)){var daySess=sessBy[dd]||[],dayNotes=notesBy[dd]||[];if(!daySess.length&&!dayNotes.length&&!logged(dd))continue;h+='<hr style="margin:14px 0;border:0;border-top:1px solid var(--hair)">'+dayDetailHtml(dd)}h+='</section>'}}
@@ -3359,11 +3367,8 @@ function vRecords(){
   var trendNames=Object.keys(tot).sort(function(a,b){return tot[b]-tot[a]}).slice(0,3);
   if(trendNames.length){h+='<h3 style="margin:14px 0 0">'+(bnR?'বিষয় ট্রেন্ড':'Subject trend')+'</h3>';trendNames.forEach(function(n){var pv=prevTot[n]||0;h+='<div class="row" style="margin-top:8px"><span><i class="dot" style="background:'+subjColor(n)+'"></i>'+esc(n||'Other')+'</span><b>'+fmtMin(tot[n])+(hasPrev?' <span class="sub" style="font-weight:400">('+ (pv?fmtMin(pv):(bnR?'নতুন':'new')) +')</span>':'')+'</b></div>'})}
   h+='</section>';
-  var rows=B.filter(function(b){return b.s||b.t}).reverse();
-  h+='<section class="card"><h2>Details</h2>';
-  if(!rows.length)h+='<p style="font-weight:700;margin:0">'+bnR?'\u09aa\u09cd\u09b0\u09a5\u09ae \u09b8\u09c7\u09b6\u09a8 \u09b6\u09c1\u09b0\u09c1 \u0995\u09b0\u09cb! \uD83D\uDCDA':'Start your first session! \uD83D\uDCDA'+'</p>'+'<p class="sub">No study records in this period yet.</p>';
-  else{var detHtml='';rows.forEach(function(b){detHtml+='<div class="item"><div class="row"><b>'+esc(b.full)+'</b><span class="sub">'+fmtMin(b.s)+(b.t?' / '+fmtMin(b.t):'')+'</span></div>'+bar(b.t?Math.min(100,Math.round(b.s/b.t*100)):(b.s?100:0),b.t&&b.s>b.t)+'</div>'});h+='<details class="rdsec" data-acc="recdetails"'+(openAcc['recdetails']?' open':'')+'><summary><span class="rdmore">'+__L('See more','আরও দেখুন')+'</span><span class="rdchv">›</span></summary><div class="rdbody">'+detHtml+'</div></details>'}
-  return h+'</section>'}
+  return h}
+
 function tlTime(t){
   var hh=+t.slice(0,2),mm=t.slice(3),h12=hh%12===0?12:hh%12,bn=state.prefs.lang==='bn';
   if(!bn)return h12+':'+mm+(hh<12?' AM':' PM');
@@ -3424,12 +3429,12 @@ function ringHtml(p,n,tot){
 function todayCard(k){
   var d=dayOf(k),T=tasksOn(k),n=T.filter(isDone).length,p=T.length?Math.round(n/T.length*100):0;
   var dt=pd(k);
-  var h='<section class="card" data-todaycard="1"><div class="row"><div style="display:flex;gap:12px;align-items:center;min-width:0"><div style="font-size:30px;font-weight:700;line-height:1;flex:none">'+(+k.slice(8))+'</div><div style="min-width:0"><b>'+esc(dt.toLocaleDateString(LOC(),{weekday:'short'}))+' • '+esc(dt.toLocaleDateString(LOC(),{month:'short'}))+'</b>'+(d&&d.red?'<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#D64545;margin-left:6px;vertical-align:middle"></span>':'')+'</div></div>'+(T.length?ringHtml(p,n,T.length):'')+'</div>';
+  var h='<section class="card" data-todaycard="1"><div class="row"><div style="display:flex;gap:12px;align-items:center;min-width:0"><div style="font-size:30px;font-weight:700;line-height:1;flex:none">'+(+k.slice(8))+'</div><div style="min-width:0"><b>'+esc(dt.toLocaleDateString(LOC(),{weekday:'short'}))+' • '+esc(dt.toLocaleDateString(LOC(),{month:'short'}))+'</b>'+(d&&d.red?'<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#D64545;margin-left:6px;vertical-align:middle"></span>':'')+'</div></div>'+'</div>';
   if(T.length){
     var tot=0;T.forEach(function(t){tot+=t.mins||0});
     var segs=T.map(function(t){var c=(t.subj&&t.subj[0])?subjColor(t.subj[0]):'var(--accent)';return '<i style="flex:'+(t.mins||5)+' 1 0;background:'+c+';'+(isDone(t)?'opacity:.3':'')+'"></i>'}).join('');
     var legs=T.map(function(t){var c=(t.subj&&t.subj[0])?subjColor(t.subj[0]):'var(--accent)';return '<span class="dl"><i style="background:'+c+'"></i>'+esc(fmtMin(t.mins||0))+'</span>'}).join('');
-    h+='<div class="daybar">'+segs+'</div><div class="dayleg">'+legs+'</div>';
+    h+='<div class="daybar">'+segs+'</div>';
   }else{
     h+='<p class="sub" style="margin:8px 0 0">'+esc(__L('No tasks for this date.','এই তারিখে কোনো কাজ নেই।'))+'</p>';
   }
@@ -4032,6 +4037,13 @@ document.addEventListener('click',function(e){
       if(mv2==='edit'){if(edit){requestExitEdit()}else{enterEditMode()}}
       else if(mv2==='updroutine'){updRoutineDlg()}
       else if(mv2==='settings'){prevTab=tab;go('settings')}
+      else if(mv2==='search'){if(tab!=='search')prevTab=tab;searchQ='';go('search');setTimeout(function(){var q=document.getElementById('sq');if(q)q.focus()},60)}
+      else if(mv2==='backlog'||mv2==='overdue'){selKey=mv2;render(state.prefs.routineView==='cal')}
+      else if(mv2==='dayinfo'){dayDlg(curDate())}
+      else if(mv2==='notes'){prevTab=tab;dayViewKey=curDate();go('daynotes')}
+      else if(mv2==='copyday'){copyDlg(curDate())}
+      else if(mv2==='delday'){delDay(curDate())}
+      else if(mv2==='discard'){discardEditSession()}
       else if(mv2==='schsettings'){schSettingsDlg()}
       else if(mv2==='vlist'||mv2==='vcal'){state.prefs.routineView=mv2==='vcal'?'cal':'list';save();render(true)}
       break;
